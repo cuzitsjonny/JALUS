@@ -1,0 +1,569 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+
+
+
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+  <meta name="KEYWORDS" content="      library, C++, 
+
+      PostgreSQL, 
+
+      SQL, server, client, database, programming, development, software, 
+
+      Win32, Windows, Linux, Unix, Solaris,
+
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, MySQL, PostgreSQL, ODBC).
+
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Server Specific Guide - PostgreSQL</title>
+</head><body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); background-image: url(../images/bg.gif);">
+<!--class="GlbHdr"-->
+<table id="TABLE1" frame="hsides" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../HowTo/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"> <a href="../OnLineDoc/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Support/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Download/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Order/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+&nbsp;
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--class="LeftMenu"-->
+      <table frame="void" cellspacing="5" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p><br>
+            </p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Command.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SACommand</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Connection.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAConnection</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Exception.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Field.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAField</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Param.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAParam</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/String.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAString</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/DateTime.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SADateTime</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Numeric.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SANumeric</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="../OnLineDoc/Enums.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p> </p>
+      <br>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <center>
+      <h2><a href="index.html">Server Specific Guide</a></h2>
+      <h1>SQLite</h1>
+      <p align="left">SQLAPI++ allows to work with a number of SQL
+database servers. It provides common mechanisms to access database, and
+as a general rule they work for any database server. But each server
+has some specific features which a developer has to
+know in order to leverage server's unique features and avoid potential
+errors.</p>
+      <p align="left">This page collects all <strong>specific</strong>
+information that concerns working with <strong>SQLite</strong>
+server using SQLAPI++ Library. Full information about using SQLAPI++
+see in <a href="../HowTo/index.html">How To</a> and <a href="../OnLineDoc/index.html">Online Documentation</a>. </p>
+      <p align="left">Available topics: </p>
+      </center>
+      <p><a href="SQLite.html#Connecting%20to%20a%20database">Connecting
+to
+a database</a></p>
+      <p><a href="SQLite.html#Transaction%20isolation%20levels">Transaction
+isolation
+levels</a></p>
+      <p><a href="SQLite.html#Working%20with%20Long%20or%20Lob%28CLob,%20BLob%29%20data">Working
+with
+Long or Lob(CLob, BLob) data</a></p>
+      <p><a href="SQLite.html#Returning%20output%20parameters">Returning
+output
+parameters</a></p>
+      <p><a href="SQLite.html#Cancelling%20queries">Cancelling
+queries</a></p>
+      <p><a href="SQLite.html#Connection_and_command_options">Connection,
+command,
+parameter and field options</a></p>
+      <p><a href="SQLite.html#NativeAPI">Getting
+native SQLite API</a></p>
+      <p><a href="SQLite.html#ConnectionHandles">Getting
+native SQLite connection related handles</a></p>
+      <p><a href="SQLite.html#CommandHandles">Getting
+native SQLite command related handles</a></p>
+      <p><a href="SQLite.html#Error%20handling">Error handling</a></p>
+      <p><a href="SQLite.html#Special%20header%20files%20-%20Compile%20time">Special
+header
+files - Compile time</a></p>
+      <p>&nbsp;</p>
+      <h3><a name="Connecting to a database">Connecting to a database</a>
+      </h3>
+      <p>To connect to a database you should create a connection object
+and then connect it. A connection object is represented by <a href="../OnLineDoc/Connection.html">SAConnection</a> class. After the
+connection is created you need to connect it to <strong>SQLite</strong>
+server using <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>
+method</p>
+      <p><font face="Arial"><b>void Connect( const SAString &amp;</b>sDBString<b>,
+const
+SAString &amp;</b>sUserID<b>, const SAString &amp;</b>sPassword<b>,
+SAClient_t</b> eSAClient<b> = SA_Client_NotSpecified );</b><b> <br>
+      </b></font></p>
+      <p>with the following parameters:</p>
+      <p><em>sDBString.</em>&nbsp;&nbsp; A string containing a valid
+SQLite database file path.<br>
+      <em>sUserID.</em>&nbsp;&nbsp;&nbsp; This parameter isn't used
+SQLAPI++ with SQLite.<br>
+      <em>sPassword.</em>&nbsp;&nbsp; This parameter isn't used
+SQLAPI++ with SQLite.<br>
+      <em>eSAClient.</em>&nbsp;&nbsp;&nbsp; Optional. One of the
+following values from <strong>SAClient_t</strong> enum: </p>
+      <ul>
+        <li><strong>SA_SQLite_Client</strong>&nbsp;&nbsp;&nbsp; SQLite
+client. </li>
+        <li><strong>SA_Client_NotSpecified</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+Used
+by default if <em>eSAClient</em>parameter is omitted.&nbsp; You
+can use this default value only if you have call <a href="../OnLineDoc/Connection_setClient.html">SAConnection::setClient</a>
+method with <strong>SA_SQLite_Client</strong> constant before.</li>
+      </ul>
+      <p> The SQLAPI++ Library requires libsqlite version 3.x or higher.</p>
+      <p>For more details see <a href="../HowTo/connect.html">How To -
+Connecting to databases</a>, <a href="../OnLineDoc/Connection_Usage.html">SAConnection object</a>, <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Transaction isolation levels">Transaction isolation
+levels</a> </h3>
+      <p> SQL-92 defines four isolation levels, all of which are
+supported by SQLAPI++ by&nbsp;<a href="../OnLineDoc/Connection_setIsolationLevel.html">
+SAConnection::setIsolationLevel</a> method. But SQLAPI++ do nothing
+with this method for SQLite.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Working with Long or Lob(CLob, BLob) data">Working
+with Long or Lob(CLob, BLob) data</a> </h3>
+      <p> SQLAPI++ supports four types for working with Long or
+Lob(CLob, BLob) data:</p>
+      <p>
+      <table style="width: 100%;" border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+          <tr bgcolor="navy">
+            <td><font style="background-color: rgb(0, 0, 128);" color="white">Name</font></td>
+            <td><font style="background-color: rgb(0, 0, 128);" color="white">C enum constant</font></td>
+          </tr>
+          <tr>
+            <td>LongBinary</td>
+            <td>SA_dtLongBinary</td>
+          </tr>
+          <tr>
+            <td>LongChar</td>
+            <td>SA_dtLongChar</td>
+          </tr>
+          <tr>
+            <td>BLob (Binary Large object)</td>
+            <td>SA_dtBLob</td>
+          </tr>
+          <tr>
+            <td>CLob (Character Large object)</td>
+            <td>SA_dtCLob</td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>The table below shows how SQLAPI++ data types correspond with
+servers original data types:</p>
+      <p><em>SA_dtLongBinary</em> = &gt; SQLITE_BLOB<br>
+      <em>SA_dtLongChar</em> = &gt; SQLITE_TEXT<br>
+      <em>SA_dtBLob</em>&nbsp; = &gt; SQLITE_BLOB<br>
+      <em>SA_dtCLob&nbsp; </em>=&gt; SQLITE_TEXT</p>
+            <p> For more details see <a href="../HowTo/blobs.html">How To -
+Working with Long or Lob(CLob, BLob) data</a></p>
+      <p>&nbsp;</p>
+      <h3><a name="Returning output parameters">Returning output
+parameters</a> </h3>
+      <p>SQLAPI++ doesn't support <strong>SQLite</strong> functions
+and does not support returning
+output parameters.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Cancelling queries">Cancelling queries</a> </h3>
+      <p>Using <a href="../OnLineDoc/Command_Cancel.html">SACommand::Cancel</a>
+method you can cancel the following types of processing on a statement:</p>
+      <ul type="disc">
+        <li>A function running asynchronously on the statement.<br>
+        </li>
+        <li>A function running on the statement on another thread. </li>
+      </ul>
+      <p>SQLAPI++ calls <strong>sqlite3_interrupt</strong> function to
+cancel a query. To get more details see <strong> <strong>sqlite3_interrupt</strong></strong>
+function description in <strong>SQLite</strong> documentation.</p>
+      <p>For more details see <a href="../OnLineDoc/Command_Cancel.html">SACommand::Cancel</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Connection_and_command_options">Connection, command,
+parameter and field options</a> </h3>
+      <p>A server specific option can relate to a connection,
+command,&nbsp; parameter or field. We recommend you specify each option
+in an appropriate object, although it is possible to specify them in
+the parental object as well. In that case the option affects all the
+child objects. </p>
+      <p>A connection related option must be specified in a&nbsp; <a href="../OnLineDoc/Connection.html">SAConnection</a> object. </p>
+      <p>A command related option may be specified in either <a href="../OnLineDoc/Connection.html">SAConnection</a> object or <a href="../OnLineDoc/Command.html">SACommand</a> object. If it is
+specified in <a href="../OnLineDoc/Connection.html">SAConnection</a>
+object it affects all the commands on that connection. </p>
+      <p>A parameter related option may be specified in <a href="../OnLineDoc/Connection.html">SAConnection</a> object, <a href="../OnLineDoc/Command.html">SACommand</a> object or <a href="../OnLineDoc/Param.html">SAParam</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the parameters on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+object it affects all the parameters on that command. </p>
+      <p>A field related option may be specified in <a href="../OnLineDoc/Connection.html">SAConnection</a> object, <a href="../OnLineDoc/Command.html">SACommand</a> object or <a href="../OnLineDoc/Field.html">SAField</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the fields on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+object it affects all the fields on that command. </p>
+      <p>Specific options for <strong> SQLite</strong>:</p>
+      <strong></strong>
+      <p>
+      <table style="width: 1435px; height: 219px;" border="1" cellpadding="5">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td width="17%">
+            <p><strong><font color="white" face="">Option name / Scope</font>&nbsp;
+
+            </strong></p>
+            </td>
+            <td>
+            <p><strong><font color="white" face=""> Description</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><strong>
+            <p align="center"> SQLITE.LIBS</p>
+            </strong>
+            <div style="text-align: center;"> Connection related.
+Should be specified
+before the first connection is made.</div>
+            </td>
+            <td style="vertical-align: top;">Forces SQLAPI++ Library to
+use specified SQLite client library.<br>
+            <br>
+            <em>Valid values</em> : Any valid SQLite client library
+name
+list.
+Names separated by ';' on Windows or ':' on other OS.<br>
+            <em>Default value</em>: Windows -
+"sqlite3.dll", Linux
+-&nbsp; "libsqlite3.so".</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"> <strong> BusyTimeout</strong></p>
+
+            
+            <p align="center"> Connection related. <font face="" size="3">Should be specified before connection is made.</font></p>
+            </td>
+            <td style="vertical-align: top;">Sets a busy handler that sleeps
+for a specified amount of time when a table is locked. For more
+information see SQLite documentation. <br>
+
+            <br>
+
+            <em>Valid values</em>:&nbsp; any numeric string represents
+busy timeout (milliseconds). <br>
+
+            <em>Default value</em>: empty.</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"> <span style="font-weight: bold;">SQLiteVFSName</span><strong></strong></p>
+
+            
+            <p align="center"> Connection related. <font face="" size="3">Should be specified before connection is made.</font></p>
+            </td>
+            <td style="vertical-align: top;">Sets sqlite3_open_v2() interface VFS module name. For more
+information see SQLite documentation. <br>
+
+
+
+            <br>
+
+
+
+            <em>Valid values</em>:&nbsp; any string represents VFS module name. <br>
+
+
+
+            <em>Default value</em>: empty.</td>
+          </tr>
+<tr>
+            <td>
+            <p align="center"> <span style="font-weight: bold;">SQLiteVFSFlags</span><strong></strong></p>
+            <p align="center"> Connection related. <font face="" size="3">Should be specified before connection is made.</font></p>
+            </td>
+            <td>
+            <p>Sets sqlite3_open_v2() interface VFS flags. For more
+information see SQLite documentation. <br>
+
+
+            <br>
+
+
+            <em>Valid values</em>:&nbsp; any numeric string represents VFS flags. <br>
+
+
+            <em>Default value</em>: empty.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"> <strong> SQLiteDateTypes</strong></p>
+            <p align="center"> Connection related<font face="" size="3">.</font></p>
+            </td>
+            <td style="vertical-align: top;">Sets a comma separated
+list of database field types those should be interpreted as a datetime
+fields.<br>
+            <br>
+            <em>Valid values</em>:&nbsp; any suitable data type list. <br>
+            <em>Default value</em>: "DATE,DATETIME,TIME,TIMESTAMP".<br>
+            </td>
+          </tr><tr>
+            <td style="vertical-align: top;">
+            <p align="center"> <strong> SQLiteDateValueType</strong></p>
+
+            
+            <p align="center"> Connection or command related.<font face="" size="3"></font></p>
+            </td>
+            <td style="vertical-align: top;">Sets a program type of the SA_dtDateTime parameters.<br>
+            <br>
+            <em>Valid values</em>:&nbsp; "TEXT" - the datetime values formatted into "<i>YYYY-MM-DD HH:MM:SS.SSS</i>" strings, "DOUBLE" - the datetime vlaue is the Julian Day (JD) number expressed as a floating point value. <br>
+
+            <em>Default value</em>: "TEXT".<br>
+            </td>
+          </tr><tr>
+  <td style="vertical-align: top;">
+    <p align="center"> <strong> SQLiteTransactionType</strong></p>
+
+            
+    <p align="center"> Connection related<font face="" size="3">.</font></p>
+  </td>
+  <td style="vertical-align: top;">Sets SQLite transaction type.<br>
+    <br>
+    <em>Valid values</em>:&nbsp; "EXCLUSIVE", "IMMEDIATE",  "DEFFERED" (default).<br>
+    <em>Default value</em>: empty.<br>
+  </td>
+</tr>
+
+
+        </tbody>
+      </table>
+      </p>
+      <p>For more details see <a href="../OnLineDoc/Connection_setOption.html">SAConnection::setOption</a>,
+
+      <a href="../OnLineDoc/Command_setOption.html">SACommand::setOption</a>,
+
+      <a href="../OnLineDoc/Field_setOption.html">SAField::setOption</a>,
+
+      <a href="../OnLineDoc/Param_setOption.html">SAParam::setOption</a>.
+
+      </p>
+      <p><br>
+      </p>
+      <h3><a name="NativeAPI">Getting native SQLite API</a> </h3>
+      <p>You can call client specific API functions which are not
+directly supported by SQLAPI++ Library. <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>
+method returns a pointer to the set of native API functions available
+for <strong>SQLite</strong>. To use the database API directly you
+have to downcast this <strong>saAPI</strong> pointer to the
+appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with <strong>SQLite</strong>
+API. </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td style="width: 300px;" width="300">
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+            <td>
+            <p><strong><font color="white" face="">Additional <br>
+include file</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p>Cast the result to <strong>class sl3API</strong>:</p>
+            <p><font face="System">saAPI *pResult = con.NativeAPI();<br>
+sl3API *p_sl3API = (sl3API *)pResult;</font></p>
+            </td>
+            <td><strong>
+            <p><strong>#include &lt;sl3API.h&gt;</strong></p>
+            </strong></td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions see this DBMS
+specific documentation.&nbsp; </p>
+      <p>For more details see <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="ConnectionHandles">Getting
+native SQLite connection related handles</a> </h3>
+      <p>You have to use native API handles when you want to call
+specific <strong>SQLite</strong> API functions which are not
+directly supported by the Library. API functions usually need to
+receive one or more active handles as a parameter(s). <a href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>
+method returns a pointer to the set of native API <strong>connection
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saConnectionHandles</strong> pointer to the
+appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with specific <strong>SQLite</strong>
+API. </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td>
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><font color="maroon" face="">Cast the result</font></strong>
+to <strong>class sl3ConnectionHandles</strong>:</p>
+            <font face="System"><font face="System"> </font></font>
+            <p><font face="System"><font face="System"><strong><font color="maroon" face="">#include &lt;sl3API.h&gt;</font> </strong></font></font></p>
+            <font face="System"><font face="System"> </font></font>
+            <p><font face="System"><font face="System">saConnectionHandles
+*pResult
+= con.NativeHandles</font>();<br>
+sl3ConnectionHandles *p_sl3CH =<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(sl3ConnectionHandles
+*)pResult;</font></p>
+            <font face="System"> </font>
+            <p><font face="System"><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </font></p>
+            <font face="System"> </font>
+            <ul>
+              <font face="System">
+              <li><font face="Times New Roman">sqlite3 *pDb;</font> </li>
+              </font>
+            </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp; </p>
+      <p>For more details see <a href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="CommandHandles">Getting
+native SQLite command related handles</a> </h3>
+      <p>You have to use native API handles when you want to call
+specific <strong>SQLite</strong> API functions which are not
+directly supported by the Library. API functions usually need to
+receive one or more active handles as a parameter(s). <a href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>
+method returns a pointer to the set of native API <strong>command
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saCommandHandles</strong> pointer to the appropriate
+type and use its implementation-specific members. The following table
+shows what type cast you have to make and what additional header file
+you have to include to work with specific <strong>SQLite</strong>
+API. </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td>
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><font color="maroon" face="">Cast the result</font></strong>
+to <strong>class sl3CommandHandles</strong>:</p>
+            <font face="System"><font face="System">
+            <p><strong><font color="maroon" face="">#include
+&lt;sl3API.h&gt;</font> </strong></p>
+            <p>saCommandHandles *pResult = cmd.NativeHandles();<br>
+sl3CommandHandles *p_sl3CH =<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(sl3CommandHandles
+*)pResult;</p>
+            <p><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </p>
+            <ul>
+              <li><font face="Times New Roman">sqlite3_stmt *pStmt;</font></li>
+            </ul>
+            </font></font></td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp; </p>
+      <p>For more details see <a href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Error handling">Error handling</a> </h3>
+      <p>When an error occurs inside SQLAPI++ Library it throws an
+exception of type <a href="../OnLineDoc/Exception.html">SAException</a>.
+
+      <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+method gets an error position in SQL statement. In <strong>SQLite</strong>
+server <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+method returns -1 because <strong>SQLite</strong> does not support
+this function.</p>
+      <p>For more details see <a href="../HowTo/errors.html">How To -
+Error handling</a>, <a href="../OnLineDoc/Exception_Usage.html">SAException
+object</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Special header files - Compile time">Special header
+files - Compile time</a> </h3>
+      <p>The header files are in the <strong>include</strong>
+subdirectory of SQLAPI++ distributions:<br>
+      <strong>#include &lt;SQLAPI.h&gt; </strong>- main header, should
+be used whenever SQLAPI++ is used.<br>
+      <strong> #include &lt;sl3API.h&gt; </strong>- <strong>SQLite</strong>
+, should be included if direct libsqlite calls are required.</p>
+      <p>For more details see <a href="../OnLineDoc/index.html#Instructions%20for%20Compiling%20and%20Linking%20Applications%20with%20SQLAPI++">Online
+Documentation
+- Instructions for Compiling and Linking Applications
+with SQLAPI++</a>&nbsp;</p>
+      <p>&nbsp;</p>
+      <h3>Problems and Questions</h3>
+      <p>If you haven't found the answer to you questions or have some
+problems on using the Library, please, send e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body></html>

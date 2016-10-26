@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JALUS", "JALUS\JALUS.vcxproj", "{D6BCA985-47C1-4576-BC29-FD2363AB5035}"
+	ProjectSection(ProjectDependencies) = postProject
+		{767CEB9F-4C3D-46FC-A225-E0F3800DC29C} = {767CEB9F-4C3D-46FC-A225-E0F3800DC29C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RakNet", "RakNet\RakNet.vcxproj", "{767CEB9F-4C3D-46FC-A225-E0F3800DC29C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Auth|x64 = Auth|x64
+		Auth|x86 = Auth|x86
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Auth|x64.ActiveCfg = Release|x64
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Auth|x64.Build.0 = Release|x64
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Auth|x86.ActiveCfg = Release|Win32
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Auth|x86.Build.0 = Release|Win32
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Debug|x64.ActiveCfg = Debug|x64
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Debug|x64.Build.0 = Debug|x64
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Debug|x86.ActiveCfg = Debug|Win32
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Debug|x86.Build.0 = Debug|Win32
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Release|x64.ActiveCfg = Release|x64
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Release|x64.Build.0 = Release|x64
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Release|x86.ActiveCfg = Release|Win32
+		{D6BCA985-47C1-4576-BC29-FD2363AB5035}.Release|x86.Build.0 = Release|Win32
+		{767CEB9F-4C3D-46FC-A225-E0F3800DC29C}.Auth|x64.ActiveCfg = Auth|Win32
+		{767CEB9F-4C3D-46FC-A225-E0F3800DC29C}.Auth|x86.ActiveCfg = Auth|Win32
+		{767CEB9F-4C3D-46FC-A225-E0F3800DC29C}.Auth|x86.Build.0 = Auth|Win32
+		{767CEB9F-4C3D-46FC-A225-E0F3800DC29C}.Debug|x64.ActiveCfg = Debug|Win32
+		{767CEB9F-4C3D-46FC-A225-E0F3800DC29C}.Debug|x86.ActiveCfg = Debug|Win32
+		{767CEB9F-4C3D-46FC-A225-E0F3800DC29C}.Debug|x86.Build.0 = Debug|Win32
+		{767CEB9F-4C3D-46FC-A225-E0F3800DC29C}.Release|x64.ActiveCfg = Release|Win32
+		{767CEB9F-4C3D-46FC-A225-E0F3800DC29C}.Release|x86.ActiveCfg = Release|Win32
+		{767CEB9F-4C3D-46FC-A225-E0F3800DC29C}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

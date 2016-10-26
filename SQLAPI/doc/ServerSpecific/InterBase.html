@@ -1,0 +1,718 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Server Specific Guide - InterBase</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--class="GlbHdr"-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+ cellpadding="0" cellspacing="2" width="600" frame="hsides" height="40">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"> <a href="../index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"> <a href="../HowTo/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"> <a href="../OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"> <a href="../Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"> <a href="../Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"> <a href="../Order/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+&nbsp;
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--class="LeftMenu"-->
+      <table cellspacing="5" width="165" frame="void">
+        <tbody>
+          <tr>
+            <td>
+            <p><br>
+            </p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12"
+ height="12"> <a href="../OnLineDoc/Command.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SACommand</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12"
+ height="12"> <a href="../OnLineDoc/Connection.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAConnection</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12"
+ height="12"> <a href="../OnLineDoc/Exception.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12"
+ height="12"> <a href="../OnLineDoc/Field.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAField</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12"
+ height="12"> <a href="../OnLineDoc/Param.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAParam</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12"
+ height="12"> <a href="../OnLineDoc/String.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAString</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12"
+ height="12"> <a href="../OnLineDoc/DateTime.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SADateTime</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12"
+ height="12"> <a href="../OnLineDoc/Numeric.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SANumeric</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="../OnLineDoc/Enums.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> Enums and Typedefs</font></a><font color="white"
+ face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p> </p>
+      <br>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <center>
+      <h2><a href="index.html">Server Specific Guide</a></h2>
+      <h1>InterBase</h1>
+      <p align="left">SQLAPI++ allows to work with a number of SQL
+database servers. It provides common mechanisms to access database, and
+as a general rule they work for any database server. But each server
+has some specific features which a developer has to
+know in order to leverage server's unique features and avoid potential
+errors.</p>
+      <p align="left">This page collects all <strong>specific</strong>
+information that concerns working with <strong>InterBase</strong>
+server using SQLAPI++ Library. Full information about using SQLAPI++
+see in <a href="../HowTo/index.html">How To</a> and <a
+ href="../OnLineDoc/index.html">Online Documentation</a> . </p>
+      <p align="left">Available topics: </p>
+      </center>
+      <p><a href="InterBase.html#Connecting%20to%20a%20database">Connecting
+to
+a database</a></p>
+      <p><a href="InterBase.html#Transaction%20isolation%20levels">Transaction
+isolation
+levels</a></p>
+      <p><a
+ href="InterBase.html#Working%20with%20Long%20or%20Lob%28CLob,%20BLob%29%20data">Working
+with
+Long or Lob(CLob, BLob) data</a></p>
+      <p><a href="InterBase.html#Returning%20output%20parameters">Returning
+output
+parameters</a></p>
+      <p><a href="InterBase.html#Cancelling%20queries">Cancelling
+queries</a></p>
+      <p><a href="InterBase.html#Connection_and_command_options">Connection,
+command,
+parameter and field options</a></p>
+      <p><a href="InterBase.html#Getting%20native%20InterBase%20API">Getting
+native
+InterBase API</a></p>
+      <p><a
+ href="InterBase.html#Getting%20native%20InterBase%20connection%20related%20handles">Getting
+native
+InterBase connection related handles</a></p>
+      <p><a
+ href="InterBase.html#Getting%20native%20InterBase%20command%20related%20handles">Getting
+native
+InterBase command related handles</a></p>
+      <p><a href="InterBase.html#Error%20handling">Error handling</a></p>
+      <p><a
+ href="InterBase.html#Special%20header%20files%20-%20Compile%20time">Special
+header
+files - Compile time</a></p>
+      <p>&nbsp;</p>
+      <h3><a name="Connecting to a database">Connecting to a database</a>
+      </h3>
+      <p>To connect to a database you should create a connection object
+and then connect it. A connection object is represented by <a
+ href="../OnLineDoc/Connection.html">SAConnection</a> class. After the
+connection is created you need to connect it to <strong>InterBase</strong>
+server using <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>
+method</p>
+      <p><font face="Arial"><b>void Connect( const SAString &amp;</b>sDBString<b>,
+const
+SAString &amp;</b>sUserID<b>, const SAString &amp;</b>sPassword<b>,
+SAClient_t</b> eSAClient<b> = SA_Client_NotSpecified );</b><b> <br>
+      </b></font></p>
+      <p>with the following parameters:</p>
+      <p><em>sDBString.</em> &nbsp;&nbsp;&nbsp;</p>
+      <ul>
+        <li>For local <strong>InterBase</strong> databases, this can
+be a file name. </li>
+        <li>To connect to an <strong>InterBase</strong> database on a
+remote server using TCP/IP the syntax is<server_name> <strong>&lt;server
+name&gt;:&lt;filename&gt;</strong><filename>. </filename></server_name></li>
+        <li>To connect to an <strong>InterBase</strong> database on a
+remote server using NetBEUI, the syntax is \\<strong> &lt;server
+name&gt;\&lt;filename&gt;</strong>. </li>
+        <li>To connect to an <strong>InterBase</strong> database on a
+remote server using SPX, the syntax is <strong>&lt;server
+name&gt;@&lt;filename&gt;.</strong></li>
+      </ul>
+      <p><em>sUserID.</em>&nbsp;&nbsp;&nbsp; A string containing a user
+name to use when establishing the connection.<br>
+      <em>sPassword.</em>&nbsp;&nbsp;&nbsp; A string containing a
+password to use when establishing the connection.<br>
+      <em>eSAClient.</em>&nbsp;&nbsp;&nbsp; Optional. One of the
+following values from <strong>SAClient_t</strong> enum: </p>
+      <ul>
+        <li><strong>SA_InterBase_Client</strong>&nbsp;&nbsp;&nbsp;
+InterBase client. </li>
+        <li><strong>SA_Client_NotSpecified</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+Used
+by default if <em>eSAClient</em>parameter is omitted.&nbsp; You
+can use this default value only if you have call <a
+ href="../OnLineDoc/Connection_setClient.html">SAConnection::setClient</a>
+method with <strong>SA_InterBase_Client</strong> constant before.</li>
+      </ul>
+      <p>The SQLAPI++ Library requires client API version 5.x or
+higher. All Firebird versions are supported also.</p>
+      <p>For more details see <a href="../HowTo/connect.html">How To -
+Connecting to databases</a>, <a
+ href="../OnLineDoc/Connection_Usage.html">SAConnection object</a>, <a
+ href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Transaction isolation levels">Transaction isolation
+levels</a> </h3>
+      <p>SQL-92 defines four isolation levels, all of which are
+supported by SQLAPI++:</p>
+      <ul>
+        <li>Read uncommitted (the lowest level where transactions are
+isolated just enough to ensure that physically corrupt data is not
+read) </li>
+        <li>Read committed </li>
+        <li>Repeatable read </li>
+        <li>Serializable (the highest level, where transactions are
+completely isolated from one another)</li>
+      </ul>
+      <p>SQLAPI++ maps different isolation levels on <strong>InterBase</strong>
+server in the following way:</p>
+      <p> <strong>SA_ReadUncommitted</strong> =
+isc_tpb_read_committed, isc_tpb_rec_version<br>
+      <strong> SA_ReadCommitted</strong> = isc_tpb_read_committed,
+isc_tpb_no_rec_version<br>
+      <strong> SA_RepeatableRead</strong> = isc_tpb_consistency<br>
+      <strong> SA_Serializable</strong> = isc_tpb_concurrency</p>
+      <p>For more details see <a
+ href="../OnLineDoc/Connection_setIsolationLevel.html">SAConnection::setIsolationLevel</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Working with Long or Lob(CLob, BLob) data">Working
+with Long or Lob(CLob, BLob) data</a> </h3>
+      <p> SQLAPI++ supports four types for working with Long or
+Lob(CLob, BLob) data:</p>
+      <p>
+      <table style="width: 100%;" border="1" cellpadding="1"
+ cellspacing="1" width="100%">
+        <tbody>
+          <tr bgcolor="navy">
+            <td><font style="background-color: rgb(0, 0, 128);"
+ color="white">Name</font></td>
+            <td><font style="background-color: rgb(0, 0, 128);"
+ color="white">C enum constant</font></td>
+          </tr>
+          <tr>
+            <td>LongBinary</td>
+            <td>SA_dtLongBinary</td>
+          </tr>
+          <tr>
+            <td>LongChar</td>
+            <td>SA_dtLongChar</td>
+          </tr>
+          <tr>
+            <td>BLob (Binary Large object)</td>
+            <td>SA_dtBLob</td>
+          </tr>
+          <tr>
+            <td>CLob (Character Large object)</td>
+            <td>SA_dtCLob</td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>The table below shows how SQLAPI++ data types correspond with
+servers original data types:</p>
+      <p><em>SA_dtLongBinary</em> &lt;= &gt; BLOB, subtype 0<br>
+      <em>SA_dtLongChar</em> &lt;= &gt; BLOB, subtype 1<br>
+      <em>SA_dtBLob</em> = &gt; BLOB, subtype 0<br>
+      <em>SA_dtCLob </em>=&gt; BLOB, subtype 1</p>
+      <p> For more details see <a href="../HowTo/blobs.html">How To -
+Working with Long or Lob(CLob, BLob) data</a></p>
+      <p>&nbsp;</p>
+      <h3><a name="Returning output parameters">Returning output
+parameters</a> </h3>
+      <p>If <strong>InterBase</strong> stored procedure returns only
+one row of output parameters (the most common case), you can get output
+parameters' values immediately after calling <a
+ href="../OnLineDoc/Command_Execute.html">SACommand::Execute</a> using
+appropriate <a href="../OnLineDoc/Param.html">SAParam</a> objects.</p>
+      <p>In <strong>InterBase</strong> stored procedures can also
+return several rows of output parameters. In this case you should
+perform a select from a procedure to return them as result set.</p>
+      <p>For more details see <a
+ href="../OnLineDoc/Command_Execute.html">SACommand::Execute</a>, <a
+ href="../OnLineDoc/Param_Usage.html">SAParam object</a>, <a
+ href="../HowTo/return_param.html">How To - Returning Output Parameters</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Cancelling queries">Cancelling queries</a> </h3>
+      <p><strong>InterBase</strong> does not support cancelling queries.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Connection_and_command_options">Connection, command,
+parameter and field options</a> </h3>
+      <p>A server specific option can relate to a connection,
+command,&nbsp; parameter or field. We recommend you specify each option
+in an appropriate object, although it is possible to specify them in
+the parental object as well. In that case the option affects all the
+child objects. </p>
+      <p>A connection related option must be specified in a&nbsp; <a
+ href="../OnLineDoc/Connection.html">SAConnection</a> object. </p>
+      <p>A command related option may be specified in either <a
+ href="../OnLineDoc/Connection.html">SAConnection</a> object or <a
+ href="../OnLineDoc/Command.html">SACommand</a> object. If it is
+specified in <a href="../OnLineDoc/Connection.html">SAConnection</a>
+object it affects all the commands on that connection. </p>
+      <p>A parameter related option may be specified in <a
+ href="../OnLineDoc/Connection.html">SAConnection</a> object, <a
+ href="../OnLineDoc/Command.html">SACommand</a> object or <a
+ href="../OnLineDoc/Param.html">SAParam</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the parameters on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+object it affects all the parameters on that command. </p>
+      <p>A field related option may be specified in <a
+ href="../OnLineDoc/Connection.html">SAConnection</a> object, <a
+ href="../OnLineDoc/Command.html">SACommand</a> object or <a
+ href="../OnLineDoc/Field.html">SAField</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the fields on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+object it affects all the fields on that command. </p>
+      <p>Specific options for <strong> InterBase</strong>:</p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td width="17%">
+            <p><strong><font color="white" face="">Option name / Scope</font>&nbsp;
+
+            </strong></p>
+            </td>
+            <td>
+            <p><strong><font color="white" face=""> Description</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><strong>
+            <p align="center"> IBASE.LIBS</p>
+            </strong>
+            <div style="text-align: center;"> Connection related.
+Should be specified
+before the first connection is made.</div>
+            </td>
+            <td style="vertical-align: top;">Forces SQLAPI++ Library to
+use specified InterBase/Firebird client library.<br>
+            <br>
+            <em>Valid values</em> : Any valid InterBase client library
+name
+list.
+Names separated by ';' on Windows or ':' on other OS.<br>
+            <em>Default value</em>: Windows -
+"gds32.dll;fbclient.dll", Linux
+-&nbsp; "libgds.so:libfbclient.so".</td>
+          </tr>
+          <tr>
+            <td><strong><strong>
+            <p align="center"><strong><strong> <strong><strong>isc_dpb_lc_ctype</strong></strong></strong>
+            </strong></p>
+            </strong> </strong>
+            <p align="center">Connection related. Should be specified
+before actual connection is made.</p>
+            </td>
+            <td>
+            <p>Specifies the character set to be utilized. For more
+information see InterBase documentation.<br>
+            </p>
+            <p><em>Valid values</em>: String containing character set
+name, see InterBase documentation.<br>
+            <em>Default value</em>: see InterBase documentation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p align="center"><strong><strong> <strong><strong>isc_dpb_sql_role_name</strong></strong></strong>
+            </strong></p>
+            <p align="center"><strong><strong> <strong><strong></strong></strong></strong>
+            </strong>Connection related. Should be specified before
+actual connection is made.&nbsp;</p>
+            </td>
+            <td>
+            <p>Declares role name that should used for connection. For
+more information see InterBase documentation.<br>
+            </p>
+            <p><em>Valid values</em>: see InterBase documentation.<br>
+            <em>Default value</em>: see InterBase documentation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td><strong><strong>
+            <p><strong>isc_dpb_num_buffers</strong></p>
+            </strong> </strong>
+            <p align="center">Connection related. Should be specified
+before actual connection is made.<strong><strong><strong></strong></strong>
+            </strong></p>
+            </td>
+            <td>
+            <p>Declares the number of database cache buffers to
+allocate for use with the database. For more information see InterBase
+documentation.<br>
+            </p>
+            <p><em>Valid values</em>: 10-255, see InterBase
+documentation.<br>
+            <em>Default value</em>: 75, see InterBase documentation.</p>
+            </td>
+          </tr>
+          <tr>
+            <td><strong><strong>
+            <p align="center"><strong>CommitRetaining</strong></p>
+            </strong> </strong>
+            <p align="center">Connection related. Should be specified
+before issuing a commit.<strong><strong><strong></strong></strong> </strong></p>
+            </td>
+            <td>
+            <p>Determines which function (<em>isc_commit_transaction()</em>
+or <em>isc_commit_retaining()</em>) SQLAPI++ calls&nbsp; to commit
+transactions.<br>
+            <em>isc_commit_transaction()</em> writes transaction
+changes permanently to a database, closes the result set associated
+with the transaction, and frees system resources assigned to the
+transaction for other uses. Active result sets are not preserved.<br>
+            <em>isc_commit_retaining()</em> writes all pending changes
+to the database, ends the current transaction without closing its
+record stream and cursors and without freeing its system resources,
+then starts a new transaction and assigns the existing record streams
+and system resources to the new transaction. Active result sets are
+preserved. <br>
+For more information see InterBase documentation (<em>isc_commit_retaining()</em>
+and <em>isc_commit_transaction()</em> functions). <br>
+            <br>
+            <em>Valid values</em>: "true" to force SQLAPI++ to call <em>isc_commit_retaining()</em>
+function, "false" to force SQLAPI++ to call <em>isc_commit_transaction()</em>
+function.<br>
+            <em>Default value</em>: "false". SQLAPI++ uses <em>isc_commit_transaction()</em>
+function by default.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p align="center"><strong>TPB_LockResolution</strong></p>
+            <p align="center">Connection related. Should be specified
+before actual connection is made. </p>
+            </td>
+            <td>
+            <p>Describes what happens if a transaction encounters an
+access conflict during a write operation (update and delete operations
+on existing rows).<br>
+            </p>
+            <p><em>Valid values</em>: "isc_tpb_wait" (specifies that
+the transaction should wait until locked resources are released; once
+the resources are released, the transaction retries its operation),
+"isc_tpb_nowait" (specifies that the transaction should return a lock
+conflict error without waiting for locks to be released). <br>
+By default SQLAPI++ doesn't change InterBase settings for this option.
+See InterBase documentation for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p align="center"><strong>TPB_AccessMode</strong></p>
+            <p align="center">Connection related. Should be specified
+before actual connection is made. </p>
+            </td>
+            <td>
+            <p> Describes the actions a transaction can perform against
+a table.<br>
+            </p>
+            <p><em>Valid values</em> : "isc_tpb_write" (enables a
+transaction to read data from a table and write data to it),
+"isc_tpb_read" (restricts table access to read only). <br>
+By default SQLAPI++ doesn't change InterBase settings for this option.
+See InterBase documentation for details.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p align="center"><strong><strong><strong>SQLDialect</strong></strong>
+            </strong></p>
+            <p align="center">Command related</p>
+            </td>
+            <td>
+            <p>Declares the SQL Dialect for database access.<br>
+            </p>
+            <p><em>Valid values</em>: see InterBase documentation.<br>
+            <em>Default value </em> is "3".</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>For more details see <a
+ href="../OnLineDoc/Connection_setOption.html">SAConnection::setOption</a>,
+
+      <a href="../OnLineDoc/Command_setOption.html">SACommand::setOption</a>,
+
+      <a href="../OnLineDoc/Field_setOption.html">SAField::setOption</a>,
+
+      <a href="../OnLineDoc/Param_setOption.html">SAParam::setOption</a>.
+
+      </p>
+      <p>&nbsp;</p>
+      <h3><a name="Getting native InterBase API">Getting native
+InterBase API</a> </h3>
+      <p>You can call client specific API functions which are not
+directly supported by SQLAPI++ Library. <a
+ href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>
+method returns a pointer to the set of native API functions available
+for <strong>InterBase</strong> . To use the database API directly you
+have to downcast this <strong>saAPI</strong> pointer to the
+appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with <strong>InterBase</strong>
+API. </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td style="width: 300px;" width="300">
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+            <td>
+            <p><strong><font color="white" face="">Additional <br>
+include file</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p>Cast the result to <strong>class ibAPI</strong>:</p>
+            <p><font face="System">saAPI *pResult = con.NativeAPI();<br>
+ibAPI *p_ibAPI = (ibAPI *)pResult;</font></p>
+            </td>
+            <td><strong>
+            <p><strong>#include &lt;ibAPI.h&gt;</strong></p>
+            </strong></td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions see this DBMS
+specific documentation.&nbsp; </p>
+      <p>For more details see <a
+ href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Getting native InterBase connection related handles">Getting
+native
+InterBase connection related handles</a> </h3>
+      <p>You have to use native API handles when you want to call
+specific <strong>InterBase</strong> API functions which are not
+directly supported by the Library. API functions usually need to
+receive one or more active handles as a parameter(s). <a
+ href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>
+method returns a pointer to the set of native API <strong>connection
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saConnectionHandles</strong> pointer to the
+appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with specific <strong>InterBase</strong>
+API. </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td>
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><font color="maroon" face="">Cast the result</font></strong>
+to <strong>class ibConnectionHandles</strong>:</p>
+            <font face="System"><font face="System">
+            <p><strong><font color="maroon" face="">#include
+&lt;ibAPI.h&gt;</font> </strong></p>
+            <p>saConnectionHandles *pResult = con.NativeHandles();<br>
+ibConnectionHandles *p_ibCH =<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(ibConnectionHandles
+*)pResult;</p>
+            <p><font face="Times New Roman"><strong><font color="maroon"
+ face="">Available handles:</font></strong></font> </p>
+            <ul>
+              <li><font face="Times New Roman"><font
+ face="Times New Roman">isc_db_handle m_db_handle</font> ;</font> </li>
+              <li><font face="Times New Roman"><font
+ face="Times New Roman">isc_tr_handle m_tr_handle</font> ;</font></li>
+            </ul>
+            </font></font></td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp; </p>
+      <p>For more details see <a
+ href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Getting native InterBase command related handles">Getting
+native
+InterBase command related handles</a> </h3>
+      <p>You have to use native API handles when you want to call
+specific <strong>InterBase</strong> API functions which are not
+directly supported by the Library. API functions usually need to
+receive one or more active handles as a parameter(s). <a
+ href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>
+method returns a pointer to the set of native API <strong>command
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saCommandHandles</strong> pointer to the appropriate
+type and use its implementation-specific members. The following table
+shows what type cast you have to make and what additional header file
+you have to include to work with specific <strong>InterBase</strong>
+API. </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td>
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><font color="maroon" face="">Cast the result</font></strong>
+to <strong>class ibCommandHandles</strong>:</p>
+            <font face="System"><font face="System">
+            <p><strong><font color="maroon" face="">#include
+&lt;ibAPI.h&gt;</font> </strong></p>
+            <p>saCommandHandles *pResult = cmd.NativeHandles();<br>
+ibCommandHandles *p_ibCH =<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(ibCommandHandles
+*)pResult;</p>
+            <p><font face="Times New Roman"><strong><font color="maroon"
+ face="">Available handles:</font></strong></font> </p>
+            <ul>
+              <li><font face="Times New Roman"><font
+ face="Times New Roman">isc_stmt_handle m_stmt_handle</font> ;</font></li>
+            </ul>
+            </font></font></td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp; </p>
+      <p>For more details see <a
+ href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Error handling">Error handling</a></h3>
+      <p>When an error occurs inside SQLAPI++ Library it throws an
+exception of type <a href="../OnLineDoc/Exception.html">SAException</a>.
+
+      <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+method gets an error position in SQL statement. In <strong>InterBase</strong>
+server <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+method returns -1 because <strong>InterBase</strong> does not support
+this function..</p>
+      <p>For more details see <a href="../HowTo/errors.html">How To -
+Error handling</a>, <a href="../OnLineDoc/Exception_Usage.html">SAException
+object</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Special header files - Compile time">Special header
+files - Compile time</a> </h3>
+      <p>The header files are in the <strong>include</strong>
+subdirectory of SQLAPI++ distributions:<br>
+      <strong>#include &lt;SQLAPI.h&gt; </strong>- main header, should
+be used whenever SQLAPI++ is used.<br>
+      <strong> #include &lt;ibAPI.h&gt; </strong>- <strong>Interbase</strong>
+API, should be included if direct InterBase API calls are required.</p>
+      <p>For more details see <a
+ href="../OnLineDoc/index.html#Instructions%20for%20Compiling%20and%20Linking%20Applications%20with%20SQLAPI++">Online
+Documentation
+- Instructions for Compiling and Linking Applications
+with SQLAPI++</a>&nbsp;</p>
+      <p> <br>
+      </p>
+      <h3>Problems and Questions</h3>
+      <p>If you haven't found the answer to you questions or have some
+problems on using the Library, please, send e-mail to <a
+ href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

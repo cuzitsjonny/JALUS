@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1251">
+<meta name="KEYWORDS" content="
+      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+<meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+<title>SQLAPI++ Library - Online Documentation - Writing Long or Lob parameters value</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000"><!--GlbHdr--> <table frame="hsides" id="TABLE1" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" height="40" width="600">
+    
+    <tbody><tr><!--class="GlbDefault"-->        
+        <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="/index.html" style="TEXT-DECORATION: none">
+			<font color="white" face="sans-serif" size="3">
+			<b>Home</b></font></a></td>
+        <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="/HowTo/index.html" style="TEXT-DECORATION: none">			<font color="white" face="sans-serif" size="3">
+			<b>How To</b></font></a></td><!--class="GlbActive"-->
+        <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"><a href="/OnLineDoc/index.html" style="TEXT-DECORATION: none">			<font color="white" face="sans-serif" size="3">
+			<b>Online Documentation</b></font></a></td><!--class="GlbDefault"-->        
+		<td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="/Support/index.html" style="TEXT-DECORATION: none">			<font color="white" face="sans-serif" size="3">
+			<b>Support</b></font></a></td>
+        <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="/Download/index.html" style="TEXT-DECORATION: none">
+			<font color="white" face="sans-serif" size="3">
+			<b>Download</b></font></a></td>
+        <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="/Order/index.html" style="TEXT-DECORATION: none">			<font color="white" face="sans-serif" size="3">
+			<b>Order</b></font></a></td>    </tr>
+</tbody></table>&nbsp;
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%">
+	<tbody><tr>
+		<td valign="top" width="165"><!--LeftMenu-->			
+			<table frame="void" cellspacing="5" width="165">
+				<tbody><tr><td><p>&nbsp;</p></td>
+				</tr>
+				<tr>
+					<td><img src="../images/green.gif" align="middle" height="12" width="12">	<a href="Command.html" style="TEXT-DECORATION: none">
+					<font color="white" face="sans-serif" size="2">
+					SACommand</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+				</tr>
+				<tr>
+					<td><img src="../images/green.gif" align="middle" height="12" width="12">	<a href="Connection.html" style="TEXT-DECORATION: none">
+					<font color="white" face="sans-serif" size="2">
+					SAConnection</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+				</tr>
+				<tr>
+					<td><img src="../images/green.gif" align="middle" height="12" width="12">	<a href="Exception.html" style="TEXT-DECORATION: none">
+					<font color="white" face="sans-serif" size="2">
+					SAException</font></a> </td>
+				</tr>
+				<tr>
+					<td><img src="../images/green.gif" align="middle" height="12" width="12">	<a href="Field.html" style="TEXT-DECORATION: none">
+					<font color="white" face="sans-serif" size="2">
+					SAField</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+				</tr>
+				<tr>
+					<td><img src="../images/green.gif" align="middle" height="12" width="12">	<a href="Param.html" style="TEXT-DECORATION: none">
+					<font color="white" face="sans-serif" size="2">
+					SAParam</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+				</tr>
+				<tr><td><hr></td></tr>
+				<tr>
+					<td><img src="../images/green.gif" align="middle" height="12" width="12">
+					<a href="String.html" style="TEXT-DECORATION: none">
+					<font color="white" face="sans-serif" size="2">
+					SAString</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+				</tr>
+				<tr>
+					<td><img src="../images/green.gif" align="middle" height="12" width="12">
+					<a href="DateTime.html" style="TEXT-DECORATION: none">
+					<font color="white" face="sans-serif" size="2">
+					SADateTime</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+				</tr>
+				<tr>
+					<td><img src="../images/green.gif" align="middle" height="12" width="12">
+					<a href="Numeric.html" style="TEXT-DECORATION: none">
+					<font color="white" face="sans-serif" size="2">
+					SANumeric</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+				</tr>
+				<tr><td><hr></td></tr>
+				<tr>
+					<td>
+					<a href="Enums.html" style="TEXT-DECORATION: none">
+					<font color="white" face="sans-serif" size="2">
+					Enums and Typedefs</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+				</tr>
+			</tbody></table>
+		</td><!--empty column-->
+		<td width="20"> 
+			<p>&nbsp;&nbsp;</p>
+		</td><!--Content-->
+		<td align="left" valign="top">
+			<table cellpadding="2" cellspacing="2" width="100%">
+				<tbody><tr>
+					<td align="left">		<a href="Param_Usage.html" style="TEXT-DECORATION: none"><h3>Usage</h3></a>
+					</td>
+					<td align="left">		<a href="Param.html" style="TEXT-DECORATION: none"><h3>Class Members</h3></a>
+					</td>
+					<td align="left">		<a href="Param_Examples.html" style="TEXT-DECORATION: none"><h3>Examples</h3></a>
+					</td>
+				</tr>			
+				<tr>
+					<td colspan="3">
+                        <p>There are four methods of <strong>SAValue</strong> 
+                        class to write Long or BLob(CLob) parameters value using 
+                        user defined callback:</p></td>
+				</tr>			
+			</tbody></table><font face="Arial"><strong>
+            </strong><p><strong><font face="Arial"><strong>SAString &amp;setAsLongBinary( 
+            saLongOrLobWriter_t </strong> 
+       </font></strong><font face="Arial">fnWriter<strong><strong> = NULL, size_t </strong> 
+       </strong>nWriterSize<strong><strong> = 0, void 
+            *</strong> 
+ 
+       </strong>pAddlData<strong><strong> = 
+  
+  NULL);</strong><strong><br>throw 
+            (SAException);</strong></strong></font></p><strong>
+            </strong><p><strong><font face="Arial"><strong></strong></font>SAString 
+            &amp;setAsLongChar( saLongOrLobWriter_t </strong>fnWriter<strong> = NULL, 
+      size_t </strong>nWriterSize<strong> = 0, 
+      void *</strong>pAddlData<strong> = 
+            NULL);<br> 
+       </strong><strong>throw (SAException);</strong></p>
+            <p><strong></strong><strong>SAString 
+            &amp;setAsBLob( saLongOrLobWriter_t </strong>fnWriter<strong> = 
+            NULL, size_t </strong>nWriterSize<strong> 
+            = 0, void *</strong>pAddlData<strong> = 
+            NULL);<br></strong><strong>throw (SAException);</strong></p>
+            <p><strong></strong><strong>SAString 
+            &amp;setAsCLob( saLongOrLobWriter_t </strong>fnWriter<strong> = 
+            NULL, size_t </strong>nWriterSize<strong> 
+            = 0, void *</strong>pAddlData<strong> = 
+            NULL);<br></strong><strong>throw (SAException);</strong></p></font>
+            <h3>Parameters</h3>
+            <p><em>fnWriter</em>.&nbsp;&nbsp;&nbsp; The name of user function 
+            used for Long or BLob(CLob) data writing. The function must have 
+            syntax declared by <strong>saLongOrLobWriter_t 
+            typedef</strong>. The default value is <strong>NULL</strong>. If you use the default value, SQLAPI++ 
+            Library will write Long or Lob data from internal buffer without calling 
+            user-defined callback. </p>
+            <p><em>nWriterSize</em>.&nbsp;&nbsp;&nbsp; Size of piece of data user want to use 
+            for piecewise writing. The default value is <strong>0</strong>   . 
+            If you use the default value, SQLAPI++ Library will 
+            automatically use the most appropriate size for current DBMS. </p>
+            <p><em>pAddData</em>.&nbsp;&nbsp;&nbsp; Additional data that you want to pass to 
+            callback function.</p>
+
+			<h3>Remarks</h3>
+            <p>When you call <a href="Command_Execute.html">SACommand::Execute</a> method all input 
+            parameters are bound with their values, including Long and 
+            BLob(CLob) parameters. If you want to control piecewise writing of 
+            Long or BLob(CLob) data you should do the following: before a 
+            command execution call one of the setAs... methods 
+            (<strong>setAsLongBinary</strong> method to write Long Binary data, 
+            <strong>setAsLongChar</strong> method to write Long Character data, 
+            <strong>setAsBLob</strong> method to write BLob data, 
+            <strong>setAsCLob</strong> method to write CLob data) with 
+            <em>fnWriter</em> parameter which differs 
+            from the default value for Long or BLob(CLob) 
+            parameters you want to process by user defined 
+function(s).&nbsp;</p>
+            <p>Each of four methods will repeatedly call 
+            user defined function:</p>
+            <p><font face="System">void 
+            &lt;function Name&gt;(SAPieceType_t &amp;ePieceType, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 
+            void *pBuf, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ size_t nLen, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 
+            void *pAddlData);</font></p>
+            <p><strong></strong>User 
+            defined function has the following parameters:</p>
+            <p><em>ePieceType</em>.&nbsp;&nbsp;&nbsp; Parameter defines which 
+            piece of data value was written. Can be one of the next <strong>SAPieceType_t</strong> enum values:</p>
+            <ul>
+                <li><strong>SA_FirstPiece</strong>&nbsp;&nbsp;&nbsp; The first (but not the 
+                last) piece of data is to be written. 
+                </li><li><strong>SA_NextPiece</strong>&nbsp;&nbsp;&nbsp; The next (not the first and 
+                not the last) piece of data is to be written. 
+                </li><li><strong>SA_LastPiece</strong>&nbsp;&nbsp;&nbsp; The last piece of data is 
+                to be written. 
+                </li><li><strong>SA_OnePiece</strong>&nbsp;&nbsp;&nbsp; All parameter data is to 
+                be written as one block.</li></ul>
+            <p><em>pBuf</em>.&nbsp;&nbsp;&nbsp; Pointer to the buffer that 
+            contains the data block to write to database.</p>
+            <p><em>nLen</em>.&nbsp;&nbsp;&nbsp; The actual size of data in bufer 
+            <em>pBuf</em>.</p>
+            <p><em>pAddData</em>      
+             .&nbsp;&nbsp;&nbsp; An additional data.</p>
+            <p>To get more information about writing Long 
+            and BLob(CLob) data see <a href="../Examples/step5.cpp">Query examples - Step 5</a>. 
+            </p>
+			
+			<h3>Server specific notes</h3>
+            <p>No specific information.</p>
+
+			<h3>Problems and Questions</h3>
+			<p>			If 
+			you haven't found the answer to your questions or 
+            have some problems on using the Library, please, send e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>.
+			</p>
+		</td>
+	</tr><tr></tr>
+</tbody></table>
+
+
+</body></html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+  <meta name="KEYWORDS" content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Server Specific Guide - SQL Server
+(DB-Library)</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--class="GlbHdr"-->
+<table id="TABLE1" frame="hsides" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../HowTo/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"> <a href="../OnLineDoc/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Support/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Download/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Order/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+&nbsp;
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--class="LeftMenu"-->
+      <table frame="void" cellspacing="5" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p><br>
+            </p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Command.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SACommand</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Connection.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAConnection</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Exception.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Field.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAField</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Param.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAParam</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/String.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAString</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/DateTime.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SADateTime</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Numeric.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SANumeric</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="../OnLineDoc/Enums.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p> </p>
+      <br>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <center>
+      <h2><a href="index.html">Server Specific Guide</a></h2>
+      <h1>SQL Server<br>
+(DB-Library)</h1>
+      <p align="left">SQLAPI++ allows to work with a number of SQL
+database servers. It provides common mechanisms to access database, and
+as a general rule they work for any database server. But each server
+has some specific features which a developer has to
+know in order to leverage server's unique features and avoid potential
+errors.</p>
+      <p align="left">This page collects all <strong>specific</strong>
+information that concerns working with <strong> SQL Server (DB-Library
+API)</strong> using SQLAPI++ Library. Full information about using
+SQLAPI++ see in <a href="../HowTo/index.html">How To</a> and <a href="../OnLineDoc/index.html">Online Documentation</a> . </p>
+      <p align="left">Available topics: </p>
+      </center>
+      <p><a href="SQLServer_DbLibrary.html#Connecting%20to%20a%20database">Connecting
+to
+a database</a></p>
+      <p><a href="SQLServer_DbLibrary.html#Transaction%20isolation%20levels">Transaction
+isolation
+levels</a></p>
+      <p><a href="SQLServer_DbLibrary.html#Working%20with%20Long%20or%20Lob%28CLob,%20BLob%29%20data">Working
+with
+Long or Lob(CLob, BLob) data</a></p>
+      <p><a href="SQLServer_DbLibrary.html#Returning%20output%20parameters">Returning
+output
+parameters</a></p>
+      <p><a href="SQLServer_DbLibrary.html#Cancelling%20queries">Cancelling
+queries</a></p>
+      <p><a href="SQLServer_DbLibrary.html#Connection_and_command_options">Connection,
+command,
+parameter and field options</a></p>
+      <p><a href="SQLServer_DbLibrary.html#Getting%20native%20SQL%20Server%20API">Getting
+native
+SQL Server (DB-Library) API</a></p>
+      <p><a href="SQLServer_DbLibrary.html#Getting%20native%20SQL%20Server%20connection%20related%20handles">Getting
+native
+SQL Server (DB-Library) connection related handles</a></p>
+      <p><a href="SQLServer_DbLibrary.html#Getting%20native%20SQL%20Server%20command%20related%20handles">Getting
+native
+SQL Server (DB-Library) command related handles</a></p>
+      <p><a href="SQLServer_DbLibrary.html#Error%20handling">Error
+handling</a></p>
+      <p><a href="SQLServer_DbLibrary.html#Special%20header%20files%20-%20Compile%20time">Special
+header
+files - Compile time</a></p>
+      <p>&nbsp;</p>
+      <h3><a name="Connecting to a database">Connecting to a database</a>
+      </h3>
+      <p align="left">To connect to a database you should create a
+connection object and then connect it. A connection object is
+represented by <a href="../OnLineDoc/Connection.html">SAConnection</a>
+class: </p>
+      <p align="left"><font face="System">SAConnection con;<br>
+      </font></p>
+      <p align="left">Starting from version 4.0.3 SQLAPI++ Library uses
+      <u>ODBC as default API</u> when working with <strong>SQL Server</strong>.
+If
+you want to use <strong>DB-Library</strong>, you should set "<strong>UseAPI</strong>"
+
+      <a href="SQLServer_DbLibrary.html#Connection_and_command_options">connection
+option</a> before specifying SQL Server client or connecting to
+database:</p>
+      <p align="left"><font color="black" face="System">con.setOption(
+"UseAPI" ) = "DB-Library";<br>
+      </font></p>
+      <p align="left"> If the Library cannot find <strong>DB-Library</strong>
+interface it throws an exception.</p>
+      <p align="left"> After the connection is created you need to
+connect it to <strong>SQL Server</strong> using <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>
+method</p>
+      <p><font face="Arial"><b>void Connect( const SAString &amp;</b>sDBString<b>,
+const
+SAString &amp;</b>sUserID<b>, const SAString &amp;</b>sPassword<b>,
+SAClient_t</b> eSAClient<b> = SA_Client_NotSpecified );</b> <br>
+      </font></p>
+      <p>with the following parameters:</p>
+      <p><em>sDBString.</em> &nbsp;&nbsp;&nbsp;&nbsp; One of the
+following formats:</p>
+      <ul>
+        <li><strong>"" or "@"</strong> - empty string or '@' character,
+connects to a default database on a local server. </li>
+        <li><strong>&lt;database name&gt; or @ <strong>&lt;database
+name&gt; </strong></strong>- connects to a database with the specified
+name on your local server. </li>
+        <li><strong>&lt;server name&gt;@ </strong>- connects to a
+default database on the specified server. </li>
+        <li><strong>&lt;server name&gt;@&lt;database name&gt; </strong>-
+connects
+to a database with the specified name on the specified server.</li>
+      </ul>
+      <p>To connect to a named instance of SQL Server 2000 use <strong>&lt;server
+name\instance
+name&gt;</strong> instead of <strong>&lt;server name&gt; </strong>(use
+double back slash at C++ constants, for example <span style="font-weight: bold;">"MyServer\\SQLEXPRESS@pubs"</span>).</p>
+      <p><em>sUserID.</em>&nbsp;&nbsp;&nbsp; A string containing a user
+name to use when establishing the connection. If <em>sUserID</em>
+parameter is empty, SQLAPI++ Library requests a secure, or trusted,
+connection to SQL Server.<br>
+      <br>
+      <em>sPassword.</em>&nbsp;&nbsp;&nbsp; A string containing a
+password to use when establishing the connection.<br>
+      <br>
+      <em>eSAClient.</em>&nbsp;&nbsp;&nbsp; Optional. One of the
+following values from <strong>SAClient_t</strong> enum: </p>
+      <ul>
+        <li><strong>SA_SQLServer_Client</strong>&nbsp;&nbsp;&nbsp;
+SQLServer client. </li>
+        <li><strong>SA_Client_NotSpecified</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+Used
+by default if <em>eSAClient</em>parameter is omitted.&nbsp; You
+can use this default value only if you have call <a href="../OnLineDoc/Connection_setClient.html">SAConnection::setClient</a>
+method with <strong>SA_SQLServer_Client</strong> constant before.</li>
+      </ul>
+      <p>The SQLAPI++ Library requires DB-Library version 6.x or higher.</p>
+      <p>For more details see <a href="../HowTo/connect.html">How To -
+Connecting to databases</a>, <a href="../OnLineDoc/Connection_Usage.html">SAConnection object</a>, <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Transaction isolation levels">Transaction isolation
+levels</a> </h3>
+      <p>SQL-92 defines four isolation levels, all of which are
+supported by SQLAPI++:</p>
+      <ul>
+        <li>Read uncommitted (the lowest level where transactions are
+isolated just enough to ensure that physically corrupt data is not
+read) </li>
+        <li>Read committed </li>
+        <li>Repeatable read </li>
+        <li>Serializable (the highest level, where transactions are
+completely isolated from one another)</li>
+      </ul>
+      <p>SQLAPI++ maps different isolation levels on <strong>SQL
+Server (DB-Library)</strong> in the following way:</p>
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>SA_ReadUncommitted</strong>
+= 'READ UNCOMMITTED'<br>
+      <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_ReadCommitted</strong>
+= 'READ COMMITTED'<br>
+      <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_RepeatableRead</strong>
+= 'REPEATABLE READ'<br>
+      <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_Serializable</strong> =
+'SERIALIZABLE'</p>
+      <p>For more details see <a href="../OnLineDoc/Connection_setIsolationLevel.html">SAConnection::setIsolationLevel</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Working with Long or Lob(CLob, BLob) data">Working
+with Long or Lob(CLob, BLob) data</a> </h3>
+      <p> SQLAPI++ supports four types for working with Lob(CLob, BLob)
+data:</p>
+      <p>
+      <table style="width: 100%;" border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+          <tr bgcolor="navy">
+            <td><font style="background-color: rgb(0, 0, 128);" color="white">Name</font></td>
+            <td><font style="background-color: rgb(0, 0, 128);" color="white">C enum constant</font></td>
+          </tr>
+          <tr>
+            <td>LongBinary</td>
+            <td>SA_dtLongBinary</td>
+          </tr>
+          <tr>
+            <td>LongChar</td>
+            <td>SA_dtLongChar</td>
+          </tr>
+          <tr>
+            <td>BLob (Binary Large object)</td>
+            <td>SA_dtBLob</td>
+          </tr>
+          <tr>
+            <td>CLob (Character Large object)</td>
+            <td>SA_dtCLob</td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>The table below shows how SQLAPI++ data types correspond with <strong>SQL
+Server's
+(DB-Library)</strong> original data types:</p>
+      <p><em>SA_dtLongBinary</em> &lt;= &gt; IMAGE<br>
+      <em>SA_dtLongChar</em> &lt;= &gt; TEXT<br>
+      <em>SA_dtBLob</em> = &gt; IMAGE<br>
+      <em>SA_dtCLob </em>=&gt; TEXT</p>
+      <p> For more details see <a href="../HowTo/blobs.html">How To -
+Working with Long or Lob(CLob, BLob) data</a> , <a href="../HowTo/bind.html">How To - Binding input parameters</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Returning output parameters">Returning output
+parameters</a> </h3>
+      <p><strong>SQL Server</strong> stored procedures can have integer
+return codes and output parameters. The return codes and output
+parameters are sent in the last packet from the server and are
+therefore not available to the application until all result sets from
+stored procedure (if any) are completely processed using <a href="../OnLineDoc/Command_FetchNext.html">SACommand::FetchNext</a>
+method.</p>
+      <p>SQLAPI++ Library automatically creates <a href="../OnLineDoc/Param.html">SAParam</a> object to represent
+procedure status return code or function return value. You can refer to
+this <a href="../OnLineDoc/Param.html">SAParam</a> object using
+SQLAPI++ predefined name <strong>"RETURN_VALUE"</strong>.</p>
+      <p>For more details see <a href="../OnLineDoc/Command_Execute.html">SACommand::Execute</a>, <a href="../OnLineDoc/Command_FetchNext.html">SACommand::FetchNext</a>, <a href="../OnLineDoc/Param_Usage.html">SAParam object</a>, <a href="../HowTo/return_param.html">How To - Returning Output Parameters</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Cancelling queries">Cancelling queries</a> </h3>
+      <p>Using <a href="../OnLineDoc/Command_Cancel.html">SACommand::Cancel</a>
+method you can cancel the following types of processing on a statement:
+      </p>
+      <ul type="disc">
+        <li>A function running asynchronously on the statement.<br>
+        </li>
+        <li>A function running on the statement on another thread. </li>
+      </ul>
+      <p>For <strong>SQL Server (DB-Library)</strong> SQLAPI++ calls <strong>dbcancel</strong>
+function to cancel a query. To get more details see <strong>dbcancel</strong>
+function description in <strong>SQL Server DB-Library</strong>
+documentation.<br>
+To enable cancellation you have to set command option
+"UseDataReadyLoopOnExecute" to "on".</p>
+      <p>For more details see <a href="../OnLineDoc/Command_Cancel.html">SACommand::Cancel</a>, <a href="SQLServer_DbLibrary.html#Connection_and_command_options">SQL
+Server (DB-Library) connection and command options</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Connection_and_command_options">Connection, command,
+parameter and field options</a> </h3>
+      <p>A server specific option can relate to a connection,
+command,&nbsp; parameter or field. We recommend you specify each option
+in an appropriate object, although it is possible to specify them in
+the parental object as well. In that case the option affects all the
+child objects. </p>
+      <p>A connection related option must be specified in a&nbsp; <a href="../OnLineDoc/Connection.html">SAConnection</a> object. </p>
+      <p>A command related option may be specified in either <a href="../OnLineDoc/Connection.html">SAConnection</a> object or <a href="../OnLineDoc/Command.html">SACommand</a> object. If it is
+specified in <a href="../OnLineDoc/Connection.html">SAConnection</a>
+object it affects all the commands on that connection. </p>
+      <p>A parameter related option may be specified in <a href="../OnLineDoc/Connection.html">SAConnection</a> object, <a href="../OnLineDoc/Command.html">SACommand</a> object or <a href="../OnLineDoc/Param.html">SAParam</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the parameters on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+object it affects all the parameters on that command. </p>
+      <p>A field related option may be specified in <a href="../OnLineDoc/Connection.html">SAConnection</a> object, <a href="../OnLineDoc/Command.html">SACommand</a> object or <a href="../OnLineDoc/Field.html">SAField</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the fields on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+object it affects all the fields on that command. </p>
+      <p>Specific options for <strong>SQL Server (DB-Library)</strong>:</p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td width="17%">
+            <p><strong><font color="white" face="">Option name / Scope</font>&nbsp;
+
+            </strong></p>
+            </td>
+            <td>
+            <p><strong><font color="white" face=""> Description</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>
+            <p align="center"> <strong>UseAPI</strong> </p>
+            </strong>
+            <p align="center"> Connection related. <font face="" size="3">Should be specified before connection is made.</font> </p>
+            </td>
+            <td>
+            <p> Forces SQLAPI++ Library to use OLE DB, ODBC or
+DB-Library API.<br>
+&nbsp; <br>
+            <em>Valid values</em> : "OLEDB", "ODBC" and "DB-Lib". <br>
+            <em>Default value</em>: "ODBC". SQLAPI++ uses ODBC as
+the default API.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p align="center"><strong><strong>OpenCursor</strong> </strong></p>
+            <p align="center">Command related. <br>
+            </p>
+            </td>
+            <td>
+            <p>Forces SQLAPI++ Library to use DB-Library cursor
+functions to process the command execution result set. It allows to
+open several result sets simultaneously in one transaction. For more
+information see SQLServer (DB-Library) documentation. <br>
+            <br>
+            <em>Valid values</em> : "number of rows[, scroll option]".
+String containing number of rows in the fetch buffer and (optional)
+scroll option. Valid values for scroll option are: CUR_DYNAMIC,
+CUR_FORWARD, CUR_KEYSET, CUR_INSENSITIVE. If scroll option parameter is
+omitted then CUR_FORWARD value is used. For more information see
+DB-Library documentation. <br>
+            <em>Default value</em> : "0". "0" means that the command
+doesn't use a cursor to process its statement.</p>
+            </td>
+          </tr>
+          <tr>
+            <td><strong><strong> </strong></strong>
+            <p align="center"><strong><strong><strong><strong> <strong>UseDataReadyLoopOnExecute</strong></strong>
+            </strong></strong></strong></p>
+            <strong><strong> </strong></strong>
+            <p align="center"><strong><strong><strong><strong> <strong></strong></strong>
+            </strong></strong> </strong>Command related&nbsp; </p>
+            </td>
+            <td>
+            <p>Forces SQLAPI++ Library to use DB-Library dbsqlsend() +
+dbdataready() loop + dbsqlok() instead of dbsqlexec() when executing a
+query. Works slower but allows query cancellation from another thread.<br>
+            </p>
+            <p><em>Valid values</em> : "off" and "on". <br>
+            <em>Default value</em>: "off", SQLAPI++ uses dbsqlexec().</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><strong>
+            <p align="center">UseDynamicCursor<br>
+or<br>
+Scrollable<br>
+            </p>
+            </strong>
+            <div style="text-align: center;"> Command related.<br>
+            </div>
+            </td>
+            <td style="vertical-align: top;">Forces SQLAPI++ to use
+scrollable dynamic server side cursor.<br>
+            <br>
+            <em>Valid values</em>: "True", "1". <em>Default value</em>:
+"false".</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><strong>
+            <p align="center"> APPNAME</p>
+            </strong>
+            <p align="center"> Connection related. <font face="" size="3">Should be specified before connection is made.</font> </p>
+            </td>
+            <td style="vertical-align: top;"> Specifies the client
+application name.<br>
+            <em><br>
+            </em><em>Valid values</em>: client application name string.
+            <br>
+            <em>Default value: </em>none.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><strong>
+            <p align="center"> WSID</p>
+            </strong>
+            <p align="center"> Connection related.<font face="" size="3">Should
+be
+specified before connection is made.</font> </p>
+            </td>
+            <td style="vertical-align: top;"> Specifies the client
+workstation name.<br>
+            <em><br>
+            </em><em>Valid values</em>: client workstation name string.
+            <br>
+            <em>Default value: </em>none.</td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>For more details see <a href="../OnLineDoc/Connection_setOption.html">SAConnection::setOption</a>,
+
+      <a href="../OnLineDoc/Command_setOption.html">SACommand::setOption</a>,
+
+      <a href="../OnLineDoc/Field_setOption.html">SAField::setOption</a>,
+
+      <a href="../OnLineDoc/Param_setOption.html">SAParam::setOption</a>.
+
+      </p>
+      <p>&nbsp;</p>
+      <h3><a name="Getting native SQL Server API">Getting native SQL
+Server (DB-Library) API</a> </h3>
+      <p>You can call client specific API functions which are not
+directly supported by SQLAPI++ Library. <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>
+method returns a pointer to the set of native API functions available
+for <strong>SQL Server (DB-Library)</strong>. To use the database API
+directly you have to downcast this <strong>saAPI</strong> pointer to
+the appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with <strong>SQL
+Server with DB-Library</strong> API. Note that using appropriate type
+casting depends on an API (that generally mean that you have to
+explicitly check client version before casting, see <a href="../OnLineDoc/Connection_ClientVersion.html">SAConnection::ClientVersion</a>
+method). </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td style="width: 300px;" width="300">
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+            <td>
+            <p><strong><font color="white" face="">Additional <br>
+include file</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p>Cast the result to <strong>class ssAPI</strong>:</p>
+            <p><font face="System">saAPI *pResult = con.NativeAPI();<br>
+ssAPI *p_ssAPI = (ssAPI *)pResult;</font></p>
+            </td>
+            <td><strong>
+            <p><strong>#include &lt;ss6API.h&gt;</strong></p>
+            </strong></td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions see this DBMS
+specific documentation.&nbsp; </p>
+      <p>For more details see <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Getting native SQL Server connection related handles">Getting
+native
+SQL Server (DB-Library) connection related handles</a> </h3>
+      <p>You have to use native API handles when you want to call
+specific <strong> DB-Library</strong> API functions which are not
+directly supported by the Library. API functions usually need to
+receive one or more active handles as a parameter(s). <a href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>
+method returns a pointer to the set of native API <strong>connection
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saConnectionHandles</strong> pointer to the
+appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with <strong>SQL
+Server with DB-Library</strong> API. Note that using appropriate type
+casting depends on an API (that generally mean that you have to
+explicitly check client version before casting, see <a href="../OnLineDoc/Connection_ClientVersion.html">SAConnection::ClientVersion</a>
+method). </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td>
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><font color="maroon" face="">Cast the result</font></strong>
+to <strong>class ssConnectionHandles</strong>:</p>
+            <font face="System"><font face="System">
+            <p><strong><font color="maroon" face="">#include
+&lt;ss6API.h&gt;</font> </strong></p>
+            <p>saConnectionHandles *pResult = con.NativeHandles();<br>
+ssConnectionHandles *p_ssCH =<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(ssConnectionHandles
+*)pResult;</p>
+            <p><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </p>
+            <ul>
+              <li><font face="Times New Roman">PDBPROCESS m_dbproc;</font></li>
+            </ul>
+            </font></font></td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp; </p>
+      <p>For more details see <a href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Getting native SQL Server command related handles">Getting
+native
+SQL Server (DB-Library) command related handles</a> </h3>
+      <p>You have to use native API handles when you want to call
+specific <strong> DB-Library</strong> API functions which are not
+directly supported by the Library. API functions usually need to
+receive one or more active handles as a parameter(s). <a href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>
+method returns a pointer to the set of native API <strong>command
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saCommandHandles</strong> pointer to the appropriate
+type and use its implementation-specific members. The following table
+shows what type cast you have to make and what additional header file
+you have to include to work with <strong>SQL Server with DB-Library</strong>
+API. Note that using appropriate type casting depends on an API (that
+generally mean that you have to explicitly check client version before
+casting, see <a href="../OnLineDoc/Connection_ClientVersion.html">SAConnection::ClientVersion</a>
+method). </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td>
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p> <strong> <font color="maroon" face="">Cast the result</font>
+            </strong> to <strong>class ssCommandHandles</strong>:</p>
+            <font face="System">
+            <p> <strong> <font color="maroon" face="">#include
+&lt;ss6API.h&gt;</font></strong> </p>
+            <p>saCommandHandles *pResult = cmd.NativeHandles<font face="System"> ();<br>
+ssCommandHandles *p_ssCH =<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(ssCommandHandles
+*)pResult;</font></p>
+            <p> <font face="Times New Roman"> <strong> <font color="maroon" face=""> Available handles:</font></strong> </font></p>
+            <ul>
+              <li> <font face="Times New Roman">no handles available</font></li>
+            </ul>
+            </font></td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp; </p>
+      <p>For more details see <a href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Error handling">Error handling</a></h3>
+      <p>When an error occurs inside SQLAPI++ Library it throws an
+exception of type <a href="../OnLineDoc/Exception.html">SAException</a>.
+
+      <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+method gets an error position in SQL statement. In <strong>SQL Server
+(DB-Library)</strong> <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+method returns the number of line within SQL statement where error
+occurred.</p>
+      <p>For more details see <a href="../HowTo/errors.html">How To -
+Error handling</a>, <a href="../OnLineDoc/Exception_Usage.html">SAException
+object</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Special header files - Compile time">Special header
+files - Compile time</a> </h3>
+      <p> The header file in the <strong>include</strong> subdirectory
+of SQLAPI++ distributions:<br>
+      <strong>#include &lt;SQLAPI.h&gt; </strong>- main header, should
+be used whenever SQLAPI++ is used.<br>
+      <strong>#include &lt;ss6API.h&gt; - </strong><strong>SQLServer</strong>
+API, should be included if direct <strong>DB-Libary</strong> calls are
+required.</p>
+      <p>For more details see <a href="../OnLineDoc/index.html#Instructions%20for%20Compiling%20and%20Linking%20Applications%20with%20SQLAPI++">Online
+Documentation
+- Instructions for Compiling and Linking Applications
+with SQLAPI++</a>&nbsp;</p>
+      <p>&nbsp;</p>
+      <h3>Problems and Questions</h3>
+      <p>If you haven't found the answer to you questions or have some
+problems on using the Library, please, send e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+
+</body></html>

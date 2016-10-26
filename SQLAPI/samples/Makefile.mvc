@@ -1,0 +1,85 @@
+# Microsoft Visual C++
+
+# Replace with any own source objects
+!IFNDEF OBJS
+OBJS = sqltest.obj
+!ENDIF
+
+CPPDEFS = /DWIN32 /D_WINDOWS
+CPPFLAGS = /nologo /W3 /EHsc
+INCLUDES = $(INCLUDES) -I../include
+LDFLAGS = /nologo /LIBPATH:../lib
+SA_LIBC =
+
+!IF "$(CFG)" != "release" && "$(CFG)" != "debug"
+CFG=release
+!MESSAGE SQLAPI: Build "release" configuration
+!MESSAGE
+!ENDIF 
+
+!IF "$(CFG_LINK)" != "dynamic" && "$(CFG_LINK)" != "static"
+CFG_LINK=dynamic
+!MESSAGE SQLAPI: Use "dynamic" configuration
+!MESSAGE
+!ENDIF 
+
+!IF "$(CFG_LINK)" == "static"
+SA_LIBC=/MT
+!ELSE
+SA_LIBC=/MD
+!ENDIF
+
+!IFDEF SA_RUNTIME
+!IF "$(SA_RUNTIME)" == "static"
+SA_LIBC=/MT
+!MESSAGE SQLAPI: Use "static" runtime
+!ELSE
+SA_LIBC=/MD
+!MESSAGE SQLAPI: Use "dynamic" runtime
+!ENDIF
+!ENDIF
+
+!IF "$(CFG)" == "release"
+CPPFLAGS = $(SA_LIBC) $(CPPFLAGS) /O2 /FD
+CPPDEFS = $(CPPDEFS) -DNDEBUG
+SQLAPI_DEBUG_SUFFIX=
+!ELSEIF "$(CFG)" == "debug"
+CPPFLAGS = $(SA_LIBC)d $(CPPFLAGS) /Od /Zi
+CPPDEFS = $(CPPDEFS) -D_DEBUG
+LDFLAGS = $(LDFLAGS) /DEBUG
+SQLAPI_DEBUG_SUFFIX=d
+!ENDIF
+
+!IF "$(CFG_LINK)" == "dynamic"
+SQLAPI_LINK_SUFFIX=
+!ELSEIF "$(CFG_LINK)" == "static"
+SQLAPI_LINK_SUFFIX=s
+!ENDIF
+
+!IFDEF SA_UNICODE
+CPPDEFS=$(CPPDEFS) /DUNICODE /D_UNICODE /DSA_UNICODE
+SQLAPI_UNICODE_SUFFIX=u
+!ELSE
+CPPDEFS=$(CPPDEFS) /D_MBCS
+SQLAPI_UNICODE_SUFFIX=
+!ENDIF
+
+LIBS = sqlapi$(SQLAPI_UNICODE_SUFFIX)$(SQLAPI_LINK_SUFFIX)$(SQLAPI_DEBUG_SUFFIX).lib
+!IF "$(CFG_LINK)" == "static"
+LIBS = $(LIBS) user32.lib version.lib oleaut32.lib ole32.lib
+!ELSE
+LIBS = $(LIBS) user32.lib
+!ENDIF
+
+SA_TARGET_NAME=sqltest$(SQLAPI_UNICODE_SUFFIX)$(SQLAPI_LINK_SUFFIX)$(SQLAPI_DEBUG_SUFFIX)
+SA_TARGET=$(SA_TARGET_NAME).exe
+
+LINK = link.exe
+
+.cpp.obj:
+	@$(CPP) -c $(CPPFLAGS) $(CPPDEFS) $(INCLUDES) $<
+
+$(SA_TARGET): $(OBJS)
+	@$(LINK) $(LDFLAGS) $(LIBS) $(OBJS) /OUT:$@
+
+!INCLUDE build/Makefile.UTILS

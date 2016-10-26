@@ -1,0 +1,17 @@
+index.txt	- this file
+sqlapi.lib	- dynamic release import library for MSVC++
+sqlapid.lib	- dynamic debug import library for MSVC++
+sqlapis.lib	- static release import library for MSVC++
+sqlapisd.lib	- static debug import library for MSVC++
+sqlapiu.lib	- dynamic release import library for MSVC++ (UNICODE)
+sqlapiud.lib	- dynamic debug import library for MSVC++ (UNICODE)
+sqlapius.lib	- static release import library for MSVC++ (UNICODE)
+sqlapiusd.lib	- static debug import library for MSVC++ (UNICODE)
+sqlapib.lib	- dynamic release import library for Borland C++
+sqlapibd.lib	- dynamic debug import library for Borland C++
+sqlapibs.lib	- static release library for Borland C++
+sqlapibsd.lib	- static debug library for Borland C++
+libsqlapidll.a  - dynamic release import library for MinGW
+libsqlapiddll.a - dynamic debug import library for MinGW
+libsqlapi.a	- static release library for MinGW
+libsqlapid.a	- static debug library for MinGW

@@ -1,0 +1,296 @@
+#include "ServerLoop.h"
+#include "Logger.h"
+#include "Commands.h"
+#include "General.h"
+#include "AuthenticationInstance.h"
+#include "CharactersInstance.h"
+#include "Sessions.h"
+#include "WorldInstance.h"
+
+bool ServerLoop::run;
+vector<char> ServerLoop::input;
+
+void ServerLoop::parseUserInput()
+{
+	if (_kbhit())
+	{
+		char c = _getch();
+
+		switch (c)
+		{
+
+		case 8:
+		{
+			if (ServerLoop::input.size() > 0)
+			{
+				ServerLoop::input.pop_back();
+				cout << "\b \b";
+			}
+			break;
+		}
+
+		case 13:
+		{
+			if (ServerLoop::input.size() > 0)
+			{
+				vector<string> rawCMD = split(string(input.begin(), input.end()), ' ');
+
+				string cmd = "";
+				string curArgument = "";
+				vector<string> args;
+
+				bool opened = false;
+				for (int i = 0; i < rawCMD.size(); i++)
+				{
+					for (int k = 0; k < rawCMD.at(i).length(); k++)
+					{
+						char v = rawCMD.at(i)[k];
+
+						if (i == 0)
+							cmd += v;
+						else
+						{
+							if ((k == 0 || k == rawCMD.at(i).length() - 1) && v == '"')
+							{
+								if (opened)
+								{
+									args.push_back(curArgument);
+									curArgument = "";
+									opened = false;
+								}
+								else
+									opened = true;
+							}
+							else
+								curArgument += v;
+						}
+					}
+
+					if (!opened)
+					{
+						if (curArgument != "")
+						{
+							args.push_back(curArgument);
+							curArgument = "";
+						}
+					}
+					else
+						curArgument += " ";
+				}
+
+				cout << endl;
+
+				Commands::performCommand(CommandSender(-1), cmd, args);
+
+				args.clear();
+				rawCMD.clear();
+				ServerLoop::input.clear();
+
+				Logger::setConsoleOutputMuted(false);
+			}
+			else
+			{
+				cout << "\b\b \b";
+				Logger::setConsoleOutputMuted(false);
+			}
+			break;
+		}
+
+		case 27:
+		{
+			if (Logger::isConsoleOutputMuted())
+			{
+				for (int i = 0; i < ServerLoop::input.size(); i++)
+				{
+					cout << "\b \b";
+				}
+
+				cout << "\b\b \b";
+
+				ServerLoop::input.clear();
+				Logger::setConsoleOutputMuted(false);
+			}
+			break;
+		}
+
+		default:
+		{
+			if (/*(48 <= c && c <= 57) || (65 <= c && c <= 90) || (97 <= c && c <= 122) || c == 32 || c == ',' || c == '.' || c == '-' || c == '"' || c == '!' || c == '?'*/ true)
+			{
+				if (!Logger::isConsoleOutputMuted())
+				{
+					cout << "> ";
+					Logger::setConsoleOutputMuted(true);
+				}
+
+				ServerLoop::input.push_back(c);
+				cout << c;
+			}
+			break;
+		}
+
+		}
+	}
+}
+
+void ServerLoop::start()
+{
+	Packet* packet;
+	BitStream* data;
+	SystemAddress clientAddress;
+
+	ServerLoop::run = true;
+	while (ServerLoop::run)
+	{
+		ServerLoop::parseUserInput();
+
+		packet = Server::getPeerInterface()->Receive();
+		if (packet == NULL)
+			continue;
+
+		data = new BitStream(packet->data, packet->length, false);
+		clientAddress = packet->systemAddress;
+
+		if ((data->GetNumberOfUnreadBits() / 8) >= 1)
+		{
+			unsigned char rakNetPacketID;
+			data->Read(rakNetPacketID);
+
+			switch (rakNetPacketID)
+			{
+
+			case ID_NEW_INCOMING_CONNECTION:
+			{
+				Logger::info("Client connected! (Address: " + string(clientAddress.ToString()) + ")");
+				break;
+			}
+
+			case ID_CONNECTION_LOST:
+			case ID_DISCONNECTION_NOTIFICATION:
+			{
+				if (Server::isCharactersInstance() || Server::isWorldInstance())
+					Sessions::removeSession(clientAddress);
+				Logger::info("Client disconnected! (Address: " + string(clientAddress.ToString()) + ")");
+				break;
+			}
+
+			case ID_USER_PACKET_ENUM:
+			{
+				if ((data->GetNumberOfUnreadBits() / 8) >= 7)
+				{
+					unsigned short remoteConnectionType;
+					unsigned long packetID;
+					
+					data->Read(remoteConnectionType);
+					data->Read(packetID);
+					data->IgnoreBytes(1);
+
+					ServerLoop::routePacket(remoteConnectionType, packetID, data, clientAddress);
+				}
+				break;
+			}
+
+			default:
+			{
+				Logger::info("Server received a packet with unknown MessageID! (MessageID: " + to_string((int)rakNetPacketID) + ") (Address: " + string(clientAddress.ToString()) + ")");
+				break;
+			}
+
+			}
+		}
+
+		Server::getPeerInterface()->DeallocatePacket(packet);
+		delete data;
+	}
+}
+
+void ServerLoop::stop()
+{
+	ServerLoop::run = false;
+}
+
+void ServerLoop::routePacket(unsigned short remoteConnectionType, unsigned long packetID, BitStream* data, SystemAddress clientAddress)
+{
+	switch (remoteConnectionType)
+	{
+
+	case RCT_GENERAL:
+	{
+		switch (packetID)
+		{
+
+		case GENERAL_PACKET_VERSION_CONFIRM:
+		{
+			bool success = General::performHandshake(data, clientAddress);
+			Logger::info("Client performed handshake! (Success: " + to_string(success) + ") (Address: " + string(clientAddress.ToString()) + ")");
+			break;
+		}
+
+		default:
+		{
+			Logger::info("Server received a packet with unknown PacketID! (PacketID: " + to_string(packetID) + ") (RemoteConnectionType: " + to_string(remoteConnectionType) + ") (Address: " + string(clientAddress.ToString()) + ")");
+			break;
+		}
+
+		}
+		break;
+	}
+
+	case RCT_CLIENT_TO_AUTH:
+	{
+		switch (packetID)
+		{
+
+		case CLIENT_AUTH_PACKET_LOGIN_REQUEST:
+		{
+			if (Server::isAuthenticationInstance())
+				AuthenticationInstance::performAuthentication(data, clientAddress);
+			else
+				Logger::info("Server received an invalid packet! (PacketID: " + to_string(packetID) + ") (RemoteConnectionType: " + to_string(remoteConnectionType) + ") (Address: " + string(clientAddress.ToString()) + ")");
+			break;
+		}
+
+		default:
+		{
+			Logger::info("Server received a packet with unknown PacketID! (PacketID: " + to_string(packetID) + ") (RemoteConnectionType: " + to_string(remoteConnectionType) + ") (Address: " + string(clientAddress.ToString()) + ")");
+			break;
+		}
+
+		}
+		break;
+	}
+
+	case RCT_CHAT:
+	{
+		if (Server::isWorldInstance())
+		{
+			WorldInstance::processChatPacket(data, clientAddress, (ChatPacketID)packetID);
+		}
+		else
+			Logger::info("Server received an invalid packet! (PacketID: " + to_string(packetID) + ") (RemoteConnectionType: " + to_string(remoteConnectionType) + ") (Address: " + string(clientAddress.ToString()) + ")");
+		break;
+	}
+
+	case RCT_CLIENT_TO_WORLD:
+	{
+		if (Server::isCharactersInstance())
+		{
+			CharactersInstance::processPacket(data, clientAddress, (ClientToWorldPacketID)packetID);
+		}
+		else if (Server::isWorldInstance())
+		{
+			WorldInstance::processWorldPacket(data, clientAddress, (ClientToWorldPacketID)packetID);
+		}
+		else
+			Logger::info("Server received an invalid packet! (PacketID: " + to_string(packetID) + ") (RemoteConnectionType: " + to_string(remoteConnectionType) + ") (Address: " + string(clientAddress.ToString()) + ")");
+		break;
+	}
+
+	default:
+	{
+		Logger::info("Server received a packet with unknown RemoteConnectionType! (RemoteConnectionType: " + to_string(remoteConnectionType) + ") (Address: " + string(clientAddress.ToString()) + ")");
+		break;
+	}
+
+	}
+}

@@ -1,0 +1,473 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta name="KEYWORDS"
+        content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+    <meta name="DESCRIPTION"
+        content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+    <title>SQLAPI++ Library - Online Documentation - SACommand::Cancel</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+    <!--GlbHdr-->
+    <table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+        cellpadding="0" cellspacing="2" frame="hsides" height="40" width="600">
+        <tbody>
+            <tr>
+                <!--class="GlbDefault"-->
+                <td bordercolor="black" align="center"
+                    bgcolor="#000094" width="70"><a href="../index.html"
+                        style="text-decoration: none;"><font color="white" face="sans-serif"
+                            size="3"><b>Home</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094"
+                    width="70"><a href="../HowTo/index.html" style="text-decoration: none;">
+                        <font color="white" face="sans-serif" size="3"><b>How To</b></font></a></td>
+                <!--class="GlbActive"-->
+                <td bordercolor="black" align="center"
+                    bgcolor="#00bb00" width="70"><a href="index.html"
+                        style="text-decoration: none;"><font color="white" face="sans-serif"
+                            size="3"><b>Online Documentation</b></font></a></td>
+                <!--class="GlbDefault"-->
+                <td bordercolor="black" align="center"
+                    bgcolor="#000094" width="70"><a href="../Support/index.html"
+                        style="text-decoration: none;"><font color="white" face="sans-serif"
+                            size="3"><b>Support</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094"
+                    width="70"><a href="../Download/index.html"
+                        style="text-decoration: none;"><font color="white" face="sans-serif"
+                            size="3"><b>Download</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094"
+                    width="70"><a href="../Order/index.html" style="text-decoration: none;">
+                        <font color="white" face="sans-serif" size="3"><b>Order</b></font></a></td>
+            </tr>
+        </tbody>
+    </table>
+    &nbsp;
+    <p>&nbsp;</p>
+    <table width="100%">
+        <tbody>
+            <tr>
+                <td valign="top" width="165">
+                    <!--LeftMenu-->
+                    <table cellspacing="5" frame="void" width="165">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>&nbsp;</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/red.gif" align="middle" height="12"
+                                        width="12">
+                                </td>
+                                <td><a href="Command.html" style="text-decoration: none;"><font
+                                    color="white" face="sans-serif" size="2">SACommand</font></a><font
+                                        color="white" face="sans-serif" size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle"
+                                        height="12" width="12">
+                                </td>
+                                <td><a href="Connection.html"
+                                    style="text-decoration: none;"><font color="white" face="sans-serif"
+                                        size="2">SAConnection</font></a><font color="white" face="sans-serif"
+                                            size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle"
+                                        height="12" width="12">
+                                </td>
+                                <td><a href="Exception.html"
+                                    style="text-decoration: none;"><font color="white" face="sans-serif"
+                                        size="2">SAException</font></a> </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle"
+                                        height="12" width="12">
+                                </td>
+                                <td><a href="Field.html"
+                                    style="text-decoration: none;"><font color="white" face="sans-serif"
+                                        size="2">SAField</font></a><font color="white" face="sans-serif"
+                                            size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle"
+                                        height="12" width="12">
+                                </td>
+                                <td><a href="Param.html"
+                                    style="text-decoration: none;"><font color="white" face="sans-serif"
+                                        size="2">SAParam</font></a><font color="white" face="sans-serif"
+                                            size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle"
+                                        height="12" width="12">
+                                </td>
+                                <td><a href="String.html"
+                                    style="text-decoration: none;"><font color="white" face="sans-serif"
+                                        size="2">SAString</font></a><font color="white" face="sans-serif"
+                                            size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle"
+                                        height="12" width="12">
+                                </td>
+                                <td><a href="DateTime.html"
+                                    style="text-decoration: none;"><font color="white" face="sans-serif"
+                                        size="2">SADateTime</font></a><font color="white" face="sans-serif"
+                                            size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle"
+                                        height="12" width="12">
+                                </td>
+                                <td><a href="Numeric.html"
+                                    style="text-decoration: none;"><font color="white" face="sans-serif"
+                                        size="2">SANumeric</font></a><font color="white" face="sans-serif"
+                                            size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;">
+                                    <img
+                                        src="../images/green.gif" align="middle" height="12" width="12">
+                                </td>
+                                <td><a
+                                    href="Interval.html" style="text-decoration: none;"><font
+                                        color="white" face="sans-serif" size="2">SAInterval</font></a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><a href="Enums.html" style="text-decoration: none;"><font
+                                    color="white" face="sans-serif" size="2">Enums and Typedefs</font></a><font
+                                        color="white" face="sans-serif" size="2"> </font></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <!--empty column-->
+                <td width="20">
+                    <p>&nbsp;&nbsp;</p>
+                </td>
+                <!--Content-->
+                <td align="left" valign="top">
+                    <table cellpadding="2" cellspacing="2" width="100%">
+                        <tbody>
+                            <tr>
+                                <td align="left"><a href="Command_Usage.html"
+                                    style="text-decoration: none;">
+                                    <h3>Usage</h3>
+                                </a></td>
+                                <td align="left"><a href="Command.html"
+                                    style="text-decoration: none;">
+                                    <h3>Class Members</h3>
+                                </a></td>
+                                <td align="left"><a href="Command_Examples.html"
+                                    style="text-decoration: none;">
+                                    <h3>Examples</h3>
+                                </a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <h1>SACommand::Cancel</h1>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        <b><font face="Arial">void Cancel( );<br>
+                            throw (SAException);</font></b>
+                    </p>
+                    <p>
+                        Attempts to cancel the pending result set, or current
+statement execution. The exact definition is vendor-dependent.
+                    </p>
+                    <h3>Remarks</h3>
+                    <p>
+                        <b>Cancel</b> can cancel the following types of processing on
+a statement:
+                    </p>
+                    <ul type="disc">
+                        <li>A function running asynchronously on the statement.<br>
+                        </li>
+                        <li>A function running on the statement on another thread. </li>
+                    </ul>
+                    <p>
+                        After an application calls a function asynchronously, it
+checks&nbsp; repeatedly to determine whether it has finished
+processing. While the function is processing, an application can call <b>Cancel</b>
+                        to cancel the function.
+                    </p>
+                    <p>
+                        In a multithread application, the application can cancel a
+function that is running synchronously on a statement.
+                    </p>
+                    <h3>Server specific notes</h3>
+                    <table border="1" cellpadding="5" width="100%">
+                        <tbody>
+                            <tr bgcolor="#000094">
+                                <td width="17%">
+                                    <p><strong><font color="white" face="">DBMS client</font> </strong></p>
+                                </td>
+                                <td>
+                                    <p>
+                                        <strong><font color="white" face="">Specific notes</font>&nbsp;
+            </strong>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/Oracle.html"
+                                            title="Oracle server specific information">Oracle</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>obreak</strong> function with
+Oracle 7 (OCI7) to cancel a query. To get more details see <strong>obreak</strong>
+                                        function description in Oracle documentation.
+                                    </p>
+                                    <p>
+                                        SQLAPI++ calls <strong>OCIBreak</strong> function with
+Oracle 8 (OCI8) to cancel a query. To get more details see <strong>OCIBreak</strong>
+                                        function description in Oracle documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/SQLServer_ODBC.html"
+                                            title="SQL Server (ODBC) specific information">SQL Server (ODBC)</a>
+                                        </strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>SQLCancel</strong>
+                                        function to cancel a query. To get more details see <strong>SQLCancel</strong>
+                                        function description in SQL Server ODBC documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/SQLServer_OleDb.html"
+                                            title="SQL Server (OLE DB) specific information">SQL Server (OLE DB)</a>
+                                        </strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong><strong>ICommand::Cancel</strong>l</strong>
+                                        function to cancel a query. To get more details see <strong><strong>ICommand::Cancel</strong></strong>
+                                        function description in SQL Server OLE DB documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a
+                                            href="../ServerSpecific/SQLServer_DbLibrary.html"
+                                            title="SQL Server (DB-Library) specific information">SQL Server
+(DB-Library)</a> </strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>dbcancel</strong> function to
+cancel a query. To get more details see <strong>dbcancel</strong>
+                                        function description in SQL Server documentation.<br>
+                                        To enable cancellation you have to set command option
+"UseDataReadyLoopOnExecute" to "on".
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/Sybase.html"
+                                            title="Sybase server specific information">Sybase</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>SQLAPI++ calls <strong>ct_cancel</strong> function.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/DB2.html"
+                                            title="DB2 server specific information">DB2</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>SQLCancel</strong> function to
+cancel a query. To get more details see <strong>SQLCancel</strong>
+                                        function description in DB2 documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/Informix.html"
+                                            title="Informix server specific information">Informix</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>SQLCancel</strong> function to
+cancel a query. To get more details see <strong>SQLCancel</strong>
+                                        function description in Informix documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/InterBase.html"
+                                            title="InterBase server specific information">InterBase</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>Not supported.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/SQLBase.html"
+                                            title="SQLBase server specific information">SQLBase</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>sqlcan</strong> function to
+cancel a query. To get more details see <strong>sqlcan</strong>
+                                        function description in SQLBase documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/MySQL.html"
+                                            title="MySQL server specific information">MySQL</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>mysql_stmt_reset</strong> when the statement API used or tries to execute 'KILL QUERY N' command for version 5.0 and above. Otherwise it calls <strong>mysql_kill</strong> function to
+cancel a query, and then calls <strong>mysql_ping</strong> function to
+restore connection with server. To get more details see strong>mysql_stmt_reset</strong>, <strong>mysql_kill</strong>
+                                        and <strong>mysql_ping</strong> functions description in <strong>MySQL</strong>
+                                        documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/PostgreSQL.html"
+                                            title="PostgreSQL server specific information">PostgreSQL</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>PQrequestCancel</strong>
+                                        function to cancel a query. To get more details see <strong>PQrequestCancel</strong>
+                                        function description in <strong>PostgreSQL</strong> documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/ODBC.html"
+                                            title="ODBC server specific information">ODBC</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>SQLCancel</strong> function to
+cancel a query. To get more details see <strong>SQLCancel</strong>
+                                        function description in ODBC documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/SQLite.html"
+                                            title="SQLite server specific information">SQLite</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>sqlite3_interrupt</strong> function to
+cancel a query. To get more details see <strong>sqlite3_interrupt</strong>
+                                        function description in SQLite documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong><a href="../ServerSpecific/SybaseASA.html"
+                                            title="SQL Anywhere server specific information">SQL Anywhere</a></strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        SQLAPI++ calls <strong>sqlany_cancel</strong> function to
+cancel a query. To get more details see <strong>sqlany_cancel</strong>
+                                        function description in SQL Anywhere documentation.
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>See also</h3>
+                    <p><a href="../HowTo/errors.html">Error handling</a> </p>
+                    <h3>Problems and Questions</h3>
+                    <p>
+                        If you haven't found the answer to your questions or have
+some problems on using the Library, please, send e-mail to <a
+                            href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>.
+                    </p>
+                </td>
+            </tr>
+            <tr>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Online Documentation - SAParam</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--GlbHdr-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+ cellpadding="0" cellspacing="2" frame="hsides" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../HowTo/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"><a href="../OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--LeftMenu-->
+      <table cellspacing="5" frame="void" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Command.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SACommand</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Connection.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAConnection</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Exception.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Field.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAField</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/red.gif" align="middle" height="12"
+ width="12"><a href="Param.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> SAParam</font></a><font
+ color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="String.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAString</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="DateTime.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SADateTime</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="Numeric.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SANumeric</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><img
+ src="../images/green.gif" align="middle" height="12" width="12"> <a
+ href="Interval.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> SAInterval</font></a></td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="Enums.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font
+ color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p> </p>
+      <br>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <table cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td align="left"><a href="Param_Usage.html"
+ style="text-decoration: none;">
+            <h3>Usage</h3>
+            </a> </td>
+            <td align="left"><a href="Param_Examples.html"
+ style="text-decoration: none;">
+            <h3>Examples</h3>
+            </a> </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <h1>SAParam</h1>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Methods</h3>
+      <table cellpadding="10" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td valign="top" width="30%"><a href="Param_Name.html"> <font
+ face="Arial"> Name </font></a></td>
+            <td><font face="Arial" size="3"> Returns name of the
+parameter</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Param_ParamType.html">
+            <font face="Arial"> ParamType </font></a></td>
+            <td><font face="Arial" size="3"> Returns parameter's data
+type</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a
+ href="Param_setParamType.html"> <font face="Arial"> setParamType </font></a></td>
+            <td><font face="Arial" size="3"> Sets parameter's data type</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Param_ParamSize.html">
+            <font face="Arial"> ParamSize </font></a></td>
+            <td><font face="Arial" size="3"> Returns parameter's data
+size</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a
+ href="Param_setParamSize.html"> <font face="Arial"> setParamSize </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3">Sets
+parameter's data size</font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a
+ href="Param_ParamPrecision.html"> <font face="Arial"> ParamPrecision </font></a></td>
+            <td><font face="Arial" size="3"> Returns parameter's
+precision </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a
+ href="Param_setParamPrecision.html"> <font face="Arial">setParamPrecision
+            </font></a></td>
+            <td><font face="Arial" size="3"> Sets parameter's precision
+            </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Param_ParamScale.html">
+            <font face="Arial"> ParamScale </font></a></td>
+            <td><font face="Arial" size="3"> Returns parameter's scale </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a
+ href="Param_setParamScale.html"> <font face="Arial"> setParamScale </font></a></td>
+            <td><font face="Arial" size="3"> Sets parameter's scale </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a
+ href="Param_ParamNativeType.html"> <font face="Arial">ParamNativeType
+            </font></a></td>
+            <td><font face="Arial" size="3"> Returns code of
+parameter's native data type</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a
+ href="Param_setParamNativeType.html"> <font face="Arial">setParamNativeType
+            </font></a></td>
+            <td><font face="Arial" size="3"> Sets parameter's native
+data type type</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a
+ href="Param_ParamDirType.html"> <font face="Arial"> ParamDirType </font></a></td>
+            <td><font face="Arial" size="3"> Returns direction type of
+parameter (input, output, etc.)</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a
+ href="Param_setParamDirType.html"> <font face="Arial">setParamDirType
+            </font></a></td>
+            <td><font face="Arial" size="3"> Sets direction type of
+parameter (input, output, etc.)</font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Param_setOption.html">
+            <font face="Arial"> setOption </font></a></td>
+            <td><font face="Arial" size="3"> Sets a string value of a
+specific parameter option</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Param_Option.html"> <font
+ face="Arial"> Option </font></a></td>
+            <td><font face="Arial" size="3"> Gets a string value of a
+specific parameter option</font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a
+ href="Param_ReadLongOrLob.html"><font face="Arial"> ReadLongOrLob </font>
+            </a></td>
+            <td> <font face="Arial"><font face="Arial">Starts reading
+of Long or BLob(CLob) value using user defined callback</font> </font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+        </tbody>
+      </table>
+      <h3><a name="Methods inherited from SAValue">Base Class Members
+(defined in SAValue) </a></h3>
+      <table cellpadding="10" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsNull.html">setAsNull</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Sets parameter's value as
+null</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsDefault.html">setAsDefault</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Forces to use the default
+parameter's value</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="../OnLineDoc/Value_isDefault.html">isDefault</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3">Shows
+if parameter uses the default value </font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsUnknown.html">setAsUnknown</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3">Sets
+parameter's type as unknown</font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsBool.html">setAsBool</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3">Sets
+parameter's value as <strong>bool</strong> data</font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsShort.html">setAsShort</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3">Sets
+parameter's value as <strong>short</strong> data</font> </font></td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><font face="Arial"><font
+ color="blue" face=""><a href="Value_setAsShort.html">setAsUShort</a></font></font></td>
+            <td style="vertical-align: top;"><font face="Arial" size="3"><font
+ face="Arial" size="3"> Sets parameter's value as <strong>unsigned
+short</strong> data</font></font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsLong.html">setAsLong</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Sets parameter's value as <strong>long</strong>
+data </font></td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><font face="Arial"><font
+ color="blue" face=""><a href="Value_setAsLong.html">setAsULong</a></font></font></td>
+            <td style="vertical-align: top;"><font face="Arial" size="3">Sets
+parameter's value as <strong>unsigned long</strong> data</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsDouble.html">setAsDouble</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Sets parameter's value as <strong>double</strong>
+data </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsNumeric.html">setAsNumeric</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Sets parameter's value as <strong>SANumeric</strong>
+data </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsDateTime.html">setAsDateTime</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Sets parameter's value
+as&nbsp;<strong> SADateTime</strong> data </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsString.html">setAsString</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Sets parameter's value
+as character string data (<strong>SAString</strong>) </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsBytes.html">setAsBytes</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Sets parameter's value
+as binary string data (<strong>SAString</strong>) </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="Value_WriteLongOrLob.html">setAsLongBinary</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Sets parameter's value
+as long binary data (<strong>SAString</strong>) </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="Value_WriteLongOrLob.html">setAsLongChar</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Sets parameter's value
+as long character data (<strong>SAString</strong>) </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="Value_WriteLongOrLob.html">setAsBLob</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Sets parameter's value
+as BLob data (<strong>SAString</strong>) </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="Value_WriteLongOrLob.html">setAsCLob</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Sets parameter's value
+as CLob data (<strong>SAString</strong>) </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsCursor.html">setAsCursor</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Sets parameter's value
+as a pointer to <strong>SACommand</strong> object </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="Value_setAsValueRead.html">setAsValueRead</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Sets parameter's value
+from <strong>SAParam</strong> or <strong>SAField</strong> objects </font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+        </tbody>
+      </table>
+      <h3><a name="Methods inherited from SAValueRead">Base Class
+Members (defined in SAValueRead) </a> </h3>
+      <table cellpadding="10" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_DataType.html">DataType</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Returns parameter's value
+data type</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_isNull.html">isNull</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Shows if parameter's value
+is null </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asBool.html">asBool</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Returns parameter's value
+as <strong>bool</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asShort.html">asShort</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Returns parameter's value
+as <strong>short</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><font face="Arial"><font
+ color="blue" face=""><a href="ValueRead_asShort.html">asUShort</a></font></font></td>
+            <td style="vertical-align: top;"><font face="Arial" size="3">Returns
+parameter's value as <strong>unsigned short</strong> data;
+converts if needed</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asLong.html">asLong</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Returns parameter's value
+as <strong>long</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><font face="Arial"><font
+ color="blue" face=""><a href="ValueRead_asLong.html">asULong</a></font></font></td>
+            <td style="vertical-align: top;"><font face="Arial" size="3">Returns
+parameter's value as <strong>unsigned long</strong> data;
+converts if needed</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asDouble.html">asDouble</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Returns parameter's value
+as <strong>double</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asNumeric.html">asNumeric</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Returns parameter's value
+as <strong>SANumeric</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asDateTime.html">asDateTime</a></font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"> Returns parameter's value
+as <strong>SADateTime</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asString.html">asString</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Returns parameter's
+value as string data (<strong>SAString</strong>); converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asBytes.html">asBytes</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Returns parameter's
+value as binary string data (<strong>SAString</strong>); converts if
+needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asLongBinary.html">asLongBinary</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Returns parameter's
+value as long binary data (<strong>SAString</strong>); converts if
+needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asLongChar.html">asLongChar</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Returns parameter's
+value as long character data (<strong>SAString</strong>); converts if
+needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asBLob.html">asBLob</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Returns parameter's
+value as BLob data (<strong>SAString</strong>); converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asCLob.html">asCLob</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Returns parameter's
+value as CLob data (<strong>SAString</strong>); converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_asCursor.html">asCursor</a></font> </font> </p>
+            </td>
+            <td> <font face="Arial" size="3">Returns parameter's value
+as a pointer to <strong>SACommand</strong> object </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_setLongOrLobReaderMode.html">setLongOrLobReaderMode</a></font>
+            </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Sets Long or Lob data
+reading mode </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font face="Arial"><font color="blue" face=""><a
+ href="ValueRead_LongOrLobReaderMode.html">LongOrLobReaderMode</a></font>
+            </font> </p>
+            </td>
+            <td> <font face="Arial" size="3"> Gets Long or Lob data
+reading mode </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face="">operator
+bool()</font> </font></p>
+            </td>
+            <td><font face="Arial" size="3">Substitute <font
+ color="blue" face=""><a href="ValueRead_asBool.html">asBool</a></font>
+method to provide quick access for parameter's value.&nbsp; Returns
+parameter's value as <strong>bool</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face="">operator
+short()</font> </font></p>
+            </td>
+            <td><font face="Arial" size="3">Substitute <font
+ color="blue" face=""><a href="ValueRead_asShort.html">asShort</a></font>
+method to provide quick access for parameter's value.&nbsp; Returns
+parameter's value as <strong>short</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><font face="Arial"><font
+ color="blue" face="">operator unsigned short()</font></font></td>
+            <td style="vertical-align: top;"><font face="Arial" size="3">Substitute
+            <font color="blue" face=""><a href="ValueRead_asShort.html">asUShort</a></font>
+method to provide quick access for parameter's value.&nbsp; Returns
+parameter's value as <strong>unsigned short</strong> data; converts if
+needed</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face="">operator
+long()</font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3">Substitute
+            <font color="blue" face=""><a href="ValueRead_asLong.html">asLong</a></font>
+method to provide quick access for parameter's value. </font>Returns
+parameter's value as <strong>long</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><font face="Arial"><font
+ color="blue" face="">operator unsigned long()</font></font></td>
+            <td style="vertical-align: top;"><font face="Arial" size="3"><font
+ face="Arial" size="3">Substitute <font color="blue" face=""><a
+ href="ValueRead_asLong.html">asULong</a></font> method to provide
+quick access for parameter's value. </font>Returns parameter's value
+as <strong>unsigned long</strong> data; converts if needed</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face="">operator
+double()</font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3">Substitute
+            <font color="blue" face=""><a href="ValueRead_asDouble.html">asDouble</a></font>
+method to provide quick access for parameter's value. </font>Returns
+parameter's value as <strong>double</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face="">operator
+SANumeric()</font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3">Substitute
+            <font color="blue" face=""><a
+ href="ValueRead_asNumeric.html">asNumeric</a></font> method to provide
+quick access for parameter's value. </font>Returns parameter's value
+as <strong>SANumeric</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p> <font face="Arial"><font color="blue" face="">operator
+SADateTime()</font> </font></p>
+            </td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3">Substitute
+            <font color="blue" face=""><a
+ href="ValueRead_asDateTime.html">asDateTime</a></font> method to
+provide quick access for parameter's value. </font>Returns parameter's
+value as <strong>SADateTime</strong> data; converts if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font color="blue" face="Arial">operator SAString()</font>
+            </p>
+            </td>
+            <td><font face="Arial" size="3">Substitute <font
+ color="blue" face=""><a href="ValueRead_asString.html">asString</a></font>&nbsp;
+method to provide quick access for parameter's value. Returns
+parameter's value as string data (<strong>SAString</strong>); converts
+if needed </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%">
+            <p><font color="blue" face="Arial"> operator SACommand *() </font></p>
+            </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font
+ face="Arial"><font face="Arial"><font face="Arial" size="3"><font
+ face="Arial"><font face="Arial" size="3"><font face="Arial" size="3">Substitute
+            <font color="blue" face=""><a href="ValueRead_asCursor.html">asCursor</a></font>
+method to provide quick access for parameter's value. </font>Returns
+parameter's value as a pointer to&nbsp; <strong>SACommand</strong>
+object&nbsp;</font> </font> </font> </font> </font> </font> </font>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Online Documentation - SAParam::setParamType</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--GlbHdr-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+ cellpadding="0" cellspacing="2" frame="hsides" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../HowTo/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"><a href="../OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--LeftMenu-->
+      <table cellspacing="5" frame="void" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Command.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SACommand</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Connection.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAConnection</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Exception.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Field.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAField</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/red.gif" align="middle" height="12"
+ width="12"><a href="Param.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> SAParam</font></a><font
+ color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="String.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAString</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="DateTime.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SADateTime</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="Numeric.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SANumeric</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><img
+ src="../images/green.gif" align="middle" height="12" width="12"> <a
+ href="Interval.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> SAInterval</font></a></td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="Enums.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font
+ color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p>&nbsp;&nbsp;</p>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <table cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td align="left"><a href="Param_Usage.html"
+ style="text-decoration: none;">
+            <h3>Usage</h3>
+            </a> </td>
+            <td align="left"><a href="Param.html"
+ style="text-decoration: none;">
+            <h3>Class Members</h3>
+            </a> </td>
+            <td align="left"><a href="Param_Examples.html"
+ style="text-decoration: none;">
+            <h3>Examples</h3>
+            </a> </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+            <h1>SAParam::setParamDirType</h1>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p><font face="Arial"><strong>void setParamDirType(
+SAParamDirType_t</strong> eParamDirType<b> );</b></font></p>
+      <p> Sets parameter's direction type (input, output, etc.). </p>
+      <h3>Parameters</h3>
+      <p><em>eParamDirType</em> .&nbsp;&nbsp;&nbsp; Defines parameter's
+direction type. Can be one of the following <strong>SAParamDirType_t</strong>
+enum values:</p>
+      <ul>
+        <li><strong>SA_ParamInput</strong>&nbsp;&nbsp;&nbsp; Input
+parameter. </li>
+        <li><strong>SA_ParamInputOutput</strong>&nbsp;&nbsp;&nbsp;
+Input/output parameter. </li>
+        <li><strong>SA_ParamOutput</strong>&nbsp;&nbsp;&nbsp; Output
+parameter. </li>
+        <li><strong>SA_ParamReturn</strong>&nbsp;&nbsp;&nbsp; Returning
+parameter.</li>
+      </ul>
+      <h3>Remarks</h3>
+      <p> Usually you should not define parameter's direction type by
+yourself. The Library automatically detects parameter's direction type
+and implicitly creates an appropriate <strong>SAParam</strong> object.
+But not all of DBMS clients/servers provide complete parameters
+information. In that situation programmer need to describe parameter's
+direction type explicitly. See <strong>Server specific notes</strong>
+for details.&nbsp; </p>
+      <h3>Server specific notes</h3>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td width="17%">
+            <p><strong><font color="white" face="">DBMS client</font> </strong></p>
+            </td>
+            <td>
+            <p><strong><font color="white" face="">Specific information</font>&nbsp;
+            </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/Oracle.html"
+ title="Oracle server specific information">Oracle</a></strong></p>
+            </td>
+            <td>
+            <p> No need to call this method explicitly.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/SQLServer.html"
+ title="SQL Server server specific information">SQL Server</a> </strong>
+            </p>
+            </td>
+            <td>
+            <p> No need to call this method explicitly.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/Sybase.html"
+ title="Sybase server specific information">Sybase</a></strong></p>
+            </td>
+            <td>
+            <p><strong>Sybase ASE</strong> server does not provide
+information about parameter's direction type, that's why SQLAPI++
+Library defines all parameters (except status result code) as input
+(SA_ParamInput). If you have input-output parameters in the procedure
+you have to call <strong>SAParam::setParamDirType</strong> method for
+these parameters before command execution and set parameter's direction
+type explicitly.<br>
+You shouldn't call this method for procedure status result code because
+it is detected correctly (as SA_ParamReturn) by the Library.</p>
+            <p>There is no need to call this method for <strong>Sybase
+ASA</strong> because all parameters are detected correctly
+automatically (including the direction type).</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/DB2.html"
+ title="DB2 server specific information">DB2</a></strong></p>
+            </td>
+            <td>
+            <p> No need to call this method explicitly.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/Informix.html"
+ title="Informix server specific information">Informix</a></strong></p>
+            </td>
+            <td>
+            <p> No need to call this method explicitly.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/InterBase.html"
+ title="InterBase server specific information">InterBase</a></strong></p>
+            </td>
+            <td>
+            <p> No need to call this method explicitly.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/SQLBase.html"
+ title="SQLBase server specific information">SQLBase</a></strong></p>
+            </td>
+            <td>
+            <p> No need to call this method explicitly.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/MySQL.html"
+ title="MySQL server specific information">MySQL</a></strong></p>
+            </td>
+            <td>
+            <p> No need to call this method explicitly.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/PostgreSQL.html"
+ title="PostgreSQL server specific information">PostgreSQL</a></strong></p>
+            </td>
+            <td>
+            <p> No need to call this method explicitly.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/ODBC.html"
+ title="ODBC server specific information">ODBC</a></strong></p>
+            </td>
+            <td>
+            <p> No need to call this method explicitly.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>See also</h3>
+      <p><a href="Param_ParamDirType.html">ParamDirType</a> </p>
+      <p><a href="Enums.html#SAParamDirType_t">SAParamDirType_t enum</a>
+      </p>
+      <h3>Problems and Questions</h3>
+      <p> If you haven't found the answer to your questions or have
+some problems on using the Library, please, send e-mail to <a
+ href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

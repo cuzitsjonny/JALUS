@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+
+  
+<meta name="KEYWORDS" content="      library, C++, 
+
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+
+  
+<meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+
+  
+<title>SQLAPI++ Library - Server Specific Guide - SQL Server</title>
+
+</head>
+<body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); background-image: url(../images/bg.gif);">
+<!--class="GlbHdr"-->
+<table id="TABLE1" frame="hsides" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" height="40" width="600">
+
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../HowTo/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"> <a href="../OnLineDoc/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Support/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Download/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Order/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+
+&nbsp;
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<table width="100%">
+
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--class="LeftMenu"-->
+      <table frame="void" cellspacing="5" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p><br>
+            </p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Command.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SACommand</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Connection.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAConnection</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Exception.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Field.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAField</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Param.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAParam</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/String.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAString</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/DateTime.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SADateTime</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Numeric.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SANumeric</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="../OnLineDoc/Enums.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p> </p>
+      <br>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <center>
+      <h2><a href="index.html">Server Specific Guide</a></h2>
+      <h1>SQL Server</h1>
+      <p align="left">SQLAPI++ allows to work with a number of SQL
+database servers. It provides common mechanisms to access database, and
+as a general rule they work for any database server. But each server
+has some specific features which a developer has to
+know in order to leverage server's unique features and avoid potential
+errors.</p>
+      <p align="left"> Working with <strong>SQL Server</strong> using
+SQLAPI++ Library depends on choosing an API. SQLAPI++ Library supports
+the following interfaces to access <strong>SQL Server</strong> : </p>
+      <div align="left">
+      <ul>
+	 <li><a href="SQLServer_ODBC.html">ODBC</a></li>
+        <li><a href="SQLServer_OleDb.html">OLE DB</a></li>
+        <li><a href="SQLServer_DbLibrary.html">DB-Library</a></li>
+      </ul>
+      </div>
+      <p align="left">Starting from version 4.0.3 SQLAPI++ Library uses <u>ODBC as default API</u> when working with <strong>SQL Server</strong>.
+If
+for
+some reason you want to use OLE DB or DB-Library, you should set
+"UseAPI"
+connection option before specifying SQL Server client or connecting to
+database: </p>
+      <p align="left"><font face="System">SAConnection con;<br>
+      <font color="red" face="">con.setOption( "UseAPI" ) =
+"DB-Library";</font><br>
+con.setClient( SA_SQLServer_Client );<br>
+con.Connect(...); </font> </p>
+      <p align="left">For more connection details see <a href="SQLServer_OleDb.html#Connecting%20to%20a%20database">SQL Server
+(OLE DB)</a>, <a href="SQLServer_ODBC.html#Connecting">SQL Server
+(ODBC)</a> and <a href="SQLServer_DbLibrary.html#Connecting%20to%20a%20database">SQL
+Server (DB-Library)</a> specific information. </p>
+      <p align="left">It's preferably to use ODBC because Microsoft says about&nbsp; the migration to ODBC API as default for any new SQLServer versions. </p>
+      <p align="left"> Full information about using SQLAPI++ see in <a href="../HowTo/index.html">How To</a> and <a href="../OnLineDoc/index.html">Online Documentation</a> . </p>
+      </center>
+      <p>&nbsp; </p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+
+
+</body></html>

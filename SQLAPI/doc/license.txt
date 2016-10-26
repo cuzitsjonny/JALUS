@@ -1,0 +1,51 @@
+*************************************************************************
+SQLAPI++ Library - LICENSE AGREEMENT and WARRANTY
+*************************************************************************
+
+You should carefully read the following terms and conditions
+before using this software. Your use of this software 
+indicates your acceptance of this license agreement
+and warranty.
+
+LICENSE AGREEMENT:
+==================================
+You have the non-exclusive right to use the Library. 
+The Company retains all title and ownership of the Library. 
+
+EVALUATION:
+==================================
+The SQLAPI++ Library is distributed as shareware. You can use the Library 
+for evaluation purposes without charge for unlimited period. The evaluation 
+version has no limits or functional differences from registered version, 
+but it will display registration messages occasionally.
+While in evaluation you MAY NOT distribute your applications written with
+trial version of SQLAPI++ library.
+
+REGISTERED VERSIONS:
+==================================
+You have to purchase SQLAPI++ Personal license for every developer, 
+or one Site license for up to 10 developers in your company 
+or one Site+ license for unlimited number of developers in your company.
+You MAY distribute, directly and indirectly, applications written with
+SQLAPI++ (including SQLAPI++ run-time) without any additional charge.
+You MAY NOT distribute SQLAPI++ source codes (original or modified).
+
+REGISTERED VERSION (Personal license):
+One registered copy of SQLAPI++ Library may be used by a single person 
+who uses it personally on one or more computers. 
+You may access the registered version of SQLAPI++ Library through a network, 
+provided that you have obtained individual licenses for the software covering 
+all developers that will access the software through the network.
+
+REGISTERED VERSION (Site license):
+One registered copy of SQLAPI++ may be used by up to 10 developers
+WORKING IN ONE COMPANY on one or more computers.
+
+REGISTERED VERSION (Site+ license):
+One registered copy of SQLAPI++ may be used by any number of developers
+WORKING IN ONE COMPANY on one or more computers.
+
+WARRANTY AND LIMITATION OF LIABILITY
+==================================
+We warrant that you will receive life-time FREE e-mail support, FREE bugs fixing 
+and FREE new version updates.

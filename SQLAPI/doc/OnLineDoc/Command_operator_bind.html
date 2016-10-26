@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Online Documentation - SACommand::operator
+&lt;&lt;</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--GlbHdr-->
+<table id="TABLE1" style="left: 114px; top: 16px;" align="right"
+ border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2"
+ frame="hsides" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../HowTo/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"><a href="../OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"> <a href="../Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+&nbsp;
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--LeftMenu-->
+      <table cellspacing="5" frame="void" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/red.gif" align="middle" height="12"
+ width="12"><a href="Command.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> SACommand</font></a><font
+ color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Connection.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAConnection</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Exception.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Field.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAField</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Param.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAParam</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="String.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAString</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="DateTime.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SADateTime</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="Numeric.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SANumeric</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><img
+ src="../images/green.gif" align="middle" height="12" width="12"> <a
+ href="Interval.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> SAInterval</font></a></td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="Enums.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font
+ color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p>&nbsp;&nbsp;</p>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <table cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td align="left"><a href="Command_Usage.html"
+ style="text-decoration: none;">
+            <h3>Usage</h3>
+            </a> </td>
+            <td align="left"><a href="Command.html"
+ style="text-decoration: none;">
+            <h3>Class Members</h3>
+            </a> </td>
+            <td align="left"><a
+ href="Command_Examples.html#operator_bind"
+ style="text-decoration: none;">
+            <h3>Examples</h3>
+            </a> </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+            <h1>SACommand::operator &lt;&lt;</h1>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <b></b>
+      <p><b>SACommand &amp;operator &lt;&lt; ( const SANull &amp;</b>null<b><b>
+)</b><b> ;</b> <b> <br>
+throw (SAException);</b></b></p>
+      <b> </b>
+      <p><b>SACommand &amp;operator &lt;&lt; ( const SAPos &amp;</b>pos<b>
+);</b> <b> <br>
+throw (SAException);</b></p>
+      <p><font face="Arial"><strong>SACommand &amp;operator &lt;&lt; (
+bool &amp;</strong>Value<strong> );<br>
+      </strong></font><strong><font face="Arial">throw (SAException);</font></strong></p>
+      <p><font face="Arial"><b> SACommand &amp;operator &lt;&lt; (
+short &amp;</b>Value<b> );</b> <b> <br>
+throw (SAException);</b></font></p>
+      <p><font face="Arial"><b> SACommand &amp;operator &lt;&lt; ( long
+&amp;</b>Value<b> );</b> <b> <br>
+throw (SAException);</b> </font></p>
+      <font face="Arial"><font face="Arial"> <b> <b> </b></b></font></font>
+      <p><font face="Arial"><font face="Arial"><b><b><font face="Arial"><b>
+SACommand &amp;operator &lt;&lt; ( double &amp;</b></font></b><font
+ face="Arial"></font></b><font face="Arial">Value <b> <b><b> );</b> <b>
+      <br>
+throw (SAException);</b></b></b></font></font></font></p>
+      <font face="Arial"><font face="Arial"><font face="Arial"><b><b><b><font
+ face="Arial"><b> </b></font></b></b></b></font></font></font>
+      <p><font face="Arial"><font face="Arial"><font face="Arial"><b><b><b><font
+ face="Arial"><b><font face="Arial"><b> SACommand &amp;operator
+&lt;&lt; ( const SANumeric &amp;</b></font></b><font face="Arial"></font></font></b><font
+ face="Arial"><font face="Arial"></font></font></b><font face="Arial"><font
+ face="Arial"></font></font></b><font face="Arial"><font face="Arial">Value
+      <b> <b> <b><b><b> );</b> <b> <br>
+throw (SAException);</b></b></b></b></b></font></font></font></font></font></p>
+      <font face="Arial"><font face="Arial"><font face="Arial"><font
+ face="Arial"><font face="Arial"><b><b><b><b><b><font face="Arial"><b> </b></font></b></b></b></b></b></font></font></font></font></font>
+      <p><font face="Arial"><font face="Arial"><font face="Arial"><font
+ face="Arial"><font face="Arial"><b><b><b><b><b><font face="Arial"><b><font
+ face="Arial"><b> SACommand &amp;operator &lt;&lt; ( const SADateTime
+&amp;</b> </font></b><font face="Arial"></font></font></b><font
+ face="Arial"><font face="Arial"></font></font></b><font face="Arial"><font
+ face="Arial"></font></font></b><font face="Arial"><font face="Arial"></font></font></b><font
+ face="Arial"><font face="Arial"></font></font></b><font face="Arial"><font
+ face="Arial">Value <b> <b> <b><b> <b><b> <b> <b> <b><b> );</b> <b>
+      <br>
+throw (SAException);</b></b></b></b></b></b></b></b></b></b></font><b><b><b><b><b><b>
+      </b></b></b></b></b></b></font></font></font></font></font></font></p>
+      <font face="Arial"><font face="Arial"><font face="Arial"><font
+ face="Arial"><font face="Arial"><font face="Arial"> <b> <b> <b> <b>
+      <b> <b> </b></b></b></b></b></b></font></font></font></font></font></font>
+      <p><font face="Arial"><font face="Arial"><font face="Arial"><font
+ face="Arial"><font face="Arial"><font face="Arial"><b><b><b><b><b><b>SACommand
+&amp;operator &lt;&lt; (const SAChar *</b></b></b></b></b></b>Value <b>
+      <b> <b> <b> <b> <b> );<br>
+throw (SAException);</b></b></b></b></b></b></font></font></font></font></font></font></p>
+      <font face="Arial"><font face="Arial"><font face="Arial"><font
+ face="Arial"><font face="Arial"><font face="Arial"><b><b><b><b><b><b> </b></b></b></b></b></b></font></font></font></font></font></font>
+      <p><font face="Arial"><font face="Arial"><font face="Arial"><font
+ face="Arial"><font face="Arial"><font face="Arial"><b><b><b><b><b><b><font
+ face="Arial"><b>SACommand &amp;operator &lt;&lt; ( const SAString &amp;</b></font></b><font
+ face="Arial"></font></b><font face="Arial"></font></b><font
+ face="Arial"></font></b><font face="Arial"></font></b><font
+ face="Arial"></font></b><font face="Arial">Value <b> <b> <b> <b> <b>
+      <b><b> );</b> <b> <br>
+throw (SAException);</b> </b> </b> </b> </b></b></b></font><b><b></b></b></font><b><b></b></b></font><b><b></b></b></font><b><b></b></b></font></font></font></p>
+      <font face="Arial"><font face="Arial"><b><b> </b></b></font></font>
+      <p><font face="Arial"><font face="Arial"><b><b><font face="Arial"><b>SACommand
+&amp;operator &lt;&lt; ( const SABytes &amp;</b></font></b><font
+ face="Arial"></font></b><font face="Arial">Value <b> <b> <b> <b><b>
+);</b> <b> <br>
+throw (SAException);</b> </b> </b> </b> </b></font></font></font></p>
+      <p><font face="Arial"><b>SACommand &amp;operator &lt;&lt; ( const
+SALongBinary &amp;</b>LongValue<b> );</b> <b> <br>
+throw (SAException);</b></font></p>
+      <p><font face="Arial"><b>SACommand &amp;operator &lt;&lt; ( const
+SALongChar &amp;</b>LongValue<b> );</b> <b> <br>
+throw (SAException);</b></font></p>
+      <font face="Arial"><b> </b></font>
+      <p><font face="Arial"><b><font face="Arial"><b>SACommand
+&amp;operator &lt;&lt; ( const SABlob &amp;</b> </font></b><font
+ face="Arial">LobValue<b><b> )</b><b> ;</b> <b> <br>
+throw (SAException);</b></b></font></font></p>
+      <font face="Arial"><b> </b></font>
+      <p><font face="Arial"><b>SACommand &amp;operator &lt;&lt; ( const
+SAClob &amp;</b>LobValue<b> )</b><b> ;</b> <b> <br>
+throw (SAException);</b></font></p>
+      <font face="Arial"><b> </b>
+      <p><b>SACommand &amp;operator &lt;&lt; ( const SAValueRead &amp;</b>Value<b><b>
+)</b><b> ;</b> <b> <br>
+throw (SAException);</b> </b></p>
+      </font>
+      <p> Binds input variables. </p>
+      <h3>Parameters</h3>
+      <p><em>Value</em> .&nbsp;&nbsp;&nbsp; A value of an input
+variable.</p>
+      <p><em>LongValue</em>.&nbsp;&nbsp;&nbsp; A reference to an aiding
+object representing a value of a long input variable or a callback
+function which will be used for getting the long value.</p>
+      <p><em>LobValue</em>.&nbsp;&nbsp;&nbsp; A reference to an aiding
+object representing a value of a Lob input variable or a callback
+function which will be used for getting the Lob value.</p>
+      <p><em>pos</em>.&nbsp;&nbsp;&nbsp; A reference to the <strong>SAPos</strong>
+object which represents the position of input parameter in the command.</p>
+      <h3>Remarks</h3>
+      <p>This operator is used for associating data objects to the
+command object. Every command object maintains an internal
+heterogeneous array of parameter objects - this operator assigns values
+to parameter objects from this array.&nbsp; </p>
+      <p>Because of the operator returns a reference to a <strong>SACommand</strong>
+object you can chain the operator e.g. <em>cmd &lt;&lt; 3 &lt;&lt; 2.5
+&lt;&lt; "Istanbul";</em></p>
+      <p>By default the sequence of values corresponds to the numbers
+of parameters in a command text.<br>
+      <strong><em>E.g. </em></strong>(cmd is a <strong>SACommnad</strong>
+object)</p>
+      <ol>
+        <li><font face="Times New Roman"><em>Select a from b where c=
+:1 and d= :2<br>
+          </em><strong>cmd &lt;&lt; 5 &lt;&lt; "qwerty"; </strong><br>
+binds <strong>5</strong> to c(:1) and <strong>qwerty</strong> to
+d(:2) parameters. <br>
+          <br>
+          </font> </li>
+        <li><em>Select a from b where c= :2 and d= :1<br>
+          </em><strong>cmd &lt;&lt; 5 &lt;&lt; "qwerty"; </strong><br>
+binds <strong>5</strong> to d(:1) and <strong>qwerty</strong> to
+c(:2) parameters (see the difference with example 1). <br>
+          <br>
+        </li>
+        <li><em>Select a from b where c= :1 and d= :3<br>
+          </em><strong>cmd &lt;&lt; 5 &lt;&lt; "qwerty"; </strong><br>
+causes an error (throws an exception) because <strong>&lt;&lt; "qwerty"</strong>
+tries to bind :2 parameter and our command does not have such.</li>
+      </ol>
+      <p>If you want to assign <em>null</em> value to an input
+variable you have to include <strong>SANull</strong> object in the
+chain of bind operators in place of <em>null</em> value. </p>
+      <p><strong><em>E.g. </em></strong>(cmd is a <strong>SACommnad</strong>
+object) </p>
+      <ol>
+        <li><font face="Times New Roman"><em>Select a from b where c=
+:1 and d= :2<br>
+          </em><strong>cmd &lt;&lt; 5 &lt;&lt; SANull(); </strong><br>
+binds <strong>5</strong> to c(:1) and <strong>null</strong> to d(:2)
+parameters. <br>
+          </font></li>
+      </ol>
+      <p> If you want to bind a parameter by name or change the order
+of binding variables you have to include a <strong>SAPos</strong>
+object before the value in the chain of bind operators to prepare the
+required parameter position for the next bind.</p>
+      <p><em><strong>E.g.</strong></em> (cmd is a <strong>SACommnad</strong>
+object)</p>
+      <ol>
+        <li><em>Select a from b where c = :1 and d = :2 </em> <br>
+          <strong>cmd &lt;&lt; SAPos(2) &lt;&lt; 5 &lt;&lt; SAPos(1)
+&lt;&lt; "qwerty"; </strong><br>
+first binds d(:2) parameter with value of <strong>5</strong>, then
+c(:1) with value of <strong>qwerty</strong>.<br>
+&nbsp; </li>
+        <li><em>Select a from b where c = :c_bind and d = :d_bind </em>
+          <br>
+          <strong>cmd &lt;&lt; SAPos("c_bind") &lt;&lt; 5 &lt;&lt;
+SAPos("d_bind") &lt;&lt; "qwerty"; </strong><br>
+is the right sequence to be used.</li>
+      </ol>
+      <p> </p>
+      <p>Values for the input parameters can also be assigned to <strong>SAParam</strong>
+object. </p>
+      <p>Syntax <strong>SACommand &amp;operator &lt;&lt; ( const
+SAValueRead &amp;Value );</strong> allows to set input variable's value
+from existing <strong>SAParam</strong> or <strong>SAField</strong>
+object.&nbsp; </p>
+      <h3>Server specific notes</h3>
+      <p>Binding Lob(CLob, BLob) data when working with <strong><a
+ href="../ServerSpecific/Oracle.html"
+ title="Oracle server specific information">Oracle</a></strong> server
+has some differences from others. It's necessary for a name of bind
+variable to be the same as the column name it associated with.</p>
+      <p><font face="System">Ex.:&nbsp;&nbsp;&nbsp;&nbsp; Update TEST
+set <font color="maroon" face="">FBLOB = :fblob</font> where FKEY =
+'KEY'</font> </p>
+      <p>Therefore, it's impossible to bind Lob(CLob, BLob) data to
+Oracle database by position. </p>
+      <h3>See also</h3>
+      <p> <a href="Command_CreateParam.html" target="">CreateParam</a>,
+      <a href="Command_Param.html">Param</a>, <a
+ href="Command_ParamByIndex.html" target="">ParamByIndex</a>, <a
+ href="Command_ParamCount.html">ParamCount</a> </p>
+      <p><a href="Param.html">SAParam</a>, <a href="Field.html">SAField</a>
+      </p>
+      <p><a href="../HowTo/errors.html">Error handling</a> </p>
+      <h3>Problems and Questions</h3>
+      <p> If you haven't found the answer to your questions or have
+some problems on using the Library, please, send e-mail to <a
+ href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

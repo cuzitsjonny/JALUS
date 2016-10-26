@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - How To - Connecting to databases</title>
+</head>
+<body
+ style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); background-image: url(../images/bg.gif);">
+<!--class="GlbHdr"-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+ cellpadding="0" cellspacing="2" frame="hsides" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"><a href="../HowTo/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>How To</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table cellpadding="1" cellspacing="1" width="100%">
+  <tbody>
+    <tr>
+      <td align="left" valign="top"><!--class="LeftMenu"-->
+      <table cellpadding="2" cellspacing="2" frame="void" width="165">
+        <tbody>
+          <tr>
+              <td>
+                  <img src="../images/red.gif" align="middle" height="12"
+                       width="12">
+              </td>
+              <td>
+                  <a href="connect.html" style="text-decoration: none;">
+                      <font color="white" face="sans-serif" size="2">Connecting to databases</font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="transactions.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Transactions</font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="commands.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Executing an SQL command</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="procedures.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Executing stored procedures</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="bind.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Binding input parameters</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="fetch.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Fetching result set</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="fetch_multiple.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Fetching multiple result sets</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="performance.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Optimizing Database Performance</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="return_param.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Returning output parameters</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="blobs.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Working with Long or Lob(CLob, BLob) Data</font>
+                  </a><font color="white" face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="datetime.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Working with date/time values</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="errors.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Error handling</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a style="text-decoration: none;"
+                     href="native_api.html">
+                      <font color="white" face="sans-serif" size="2">
+                          Using
+                          native API
+                      </font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="query_exampl.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Query examples</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+      <td width="30">
+      <p> </p>
+      <br>
+      </td>
+      <td valign="top">
+      <center>
+      <h1>Connecting to databases</h1>
+      </center>
+      <p>To connect to a database you should create a connection object
+and then connect it.</p>
+      <p>For example, let's connect to <em>SQL Server</em> database <em>Demo</em>
+as user <em>Guest</em> with a password <em>May</em> and then
+disconnect from it.</p>
+      <h4>Step 1. Creating a connection object.</h4>
+      <p>A connection object is represented by <a
+ href="../OnLineDoc/Connection.html">SAConnection</a> class.</p>
+      <p><font face="System">SAConnection con;</font> </p>
+      <p>The line above creates a connection object <em>con</em>.</p>
+      <p>If you want to define the connection <em>con</em> as a
+connection to SQL Server database before calling <a
+ href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>
+method use <a href="../OnLineDoc/Connection_setClient.html">SAConnection::setClient</a>
+method:</p>
+      <p><font face="System">con.setClient( SA_SQLServer_Client );</font></p>
+      <p>&nbsp;</p>
+      <h4>Step 2. Connecting to a database.</h4>
+      <p>After the connection is created we need to connect it using <a
+ href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>
+method.</p>
+      <p><font face="System">con.Connect( "Demo", "Guest", "May",
+SA_SQLServer_Client );</font></p>
+      <p>If you have used <a
+ href="../OnLineDoc/Connection_setClient.html">SAConnection::setClient</a>
+method earlier you can call <a
+ href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>
+method with skipping the last parameter:</p>
+      <p><font face="System">con.Connect( "Demo", "Guest", "May" );</font></p>
+      <p>&nbsp;</p>
+      <h4>Step 3. Disconnecting from a database.</h4>
+      <p>You can disconnect your connection object at any time with a
+call to the <a href="../OnLineDoc/Connection_Disconnect.html">SAConnection::Disconnect</a>
+method:</p>
+      <p><font face="System">con.Disconnect();</font></p>
+      <p> It is safe to skip calling <a
+ href="http://www.sqlapi.com/OnLineDoc/Connection_Disconnect.html">SAConnection::Disconnect</a>
+method explicitly. Destructor <a
+ href="../OnLineDoc/Connection_dstr.html">SAConnection::~SAConnection</a>
+will correctly close the connection if you didn't call <a
+ href="http://www.sqlapi.com/OnLineDoc/Connection_Disconnect.html">SAConnection::Disconnect</a>
+method before.</p>
+      <h3>Problems and Questions</h3>
+      <p>If you haven't found the answer to your questions or have some
+problems on using the Library, please, send e-mail to <a
+ href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

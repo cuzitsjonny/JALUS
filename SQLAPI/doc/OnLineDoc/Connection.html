@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+  <meta name="KEYWORDS" content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Online Documentation - SAConnection</title>
+</head><body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--GlbHdr-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" width="600" frame="hsides" height="40">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../HowTo/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"><a href="../OnLineDoc/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Support/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Download/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--LeftMenu-->
+      <table cellspacing="5" width="165" frame="void">
+        <tbody>
+          <tr>
+            <td>
+            <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12" height="12"><a href="Command.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SACommand</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/red.gif" align="middle" width="12" height="12"><a href="Connection.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAConnection</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12" height="12"><a href="Exception.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12" height="12"><a href="Field.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAField</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12" height="12"><a href="Param.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAParam</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12" height="12"> <a href="String.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAString</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12" height="12"> <a href="DateTime.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SADateTime</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" width="12" height="12"> <a href="Numeric.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SANumeric</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><img src="../images/green.gif" align="middle" width="12" height="12"> <a href="Interval.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAInterval</font></a></td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="Enums.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p> </p>
+      <br>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <table cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td align="left"><a href="Connection_Usage.html" style="text-decoration: none;">
+            <h3>Usage</h3>
+            </a> </td>
+            <td align="left"><a href="Connection_Examples.html" style="text-decoration: none;">
+            <h3>Examples</h3>
+            </a> </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <h1>SAConnection</h1>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Construction / Destruction</h3>
+      <table cellpadding="10" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_cnstr.html">
+            <font face="Arial" size="3"> SAConnection</font></a></td>
+            <td> <font face="Arial" size="3"> Constructs a <b>SAConnection</b>
+object</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_dstr.html">
+            <font face="Arial" size="3"> ~SAConnection</font></a></td>
+            <td> <font face="Arial" size="3"> Destructs a <b>SAConnection</b>
+object</font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Methods</h3>
+      <table cellpadding="10" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_setClient.html"> <font face="Arial"> setClient </font></a></td>
+            <td><font face="Arial" size="3"> Sets an DBMS client to the
+current <a href="Connection.html">SAConnection</a> object</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_Client.html"> <font face="Arial"> Client </font></a></td>
+            <td><font face="Arial" size="3"> Gets the current DBMS
+client associated with the <a href="Connection.html">SAConnection</a>
+object</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_ClientVersion.html"> <font face="Arial">ClientVersion
+
+            </font></a></td>
+            <td><font face="Arial" size="3"> Gets the DBMS client
+API&nbsp; version number</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_ServerVersion.html"> <font face="Arial">ServerVersion
+
+            </font></a></td>
+            <td><font face="Arial" size="3"> Gets the DBMS server
+version number</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_ServerVersionString.html"> <font face="Arial">ServerVersionString
+
+            </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3">Gets
+the
+DBMS server version string</font> </font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_isConnected.html"><font face="Arial"> isConnected </font>
+            </a></td>
+            <td> <font face="Arial"> Returns the connection state </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_Connect.html"><font face="Arial"> Connect </font></a>
+            </td>
+            <td><font face="Arial"> Connects to the database</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_Disconnect.html"><font face="Arial"> Disconnect </font></a>
+            </td>
+            <td><font face="Arial"> Disconnects the connection<br>
+            </font></td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><font><a href="Connection_isAlive.html"><font face="Arial">isAlive</font></a></font></td>
+            <td style="vertical-align: top;"><font face="Arial">Checks
+the database server status </font></td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Destroy<br>
+            </td>
+            <td style="vertical-align: top;">Destroys a broken
+connection<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Reset<br>
+            </td>
+            <td style="vertical-align: top;">Clears all DBMS related
+handles and sturctures but doesn't destroy them (mostly for Unix fork/exec based applications)
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_setIsolationLevel.html"><font face="Arial">setIsolationLevel
+
+            </font></a> </td>
+            <td><font face="Arial"> Sets the transaction isolation
+level</font><br>
+</td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_IsolationLevel.html"><font face="Arial">IsolationLevel
+
+            </font></a> </td>
+            <td><font face="Arial"> Gets the transaction isolation
+level</font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_setAutoCommit.html"><font face="Arial"> setAutoCommit
+            </font></a> </td>
+            <td><font face="Arial"> Sets connection to be committed
+automatically</font><br>
+</td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_AutoCommit.html"><font face="Arial"> AutoCommit </font></a>
+            </td>
+            <td><font face="Arial"> Gets whether the connection is
+committed automatically </font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_Commit.html"><font face="Arial"> Commit </font></a> </td>
+            <td><font face="Arial"> Commits transactions</font><br>
+</td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_Rollback.html"><font face="Arial"> Rollback </font></a>
+            </td>
+            <td><font face="Arial"> Roll's back to last commit&nbsp; </font>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"> <a href="Connection_setOption.html"><font face="Arial"> setOption </font></a>
+            </td>
+            <td><font face="Arial"> Sets a string value of a specific
+connection or command option</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"> <a href="Connection_Option.html"><font face="Arial"> Option </font></a> </td>
+            <td><font face="Arial"> Gets a string value of a specific
+connection or command option</font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_NativeAPI.html"><font face="Arial"> NativeAPI </font></a>
+            </td>
+            <td><font face="Arial"> Gets native DBMS client API</font><br>
+</td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="Connection_NativeHandles.html"><font face="Arial"> NativeHandles
+            </font></a> </td>
+            <td><font face="Arial"> Gets native DBMS client connection
+related handle(s) </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body></html>

@@ -1,0 +1,594 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Online Documentation - SAConnection Examples</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--GlbHdr-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+ cellpadding="0" cellspacing="2" frame="hsides" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="/HowTo/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"><a href="/OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="/Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="/Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="/Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+&nbsp;
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--LeftMenu-->
+      <table cellspacing="5" frame="void" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Command.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SACommand</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/red.gif" align="middle" height="12"
+ width="12"><a href="Connection.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> SAConnection</font></a><font
+ color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Exception.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Field.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAField</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Param.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAParam</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr id="HR1"></td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="String.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAString</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="DateTime.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SADateTime</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="Numeric.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SANumeric</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><img
+ src="../images/green.gif" align="middle" height="12" width="12"> <a
+ href="Interval.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> SAInterval</font></a></td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="Enums.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font
+ color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p> </p>
+      <br>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <table cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td align="left"> <a href="Connection.html"
+ style="text-decoration: none;">
+            <h3>Class Members</h3>
+            </a> </td>
+            <td align="left"> <a href="Connection_Usage.html"
+ style="text-decoration: none;">
+            <h3>Usage</h3>
+            </a> </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <h1>SAConnection Examples</h1>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr id="HR1"> <a name="cnstr"></a>
+      <h3>SAConnection constructor</h3>
+      <p><font face="Courier">/*<br>
+Default constructor creates SAConnection object that is not initially
+connected to database or associated with specific client. You have to
+call SAConnection::setClient() and/or SAConnection::Connect() later.<br>
+*/</font><font face="Courier"></font></p>
+      <p><font face="Courier"><strong>SAConnection con, con2;</strong> </font></p>
+      <hr id="HR1"> <a name="dstr"></a>
+      <h3>SAConnection destructor</h3>
+      <p><font face="Courier">/*<br>
+Destructor&nbsp;deletes SAConnection object. It also disconnect object
+from database if needed.<br>
+*/</font><font face="Courier"></font></p>
+      <p><font face="Courier">SAConnection *pCon = new <font
+ face="Courier">SAConnection</font> ;</font></p>
+      <p><font face="Courier">...</font></p>
+      <p><font face="Courier"><strong>delete pCon;</strong></font></p>
+      <hr id="HR1"> <a name="setClient"></a>
+      <h3>setClient</h3>
+      <p><font face="Courier">/*<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <p><font face="Courier">SAConnection Con;</font></p>
+      <p><font face="Courier"><strong>Con.setClient(SA_Oracle_Client);</strong></font></p>
+      <hr id="HR1"> <a name="Client"></a>
+      <h3>Client</h3>
+      <font face="Courier"> </font>
+      <p><font face="Courier"><font face="Courier">/*<br>
+Queries current DBMS client set by SAConnection::setClient or
+SAConnection::Connect.<br>
+*/</font><font face="Courier"></font></font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SAConnection Con;</font></p>
+      <p><font face="Courier"><font face="Courier">/* connect to
+database and so on */<br>
+      </font>...</font></p>
+      <p><font face="Courier">switch(</font><font face="Courier"><strong>Con.Client()</strong>)<br>
+      </font><font face="Courier">{</font><font face="Courier"><br>
+&nbsp;&nbsp;&nbsp; case SA_Client_NotSpecified:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_ODBC_Client:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for
+ODBC*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_Oracle_Client:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for
+Oracle*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_SQLServer_Client:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for
+SQLServer*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_Interbase_Client:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for
+Interbase*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_SQLBase_Client:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for
+SQLBase*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_DB2_Client:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for DB2*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_Informix_Client:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for
+Informix*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_Sybase_Client:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for
+Sybase*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;</font><font
+ face="Courier"><br>
+}</font></p>
+      <hr id="HR1"> <a name="ClientVersion"></a>
+      <h3>ClientVersion</h3>
+      <p><font face="Courier">/*<br>
+Query and print client version.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <p><font face="Courier">SAConnection con;</font></p>
+      <p><font face="Courier">con.setClient(SA_Oracle_Client);</font></p>
+      <p><font face="Courier">short minor = (short)(<strong>con.ClientVersion()
+      </strong>&amp; 0xFFFF);</font></p>
+      <p><font face="Courier">short major = (short)(<strong>con.ClientVersion()
+      </strong>&gt;&gt; 16);</font></p>
+      <p><font face="Courier">printf("Client version: %hd.%hd\n",
+major, minor);</font></p>
+      <hr id="HR1"> <a name="ServerVersion"></a>
+      <h3>ServerVersion</h3>
+      <p><font face="Courier">/*<br>
+Query and print&nbsp;server version.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <font face="Courier">
+      <p><font face="Courier">SAConnection con;</font></p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p>short minor = (short)(<strong>con.ServerVersion() </strong>&amp;
+0xFFFF);</p>
+      <p>short major = (short)(<strong>con.ServerVersion() </strong>&gt;&gt;
+16);</p>
+      <p>printf("Server version: %hd.%hd\n", major, minor);</p>
+      </font>
+      <hr id="HR1"> <a name="ServerVersionString"></a>
+      <h3>ServerVersionString</h3>
+      <font face="Courier"> </font>
+      <p><font face="Courier"><font face="Courier">/*<br>
+Query and print&nbsp;server version string.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"><font face="Courier">SAConnection
+con;</font></font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">con.Connect("dbname",
+"username", "password", SA_Oracle_Client);</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">printf("Server:
+%s\n", (const char*)<strong>con.ServerVersionString()</strong>);</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"> </font></font> </p>
+      <hr id="HR1"> <a name="isConnected"></a>
+      <h3>isConnected</h3>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"><font face="Courier">/*<br>
+Disconnect only if we are really connected.<br>
+*/</font></font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"><font face="Courier">SAConnection
+con;</font></font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"><font face="Courier">/*
+connect to database and so on */<br>
+...</font></font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"><font face="Courier">if(<strong>con.isConnected()</strong>)</font></font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"><font face="Courier">&nbsp;&nbsp;&nbsp;
+con.Disconnect(); </font> </font></font></p>
+      <p><font face="Courier"><font face="Courier"> </font></font> </p>
+      <hr id="HR1"> <a name="Connect"></a>
+      <h3>Connect</h3>
+      <p><font face="Courier">/*<br>
+First example.<br>
+Initialize client and connect to server with one call.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <p><font face="Courier">SAConnection con, con2;</font></p>
+      <p><strong><font face="Courier">con.Connect("dbname", "username",
+"password", SA_Oracle_Client);</font></strong></p>
+      <p><font face="Courier"><strong>con2.Connect("srvname@dbname",
+"username", "password", SA_Sybase_Client);</strong> </font></p>
+      <p><font face="Courier">/*<br>
+Second example.<br>
+First initialize client then connect to server.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font></p>
+      <p><font face="Courier">SAConnection con, con2;</font></p>
+      <p><font face="Courier">con.setClient(SA_Oracle_Client);</font></p>
+      <p><font face="Courier">con2.setClient(SA_Sybase_Client);</font></p>
+      <p><strong><font face="Courier">con.Connect("dbname", "username",
+"password");</font></strong></p>
+      <p><font face="Courier"><strong>con2.Connect("srvname@dbname",
+"username", "password");</strong> </font></p>
+      <hr id="HR1"> <a name="Disconnect"></a>
+      <h3>Disconnect</h3>
+      <p><font face="Courier">/*<br>
+First example.<br>
+Disconnect only if we are really connected.<br>
+*/</font></p>
+      <p><font face="Courier">SAConnection con;</font></p>
+      <p><font face="Courier">/* connect to database and so on */<br>
+...</font></p>
+      <p><font face="Courier">if(con.isConnected())</font></p>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; <strong>con.Disconnect();</strong>
+      </font></p>
+      <p><font face="Courier">/*<br>
+Second&nbsp;example.<br>
+Disconnect is made implicitly in destructor.<br>
+*/</font></p>
+      <p><font face="Courier">{</font></p>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; SAConnection con;</font></p>
+      <p><font face="Courier">/* connect to database and so on */<br>
+...</font></p>
+      <p><font face="Courier">}</font></p>
+      <p><font face="Courier">/* At this point con is physically
+disconnected from database in SAConnection destructor */</font></p>
+      <p><font face="Courier">SAConnection *pCon = new SAConnection;</font></p>
+      <font face="Courier">
+      <p><font face="Courier">/* connect to database and so on */<br>
+...</font></p>
+      <p>/* next line will disconnect from database if needed */</p>
+      <p>delete pCon;</p>
+      </font>
+      <hr id="HR1"> <a name="setIsolationLevel"></a>
+      <h3>setIsolationLevel</h3>
+      <p><font face="Courier">/*<br>
+Sets transaction isolation level.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <font face="Courier">
+      <p><font face="Courier">SAConnection con;</font></p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p><strong>con.setIsolationLevel(SA_Serializable);</strong></p>
+      </font>
+      <hr id="HR1"> <a name="IsolationLevel"></a>
+      <h3>IsolationLevel</h3>
+      <p><font face="Courier">/*<br>
+Query current isolation level.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier"><font face="Courier">SAConnection con;</font></font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier"><font face="Courier"><font face="Courier">/*
+connect to database and so on */<br>
+      </font>...</font></font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier"><font face="Courier">switch(</font><font
+ face="Courier"><strong>con.IsolationLevel()</strong>)<br>
+      </font><font face="Courier">{<br>
+      </font><font face="Courier">&nbsp;&nbsp;&nbsp; case
+SA_LevelUnknown:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for
+default isolation*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_ReadCommitted:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for Read
+Committed*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_ReadCommitted:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for Read
+Committed*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_RepeatableRead:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for
+Repeatable Read*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+&nbsp;&nbsp;&nbsp; case SA_Serializable:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*do smth. specific for
+Serializable*/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br>
+      </font><font face="Courier">}</font></font></p>
+      <font face="Courier"> </font>
+      <hr id="HR1"> <a name="setAutoCommit"></a>
+      <h3>setAutoCommit</h3>
+      <p><font face="Courier">/*<br>
+This example turns autocommit on.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <font face="Courier">
+      <p><font face="Courier">SAConnection con;</font></p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p><strong>con.setAutoCommit(SA_AutoCommitOn);</strong> </p>
+      </font>
+      <hr id="HR1"> <a name="AutoCommit"></a>
+      <h3>AutoCommit</h3>
+      <p><font face="Courier">/*<br>
+Query current autocommit option<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <font face="Courier">
+      <p><font face="Courier">SAConnection con;</font></p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p> ...</p>
+      <p>switch(<strong>con.AutoCommit()</strong>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp; case SA_AutoCommitUnknown:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf("Autocommit mode is
+unknown (default)");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;&nbsp; case SA_AutoCommitOff:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf("Autocommit mode is
+off");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;&nbsp; case SA_AutoCommitOn:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf("Autocommit mode is
+on");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+}</p>
+      </font>
+      <hr id="HR1"> <a name="Commit"></a>
+      <h3>Commit</h3>
+      <p><font face="Courier">/*<br>
+Commits transaction.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <font face="Courier">
+      <p><font face="Courier">SAConnection con;</font></p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p>/*Create commands, execute SQL statements*/<br>
+...</p>
+      <p><strong>con.Commit()</strong> ;</p>
+      </font>
+      <hr id="HR1"> <a name="Rollback"></a>
+      <h3>Rollback</h3>
+      <font face="Courier">
+      <p><font face="Courier">/*<br>
+Rollbacks transaction.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <font face="Courier">
+      <p><font face="Courier">SAConnection con;</font></p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p>/*Create commands, execute SQL statements*/<br>
+...</p>
+      <p><strong>con.Rollback()</strong> ;</p>
+      </font> </font>
+      <hr id="HR1"> <a name="NativeAPI"></a>
+      <h3>NativeAPI</h3>
+      <p><font face="Courier">/*<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <font face="Courier"><font face="Courier">
+      <p>#include &lt;ora7API.h&gt;<br>
+#include &lt;oraAPI.h&gt;</p>
+      </font> </font>
+      <p><font face="Courier"><font face="Courier">SAConnection con;</font></font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">con.Connect("dbname", "username",
+"password", SA_Oracle_Client);</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">if(con.ClientVersion() &gt;= 0x0008000)
+/* OCI 8.x */<br>
+{</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; ora8API *p_ora8API =
+(ora8API *)<strong>con.NativeAPI()</strong> ;</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; /* call any OCI*
+function(s) */<br>
+&nbsp;&nbsp;&nbsp; /* f.ex., p_ora8API-&gt;OCIStmtExecute(...) */<br>
+&nbsp;&nbsp;&nbsp; ...</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">}<br>
+else /* OCI 7.x */<br>
+{</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; ora7API *p_ora7API =
+(ora7API *)<strong>con.NativeAPI()</strong> ;</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; /* call any o*
+function(s) */<br>
+&nbsp;&nbsp;&nbsp; /* f.ex., p_ora7API-&gt;oparse(...) */<br>
+&nbsp;&nbsp;&nbsp; ...</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier"> }</font></p>
+      <font face="Courier"> </font>
+      <hr id="HR1"> <a name="NativeHandles"></a>
+      <h3>NativeHandles</h3>
+      <p><font face="Courier">/*<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <font face="Courier"><font face="Courier">
+      <p>#include &lt;ora7API.h&gt;<br>
+#include &lt;oraAPI.h&gt;</p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p>if(con.ClientVersion() &gt;= 0x0008000) /* OCI 8.x */<br>
+{</p>
+      <p>&nbsp;&nbsp;&nbsp; ora8API *p_ora8API = (ora8API
+*)con.NativeAPI();</p>
+      <p>&nbsp;&nbsp;&nbsp; ora8ConnectionHandles *p_ora8CH =
+(ora8ConnectionHandles *)con.NativeHandles();</p>
+      <p>&nbsp;&nbsp;&nbsp; /* call any OCI* function(s) */<br>
+&nbsp;&nbsp;&nbsp; /*&nbsp;passing required connection handles */<br>
+&nbsp;&nbsp;&nbsp; /* f.ex., p_ora8CH-&gt;m_pOCIServer */<br>
+&nbsp;&nbsp;&nbsp; ...</p>
+      <p>}<br>
+else /* OCI 7.x */<br>
+{</p>
+      <p>&nbsp;&nbsp;&nbsp; ora7API *p_ora7API = (ora7API
+*)con.NativeAPI();</p>
+      <p>&nbsp;&nbsp;&nbsp; ora7ConnectionHandles *p_ora7CH =
+(ora7ConnectionHandles *)con.NativeHandles();</p>
+      <p>&nbsp;&nbsp;&nbsp; /* call any o* function(s) */<br>
+&nbsp;&nbsp;&nbsp; /*&nbsp;passing required connection handles */<br>
+&nbsp;&nbsp;&nbsp; /* f.ex., p_ora7CH-&gt;m_lda */<br>
+&nbsp;&nbsp;&nbsp; ...</p>
+      <p> }</p>
+      </font> </font>
+      <hr><font face="Courier"> </font>
+      <h3><font face="Courier"><a name="Option">Option</a></font></h3>
+      <font face="Courier"> <font face="Courier"><font face="Courier">
+      <p> /*<br>
+Example 1. InterBase server option SQL Dialect.<br>
+Exception handling is omitted for simplicity.<br>
+*/ </p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_InterBase_Client);</p>
+      <p><strong>con.setOption("SQLDialect")</strong>="1";<br>
+/* All of the following commands associated with the connection will
+use SQL Dialect 1<br>
+*/</p>
+      <p> SACommand cmd1(&amp;con, "Select task from test_tbl");</p>
+      <p> cmd1.Execute();</p>
+      <p> SACommand cmd2(&amp;con, "Update test_tbl set task=3 where
+task= 8");</p>
+      <p> cmd2.Execute();</p>
+      <p> /* assume t_field is a TIMESTAMP type field (introduced in
+SQLDialect 3)<br>
+*/<br>
+SACommand cmd3(&amp;con, "Select t_field from test_tbl");</p>
+      <p><strong></strong>/* You have to change SQLDialect option to
+SQL Dialect 3 to execute this command correctly<br>
+*/<br>
+      <strong>cmd3.setOption("SQLDialect")</strong>= "3";</p>
+      <p>cmd3.Execute(); // no error</p>
+      <font face="Courier"><font face="Courier">
+      <p> cmd2.setCommandText("Delete from test_tbl where task=0");<br>
+/* cmd2 still use SQL Dialect 1 */ </p>
+      <p> // See also <a href="Command_Examples.html#Option">SACommand::Option
+examples</a> </p>
+      </font> </font></font> </font> </font>
+      <hr id="HR1"><font face="Courier"> </font>
+      <h3><font face="Courier">&nbsp;Problems and Questions</font></h3>
+      <font face="Courier"> </font>
+      <p><font face="Courier"> If you haven't found the answer to your
+questions or have some problems on using the Library, please, send
+e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </font></p>
+      <font face="Courier"> </font></td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

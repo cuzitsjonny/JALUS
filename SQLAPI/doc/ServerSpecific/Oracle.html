@@ -1,0 +1,1186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <meta name="KEYWORDS" content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+    <meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+    <title>SQLAPI++ Library - Server Specific Guide - Oracle</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+    <!--class="GlbHdr"-->
+    <table id="TABLE1" frame="hsides" height="40" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" width="600">
+        <tbody>
+            <tr>
+                <!--class="GlbDefault"-->
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a style="text-decoration: none;" href="../index.html"><font color="white" face="sans-serif" size="3">
+                    <b>Home</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a style="text-decoration: none;" href="../HowTo/index.html"><font color="white" face="sans-serif" size="3"><b>How To</b></font></a></td>
+                <!--class="GlbActive"-->
+                <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"><a style="text-decoration: none;" href="../OnLineDoc/index.html"><font color="white" face="sans-serif" size="3"><b>Online Documentation</b></font></a></td>
+                <!--class="GlbDefault"-->
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a style="text-decoration: none;" href="../Support/index.html"><font color="white" face="sans-serif" size="3"><b>Support</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a style="text-decoration: none;" href="../Download/index.html"><font color="white" face="sans-serif" size="3"><b>Download</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a style="text-decoration: none;" href="../Order/index.html"><font color="white" face="sans-serif" size="3"><b>Order</b></font></a></td>
+            </tr>
+        </tbody>
+    </table>
+    &nbsp;
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <table width="100%">
+        <tbody>
+            <tr>
+                <td valign="top" width="165">
+                    <!--class="LeftMenu"-->
+                    <table frame="void" cellspacing="5" width="165">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <br>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" height="12" align="middle" width="12">
+                                    <a style="text-decoration: none;" href="../OnLineDoc/Command.html"><font color="white" face="sans-serif" size="2">SACommand</font></a><font color="white" face="sans-serif" size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" height="12" align="middle" width="12">
+                                    <a style="text-decoration: none;" href="../OnLineDoc/Connection.html"><font color="white" face="sans-serif" size="2">SAConnection</font></a><font color="white" face="sans-serif" size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" height="12" align="middle" width="12">
+                                    <a style="text-decoration: none;" href="../OnLineDoc/Exception.html"><font color="white" face="sans-serif" size="2">SAException</font></a> </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" height="12" align="middle" width="12">
+                                    <a style="text-decoration: none;" href="../OnLineDoc/Field.html"><font color="white" face="sans-serif" size="2">SAField</font></a><font color="white" face="sans-serif" size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" height="12" align="middle" width="12">
+                                    <a style="text-decoration: none;" href="../OnLineDoc/Param.html"><font color="white" face="sans-serif" size="2">SAParam</font></a><font color="white" face="sans-serif" size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" height="12" align="middle" width="12">
+                                    <a style="text-decoration: none;" href="../OnLineDoc/String.html"><font color="white" face="sans-serif" size="2">SAString</font></a><font color="white" face="sans-serif" size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" height="12" align="middle" width="12">
+                                    <a style="text-decoration: none;" href="../OnLineDoc/DateTime.html"><font color="white" face="sans-serif" size="2">SADateTime</font></a><font color="white" face="sans-serif" size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" height="12" align="middle" width="12">
+                                    <a style="text-decoration: none;" href="../OnLineDoc/Numeric.html"><font color="white" face="sans-serif" size="2">SANumeric</font></a><font color="white" face="sans-serif" size="2"> </font></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a style="text-decoration: none;" href="../OnLineDoc/Enums.html"><font color="white" face="sans-serif" size="2">Enums and Typedefs</font></a><font color="white" face="sans-serif" size="2"> </font></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <!--empty column-->
+                <td width="20">
+                    <p></p>
+                    <br>
+                </td>
+                <!--Content-->
+                <td style="left: 193px; top: 0px;" align="left" valign="top">
+                    <center>
+                        <h2><a href="index.html">Server Specific Guide</a></h2>
+                        <h1>Oracle</h1>
+                        <p align="left">
+                            SQLAPI++ allows to work with a number of SQL
+database servers. It provides common mechanisms to access database, and
+as a general rule they work for any database server. But each server
+has some specific features which a developer has to
+know in order to leverage server's unique features and avoid potential
+errors.
+                        </p>
+                        <p align="left">
+                            This page collects all <strong>specific</strong>
+                            information that concerns working with <strong>Oracle</strong> server
+using SQLAPI++ Library. Full information about using SQLAPI++ see in <a href="../HowTo/index.html">How To</a> and <a href="../OnLineDoc/index.html">Online Documentation</a>.
+                        </p>
+                        <p align="left">Available topics: </p>
+                    </center>
+                    <p>
+                        <a href="Oracle.html#Connecting%20to%20a%20database">Connecting
+to
+a database</a>
+                    </p>
+                    <p>
+                        <a href="Oracle.html#Transaction%20isolation%20levels">Transaction
+isolation
+levels</a>
+                    </p>
+                    <p>
+                        <a href="Oracle.html#Working%20with%20Long%20or%20Lob%28CLob,%20BLob%29%20data">Working
+with
+Long or Lob(CLob, BLob) data</a>
+                    </p>
+                    <p>
+                        <a href="Oracle.html#Returning%20output%20parameters">Returning
+output
+parameters</a>
+                    </p>
+                    <p><a href="Oracle.html#Cancelling%20queries">Cancelling queries</a></p>
+                    <p>
+                        <a href="Oracle.html#Connection_and_command_options">Connection,
+command,
+parameter and field options</a>
+                    </p>
+                    <p>
+                        <a href="Oracle.html#Getting%20native%20Oracle%20API">Getting
+native Oracle API</a>
+                    </p>
+                    <p>
+                        <a href="Oracle.html#Getting%20native%20Oracle%20connection%20related%20handles">Getting
+native
+Oracle connection related handles</a>
+                    </p>
+                    <p>
+                        <a href="Oracle.html#Getting%20native%20Oracle%20command%20related%20handles">Getting
+native
+Oracle command related handles</a>
+                    </p>
+                    <p><a href="Oracle.html#Error%20handling">Error handling</a></p>
+                    <p>
+                        <a href="Oracle.html#Special%20header%20files%20-%20Compile%20time">Special
+header
+files - Compile time</a>
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Connecting to a database">Connecting to a database</a>
+                    </h3>
+                    <p>
+                        To connect to a database you should create a connection object
+and then connect it. A connection object is represented by <a href="../OnLineDoc/Connection.html">SAConnection</a> class. After the
+connection is created you need to connect it to <strong>Oracle</strong>
+                        server using <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>
+                        method
+                    </p>
+                    <p>
+                        <font face="Arial"><b>void Connect( const SAString &amp;</b>sDBString<b>,
+const
+SAString &amp;</b>sUserID<b>, const SAString &amp;</b>sPassword<b>,
+SAClient_t</b> eSAClient<b> = SA_Client_NotSpecified );</b><b>
+    <br>
+</b></font>
+                    </p>
+                    <p>with the following parameters:</p>
+                    <p>
+                        <em>sDBString.</em>&nbsp;&nbsp;&nbsp; The database name as it
+is specified in TNSNAMES.ORA file. An additional information about
+Oracle connection string available with <a href="http://www.oracle.com/technetwork/database/features/oci/ic-faq-094177.html">Oracle
+    Instant
+    Client FAQ
+</a>
+                        (&lt;hostname&gt;[:&lt;port&gt;][/&lt;service_name&gt;] ).<br>
+                        <em>sUserID.</em>&nbsp;&nbsp;&nbsp; A string containing a user
+name to use when establishing the connection. If <em>sUserID</em>
+                        parameter is empty, SQLAPI++ Library requests Oracle external
+authentication.<br>
+                        <em>sPassword.</em>&nbsp;&nbsp;&nbsp; A string containing a
+password to use when establishing the connection.<br>
+                        <em>eSAClient.</em>&nbsp;&nbsp;&nbsp; Optional. One of the
+following values from <strong>SAClient_t</strong> enum:
+                    </p>
+                    <ul>
+                        <li><strong>SA_Oracle_Client</strong>&nbsp;&nbsp;&nbsp; Oracle
+client. </li>
+                        <li><strong>SA_Client_NotSpecified</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+Used
+by default if <em>eSAClient</em>parameter is omitted.&nbsp; You
+can use this default value only if you have call <a href="../OnLineDoc/Connection_setClient.html">SAConnection::setClient</a>
+                            method with <strong>SA_Oracle_Client</strong> constant before.</li>
+                    </ul>
+                    <p>
+                        The SQLAPI++ Library requires OCI version 7.3 or higher. The
+Library tries to connect to Oracle using new OCI8 (Oracle 8 and higher)
+first. If it fails it tries to connect using OCI7. If you want to use
+directly OCI7 or OCI8 API you should set "<strong>UseAPI</strong>" <a href="Oracle.html#Connection_and_command_options">connection option</a>
+                        before specifying <strong>Oracle</strong> client or connecting to
+database.
+                    </p>
+                    <p>
+                        For more details see <a href="../HowTo/connect.html">How To -
+Connecting to databases</a>, <a href="../OnLineDoc/Connection_Usage.html">SAConnection object</a>, <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>,
+      <a href="../OnLineDoc/Connection_setOption.html">SAConnection::setOption</a>
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Transaction isolation levels">Transaction isolation
+levels</a> </h3>
+                    <p>
+                        SQL-92 defines four isolation levels, all of which are
+supported by SQLAPI++:
+                    </p>
+                    <ul>
+                        <li>Read uncommitted (the lowest level where transactions are
+isolated just enough to ensure that physically corrupt data is not
+read) </li>
+                        <li>Read committed </li>
+                        <li>Repeatable read </li>
+                        <li>Serializable (the highest level, where transactions are
+completely isolated from one another)</li>
+                    </ul>
+                    <p>
+                        SQLAPI++ maps different isolation levels on <strong>Oracle</strong>
+                        server in the following way:
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>SA_ReadUncommitted</strong>
+                        = 'READ COMMITTED'<br>
+                        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_ReadCommitted</strong>
+                        = 'READ COMMITTED'<br>
+                        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_RepeatableRead</strong>
+                        = 'SERIALIZABLE'<br>
+                        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_Serializable</strong> =
+'SERIALIZABLE'
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Connection_setIsolationLevel.html">SAConnection::setIsolationLevel</a>.</p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Working with Long or Lob(CLob, BLob) data">Working
+with Long or Lob(CLob, BLob) data</a> </h3>
+                    <p>
+                        <strong>1.</strong> SQLAPI++ supports four types for working
+with Lob(CLob, BLob) data:
+                    </p>
+                    <p>
+                        <table style="width: 100%;" border="1" cellpadding="1" cellspacing="1" width="100%">
+                            <tbody>
+                                <tr bgcolor="navy">
+                                    <td><font style="background-color: rgb(0, 0, 128);" color="white">Name</font></td>
+                                    <td><font style="background-color: rgb(0, 0, 128);" color="white">C enum constant</font></td>
+                                </tr>
+                                <tr>
+                                    <td>LongBinary</td>
+                                    <td>SA_dtLongBinary</td>
+                                </tr>
+                                <tr>
+                                    <td>LongChar</td>
+                                    <td>SA_dtLongChar</td>
+                                </tr>
+                                <tr>
+                                    <td>BLob (Binary Large object)</td>
+                                    <td>SA_dtBLob</td>
+                                </tr>
+                                <tr>
+                                    <td>CLob (Character Large object)</td>
+                                    <td>SA_dtCLob</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        The table below shows how SQLAPI++ data types correspond with
+servers original data types:
+                    </p>
+                    <p>
+                        <table border="1" cellpadding="5" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p><strong>When using new OCI (Oracle 8 and higher):</strong></p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <em>SA_dtLongBinary</em> &lt;= &gt; LONG RAW<br>
+                                            <em>SA_dtLongChar</em> &lt;= &gt; LONG<br>
+                                            <em>SA_dtBLob</em> &lt;= &gt; BLOB, FILE<br>
+                                            <em>SA_dtCLob </em>&lt;= &gt; CLOB
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p><strong>When using OCI7:</strong></p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <em>SA_dtLongBinary</em> &lt;= &gt; LONG RAW<br>
+                                            <em>SA_dtLongChar</em> &lt;= &gt; LONG<br>
+                                            <em>SA_dtBLob</em> = &gt; LONG RAW<br>
+                                            <em>SA_dtCLob </em>= &gt; LONG
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        For more details see <a href="../HowTo/blobs.html">How To -
+Working with Long or Lob(CLob, BLob) data</a>
+                    </p>
+                    <p>
+                        <strong>2.</strong> Binding Lob(CLob, BLob) data when working
+with <strong>Oracle</strong> server has some differences from others
+(see <a href="../HowTo/bind.html">How To - Binding input parameters</a>).
+It's
+necessary for a name of bind variable to be the same as the column
+name it associated with.
+                    </p>
+                    <p>
+                        <font face="System">Ex.:&nbsp;&nbsp;&nbsp;&nbsp; Update TEST
+set <font color="maroon" face="">FBLOB = :fblob</font> where FKEY =
+'KEY'</font>
+                    </p>
+                    <p>
+                        Therefore, it's impossible to bind Lob(CLob, BLob) data to <strong>Oracle</strong>
+                        database by position.
+                    </p>
+                    <p>
+                        For more details see <a href="../HowTo/bind.html">How To -
+Binding input parameters</a>.
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Returning output parameters">Returning output
+parameters</a> </h3>
+                    <p>
+                        In <strong>Oracle</strong> output parameters are available
+immediately after calling <a href="../OnLineDoc/Command_Execute.html">SACommand::Execute</a>.
+                    </p>
+                    <p>
+                        SQLAPI++ Library automatically creates <a href="../OnLineDoc/Param.html">SAParam</a> object to represent
+function return value. You can refer to this <a href="../OnLineDoc/Param.html">SAParam</a> object using SQLAPI++
+predefined name <strong>"RETURN_VALUE"</strong>.
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Command_Execute.html">SACommand::Execute</a>, <a href="../OnLineDoc/Param_Usage.html">SAParam object</a>, <a href="../HowTo/return_param.html">How To - Returning Output Parameters</a>.</p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Cancelling queries">Cancelling queries</a> </h3>
+                    <p>
+                        Using <a href="../OnLineDoc/Command_Cancel.html">SACommand::Cancel</a>
+                        method you can cancel the following types of processing on a statement:
+                    </p>
+                    <ul type="disc">
+                        <li>A function running asynchronously on the statement.<br>
+                        </li>
+                        <li>A function running on the statement on another thread. </li>
+                    </ul>
+                    <p>
+                        SQLAPI++ calls <strong>obreak</strong> function with <strong>Oracle
+7</strong> (OCI7) to cancel a query. To get more details see <strong>obreak</strong>
+                        function description in <strong>Oracle</strong> documentation.
+                    </p>
+                    <p>
+                        SQLAPI++ calls <strong>OCIBreak</strong> function with <strong>Oracle
+8</strong> (OCI8) to cancel a query. To get more details see <strong>OCIBreak</strong>
+                        function description in <strong>Oracle</strong> documentation.
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Command_Cancel.html">SACommand::Cancel</a>.</p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Connection_and_command_options">Connection, command,
+parameter and field options</a> </h3>
+                    <p>
+                        A server specific option can relate to a connection,
+command,&nbsp; parameter or field. We recommend you specify each option
+in an appropriate object, although it is possible to specify them in
+the parental object as well. In that case the option affects all the
+child objects.
+                    </p>
+                    <p>A connection related option must be specified in a&nbsp; <a href="../OnLineDoc/Connection.html">SAConnection</a> object. </p>
+                    <p>
+                        A command related option may be specified in either <a href="../OnLineDoc/Connection.html">SAConnection</a> object or <a href="../OnLineDoc/Command.html">SACommand</a> object. If it is
+specified in <a href="../OnLineDoc/Connection.html">SAConnection</a>
+                        object it affects all the commands on that connection.
+                    </p>
+                    <p>
+                        A parameter related option may be specified in <a href="../OnLineDoc/Connection.html">SAConnection</a> object, <a href="../OnLineDoc/Command.html">SACommand</a> object or <a href="../OnLineDoc/Param.html">SAParam</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the parameters on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+                        object it affects all the parameters on that command.
+                    </p>
+                    <p>
+                        A field related option may be specified in <a href="../OnLineDoc/Connection.html">SAConnection</a> object, <a href="../OnLineDoc/Command.html">SACommand</a> object or <a href="../OnLineDoc/Field.html">SAField</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the fields on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+                        object it affects all the fields on that command.
+                    </p>
+                    <p>Specific options for <strong>Oracle</strong>:</p>
+                    <p>
+                        <table border="1" cellpadding="5" width="100%">
+                            <tbody>
+                                <tr bgcolor="#000094">
+                                    <td width="17%">
+                                        <p>
+                                            <strong><font color="white" face="">Option name /
+Scope</font></strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong><font color="white" face="">Description</font>
+                                            </strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>
+                                        <p align="center"><strong>UseAPI</strong></p>
+                                    </strong>
+                                        <p align="center">Connection related.</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            Forces SQLAPI++ Library to use directly OCI7 or new
+OCI8 (Oracle 8 and higher) API.
+                                        </p>
+                                        <p>
+                                            <em>Valid values</em>: "OCI7", "OCI8" and "OCIAuto".
+                                            <br>
+                                            <em>Default value</em>: "OCIAuto". In this case SQLAPI++
+tries to connect to Oracle using new OCI8 first. If it fails it tries
+to connect using OCI7.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">OCI8.LIBS</p>
+                                    </strong>
+                                        <div style="text-align: center;">
+                                            Connection related.
+Should be specified
+before the first connection is made.
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: top;">Forces SQLAPI++ Library to
+use specified OCI library.<br>
+                                        <br>
+                                        <em>Valid values</em> : Any valid OCI8 library name list.
+Names separated by ';' on Windows or ':' on other OS.<br>
+                                        <em>Default value</em>: Windows - "oci.dll", Linux
+-&nbsp; "libclntsh.so".</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>
+                                        <p align="center"><strong>PreFetchRows</strong></p>
+                                    </strong>
+                                        <p align="center">
+                                            Command related. Should be specified
+before command execution. <strong><strong></strong></strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            Forces SQLAPI++ Library to fetch rows in bulk, rather
+than retrieving records one by one.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values</em>: String containing number of rows
+in the fetch buffer.
+                                            <br>
+                                            <em>Default value</em>: "1".
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">ConnectAs<strong></strong></p>
+                                    </strong>
+                                        <p align="center">Connection related (OCI8).</p>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <p>
+                                            Forces SQLAPI++ to connect with SYSDBA or SYSOPER
+privileges.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values</em>: "SYSDBA" or "SYSOPER"<br>
+                                            <em>
+                                                <br>
+                                            </em>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">UseConnectionPool<strong></strong></p>
+                                    </strong>
+                                        <p align="center">Connection related (OCI8).</p>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <p>
+                                            Forces SQLAPI++ to use Oracle connection pool feature.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values:</em> One-based index of the used connection pool. 
+                                            <br>
+                                            <em>Default value:</em> "0" (no connection pool used).
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center"><strong>
+                                            UseConnectionPool_MinConn</strong></p>
+                                    </strong>
+                                        <p align="center">Connection related (OCI8).</p>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <p>
+                                           Minimal size of the connection pool.<br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values:</em> String containing the minimal size of the pool. 
+                                            <br>
+                                            <em>Default value:</em> "10".
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">UseConnectionPool_MaxConn</p>
+                                    </strong>
+                                        <p align="center">Connection related (OCI8).</p>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <p>
+                                           Maximal size of the connection pool.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values:</em> String containing the minimal size of the pool. 
+                                            <br>
+                                            <em>Default value:</em> "100".
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">UseConnectionPool_ConnIncr</p>
+                                    </strong>
+                                        <p align="center">Connection related (OCI8).</p>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <p>
+                                            The connection pool increment value.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values:</em> String containing the pool increment value. 
+                                            <br>
+                                            <em>Default value:</em> "10".
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">UseUCS2<strong></strong></p>
+                                    </strong>
+                                        <p align="center">
+                                            Connection related<br>
+                                            (OCI &gt;= 9,&nbsp; UNICODE).
+                                        </p>
+                                    </td>
+                                    <td style="vertical-align: top;">The UNICODE version of the
+SQLAPI++ uses UCS2 client character set for Oracle OCI &gt;= 9. This
+option allows to use pre-configured client character set with the UNICODE
+SQLAPI++ version.<em><br>
+    <br>
+    Valid values</em>: "No", "False" or "0".<br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top"><strong>
+                                        <p align="center">
+                                            NLS_CHAR<br>
+                                        </p>
+                                    </strong>
+
+                                        <p align="center">
+                                            Connection related<br>
+                                            (OCI &gt;= 9,&nbsp; non UNICODE).
+                                        </p>
+                                    </td>
+                                    <td valign="top">This
+option allows to specify client character set for entire connection with the non-UNICODE
+SQLAPI++ version.<em><br>
+    <br>
+    Valid values</em>:  String containing Oracle
+character set name ("US7ASCII", "CL8MSWIN1251", "SF7DEC", etc.) or its
+numeric code ("1", "171", "21", etc.). See Oracle documentation for
+more details. By default SQLAPI++ doesn't change Oracle settings for this option. See
+Oracle documentation for details.</td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">UseTimeStamp<strong></strong></p>
+                                    </strong>
+                                        <p align="center">
+                                            Connection related<br>
+                                            (OCI8).
+                                        </p>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <p>
+                                            This option allows to disable the using of the
+OCIDateTime.&nbsp; Useful when OCI version 8 and higher is used with
+old Oracle server versions don't support TimeStamp data type.<br>
+                                        </p>
+                                        <p><em>Valid values</em>: "No", "False" or "0".</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">APPNAME<strong></strong></p>
+                                    </strong>
+                                        <p align="center">
+                                            Connection related<br>
+                                            (OCI8)<br>
+                                        </p>
+                                    </td>
+                                    <td style="vertical-align: top;">OCI_ATTR_CLIENT_IDENTIFIER&nbsp;
+is
+used to identify client connection.<br>
+                                        <br>
+                                        <em>Valid values</em>: client application name string.
+                                        <br>
+                                        <em>Default value :</em>none.<br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">
+                                            OCI_ATTR_RECEIVE_TIMEOUT<br />
+                                            OCI_ATTR_SEND_TIMEOUT
+                                        </p>
+                                    </strong>
+                                        <p align="center">
+                                            Connection related<br>
+                                            (OCI8)<br>
+                                        </p>
+                                    </td>
+                                    <td style="vertical-align: top;">Undocumented OCI attributes allow to specify connection socket timeouts.
+                                        <br>
+                                        <br>
+                                        <em>Valid values</em>: timeout value (in milliseconds).
+                                        <br>
+                                        <em>Default value :</em>none.<br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">Overload<strong></strong></p>
+                                    </strong>
+                                        <p align="center">Command related.</p>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <p>
+                                            It's used when SQLAPI++ tries to detect package method
+parameters. When SQLAPI++ enumerates the package methods it uses the
+method with "Overload" number to describe the parameters.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values: </em>String containing a decimal
+number. <em>Default value</em>: "1".
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">
+                                            UseDynamicCursor<br>
+                                            or<br>
+                                            Scrollable<br>
+                                        </p>
+                                    </strong>
+
+                                        <div style="text-align: center;">
+                                            Command related. Should
+be specified
+before describing parameters or command execution.
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: top;">Forces SQLAPI++ to use
+scrollable readonly cursor. Requires OCIStmtFetch2 API function.<br>
+                                        <br>
+                                        <em>Valid values</em>: "True", "1". <em>Default value</em>:
+"false".<br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>
+                                        <p align="center"><strong><font face="" size="2">OCI_ATTR_CHARSET_ID</font></strong></p>
+                                    </strong>
+                                        <p align="center">
+                                            <font face="" size="2"><font face="" size="3">Parameter related. Should be specified before command
+execution.</font> <strong><strong></strong></strong></font>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            This option sets character set ID of the parameter.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values</em>: String containing Oracle
+character set name ("US7ASCII", "CL8MSWIN1251", "SF7DEC", etc.) or its
+numeric code ("1", "171", "21", etc.). See Oracle documentation for
+more details.
+                                            <br>
+                                            By default SQLAPI++ doesn't change Oracle settings for this option. See
+Oracle documentation for details.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>
+                                        <p align="center"><strong><font face="" size="2">OCI_ATTR_CHARSET_FORM</font></strong></p>
+                                    </strong><font face="" size="2"></font>
+                                        <p align="center">
+                                            <font face="" size="2"><font face="" size="2"><font face="" size="3">Parameter related. Should be
+specified before command execution.</font></font></font>
+                                        </p>
+                                        <font face="" size="2"><strong><strong>
+                                            <p align="center">&nbsp;</p>
+                                        </strong></strong></font></td>
+                                    <td>
+                                        <p>
+                                            This option sets the character set form of the
+parameter.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values</em>: "SQLCS_IMPLICIT", "SQLCS_NCHAR".
+See Oracle documentation for more details.&nbsp;
+                                            <br>
+                                            By default SQLAPI++ doesn't change Oracle settings for this option. See
+Oracle documentation for details.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>
+                                        <p align="center"><strong><font face="" size="2">OCI_ATTR_CHARSET_ID</font></strong></p>
+                                    </strong>
+                                        <p align="center">
+                                            <font face="" size="2"><font face="" size="3">Field related. Should be specified before fetching.</font> <strong>
+                                                <strong></strong></strong></font>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            This option sets character set ID of the field.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values</em>: String containing Oracle
+character set name ("US7ASCII", "CL8MSWIN1251", "SF7DEC", etc.) or its
+numeric code ("1", "171", "21", etc.). See Oracle documentation for
+more details.
+                                            <br>
+                                            By default SQLAPI++ doesn't change Oracle settings for this option. See
+Oracle documentation for details.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>
+                                        <p align="center"><strong><font face="" size="2">OCI_ATTR_CHARSET_FORM</font></strong></p>
+                                    </strong><font face="" size="2">
+                                        <p align="center"><font face="" size="2"><font face="" size="3">Field related. Should be specified before fetching.</font></font></p>
+                                        <strong><strong>
+                                            <p align="center">&nbsp;</p>
+                                        </strong></strong></font></td>
+                                    <td>
+                                        <p>
+                                            This option sets the character set form of the field.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values</em>: "SQLCS_IMPLICIT", "SQLCS_NCHAR".
+See Oracle documentation for more details.&nbsp;
+                                            <br>
+                                            By default SQLAPI++ doesn't change Oracle settings for this option. See
+Oracle documentation for details.
+                                            <br>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>
+                                        <p align="center">
+                                            <strong><font face="" size="2">OCI_ATTR_PREFETCH_ROWS<br />
+                                                OCI_ATTR_PREFETCH_MEMORY</font></strong>
+                                        </p>
+                                    </strong><font face="" size="2">
+                                        <p align="center"><font face="" size="2"><font face="" size="3">Command related. Should be specified before describing parameters or command execution.</font></font></p>
+                                        <strong><strong>
+                                            <p align="center">&nbsp;</p>
+                                        </strong></strong></font></td>
+                                    <td>
+                                        <p>
+                                            This options set the corresponding OCI statement attribute values.
+                                            <br>
+                                        </p>
+                                        <p>
+                                            <em>Valid values</em>: Any integer value.
+See Oracle documentation for more details.&nbsp;
+                                            <br>
+                                            By default SQLAPI++ doesn't change Oracle settings for these options. See
+Oracle documentation for details.
+                                            <br>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        For more details see <a href="../OnLineDoc/Connection_setOption.html">SAConnection::setOption</a>,
+
+      <a href="../OnLineDoc/Command_setOption.html">SACommand::setOption</a>,
+
+      <a href="../OnLineDoc/Field_setOption.html">SAField::setOption</a>,
+
+      <a href="../OnLineDoc/Param_setOption.html">SAParam::setOption</a>.
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Getting native Oracle API">Getting native Oracle API</a>
+                    </h3>
+                    <p>
+                        You can call client specific API functions which are not
+directly supported by SQLAPI++ Library. <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>
+                        method returns a pointer to the set of native API functions available
+for <strong>Oracle</strong> . To use the database API directly you
+have to downcast this <strong>saAPI</strong> pointer to the
+appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with <strong>Oracle</strong>
+                        API. Note that using appropriate type casting depends on an API version
+(that generally mean that you have to explicitly check client version
+before casting, see <a href="../OnLineDoc/Connection_ClientVersion.html">SAConnection::ClientVersion</a>
+                        method).
+                    </p>
+                    <p>
+                        <table border="1" cellpadding="5" width="100%">
+                            <tbody>
+                                <tr bgcolor="#000094">
+                                    <td width="30">
+                                        <p><strong><font color="white" face="">DBMS client</font> </strong></p>
+                                    </td>
+                                    <td style="width: 300px;" width="300">
+                                        <p><strong><font color="white" face="">Type casting</font> </strong></p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong><font color="white" face="">Additional
+                                                <br>
+                                                include file</font> </strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p><strong>Oracle 7 (OCI7)</strong></p>
+                                    </td>
+                                    <td>
+                                        <p>Cast the result to <strong>class ora7API</strong>:</p>
+                                        <p>
+                                            <font face="System">saAPI *pResult = con.NativeAPI();<br>
+                                                ora7API *p_ora7API = (ora7API *)pResult;</font>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p><strong>#include &lt;ora7API.h&gt;</strong></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p><strong>Oracle 8 and higher&nbsp;(OCI8)</strong></p>
+                                    </td>
+                                    <td>
+                                        <p>Cast the result to <strong>class ora8API</strong>:</p>
+                                        <p>
+                                            <font face="System">saAPI *pResult = con.NativeAPI();<br>
+                                                ora8API *p_ora8API = (ora8API *)pResult;</font>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p><strong>#include &lt;oraAPI.h&gt;</strong></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        To get more information about DBMS API functions see this DBMS
+specific documentation.&nbsp;
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>.</p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Getting native Oracle connection related handles">Getting
+native
+Oracle connection related handles</a> </h3>
+                    <p>
+                        You have to use native API handles when you want to call
+specific <strong>Oracle</strong> API functions which are not directly
+supported by the Library. API functions usually need to receive one or
+more active handles as a parameter(s). <a href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>
+                        method returns a pointer to the set of native API <strong>connection
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saConnectionHandles</strong> pointer to the
+appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with specific <strong>Oracle</strong>
+                        &nbsp;&nbsp; API. Note that using appropriate type casting depends on
+an API version (that generally mean that you have to explicitly check
+client version before casting, see <a href="../OnLineDoc/Connection_ClientVersion.html">SAConnection::ClientVersion</a>
+                        method).
+                    </p>
+                    <p>
+                        <table border="1" cellpadding="5" width="100%">
+                            <tbody>
+                                <tr bgcolor="#000094">
+                                    <td width="17%">
+                                        <p><strong><font color="white" face="">DBMS client</font> </strong></p>
+                                    </td>
+                                    <td>
+                                        <p><strong><font color="white" face="">Type casting</font> </strong></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p><strong>Oracle 7 (OCI7)</strong></p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong><font color="maroon" face="">Cast the result</font></strong>
+                                            to <strong>class ora7ConnectionHandles</strong>:
+                                        </p>
+                                        <font face="System">
+                                            <p>
+                                                <strong><font color="maroon" face="">#include
+&lt;ora7API.h&gt;</font> </strong>
+                                            </p>
+                                            <p>
+                                                saConnectionHandles *pResult = con.NativeHandles();<br>
+                                                ora7ConnectionHandles *p_ora7CH =
+                                                <br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(ora7ConnectionHandles
+*)pResult;
+                                            </p>
+                                            <p><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </p>
+                                            <ul>
+                                                <li><font face="Times New Roman">Lda_Def&nbsp;
+m_lda;&nbsp;</font> </li>
+                                                <li><font face="Times New Roman">ub1&nbsp; m_hda[512];</font></li>
+                                            </ul>
+                                        </font></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p><strong>Oracle 8 and higher(OCI8)</strong></p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong><font color="maroon" face="">Cast the result</font></strong>
+                                            to <strong>class ora8ConnectionHandles</strong>:
+                                        </p>
+                                        <font face="System"><font face="System">
+                                            <p>
+                                                <strong><font color="maroon" face="">#include
+&lt;oraAPI.h&gt;</font> </strong>
+                                            </p>
+                                            <p>
+                                                saConnectionHandles *pResult = con.NativeHandles();<br>
+                                                ora8ConnectionHandles *p_ora8CH =<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(ora8ConnectionHandles
+*)pResult;
+                                            </p>
+                                            <p><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </p>
+                                        </font><font face="System">
+                                            <ul>
+                                                <li><font face="Times New Roman">OCIEnv *m_pOCIEnv; </font>
+                                                </li>
+                                                <li><font face="Times New Roman">OCIError *m_pOCIError; </font>
+                                                </li>
+                                                <li><font face="Times New Roman">OCISvcCtx *m_pOCISvcCtx;
+                                                </font></li>
+                                                <li><font face="Times New Roman">OCIServer *m_pOCIServer;
+                                                </font></li>
+                                                <li><font face="Times New Roman">OCISession
+*m_pOCISession;</font></li>
+                                            </ul>
+                                        </font></font></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp;
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>.</p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Getting native Oracle command related handles">Getting
+native
+Oracle command related handles</a> </h3>
+                    <p>
+                        You have to use native API handles when you want to call
+specific <strong>Oracle</strong> API functions which are not directly
+supported by the Library. API functions usually need to receive one or
+more active handles as a parameter(s). <a href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>
+                        method returns a pointer to the set of native API <strong>command
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saCommandHandles</strong> pointer to the appropriate
+type and use its implementation-specific members. The following table
+shows what type cast you have to make and what additional header file
+you have to include to work with specific <strong>Oracle</strong> API.
+Note that using appropriate type casting depends on an API version
+(that generally mean that you have to explicitly check client version
+before casting, see <a href="../OnLineDoc/Connection_ClientVersion.html">SAConnection::ClientVersion</a>
+                        method).
+                    </p>
+                    <p>
+                        <table border="1" cellpadding="5" width="100%">
+                            <tbody>
+                                <tr bgcolor="#000094">
+                                    <td width="17%">
+                                        <p><strong><font color="white" face="">DBMS client</font> </strong></p>
+                                    </td>
+                                    <td>
+                                        <p><strong><font color="white" face="">Type casting</font> </strong></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p><strong>Oracle 7 (OCI7)</strong></p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong><font color="maroon" face="">Cast the result</font></strong>
+                                            to <strong>class ora7CommandHandles</strong>:
+                                        </p>
+                                        <font face="System">
+                                            <p>
+                                                <strong><font color="maroon" face="">#include
+&lt;ora7API.h&gt;</font> </strong>
+                                            </p>
+                                            <p>
+                                                saCommandHandles *pResult = cmd.NativeHandles();<br>
+                                                ora7CommandHandles *p_ora7CH =
+                                                <br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(ora7CommandHandles
+*)pResult;
+                                            </p>
+                                            <p><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </p>
+                                            <ul>
+                                                <li><font face="Times New Roman">Cda_Def&nbsp; m_cda;</font></li>
+                                            </ul>
+                                        </font></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p><strong>Oracle 8 and higher(OCI8)</strong></p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong><font color="maroon" face="">Cast the result</font></strong>
+                                            to <strong>class ora8CommandHandles</strong>:
+                                        </p>
+                                        <font face="System"><font face="System"></font></font>
+                                        <p><font face="System"><font face="System"><strong><font color="maroon" face="">#include &lt;oraAPI.h&gt;</font> </strong></font></font></p>
+                                        <font face="System"><font face="System"></font></font>
+                                        <p>
+                                            <font face="System"><font face="System">saCommandHandles
+*pResult = cmd.NativeHandles</font>();<br>
+                                                ora8CommandHandles *p_ora8CH =<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(ora8CommandHandles
+*)pResult;
+                                            </font>
+                                        </p>
+                                        <font face="System"></font>
+                                        <p><font face="System"><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </font></p>
+                                        <font face="System"></font>
+                                        <ul>
+                                            <font face="System">
+                                                <li><font face="Times New Roman">OCIStmt
+*m_pOCIStmt; </font></li>
+                                                <li><font face="Times New Roman">OCIError *m_pOCIError;</font></li>
+                                            </font>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp;
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>.</p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Error handling">Error handling</a> </h3>
+                    <p>
+                        When an error occurs inside SQLAPI++ Library it throws an
+exception of type <a href="../OnLineDoc/Exception.html">SAException</a>.
+
+      <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+                        method gets an error position in SQL statement. In <strong>Oracle</strong>
+                        server <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+                        method returns parse error offset.
+                    </p>
+                    <p>
+                        For more details see <a href="../HowTo/errors.html">How To -
+Error handling</a>, <a href="../OnLineDoc/Exception_Usage.html">SAException
+object</a>.
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Special header files - Compile time">Special header
+files - Compile time</a> </h3>
+                    <p>
+                        The header files are in the <strong>include</strong>
+                        subdirectory of SQLAPI++ distributions:<br>
+                        <strong>#include &lt;SQLAPI.h&gt; </strong>- main header, should
+be used whenever SQLAPI++ is used.<br>
+                        <strong>#include &lt;ora7API.h&gt;, &lt;oraAPI.h&gt; </strong>- <strong>Oracle</strong>
+                        API, should be included if direct OCI calls are required.
+                    </p>
+                    <p>
+                        For more details see <a href="../OnLineDoc/index.html#Instructions%20for%20Compiling%20and%20Linking%20Applications%20with%20SQLAPI++">Online
+Documentation
+- Instructions for Compiling and Linking Applications
+with SQLAPI++</a>&nbsp;
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3>Problems and Questions</h3>
+                    <p>
+                        If you haven't found the answer to you questions or have some
+problems on using the Library, please, send e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>.
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

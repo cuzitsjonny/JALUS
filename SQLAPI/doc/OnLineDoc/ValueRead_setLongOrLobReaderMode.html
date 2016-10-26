@@ -1,0 +1,207 @@
+<html>
+<head>
+<meta name="KEYWORDS" content="
+      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+<meta name="DESCRIPTION" content=
+"SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+<title>SQLAPI++ Library - Online Documentation - SAValueRead::setLongOrLobReaderMode</title>
+</head>
+<body bgcolor="#ffffff" BACKGROUND="../images/bg.gif" text="#000000"><!--GlbHdr--> <table WIDTH="600" height="40" frame="hsides" BORDER="2" BORDERCOLOR="#004fcd" align="right" cellpadding="0" cellspacing="2" id="TABLE1">
+    
+    <tr><!--class="GlbDefault"-->        
+        <td width="70" bgcolor="#000094" bordercolor="black" align="middle"><A href="/index.html" style="TEXT-DECORATION: none">
+			<font color="white" size="3" face="sans-serif">
+			<b>Home</b></font></A></td></TD>
+        <td width="70" bgcolor="#000094" bordercolor="black" align="middle"><A href="/HowTo/index.html" style="TEXT-DECORATION: none">			<font color="white" size="3" face="sans-serif">
+			<b>How To</b></font></A></td><!--class="GlbActive"-->
+        <td width="70" bgcolor="#00bb00" bordercolor="black" align="middle"><A href="/OnLineDoc/index.html" style="TEXT-DECORATION: none">			<font color="white" size="3" face="sans-serif">
+			<b>Online Documentation</b></font></A></td><!--class="GlbDefault"-->        
+		<td width="70" bgcolor="#000094" bordercolor="black" align="middle"><A href="/Support/index.html" style="TEXT-DECORATION: none">			<font color="white" size="3" face="sans-serif">
+			<b>Support</b></font></A></td>
+        <td width=70 bgcolor=#000094 bordercolor=black align=middle><A href="/Download/index.html" style="TEXT-DECORATION: none" >
+			<font color=white size=3  face=sans-serif>
+			<b>Download</b></font></A></td>
+        <td width="70" bgcolor="#000094" bordercolor="black" align="middle"><A href="/Order/index.html" style="TEXT-DECORATION: none">			<font color="white" size="3" face="sans-serif">
+			<b>Order</b></font></A></td>    </tr>
+</table>&nbsp;
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%">
+	<tr>
+		<td valign="top" width="165"><!--LeftMenu-->			
+			<table frame="void" CELLSPACING="5" width="165">
+				<tr><td><p>&nbsp;</p></td>
+				</tr>
+				<tr>
+					<td><img align="middle" src="../images/green.gif" WIDTH="12" HEIGHT="12"><A href="Command.html" style="TEXT-DECORATION: none">
+					<font color="white" size="2" face="sans-serif">
+					SACommand</A> </FONT> </td>
+				</tr>
+				<tr>
+					<td><img align="middle" src="../images/green.gif" WIDTH="12" HEIGHT="12"><A href="Connection.html" style="TEXT-DECORATION: none">
+					<font color="white" size="2" face="sans-serif">
+					SAConnection</A> </FONT> </td>
+				</tr>
+				<tr>
+					<td><img align="middle" src="../images/green.gif" WIDTH="12" HEIGHT="12"><A href="Exception.html" style="TEXT-DECORATION: none">
+					<font color="white" size="2" face="sans-serif">
+					SAException</font></A> </td>
+				</tr>
+				<tr>
+					<td><img align="middle" src="../images/green.gif" WIDTH="12" HEIGHT="12"><A href="Field.html" style="TEXT-DECORATION: none">
+					<font color="white" size="2" face="sans-serif">
+					SAField</A> </FONT> </td>
+				</tr>
+				<tr>
+					<td><img align="middle" src="../images/green.gif" WIDTH="12" HEIGHT="12"><A href="Param.html" style="TEXT-DECORATION: none">
+					<font color="white" size="2" face="sans-serif">
+					SAParam</A> </FONT> </td>
+				</tr>
+				<tr><td><hr></td></tr>
+				<tr>
+					<td><img align=middle src="../images/green.gif" WIDTH="12" HEIGHT="12">
+					<A href="String.html" style ="TEXT-DECORATION: none" >
+					<font color=white size=2 face=sans-serif>
+					SAString</A> </FONT> </td>
+				</tr>
+				<tr>
+					<td><img align=middle src="../images/green.gif" WIDTH="12" HEIGHT="12">
+					<A href="DateTime.html" style ="TEXT-DECORATION: none" >
+					<font color=white size=2 face=sans-serif>
+					SADateTime</A> </FONT> </td>
+				</tr>
+				<tr>
+					<td><img align=middle src="../images/green.gif" WIDTH="12" HEIGHT="12">
+					<A href="Numeric.html" style ="TEXT-DECORATION: none" >
+					<font color=white size=2 face=sans-serif>
+					SANumeric</A> </FONT> </td>
+				</tr>
+				<tr><td><hr></td></tr>
+				<tr>
+					<td>
+					<A href="Enums.html" style ="TEXT-DECORATION: none" >
+					<font color=white size=2 face=sans-serif>
+					Enums and Typedefs</A> </FONT> </td>
+				</tr>
+			</table>
+		</td><!--empty column-->
+		<td width="20"> 
+			<p>&nbsp;&nbsp;</p>
+		</td><!--Content-->
+		<td valign="top" align="left">
+			<table width="100%" cellspacing="2" cellpadding="2">
+				<tr>
+					<td align="left"><A href="ValueRead_Usage.html" style="TEXT-DECORATION: none"><h3>Usage</h3></A>
+					</td>
+					<td align="left"><A href="ValueRead.html" style="TEXT-DECORATION: none"><h3>Class Members</h3></A>
+					</td>
+					<td align="left"><A href="ValueRead_Examples.html" style="TEXT-DECORATION: none"><h3>Examples</h3></A>
+					</td>
+				</tr>			
+				<tr>
+					<td colspan="3"><h1>SAValueRead::setLongOrLobReaderMode</h1></td>
+				</tr>			
+			</table>
+
+			<p><font face="Arial"><b>     void setLongOrLobReaderMode(        </b> 
+            <STRONG>SALongOrLobReaderModes_t</STRONG> eMode<b> ) const;        </b></font></p>
+
+			<p>
+                Sets Long or Lob data reading 
+                           mode.
+			</p>
+            <h3>Parameters</h3>
+            <P><EM>eMode</EM>       .&nbsp;&nbsp;&nbsp; 
+            Can be one of the following <STRONG>SALongOrLobReaderModes_t</STRONG> enum values: </P>
+            <UL><STRONG><STRONG 
+                >
+                <LI><STRONG>SA_LongOrLobReaderDefault</STRONG></STRONG></STRONG>&nbsp;&nbsp;&nbsp; 
+                Long 
+                or Lob(CLob) data reading mode is default (automatic).<STRONG 
+                ><STRONG> 
+                <LI><STRONG>SA_LongOrLobReaderManual</STRONG></STRONG></STRONG>&nbsp;&nbsp;&nbsp; 
+                Long or Lob(CLob) data reading mode is manual.<STRONG 
+                ><STRONG> 
+                </STRONG></STRONG></LI></UL>
+
+			<h3>Remarks</h3>
+            <P>SQLAPI++ Library provides two ways to read Long or 
+            BLob(CLob) object's value (usually <A href="Field.html">SAField</A>
+            or <A href="Param.html">SAParam</A>     
+                                    
+                 object):</P>
+            <OL>
+                <LI>reading of Long or Lob data at once into 
+                an internal buffer (like ordinary string or binary values); 
+                <LI>piecewise reading of Long or Lob data using user defined 
+                callback.</LI></OL>
+            <P><STRONG>SA_LongOrLobReaderDefault</STRONG></STRONG></STRONG> reading 
+            mode used by            
+                 default.&nbsp;</P>
+            <P>If you want to control piecewise reading of 
+            Long or BLob(CLob) data you should call 
+            <STRONG>setLongOrLobReaderMode</STRONG>        
+                    method and set <STRONG 
+                >SA_LongOrLobReaderManual</STRONG>  reading 
+            mode for Long or BLob(CLob) parameters or fields you want to process 
+            with user defined callback. After that each 
+                fetch 
+            will skip reading Long and BLob(CLob) parameters that you set to be 
+            read manually. To read field or parameter defined to be read 
+            manually you 
+                should call <STRONG>ReadLongOrLob</STRONG> 
+                  method for each of them after 
+                the fetch. <STRONG>ReadLongOrLob</STRONG>
+                method will repeatedly call user 
+            defined callback declared by 
+            <A href="Enums.html#saLongOrLobReader_t" >saLongOrLobReader_t typedef</A>. To get more details about reading Long and BLob(CLob) 
+            data see <A 
+            href="Field_ReadLongOrLob.html">SAField::ReadLongOrLob</A>, 
+            <A 
+            href="Param_ReadLongOrLob.html">SAParam::ReadLongOrLob</A>
+            methods and <A href="../Examples/step6.cpp" >Query 
+            examples - Step 6</A>            
+                 .</P>
+            <P>To check current object's data reading mode 
+            use <A 
+            href="ValueRead_LongOrLobReaderMode.html">LongOrLobReaderMode</A>            
+                 method.</P>
+			
+			<h3>Server specific notes</h3>
+		   <P>No specific information.</P>
+
+			<h3> See also</h3>
+            <P><A 
+            href="ValueRead_LongOrLobReaderMode.html">SAValueRead::LongOrLobReaderMode</A> 
+            , <A href="Field_ReadLongOrLob.html">SAField::ReadLongOrLob</A>, 
+            <A 
+            href="Param_ReadLongOrLob.html">SAParam::ReadLongOrLob</A> 
+            </P>
+            <P><A href="Field.html">SAField</A>, <A 
+            href="Param.html">SAParam</A> 
+            </P>
+            <P><A 
+            href="Enums.html#SALongOrLobReaderModes_t">SALongOrLobReaderModes_t</A>     
+                
+              </P>
+            <P><A href="../Examples/step6.cpp" >Query 
+            examples - Step 6</A>     
+                
+              </P>
+
+			<h3>Problems and Questions</h3>
+			<p>			If 
+			you haven't found the answer to your questions or 
+            have some problems on using the Library, please, send e-mail to <A href="mailto:howto@sqlapi.com">howto@sqlapi.com</A>.
+			</p>
+		</td>
+	<tr></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1251">
+  <meta name="KEYWORDS" content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Online Documentation -
+SAField::ReadLongOrLob</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--GlbHdr-->
+<table id="TABLE1" frame="hsides" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../HowTo/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"><a href="../OnLineDoc/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Support/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Download/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--LeftMenu-->
+      <table frame="void" cellspacing="5" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"><a href="Command.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SACommand</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"><a href="Connection.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAConnection</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12">&nbsp; <a href="Exception.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/red.gif" align="middle" height="12" width="12">&nbsp; <a href="Field.html" style="text-decoration: none;">
+            <font color="white" face="sans-serif" size="2"> SAField</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"><a href="Param.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAParam</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="String.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAString</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="DateTime.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SADateTime</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="Numeric.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SANumeric</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="Interval.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAInterval</font></a></td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="Enums.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p>&nbsp;&nbsp;</p>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <table cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td align="left"><a href="Field_Usage.html" style="text-decoration: none;">
+            <h3>Usage</h3>
+            </a> </td>
+            <td align="left"><a href="Field.html" style="text-decoration: none;">
+            <h3>Class Members</h3>
+            </a> </td>
+            <td align="left"><a href="Field_Examples.html" style="text-decoration: none;">
+            <h3>Examples</h3>
+            </a> </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+            <h1>SAField::ReadLongOrLob</h1>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p><font face="Arial"><strong>void ReadLongOrLob(
+saLongOrLobReader_t</strong> fnReader , <strong>size_t</strong>
+nReaderWantedPieceSize , <strong>void *</strong>pAddlData<b> );<br>
+throw (SAException);</b></font></p>
+      <p> Starts reading of Long or BLob(CLob) value using user defined
+callback. </p>
+      <h3>Parameters</h3>
+      <p><em>fnReader</em>.&nbsp;&nbsp;&nbsp; The name of user function
+used for Long or BLob(CLob) data reading. The function must have syntax
+declared by <strong><a href="Enums.html#saLongOrLobReader_t">saLongOrLobReader_t
+typedef</a> </strong>.</p>
+      <p><em>nReaderWantedPieceSize</em>.&nbsp;&nbsp;&nbsp; Size of
+piece of data user want to get to callback function.</p>
+      <p><em>pAddData</em>.&nbsp;&nbsp;&nbsp; Additional data, passed
+to callback function.&nbsp;&nbsp;</p>
+      <h3>Remarks</h3>
+      <p>When you call <a href="Command_FetchNext.html">SACommand::FetchNext</a>
+method (after a command execution) all fields are updated by their
+values, including Long and BLob(CLob) fields. If you want to control
+piecewise reading of Long or BLob(CLob) data you should do the
+following:</p>
+      <ol>
+        <li>After a command execution set <strong>SA_LongOrLobReaderManual</strong>
+reading mode (see <a href="ValueRead_setLongOrLobReaderMode.html">setLongOrLobReaderMode</a>)
+for Long or BLob(CLob) fields you want to process by user defined
+function(s). After that each <a href="Command_FetchNext.html">SACommand::FetchNext</a>
+call will skip reading Long and BLob(CLob) fields that you set to be
+read manually. </li>
+        <li>After calling <a href="Command_FetchNext.html">SACommand::FetchNext</a>
+method use <strong>ReadLongOrLob</strong> method for each field
+defined to be read manually.</li>
+      </ol>
+      <p><strong>ReadLongOrLob</strong> method will repeatedly call
+user defined function:</p>
+      <p><strong>void &lt;function Name&gt;(SAPieceType_t ePieceType, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+void
+ *pBuf, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ size_t nLen, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+size_t
+ nBlobSize, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+void
+ *pAddlData);</strong></p>
+      <p><strong></strong>User defined function has the following
+parameters:</p>
+      <p><em>ePieceType</em>.&nbsp;&nbsp;&nbsp; Parameter passed to the
+function from SQLAPI++ Library mechanisms. It&nbsp; defines which piece
+of data value was read. Can be one of the next <strong>SAPieceType_t</strong>
+enum values:</p>
+      <ul>
+        <li><strong>SA_FirstPiece</strong>&nbsp;&nbsp;&nbsp; The first
+(but not the last) piece of data was read. </li>
+        <li><strong>SA_NextPiece</strong>&nbsp;&nbsp;&nbsp; The next
+(not the first and not the last) piece of data was read. </li>
+        <li><strong>SA_LastPiece</strong>&nbsp;&nbsp;&nbsp; The last
+piece of data was read. </li>
+        <li><strong>SA_OnePiece</strong>&nbsp;&nbsp;&nbsp; All field
+data was read as one block.</li>
+      </ul>
+      <p><em>pBuf</em>.&nbsp;&nbsp;&nbsp; Pointer to the buffer that
+contains the data block read from database.</p>
+      <p><em>nLen</em>.&nbsp;&nbsp;&nbsp; The actual size of data in
+buffer <em>pBuf</em>.</p>
+      <p><em>nBlobSize</em>.&nbsp;&nbsp;&nbsp; Maximum size of whole
+Long or BLob(CLob) field (if DBMS server allows to know it before whole
+field was read; otherwise 0).</p>
+      <p><em>pAddData</em>.&nbsp;&nbsp;&nbsp; An additional data user
+want to pass to the function.</p>
+      <p>To get more information about reading Long and BLob(CLob) data
+see <a href="../Examples/step6.cpp">Query examples - Step 6</a>. </p>
+      <h3>Server specific notes</h3>
+      <p>No specific information.</p>
+      <h3> See also</h3>
+      <p><a href="Field.html">setLongOrLobReaderMode</a></p>
+      <p><a href="Command.html">SACommand</a>, <a href="Enums.html">saLongOrLobReader_t</a>,
+      <a href="Enums.html">SAPieceType_t</a> </p>
+      <p><a href="../HowTo/errors.html">Error handling</a>, <a href="../HowTo/query_exampl.html">Query examples</a></p>
+      <h3>Problems and Questions</h3>
+      <p> If you haven't found the answer to your questions or have
+some problems on using the Library, please, send e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+
+</body></html>

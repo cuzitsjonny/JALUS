@@ -1,0 +1,19 @@
+index.txt	- This file
+sqlapi.dll	- SQLAPI++ release library compiled with MSVC++
+sqlapid.dll	- SQLAPI++ debug library compiled with MSVC++
+sqlapid.pdb	- SQLAPI++ library MSVC++ debug database
+sqltest.exe	- Simple release test program (uses sqlapi.dll)
+sqltests.exe	- Simple test statically linked program
+sqlapiu.dll	- SQLAPI++ release library compiled with MSVC++ (UNICODE)
+sqlapiud.dll	- SQLAPI++ debug library compiled with MSVC++ (UNICODE)
+sqlapiud.pdb	- SQLAPI++ library MSVC++ debug database (UNICODE)
+sqltestu.exe	- Simple test program (uses UNICODE sqlapiu.dll)
+sqltestus.exe	- Simple test statically linked program (UNICODE)
+sqlapib.dll	- SQLAPI++ release library compiled with Borland C++
+sqlapibd.dll	- SQLAPI++ debug library compiled with Borland C++
+sqltestb.exe	- Simple test program (uses sqlapib.dll)
+sqltestbs.exe	- Simple test statically linked program (with Borland C++)
+libsqlapi.dll	- SQLAPI++ release library compiled with MinGW
+libsqlapid.dll	- SQLAPI++ debug library compiled with MinGW
+sqltestg.exe	- Simple test program (uses MinGW libsqlapi.dll)
+sqltestgs.exe	- Simple test statically linked program (with MinGW)

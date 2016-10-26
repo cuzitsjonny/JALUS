@@ -1,0 +1,190 @@
+<html>
+<head>
+<meta name="KEYWORDS" content="
+      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+<meta name="DESCRIPTION" content=
+"SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+<title>SQLAPI++ Library - Online Documentation - SAValueRead::SAValueRead</title>
+</head>
+<body bgcolor="#ffffff" BACKGROUND="../images/bg.gif" text="#000000"><!--GlbHdr--> <table WIDTH="600" height="40" frame="hsides" BORDER="2" BORDERCOLOR="#004fcd" align="right" cellpadding="0" cellspacing="2" id="TABLE1">
+    
+    <tr><!--class="GlbDefault"-->        
+        <td width="70" bgcolor="#000094" bordercolor="black" align="middle"><A href="/index.html" style="TEXT-DECORATION: none">
+			<font color="white" size="3" face="sans-serif">
+			<b>Home</b></font></A></td></TD>
+        <td width="70" bgcolor="#000094" bordercolor="black" align="middle"><A href="/HowTo/index.html" style="TEXT-DECORATION: none">			<font color="white" size="3" face="sans-serif">
+			<b>How To</b></font></A></td><!--class="GlbActive"-->
+        <td width="70" bgcolor="#00bb00" bordercolor="black" align="middle"><A href="/OnLineDoc/index.html" style="TEXT-DECORATION: none">			<font color="white" size="3" face="sans-serif">
+			<b>Online Documentation</b></font></A></td><!--class="GlbDefault"-->        
+		<td width="70" bgcolor="#000094" bordercolor="black" align="middle"><A href="/Support/index.html" style="TEXT-DECORATION: none">			<font color="white" size="3" face="sans-serif">
+			<b>Support</b></font></A></td>
+        <td width=70 bgcolor=#000094 bordercolor=black align=middle><A href="/Download/index.html" style="TEXT-DECORATION: none" >
+			<font color=white size=3  face=sans-serif>
+			<b>Download</b></font></A></td>
+        <td width="70" bgcolor="#000094" bordercolor="black" align="middle"><A href="/Order/index.html" style="TEXT-DECORATION: none">			<font color="white" size="3" face="sans-serif">
+			<b>Order</b></font></A></td>    </tr>
+</table>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%">
+	<tr>
+		<td valign="top" width="165"><!--LeftMenu-->			
+			<table frame="void" CELLSPACING="5" width="165">
+				<tr><td><p>&nbsp;</p></td>
+				</tr>
+				<tr>
+					<td><img align="middle" src="../images/green.gif" WIDTH="12" HEIGHT="12"><A href="Command.html" style="TEXT-DECORATION: none">
+					<font color="white" size="2" face="sans-serif">
+					SACommand</A> </FONT> </td>
+				</tr>
+				<tr>
+					<td><img align="middle" src="../images/green.gif" WIDTH="12" HEIGHT="12"><A href="Connection.html" style="TEXT-DECORATION: none">
+					<font color="white" size="2" face="sans-serif">
+					SAConnection</A> </FONT> </td>
+				</tr>
+				<tr>
+					<td><img align="middle" src="../images/green.gif" WIDTH="12" HEIGHT="12"><A href="Exception.html" style="TEXT-DECORATION: none">
+					<font color="white" size="2" face="sans-serif">
+					SAException</font></A> </td>
+				</tr>
+				<tr>
+					<td><img align="middle" src="../images/green.gif" WIDTH="12" HEIGHT="12"><A href="Field.html" style="TEXT-DECORATION: none">
+					<font color="white" size="2" face="sans-serif">
+					SAField</A> </FONT> </td>
+				</tr>
+				<tr>
+					<td><img align="middle" src="../images/green.gif" WIDTH="12" HEIGHT="12"><A href="Param.html" style="TEXT-DECORATION: none">
+					<font color="white" size="2" face="sans-serif">
+					SAParam</A> </FONT> </td>
+				</tr>
+				<tr><td><hr></td></tr>
+				<tr>
+					<td><img align=middle src="../images/green.gif" WIDTH="12" HEIGHT="12">
+					<A href="String.html" style ="TEXT-DECORATION: none" >
+					<font color=white size=2 face=sans-serif>
+					SAString</A> </FONT> </td>
+				</tr>
+				<tr>
+					<td><img align=middle src="../images/green.gif" WIDTH="12" HEIGHT="12">
+					<A href="DateTime.html" style ="TEXT-DECORATION: none" >
+					<font color=white size=2 face=sans-serif>
+					SADateTime</A> </FONT> </td>
+				</tr>
+				<tr>
+					<td><img align=middle src="../images/green.gif" WIDTH="12" HEIGHT="12">
+					<A href="Numeric.html" style ="TEXT-DECORATION: none" >
+					<font color=white size=2 face=sans-serif>
+					SANumeric</A> </FONT> </td>
+				</tr>
+				<tr><td><hr></td></tr>
+				<tr>
+					<td>
+					<A href="Enums.html" style ="TEXT-DECORATION: none" >
+					<font color=white size=2 face=sans-serif>
+					Enums and Typedefs</A> </FONT> </td>
+				</tr>
+			</table>
+		</td><!--empty column-->
+		<td width="20"> 
+			<p>&nbsp;&nbsp;</p>
+		</td><!--Content-->
+		<td valign="top" align="left">
+			<table width="100%" cellspacing="2" cellpadding="2">
+				<tr>
+					<td align="left"><A href="ValueRead_Usage.html" style="TEXT-DECORATION: none"><h3>Usage</h3></A>
+					</td>
+					<td align="left"><A href="ValueRead.html" style="TEXT-DECORATION: none"><h3>Class Members</h3></A>
+					</td>
+					<td align="left"><A href="ValueRead_Examples.html" style="TEXT-DECORATION: none"><h3>Examples</h3></A>
+					</td>
+				</tr>			
+				<tr>
+					<td colspan="3"><h1>SAValueRead::ValueRead</h1></td>
+				</tr>			
+			</table>
+
+			<p><font face="Arial"><b>    SAValueRead(SADataType_t</b> 
+			eDataType<b>    )</b><b> 
+             
+      ;</b></font></p>
+
+			<p> 
+                Initialize a new <b>SAValueRead</b> 
+                    
+              object. 
+			</p>
+
+			<h3>Parameters</h3>
+            <P><EM>eDataType</EM> 
+            .&nbsp;&nbsp;&nbsp; 
+            A type of data. Can be one of the following 
+            <STRONG>SADataType_t</STRONG> 
+               enum values: </P>
+            <UL><STRONG><STRONG 
+                >
+                <LI><STRONG></STRONG>SA_dtBool</STRONG></STRONG>&nbsp;&nbsp;&nbsp; Data 
+                type is C <STRONG>bool</STRONG>.<STRONG><STRONG 
+                >
+                <LI><STRONG>SA_dtShort</STRONG></STRONG></STRONG>&nbsp;&nbsp;&nbsp; Data 
+                type is C <STRONG>short</STRONG>.<STRONG 
+                ><STRONG> 
+                <LI><STRONG>SA_dtLong</STRONG></STRONG></STRONG>&nbsp;&nbsp;&nbsp; Data 
+                type is C <STRONG>long</STRONG>.<STRONG 
+                ><STRONG> 
+                <LI><STRONG>SA_dtDouble</STRONG></STRONG></STRONG>&nbsp;&nbsp;&nbsp; 
+                Data type is C <STRONG>double</STRONG>.<STRONG><STRONG 
+                ></STRONG></STRONG> 
+                <LI><STRONG> 
+                SA_dtNumeric</STRONG>&nbsp;&nbsp;&nbsp; 
+                Data type is 
+                <STRONG>SANumeric</STRONG> (used 
+                internally).</LI> 
+                <LI><STRONG>SA_dtDateTime</STRONG></STRONG></STRONG>&nbsp;&nbsp;&nbsp; 
+                Data type is <STRONG>SADateTime</STRONG>.<STRONG><STRONG 
+                > 
+                <LI>SA_dtString</STRONG></STRONG>&nbsp;&nbsp;&nbsp; Data type is 
+                character string (<STRONG>SAString</STRONG>). 
+                
+                <LI><STRONG>SA_dtBytes</STRONG>&nbsp;&nbsp;&nbsp; Data type is binary 
+                string (<STRONG>SAString</STRONG>). 
+                <LI><STRONG>SA_dtLongBinary</STRONG>&nbsp;&nbsp;&nbsp; Data type is long 
+                binary data (<STRONG>SAString</STRONG>). 
+                <LI><STRONG>SA_dtLongChar</STRONG>&nbsp;&nbsp;&nbsp; Data type is long 
+                character data (<STRONG>SAString</STRONG>). 
+                <LI><STRONG>SA_dtBLob</STRONG>&nbsp;&nbsp;&nbsp;&nbsp; Data type is BLob 
+                data (<STRONG>SAString</STRONG>). 
+                <LI><STRONG>SA_dtCLob</STRONG>&nbsp;&nbsp;&nbsp;&nbsp; Data type is CLob 
+                data (<STRONG>SAString</STRONG>). 
+                <LI><STRONG>SA_dtCursor</STRONG>&nbsp;&nbsp;&nbsp; Data type is Oracle 
+                REF CURSOR (<STRONG>SACommand</STRONG>). 
+                <LI><STRONG>SA_dtSpecificToDBMS</STRONG>&nbsp;&nbsp;&nbsp; 
+                Data type is server-specific.</LI></UL>
+
+			<h3>Remarks</h3>
+			<p> No    
+                       
+              remarks. 
+			</p>
+			
+			<h3>Server specific notes</h3>
+      <P>No specific information.</P>
+
+			<h3> See also</h3>
+            <P><A href="Enums.html#SADataType_t">SADataType_t</A></P>
+
+			<h3>Problems and Questions</h3>
+			<p>			If 
+			you haven't found the answer to your questions or 
+            have some problems on using the Library, please, send e-mail to <A href="mailto:howto@sqlapi.com">howto@sqlapi.com</A>.
+			</p>
+		</td>
+	<tr></tr>
+</table>
+</body>
+</html>

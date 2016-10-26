@@ -1,0 +1,45 @@
+all: ALL
+
+ALL: $(SA_TARGET) dist
+
+dist:
+	-@if test -f $(SA_TARGET) ; then cp $(SA_TARGET) ../bin ; fi
+
+clean:
+	-@rm -f *.idb
+	-@rm -f *.ncb
+	-@rm -f *.opt
+	-@rm -f *.plg
+	-@rm -f *.lib
+	-@rm -f *.dll
+	-@rm -f *.$(SHARED_EXT)
+	-@rm -f *.a
+	-@rm -f $(SA_TARGET)
+	
+safe_clean: clean
+	-@rm -f *.idb
+	-@rm -f *.ncb
+	-@rm -f *.opt
+	-@rm -f *.plg
+	-@rm -f *.lib
+	-@rm -f *.dll
+	-@rm -f *.$(SHARED_EXT)
+	-@rm -f *.a
+	-@rm -f *.obj
+	-@rm -f *.o
+	-@rm -f *.manifest
+	-@rm -f *.lib
+	-@rm -f *.pdb
+	-@rm -f *.dll
+	-@rm -f *.ilk
+	-@rm -f *.idb
+	-@rm -f *.exp
+	-@rm -f *.exe
+	-@rm -f *.tds
+	-@rm -f *.ilc
+	-@rm -f *.ild
+	-@rm -f *.ilf
+	-@rm -f *.ils
+	-@rm -f *.ncb
+	-@rm -f *.opt
+	-@rm -f *.plg

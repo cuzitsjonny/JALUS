@@ -1,0 +1,9 @@
+index.txt	- this file
+sqlapi.lib	- dynamic release import library for MSVC++
+sqlapid.lib	- dynamic debug import library for MSVC++
+sqlapis.lib	- static release import library for MSVC++
+sqlapisd.lib	- static debug import library for MSVC++
+sqlapiu.lib	- dynamic release import library for MSVC++ (UNICODE)
+sqlapiud.lib	- dynamic debug import library for MSVC++ (UNICODE)
+sqlapius.lib	- static release import library for MSVC++ (UNICODE)
+sqlapiusd.lib	- static debug import library for MSVC++ (UNICODE)

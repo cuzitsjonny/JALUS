@@ -1,0 +1,125 @@
+# Borland C++
+
+# Replace with any own source objects
+!IFNDEF OBJS
+OBJS = sqltest.obj
+!ENDIF
+
+CPPDEFS = -DWIN32 -D_WINDOWS
+CPPFLAGS = -w -f- -R- -a-
+INCLUDES = $(INCLUDES) -I../include -I$(BCCDIR)\Include
+LDFLAGS = -x -V4.0 -Gn 
+SA_LIBC=
+
+!IF "$(CFG)" != "release" && "$(CFG)" != "debug"
+CFG=release
+!MESSAGE SQLAPI: Build "release" configuration
+!MESSAGE
+!ENDIF 
+
+!IF "$(CFG_LINK)" != "dynamic" && "$(CFG_LINK)" != "static"
+CFG_LINK=dynamic
+!MESSAGE SQLAPI: Use "dynamic" configuration
+!MESSAGE
+!ENDIF 
+
+!IF "$(CFG_LINK)" == "static"
+!IFDEF SA_64BIT
+SA_LIBC = cw64mt import64
+!ELSE
+SA_LIBC = cw32mt import32
+!ENDIF
+!ELSE
+!IFDEF SA_64BIT
+SA_LIBC = cw64mti import64
+!ELSE
+SA_LIBC = cw32mti import32
+!ENDIF
+!ENDIF
+
+!IFDEF SA_RUNTIME
+!IF "$(SA_RUNTIME)" == "static"
+!IFDEF SA_64BIT
+SA_LIBC = cw64mt import64
+!ELSE
+SA_LIBC = cw32mt import32
+!ENDIF
+!MESSAGE SQLAPI: Use "static" runtime
+!ELSE
+!IFDEF SA_64BIT
+SA_LIBC = cw64mti import64
+!ELSE
+SA_LIBC = cw32mti import32
+!ENDIF
+!MESSAGE SQLAPI: Use "dynamic" runtime
+!ENDIF
+!ENDIF
+
+LIBS = $(LIBS) $(SA_LIBC)
+
+!IF "$(CFG)" == "release"
+!IFDEF SA_64BIT
+CPPFLAGS = $(CPPFLAGS) -O2
+!ELSE
+CPPFLAGS = $(CPPFLAGS) -v- -vi -O2
+!ENDIF
+CPPDEFS  = $(CPPDEFS) -DNDEBUG
+SQLAPI_DEBUG_SUFFIX=
+!ELSEIF "$(CFG)" == "debug"
+!IFDEF SA_64BIT
+CPPFLAGS = $(CPPFLAGS)
+!ELSE
+CPPFLAGS = $(CPPFLAGS) -v -vi- -Od
+!ENDIF
+CPPDEFS  = $(CPPDEFS) -D_DEBUG
+SQLAPI_DEBUG_SUFFIX=d
+!ENDIF
+
+!IF "$(CFG_LINK)" == "dynamic"
+SQLAPI_LINK_SUFFIX=
+!ELSEIF "$(CFG_LINK)" == "static"
+SQLAPI_LINK_SUFFIX=s
+!ENDIF
+
+
+!IFDEF SA_UNICODE
+CPPDEFS=$(CPPDEFS) -DUNICODE -D_UNICODE -DSA_UNICODE
+SQLAPI_UNICODE_SUFFIX=u
+!ELSE
+CPPDEFS=$(CPPDEFS) -D_MBCS
+SQLAPI_UNICODE_SUFFIX=
+!ENDIF
+
+!IFDEF SA_64BIT
+CPP = bcc64.exe -q
+LINK = ilink64.exe -q
+CPPDEFS  = $(CPPDEFS) -D_WIN64 -DSA_64BIT
+SA_STARTUP_OBJ = c0x64
+SA_CPP_OUT = -o $@
+!ELSE
+CPP = bcc32.exe -q
+LINK = ilink32.exe
+# BCC 5.02
+#CPP = bcc32.exe
+#LINK = tlink32.exe
+LDFLAGS = $(LDFLAGS) -L$(BCCDIR)\Lib
+SA_STARTUP_OBJ = c0x32
+SA_CPP_OUT =
+!ENDIF
+ 
+LIBS = $(LIBS) ..\lib\sqlapib$(SQLAPI_UNICODE_SUFFIX)$(SQLAPI_LINK_SUFFIX)$(SQLAPI_DEBUG_SUFFIX)
+
+SA_TARGET_NAME=sqltestb$(SQLAPI_UNICODE_SUFFIX)$(SQLAPI_LINK_SUFFIX)$(SQLAPI_DEBUG_SUFFIX)
+SA_TARGET=$(SA_TARGET_NAME).exe
+
+.cpp.obj:
+	@$(CPP) @&&|
+	-c $(CPPFLAGS) $(CPPDEFS) $(INCLUDES) $(SA_CPP_OUT) $<
+|
+
+$(SA_TARGET): $(OBJS)
+	@$(LINK) -Tpe -ap @&&|
+	$(LDFLAGS) $(SA_STARTUP_OBJ) $(OBJS), $(SA_TARGET),,$(LIBS)
+|
+
+!INCLUDE build/Makefile.UTILS

@@ -1,0 +1,410 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1251">
+
+  
+<meta name="KEYWORDS" content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+
+  
+<meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+
+  
+<title>SQLAPI++ Library - Online Documentation - SAString</title>
+
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--GlbHdr-->
+<table id="TABLE1" frame="hsides" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" height="40" width="600">
+
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../HowTo/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"><a href="index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Support/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Download/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<table width="100%">
+
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--LeftMenu-->
+      <table frame="void" cellspacing="5" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"><a href="Command.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SACommand</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"><a href="Connection.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAConnection</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"><a href="Exception.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"><a href="Field.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAField</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"><a href="Param.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAParam</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td><img src="../images/red.gif" align="middle" height="12" width="12"> <a href="String.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAString</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="DateTime.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SADateTime</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="Numeric.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SANumeric</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="Interval.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAInterval</font></a></td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="Enums.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p> </p>
+      <br>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <table cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td align="left"><a href="String_Usage.html" style="text-decoration: none;">
+            <h3>Usage</h3>
+            </a> </td>
+            <td align="left"><a href="String_Examples.html" style="text-decoration: none;">
+            <h3>Examples</h3>
+            </a> </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <h1>SAString</h1>
+            
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Construction / Destruction</h3>
+      <table cellpadding="10" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td valign="top" width="30%"><a href="String_cnstr.html"> <font face="Arial" size="3"> SAString</font></a></td>
+            <td> <font face="Arial" size="3"> Constructs a <b>SAString</b>
+object</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_dstr.html"> <font face="Arial" size="3"> ~SAString</font></a></td>
+            <td> <font face="Arial" size="3"> Destructs a <b>SAString</b>
+object</font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Methods</h3>
+      <table cellpadding="10" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Empty.html"> <font face="Arial"> Empty </font></a></td>
+            <td><font face="Arial">Forces a string to have 0 length.</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_IsEmpty.html">
+            <font face="Arial"> IsEmpty </font></a></td>
+            <td><font face="Arial">Tests whether a <b>SAString</b>
+object contains no characters.</font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_GetLength.html">
+            <font face="Arial"> GetLength </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial">Returns
+the number of characters in a <b>SAString</b> object.</font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_operator_char.html"> <font face="Arial"> operator const
+SAChar* </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3"><font face="Arial">Directly accesses characters stored in a <b>SAString</b>
+object as a C-style string.</font> </font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_operator_eq.html"> <font face="Arial"> operator= </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3"><font face="Arial">Assigns a new value to a <b>SAString</b> object.</font> </font>
+            </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="../OnLineDoc/String_operator_concat_eq.html"> <font face="Arial">
+operator+= </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3"><font face="Arial">Concatenates a new string to the end of an existing
+string.</font> </font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_operator_concat.html"> <font face="Arial"> operator+ </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3"><font face="Arial"> Concatenates two strings and returns a new string.</font>
+            </font> </font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Format.html"> <font face="Arial"> Format </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3"><font face="Arial">Format the string as <b>sprintf</b> does.</font> </font>
+            </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_FormatV.html">
+            <font face="Arial"> FormatV </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3"><font face="Arial">Formats the string as <b>vsprintf</b> does.</font> </font>
+            </font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Left.html"> <font face="Arial"> Left </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3"><font face="Arial">Extracts the left part of a string.</font> </font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Mid.html"> <font face="Arial"> Mid </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3"><font face="Arial">Extracts the middle part of a string.</font> </font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Right.html"> <font face="Arial"> Right </font></a></td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3"><font face="Arial">Extracts the right part of a string.</font> </font> </font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_TrimRight.html"><font face="Arial"> TrimRight </font> </a></td>
+            <td> <font face="Arial"><font face="Arial" size="3"><font face="Arial">Trim trailing whitespace characters from the string.</font>
+            </font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_TrimLeft.html"><font face="Arial"> TrimLeft </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Trim leading whitespace characters from the string.</font>
+            </font> </font></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Replace.html"><font face="Arial"> Replace </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Replaces indicated characters with other characters.</font>
+            </font> </font></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Insert.html"><font face="Arial"> Insert </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Inserts a single character or a substring at the given
+index within the string.</font> </font> </font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Delete.html"><font face="Arial"> Delete </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Deletes a character or characters from a string.</font> </font>
+            </font> </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Compare.html"><font face="Arial"> Compare </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Compares two strings (case sensitive).</font> </font> </font>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_CompareNoCase.html"><font face="Arial"> CompareNoCase </font></a>
+            </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Compares two strings (case insensitive).</font> </font> </font>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Collate.html"><font face="Arial"> Collate </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Compares two strings (case sensitive, uses
+locale-specific information).</font> </font> </font> </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_Find.html"><font face="Arial"> Find </font></a> </td>
+            <td><font face="Arial" size="3"><font face="Arial" size="3"><font face="Arial">Finds a character or substring inside a larger string.</font>
+            </font> </font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_ReverseFind.html"><font face="Arial"> ReverseFind </font></a>
+            </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Finds a character inside a larger string; starts from the
+end.</font>&nbsp;&nbsp;&nbsp; </font> &nbsp;</font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_FindOneOf.html"><font face="Arial"> FindOneOf </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Finds the first matching character from a set.</font> </font>
+            </font> </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_GetBuffer.html"><font face="Arial"> GetBuffer </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Returns a pointer to the characters in the <b>SAString</b>
+.</font> </font> </font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_ReleaseBuffer.html"><font face="Arial"> ReleaseBuffer </font></a>
+            </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Releases control of the buffer returned by <a href="String_GetBuffer.html">GetBuffer</a> </font> </font> </font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_LockBuffer.html"><font face="Arial"> LockBuffer </font></a>
+            </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Disables reference counting and protects the string in
+the buffer. </font> </font> </font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_UnlockBuffer.html"><font face="Arial"> UnlockBuffer </font></a>
+            </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Enables reference counting and releases the string in the
+buffer. </font> </font> </font> </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_GetBinaryLength.html"><font face="Arial"> GetBinaryLength
+            </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Returns a count of the bytes in the binary data buffer </font>
+            </font> </font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_operator_const_void.html"><font face="Arial"> operator
+const void * </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Returns pointer to const binary data buffer </font> </font>
+            </font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_GetBinaryBuffer.html"><font face="Arial"> GetBinaryBuffer
+            </font></a> </td>
+            <td><font face="Arial"><font face="Arial" size="3"><font face="Arial">Gets pointer to modifiable binary data buffer </font> </font>
+            </font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_ReleaseBinaryBuffer.html"><font face="Arial">
+ReleaseBinaryBuffer </font></a> </td>
+            <td><font face="Arial" size="3">Releases control of the
+buffer returned by <a href="String_GetBinaryBuffer.html">GetBinaryBuffer</a>
+            </font> </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <hr></td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_GetMultiByteChars.html"><font face="Arial">
+GetMultiByteChars </font></a> </td>
+            <td><font face="Arial" size="3"> Returns pointer to const UTF8 string</font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_GetMultiByteCharsLength.html"><font face="Arial">
+GetMultiByteCharsLength </font></a> </td>
+            <td><font face="Arial" size="3"> Get string length (in UTF8 characters)</font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_GetWideChars.html"><font face="Arial"> GetWideChars </font></a>
+            </td>
+            <td><font face="Arial" size="3"> Returns pointer to const
+Unicode string, converts if needed </font> </td>
+          </tr>
+          <tr>
+            <td valign="top" width="30%"><a href="String_GetWideCharsLength.html"><font face="Arial">
+GetWideCharsLength </font></a> </td>
+            <td><font face="Arial" size="3"> Get string length (in
+Unicode characters) </font> </td>
+          </tr>
+ <tr>
+<td colspan="2">
+<hr></td>
+</tr>
+<tr>
+<td valign="top" width="30%"><a href="String_UTFConversion.html"><font face="Arial">
+GetUTF8Chars </font></a> </td>
+<td><font face="Arial" size="3"> Returns pointer to const
+multibyte string, converts if needed </font> </td>
+</tr>
+<tr>
+<td valign="top" width="30%"><a href="String_UTFConversion.html"><font face="Arial">
+GetUTF8CharsLength </font></a> </td>
+<td><font face="Arial" size="3"> Gets UTF-8 string length (in
+multibyte characters) </font> </td>
+</tr>
+<tr>
+<td valign="top" width="30%"><a href="String_UTFConversion.html"><font face="Arial"> SetUTF8Chars </font></a>
+</td>
+<td><font face="Arial" size="3"> Assigns UTF-8 data</font> </td>
+</tr>
+<tr>
+<td valign="top" width="30%"><a href="String_UTFConversion.html"><font face="Arial">
+GetUTF16Chars </font></a> </td>
+<td><font face="Arial" size="3"><font face="Arial" size="3">Returns pointer to const UTF16 string</font></font> </td>
+</tr>
+<tr>
+<td valign="top" width="30%"><a href="String_UTFConversion.html"><font face="Arial"> GetUTF16CharsLenght </font></a>
+</td>
+<td><font face="Arial" size="3"> Gets string length (in UTF16 characters)</font> </td>
+</tr>
+<tr>
+<td valign="top" width="30%"><a href="String_UTFConversion.html"><font face="Arial">
+SetUTF16Chars </font></a> </td>
+<td><font face="Arial" size="3">Assigns UTF-16 data</font> </td>
+</tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+
+
+</body></html>

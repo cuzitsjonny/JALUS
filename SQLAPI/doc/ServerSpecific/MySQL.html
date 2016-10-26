@@ -1,0 +1,847 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <meta name="KEYWORDS" content="library, C++, 
+      MySQL, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+    <meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, MySQL, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+    <title>SQLAPI++ Library - Server Specific Guide - MySQL</title>
+</head>
+<body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); background-image: url(../images/bg.gif);">
+    <!--class="GlbHdr"-->
+    <table id="TABLE1" frame="hsides" align="right" border="2" bordercolor="#004fcd" height="40" width="600" cellpadding="0" cellspacing="2">
+        <tbody>
+            <tr>
+                <!--class="GlbDefault"-->
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../index.html" style="text-decoration: none;"><font size="3" color="white" face="sans-serif"><b>Home</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../HowTo/index.html" style="text-decoration: none;"><font size="3" color="white" face="sans-serif"><b>How To</b></font></a></td>
+                <!--class="GlbActive"-->
+                <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"><a href="../OnLineDoc/index.html" style="text-decoration: none;"><font size="3" color="white" face="sans-serif"><b>Online Documentation</b></font></a></td>
+                <!--class="GlbDefault"-->
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Support/index.html" style="text-decoration: none;"><font size="3" color="white" face="sans-serif"><b>Support</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Download/index.html" style="text-decoration: none;"><font size="3" color="white" face="sans-serif"><b>Download</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Order/index.html" style="text-decoration: none;"><font size="3" color="white" face="sans-serif"><b>Order</b></font></a></td>
+            </tr>
+        </tbody>
+    </table>
+    &nbsp;
+    <p>&nbsp;</p>
+    <table width="100%">
+        <tbody>
+            <tr>
+                <td valign="top" width="165">
+                    <!--class="LeftMenu"-->
+                    <table frame="void" width="165" cellspacing="5">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <br>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle" height="12" width="12">
+                                </td>
+                                <td><a href="../OnLineDoc/Command.html" style="text-decoration: none;"><font size="2" color="white" face="sans-serif">SACommand</font></a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle" height="12" width="12"></td>
+                                <td><a href="../OnLineDoc/Connection.html" style="text-decoration: none;"><font size="2" color="white" face="sans-serif">SAConnection</font></a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle" height="12" width="12"></td>
+                                <td><a href="../OnLineDoc/Exception.html" style="text-decoration: none;"><font size="2" color="white" face="sans-serif">SAException</font></a> </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle" height="12" width="12"></td>
+                                <td><a href="../OnLineDoc/Field.html" style="text-decoration: none;"><font size="2" color="white" face="sans-serif">SAField</font></a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle" height="12" width="12"></td>
+                                <td><a href="../OnLineDoc/Param.html" style="text-decoration: none;"><font size="2" color="white" face="sans-serif">SAParam</font></a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle" height="12" width="12"></td>
+                                <td><a href="../OnLineDoc/String.html" style="text-decoration: none;"><font size="2" color="white" face="sans-serif">SAString</font></a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle" height="12" width="12"></td>
+                                <td><a href="../OnLineDoc/DateTime.html" style="text-decoration: none;"><font size="2" color="white" face="sans-serif">SADateTime</font></a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="../images/green.gif" align="middle" height="12" width="12"></td>
+                                <td><a href="../OnLineDoc/Numeric.html" style="text-decoration: none;"><font size="2" color="white" face="sans-serif">SANumeric</font></a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><a href="../OnLineDoc/Enums.html" style="text-decoration: none;"><font size="2" color="white" face="sans-serif">Enums and Typedefs</font></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <!--empty column-->
+                <td width="20">
+                    <p></p>
+                    <br>
+                </td>
+                <!--Content-->
+                <td align="left" valign="top">
+                    <center>
+                        <h2><a href="index.html">Server Specific Guide</a></h2>
+                        <h1>MySQL</h1>
+                        <p align="left">
+                            SQLAPI++ allows to work with a number of SQL
+database servers. It provides common mechanisms to access database, and
+as a general rule they work for any database server. But each server
+has some specific features which a developer has to
+know in order to leverage server's unique features and avoid potential
+errors.
+                        </p>
+                        <p align="left">
+                            This page collects all <strong>specific</strong>
+                            information that concerns working with <strong>MySQL</strong> server
+using SQLAPI++ Library. Full information about using SQLAPI++ see in <a href="../HowTo/index.html">How To</a> and <a href="../OnLineDoc/index.html">Online Documentation</a>.
+                        </p>
+                        <p align="left">Available topics: </p>
+                    </center>
+                    <p>
+                        <a href="MySQL.html#Connecting%20to%20a%20database">Connecting
+to a database</a>
+                    </p>
+                    <p>
+                        <a href="MySQL.html#Transaction%20isolation%20levels">Transaction
+isolation
+levels</a>
+                    </p>
+                    <p>
+                        <a href="MySQL.html#Working%20with%20Long%20or%20Lob%28CLob,%20BLob%29%20data">Working
+with
+Long or Lob(CLob, BLob) data</a>
+                    </p>
+                    <p>
+                        <a href="MySQL.html#Returning%20output%20parameters">Returning
+output parameters</a>
+                    </p>
+                    <p><a href="MySQL.html#Cancelling%20queries">Cancelling queries</a></p>
+                    <p>
+                        <a href="MySQL.html#Connection_and_command_options">Connection,
+command,
+parameter and field options</a>
+                    </p>
+                    <p>
+                        <a href="MySQL.html#Getting%20native%20MySQL%20API">Getting
+native MySQL API</a>
+                    </p>
+                    <p>
+                        <a href="MySQL.html#Getting%20native%20MySQL%20connection%20related%20handles">Getting
+native
+MySQL connection related handles</a>
+                    </p>
+                    <p>
+                        <a href="MySQL.html#Getting%20native%20MySQL%20command%20related%20handles">Getting
+native
+MySQL command related handles</a>
+                    </p>
+                    <p><a href="MySQL.html#Error%20handling">Error handling</a></p>
+                    <p>
+                        <a href="MySQL.html#Special%20header%20files%20-%20Compile%20time">Special
+header
+files - Compile time</a>
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Connecting to a database">Connecting to a database</a>
+                    </h3>
+                    <p>
+                        To connect to a database you should create a connection object
+and then connect it. A connection object is represented by <a href="../OnLineDoc/Connection.html">SAConnection</a> class. After the
+connection is created you need to connect it to <strong>MySQL</strong>
+                        server using <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>
+                        method
+                    </p>
+                    <p>
+                        <font face="Arial"><b>void Connect( const SAString &amp;</b>sDBString<b>,
+const
+SAString &amp;</b>sUserID<b>, const SAString &amp;</b>sPassword<b>,
+SAClient_t</b> eSAClient<b> = SA_Client_NotSpecified );</b><b>
+                            <br>
+                        </b></font>
+                    </p>
+                    <p>with the following parameters:</p>
+                    <p>
+                        <em>sDBString.</em>&nbsp;&nbsp;&nbsp; One of the following
+formats:
+                    </p>
+                    <ul>
+                        <li><strong>"" or "@"</strong> - empty string or '@' character,
+connects to a local server. </li>
+                        <li><strong>&lt;database name&gt; or @ <strong>&lt;database
+name&gt;</strong></strong> - connects to a database with the specified
+name on local server.</li>
+                        <li><strong>&lt;server name&gt;@</strong> - connects to the
+specified server.</li>
+                        <li><strong>&lt;server name&gt;@&lt;database name&gt; </strong>-
+connects
+to a database with the specified name on the specified server.</li>
+                    </ul>
+                    <p>
+                        <strong>&lt;server name&gt;</strong> in its turn can have the
+following formats:
+                    </p>
+                    <ul>
+                        <li>hostname[,port]&nbsp; </li>
+                        <li>pathname of the Unix socket that is used to connect to the
+server&nbsp;</li>
+                    </ul>
+                    <p>
+                        <em>sUserID.</em>&nbsp;&nbsp;&nbsp; A string containing a user
+name to use when establishing the connection.<br>
+                        <em>sPassword.</em>&nbsp;&nbsp;&nbsp; A string containing a
+password to use when establishing the connection.<br>
+                        <em>eSAClient.</em>&nbsp;&nbsp;&nbsp; Optional. One of the
+following values from <strong>SAClient_t</strong> enum:
+                    </p>
+                    <ul>
+                        <li><strong>SA_MySQL_Client</strong>&nbsp;&nbsp;&nbsp; MySQL
+client. </li>
+                        <li><strong>SA_Client_NotSpecified</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+Used
+by default if <em>eSAClient</em>parameter is omitted.&nbsp; You
+can use this default value only if you have call <a href="../OnLineDoc/Connection_setClient.html">SAConnection::setClient</a>
+                            method with <strong>SA_MySQL_Client</strong> constant before.</li>
+                    </ul>
+                    <p>
+                        The SQLAPI++ Library requires MySQL C API version 3.23.x or
+higher.
+                    </p>
+                    <p>
+                        For more details see <a href="../HowTo/connect.html">How To -
+Connecting to databases</a>, <a href="../OnLineDoc/Connection_Usage.html">SAConnection object</a>, <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>.
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Transaction isolation levels">Transaction isolation
+levels</a> </h3>
+                    <p>
+                        SQL-92 defines four isolation levels, all of which are
+supported by SQLAPI++:
+                    </p>
+                    <ul>
+                        <li>Read uncommitted (the lowest level where transactions are
+isolated just enough to ensure that physically corrupt data is not
+read) </li>
+                        <li>Read committed </li>
+                        <li>Repeatable read</li>
+                        <li>Serializable (the highest level, where transactions are
+completely isolated from one another) </li>
+                    </ul>
+                    <p>
+                        SQLAPI++ maps different isolation levels on <strong>MySQL</strong>
+                        server in the following way:
+                    </p>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>SA_ReadUncommitted</strong>
+                        = 'READ UNCOMMITTED'<br>
+                        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_ReadCommitted</strong>
+                        = 'READ COMMITTED'
+                        <br>
+                        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_RepeatableRead</strong>
+                        = 'REPEATABLE READ'<br>
+                        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_Serializable</strong> =
+'SERIALIZABLE'
+                    </p>
+                    <p>
+                        For more details see<a href="../OnLineDoc/Connection_setIsolationLevel.html">
+SAConnection::setIsolationLevel</a>.
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Working with Long or Lob(CLob, BLob) data">Working
+with Long or Lob(CLob, BLob) data</a> </h3>
+                    <p>
+                        SQLAPI++ supports four types for working with Long or
+Lob(CLob, BLob) data:
+                    </p>
+                    <p>
+                        <table style="width: 100%;" border="1" width="100%" cellpadding="1" cellspacing="1">
+                            <tbody>
+                                <tr bgcolor="navy">
+                                    <td><font style="background-color: rgb(0, 0, 128);" color="white">Name</font></td>
+                                    <td><font style="background-color: rgb(0, 0, 128);" color="white">C enum constant</font></td>
+                                </tr>
+                                <tr>
+                                    <td>LongBinary</td>
+                                    <td>SA_dtLongBinary</td>
+                                </tr>
+                                <tr>
+                                    <td>LongChar</td>
+                                    <td>SA_dtLongChar</td>
+                                </tr>
+                                <tr>
+                                    <td>BLob (Binary Large object)</td>
+                                    <td>SA_dtBLob</td>
+                                </tr>
+                                <tr>
+                                    <td>CLob (Character Large object)</td>
+                                    <td>SA_dtCLob</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        The table below shows how SQLAPI++ data types correspond with
+servers original data types:
+                    </p>
+                    <p>
+                        <em>SA_dtLongBinary</em> &lt;= &gt; BLOB<br>
+                        <em>SA_dtLongChar</em> &lt;= &gt; TEXT<br>
+                        <em>SA_dtBLob</em> = &gt; BLOB<br>
+                        <em>SA_dtCLob </em>=&gt; TEXT
+                    </p>
+                    <p>
+                        For more details see <a href="../HowTo/blobs.html">How To -
+Working with Long or Lob(CLob, BLob) data</a>
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Returning output parameters">Returning output
+parameters</a> </h3>
+                    <p>
+                        <strong>MySQL</strong> stored procedures can have output
+parameters. SQLAPI++ gets the output
+parameters from the server after all result sets from
+stored procedure (if any) are completely processed using <a href="../OnLineDoc/Command_FetchNext.html">SACommand::FetchNext</a>
+                        method.
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Command_Execute.html">SACommand::Execute</a>, <a href="../OnLineDoc/Command_FetchNext.html">SACommand::FetchNext</a>, <a href="../OnLineDoc/Param_Usage.html">SAParam object</a>, <a href="../HowTo/return_param.html">How To - Returning Output Parameters</a>.</p>
+                    <h3><a name="Cancelling queries">Cancelling queries</a> </h3>
+                    <p>
+                        Using <a href="../OnLineDoc/Command_Cancel.html">SACommand::Cancel</a>
+                        method you can cancel the following types of processing on a statement:
+                    </p>
+                    <ul type="disc">
+                        <li>A function running asynchronously on the statement.<br>
+                        </li>
+                        <li>A function running on the statement on another thread. </li>
+                    </ul>
+                    <p>
+                        SQLAPI++ calls <strong>mysql_kill</strong> function to cancel
+a query, and then calls <strong>mysql_ping</strong> function to
+restore connection with server. To get more details see <strong>mysql_kill</strong>
+                        and <strong>mysql_ping</strong> functions description in <strong>MySQL</strong>
+                        documentation.
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Command_Cancel.html">SACommand::Cancel</a>.</p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Connection_and_command_options">Connection, command,
+parameter and field options</a> </h3>
+                    <p>
+                        A server specific option can relate to a connection,
+command,&nbsp; parameter or field. We recommend you specify each option
+in an appropriate object, although it is possible to specify them in
+the parental object as well. In that case the option affects all the
+child objects.
+                    </p>
+                    <p>A connection related option must be specified in a&nbsp; <a href="../OnLineDoc/Connection.html">SAConnection</a> object. </p>
+                    <p>
+                        A command related option may be specified in either <a href="../OnLineDoc/Connection.html">SAConnection</a> object or <a href="../OnLineDoc/Command.html">SACommand</a> object. If it is
+specified in <a href="../OnLineDoc/Connection.html">SAConnection</a>
+                        object it affects all the commands on that connection.
+                    </p>
+                    <p>
+                        A parameter related option may be specified in <a href="../OnLineDoc/Connection.html">SAConnection</a> object, <a href="../OnLineDoc/Command.html">SACommand</a> object or <a href="../OnLineDoc/Param.html">SAParam</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the parameters on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+                        object it affects all the parameters on that command.
+                    </p>
+                    <p>
+                        A field related option may be specified in <a href="../OnLineDoc/Connection.html">SAConnection</a> object, <a href="../OnLineDoc/Command.html">SACommand</a> object or <a href="../OnLineDoc/Field.html">SAField</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the fields on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+                        object it affects all the fields on that command.
+                    </p>
+                    <p>Specific options for <strong>MySQL</strong>:</p>
+                    <p>
+                        <table border="1" width="100%" cellpadding="5">
+                            <tbody>
+                                <tr bgcolor="#000094">
+                                    <td width="17%">
+                                        <p>
+                                            <strong><font color="white" face="">Option name / Scope</font>&nbsp;
+
+            </strong>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p><strong><font color="white" face="">Description</font> </strong></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">MYSQL.LIBS </p>
+                                    </strong>
+                                        <div style="text-align: center;">
+                                            Connection related.
+Should be specified
+before the first connection is made.
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: top;">Forces SQLAPI++ Library to
+use specified MySQL client library.<br>
+                                        <br>
+                                        <em>Valid values</em> : Any valid MySQL library name list.
+Names separated by ';' on Windows or ':' on other OS.<br>
+                                        <em>Default value</em>: Windows - "libmySQL.dll", Linux
+-&nbsp; "libmysqlclient.so:libmysqlclient.so.15:libmysqlclient.so.16".</td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">SkipServerInit</p>
+                                    </strong>
+                                        <div style="text-align: center;">
+                                            Connection related.
+Should be specified
+before the first connection is made.
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: top;">Forces SQLAPI++ Library do not call mysql_server_init API function when mysqlclient library loaded. So it should be called additionaly but with user specific options. Useful for embedded MySQL library.<br>
+                                        <br>
+                                        <em>Valid values</em>: "True", "1". <em>Default value</em>:
+"false".</td>
+                                </tr>                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>CLIENT_COMPRESS</strong><br>
+                                            <strong>CLIENT_FOUND_ROWS</strong><br>
+                                            <strong>CLIENT_IGNORE_SPACE</strong><br>
+                                            <strong>CLIENT_INTERACTIVE</strong><br>
+                                            <strong>CLIENT_LOCAL_FILES</strong><br>
+                                            <strong>CLIENT_NO_SCHEMA</strong><br>
+                                            <strong>CLIENT_ODBC<br>
+                                                CLIENT_MULTI_STATEMENTS<br>
+                                                CLIENT_MULTI_RESULTS<br>
+                                                CLIENT_REMEMBER_OPTIONS<br>
+                                            </strong>
+                                        </p>
+                                        <p align="center">
+                                            Connection related. Should be specified
+before the connection is made.
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            Allows to specify various options that will be passed
+on to<span style="font-style: italic;"> mysql_real_connect</span>. See
+MySQL documentation for more information
+how these options affect underlying connection behaviour.
+                                        </p>
+                                        <p>
+                                            <em>Valid values</em>: "true" to specify a flag,
+"false" (or not specified) to omit.
+                                        </p>
+                                        <p>
+                                            <em>Default value</em> : not specified but CLIENT_MULTI_STATEMENTS, CLIENT_MULTI_RESULTS and CLIENT_REMEMBER_OPTIONS are turned on.<br>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;">
+                                        <p style="text-align: center;"><strong>CharacterSet</strong></p>
+                                        <div style="text-align: center;">
+                                            Connection related. Should
+be specified
+before connection attempted.
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: top;">Allows to set the client
+connection character set.<br>
+                                        <br>
+                                        <em>Default value</em> : not specified.<br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;">
+                                        <p>
+                                            <strong>MYSQL_OPT_CONNECT_TIMEOUT</strong><br>
+                                            <strong>MYSQL_OPT_READ_TIMEOUT</strong><br>
+                                            <strong>MYSQL_OPT_WRITE_TIMEOUT</strong><strong><br>
+                                            </strong>
+                                        </p>
+                                        <p align="center">
+                                            Connection related. Should be specified
+before the connection is made.
+                                        </p>
+                                    </td>
+                                    <td style="vertical-align: top;">Allows to specify timeout
+values those are used with <span style="font-style: italic;">mysql_options</span><code class="literal">. </code>See MySQL documentation for more information
+how these options affect underlying connection behaviour.<br>
+                                        <br>
+                                        <p>
+                                            <em>Valid values</em>: numeric string that represents
+an integer value.
+                                        </p>
+                                        <em>Default value</em> : not specified.<br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>MYSQL_OPT_RECONNECT<br>
+                                        MYSQL_SECURE_AUTH<br>
+                                        <br>
+                                    </strong>
+                                        <div style="text-align: center;">
+                                            Connection related. Should be specified
+before the connection is made.
+                                            <br>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <p>
+                                            Allows to specify reconnect option that will be used with <span style="font-style: italic;">mysql_options</span>. See
+MySQL documentation for more information
+how this option affect underlying connection behaviour.
+                                        </p>
+
+
+                                        <p>
+                                            <em>Valid values</em>: "true" to specify a flag,
+"false".
+                                        </p>
+
+                                        <em>Default value</em> : not specified.</td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>MYSQL_SSL_KEY<br>
+                                        MYSQL_SSL_CERT<br>
+                                        MYSQL_SSL_CA<br>
+                                        MYSQL_SSL_CAPATH<br>
+                                        MYSQL_SSL_CIPHER<br>
+                                    </strong>
+                                        <div style="text-align: center;">
+                                            Connection related. Should be specified
+before the connection is made.
+                                            <br>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <p>Allows to specify MySQL SSL parameters that will be used with <span style="font-style: italic;">mysql_ssl_set</span>. MySQL API method called only when at least one parameter specified. See MySQL documentation for more information about these options. </p>
+
+
+                                        <em>Default value</em> : not specified.</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="text-align: center;"></div>
+                                        <p style="text-align: center;"><strong>HandleResult</strong></p>
+                                        <p align="center">
+                                            Command related. Should be specified
+before command execution. <strong></strong>
+                                        </p>
+                                    </td>
+                                    <td>Determines whether the result set will be stored in a
+temporary table or local bufer on a client (it allows to open several
+result sets simultaneously in one transaction), or it will be read row
+by row directly from the server (somewhat faster and uses much less
+memory). For more information see MySQL documentation (<em>mysql_store_result()</em>
+                                        and <em>mysql_use_result()</em> functions).<br>
+                                        <br>
+                                        <em>Valid values</em>: "use" to force SQLAPI++ to call <em>mysql_use_result()</em>
+                                        function, "store" to force SQLAPI++ to call <em>mysql_store_result()</em>
+                                        function.<br>
+                                        <em>Default value</em>: "use". </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;">
+                                        <p style="text-align: center;">
+                                            <strong>UseStatement<br>
+                                                <br>
+                                            </strong>
+                                        </p>
+                                        <div style="text-align: center;">
+                                            Command related. Should be
+specified
+before command opened.
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: top;">Determines whether MySQL
+statement API should be used (if supported by MySQL client library).
+Make attention that statement API cannot be used with multi-statement,
+multi-result queries and have another restrictions.<br>
+                                        <br>
+                                        <em>Valid values</em>: "true" or
+"false".<br>
+                                        <em>Default value</em>: "false".<br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;"><strong>
+                                        <p align="center">
+                                            UseDynamicCursor<br>
+                                            or<br>
+                                            Scrollable<br>
+                                        </p>
+                                    </strong>
+
+                                        <div style="text-align: center;">
+                                            Command related. Should be specified
+before describing parameters or command execution.
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: top;">Forces SQLAPI++ to store MySQL result set that allows to scroll the data rows.<br>
+
+
+                                        <br>
+
+
+                                        <em>Valid values</em>: "True", "1". <em>Default value</em>:
+"false".</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        For more details see <a href="../OnLineDoc/Connection_setOption.html">SAConnection::setOption</a>,
+
+     
+
+                        <a href="../OnLineDoc/Command_setOption.html">SACommand::setOption</a>,
+
+     
+
+                        <a href="../OnLineDoc/Field_setOption.html">SAField::setOption</a>,
+
+     
+
+                        <a href="../OnLineDoc/Param_setOption.html">SAParam::setOption</a>.
+
+     
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Getting native MySQL API">Getting native MySQL API</a>
+                    </h3>
+                    <p>
+                        You can call client specific API functions which are not
+directly supported by SQLAPI++ Library. <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>
+                        method returns a pointer to the set of native API functions available
+for <strong>MySQL</strong> . To use the database API directly you have
+to downcast this <strong>saAPI</strong> pointer to the appropriate
+type and use its implementation-specific members. The following table
+shows what type cast you have to make and what additional header file
+you have to include to work with <strong>MySQL</strong> API.
+                    </p>
+                    <p>
+                        <table border="1" width="100%" cellpadding="5">
+                            <tbody>
+                                <tr bgcolor="#000094">
+                                    <td style="width: 300px;" width="300">
+                                        <p><strong><font color="white" face="">Type casting</font> </strong></p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <strong><font color="white" face="">Additional
+                                                <br>
+                                                include file</font> </strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Cast the result to <strong>class myAPI</strong>:</p>
+                                        <p>
+                                            <font face="System">saAPI *pResult = con.NativeAPI();<br>
+                                                myAPI *p_myAPI = (myAPI *)pResult;</font>
+                                        </p>
+                                    </td>
+                                    <td><strong>
+                                        <p><strong>#include &lt;myAPI.h&gt;</strong></p>
+                                    </strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        To get more information about DBMS API functions see this DBMS
+specific documentation.&nbsp;
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>.</p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Getting native MySQL connection related handles">Getting
+native
+MySQL connection related handles</a> </h3>
+                    <p>
+                        You have to use native API handles when you want to call
+specific <strong>MySQL</strong> API functions which are not directly
+supported by the Library. API functions usually need to receive one or
+more active handles as a parameter(s). <a href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>
+                        method returns a pointer to the set of native API <strong>connection
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saConnectionHandles</strong> pointer to the
+appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with specific <strong>MySQL</strong>
+                        API.
+                    </p>
+                    <p>
+                        <table border="1" width="100%" cellpadding="5">
+                            <tbody>
+                                <tr bgcolor="#000094">
+                                    <td>
+                                        <p><strong><font color="white" face="">Type casting</font> </strong></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong><font color="maroon" face="">Cast the result</font></strong>
+                                            to <strong>class myConnectionHandles</strong>:
+                                        </p>
+                                        <font face="System"><font face="System"></font></font>
+                                        <p><font face="System"><font face="System"><strong><font color="maroon" face="">#include &lt;myAPI.h&gt;</font> </strong></font></font></p>
+                                        <font face="System"><font face="System"></font></font>
+                                        <p>
+                                            <font face="System"><font face="System">saConnectionHandles
+*pResult
+= con.NativeHandles</font>();<br>
+                                                myConnectionHandles *p_myCH =<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(myConnectionHandles
+*)pResult;</font>
+                                        </p>
+                                        <font face="System"></font>
+                                        <p><font face="System"><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </font></p>
+                                        <font face="System"></font>
+                                        <ul>
+                                            <font face="System">
+                                                <li><font face="Times New Roman">MYSQL
+*mysql;</font> </li>
+                                            </font>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp;
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>.</p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Getting native MySQL command related handles">Getting
+native
+MySQL command related handles</a> </h3>
+                    <p>
+                        You have to use native API handles when you want to call
+specific <strong>MySQL</strong> API functions which are not directly
+supported by the Library. API functions usually need to receive one or
+more active handles as a parameter(s). <a href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>
+                        method returns a pointer to the set of native API <strong>command
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saCommandHandles</strong> pointer to the appropriate
+type and use its implementation-specific members. The following table
+shows what type cast you have to make and what additional header file
+you have to include to work with specific <strong>MySQL</strong> API.
+                    </p>
+                    <p>
+                        <table border="1" width="100%" cellpadding="5">
+                            <tbody>
+                                <tr bgcolor="#000094">
+                                    <td>
+                                        <p><strong><font color="white" face="">Type casting</font> </strong></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong><font color="maroon" face="">Cast the result</font></strong>
+                                            to <strong>class myCommandHandles</strong>:
+                                        </p>
+                                        <font face="System"><font face="System">
+                                            <p>
+                                                <strong><font color="maroon" face="">#include
+&lt;myAPI.h&gt;</font> </strong>
+                                            </p>
+                                            <p>
+                                                saCommandHandles *pResult = cmd.NativeHandles();<br>
+                                                myCommandHandles *p_myCH =<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(myCommandHandles
+*)pResult;
+                                            </p>
+                                            <p><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </p>
+                                            <ul>
+                                                <li><font face="Times New Roman">MYSQL_RES *result;</font></li>
+                                            </ul>
+                                        </font></font></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                    <p>
+                        To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp;
+                    </p>
+                    <p>For more details see <a href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>.</p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Error handling">Error handling</a> </h3>
+                    <p>
+                        When an error occurs inside SQLAPI++ Library it throws an
+exception of type <a href="../OnLineDoc/Exception.html">SAException</a>.
+
+     
+
+                        <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+                        method gets an error position in SQL statement. In <strong>MySQL</strong>
+                        server <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+                        method returns -1 because <strong>MySQL</strong> does not support this
+function.
+                    </p>
+                    <p>
+                        For more details see <a href="../HowTo/errors.html">How To -
+Error handling</a>, <a href="../OnLineDoc/Exception_Usage.html">SAException
+object</a>.
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3><a name="Special header files - Compile time">Special header
+files - Compile time</a> </h3>
+                    <p>
+                        The header files are in the <strong>include</strong>
+                        subdirectory of SQLAPI++ distributions:<br>
+                        <strong>#include &lt;SQLAPI.h&gt; </strong>- main header, should
+be used whenever SQLAPI++ is used.<br>
+                        <strong>#include &lt;myAPI.h&gt; </strong>- <strong>MySQL</strong>
+                        , should be included if direct MySQL C API calls are required.
+                    </p>
+                    <p>
+                        For more details see <a href="../OnLineDoc/index.html#Instructions%20for%20Compiling%20and%20Linking%20Applications%20with%20SQLAPI++">Online
+Documentation
+- Instructions for Compiling and Linking Applications
+with SQLAPI++</a>&nbsp;
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3>Problems and Questions</h3>
+                    <p>
+                        If you haven't found the answer to you questions or have some
+problems on using the Library, please, send e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>.
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

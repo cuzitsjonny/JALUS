@@ -1,0 +1,77 @@
+# MinGW
+
+# Replace with any own source objects
+ifndef OBJS
+OBJS = sqltest.obj
+endif
+
+CPPDEFS = -D_WIN32 -DWIN32 -D_WINDOWS
+CPPFLAGS = -Wall
+INCLUDES = -I../include
+LDFLAGS = -L../lib
+
+.SUFFIXES:
+.SUFFIXES: .cpp .obj
+
+ifndef CFG
+CFG=release
+$(warning SQLAPI: Build "release" configuration)
+endif
+
+ifndef CFG_LINK
+CFG_LINK=dynamic
+$(warning SQLAPI: Use "dynamic" configuration)
+endif
+
+# 64-bit version
+ifdef SA_64BIT
+CPPDEFS += -DSA_64BIT=1
+CPPFLAGS += -m64
+LDFLAGS += -m64
+else
+ifdef SA_32BIT
+CPPFLAGS += -m32
+LDFLAGS += -m32
+endif
+endif
+
+ifeq "$(CFG)" "release"
+CPPFLAGS += -O2 -fno-strict-aliasing
+CPPDEFS += -DNDEBUG
+SQLAPI_DEBUG_SUFFIX=
+LDFLAGS += -s
+else
+CPPFLAGS += -g
+CPPDEFS += -D_DEBUG
+SQLAPI_DEBUG_SUFFIX=d
+endif
+
+ifeq "$(CFG_LINK)" "dynamic"
+SQLAPI_LINK_SUFFIX=
+SQLAPI_LINK_LIB_SUFFIX=dll
+else
+SQLAPI_LINK_SUFFIX=s
+SQLAPI_LINK_LIB_SUFFIX=
+endif
+
+ifdef SA_UNICODE
+CPPDEFS += -DUNICODE -D_UNICODE -DSA_UNICODE
+SQLAPI_UNICODE_SUFFIX=u
+else
+CPPDEFS += -D_MBCS
+SQLAPI_UNICODE_SUFFIX=
+endif
+
+CPP = g++
+LIBS = -lsqlapi$(SQLAPI_UNICODE_SUFFIX)$(SQLAPI_DEBUG_SUFFIX)$(SQLAPI_LINK_LIB_SUFFIX) -lversion
+
+SA_TARGET_NAME=sqltestg$(SQLAPI_UNICODE_SUFFIX)$(SQLAPI_LINK_SUFFIX)$(SQLAPI_DEBUG_SUFFIX)
+SA_TARGET=$(SA_TARGET_NAME).exe
+
+.cpp.obj:
+	@$(CPP) -c $(CPPFLAGS) $(CPPDEFS) $(INCLUDES) -o $@ $<
+	
+$(SA_TARGET): $(OBJS)
+	@$(CPP) $(OBJS) -o $@ $(LDFLAGS) $(LIBS)
+
+include build/Makefile.UTILS

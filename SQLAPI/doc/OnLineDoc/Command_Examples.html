@@ -1,0 +1,754 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Online Documentation - SACommand Examples</title>
+</head>
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--GlbHdr-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+ cellpadding="0" cellspacing="2" frame="hsides" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="/HowTo/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"><a href="/OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="/Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="/Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="/Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+&nbsp;
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--LeftMenu-->
+      <table cellspacing="5" frame="void" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/red.gif" align="middle" height="12"
+ width="12"><a href="Command.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> SACommand</font></a><font
+ color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Connection.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAConnection</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Exception.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Field.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAField</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"><a href="Param.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAParam</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="String.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SAString</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="DateTime.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SADateTime</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle"
+ height="12" width="12"> <a href="Numeric.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="2"> SANumeric</font></a><font color="white" face="sans-serif"
+ size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><img
+ src="../images/green.gif" align="middle" height="12" width="12"> <a
+ href="Interval.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> SAInterval</font></a></td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="Enums.html" style="text-decoration: none;"> <font
+ color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font
+ color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p> </p>
+      <br>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <table cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td align="left"><a href="Command.html"
+ style="text-decoration: none;">
+            <h3>Class Members</h3>
+            </a> </td>
+            <td align="left"><a href="Command_Usage.html"
+ style="text-decoration: none;">
+            <h3>Usage</h3>
+            </a> </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <h1>SACommand Examples</h1>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr> <a name="cnstr"></a>
+      <h3>SACommand constructor</h3>
+      <font face="Courier">
+      <p> /*<br>
+Example 1. Using the default constructor.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>...</p>
+      <p><strong>SACommand cmd;</strong></p>
+      <p>cmd.setConnection(&amp;con);</p>
+      <p>cmd.setCommandText("Select * from test_tbl");</p>
+      <p>...</p>
+      <p>/*<br>
+Example 2. Using more complex constructor.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>...</p>
+      <p><strong>SACommand cmd(&amp;con, "Select * from test_tbl");</strong></p>
+      </font>
+      <hr> <a name="dstr"></a>
+      <h3>SACommand destructor</h3>
+      <font face="Courier">
+      <p> /*<br>
+Delete command object<br>
+*/</p>
+      <p>SACommand *pCmd = new SACommand;</p>
+      <p>...</p>
+      <p><strong>delete pCmd;</strong></p>
+      </font>
+      <hr> <a name="Connection"></a>
+      <h3>Connection</h3>
+      <font face="Courier">
+      <p> /*<br>
+Return the underlying connection and commit transaction.<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SACommand cmd;</p>
+      <p> ...</p>
+      <p>SAConnection *pCon = <strong>cmd.Connection()</strong> ;</p>
+      <p>pCon-&gt;Commit();</p>
+      </font>
+      <hr> <a name="setConnection"></a>
+      <h3>setConnection</h3>
+      <font face="Courier">
+      <p> /*<br>
+Associate command and connection.<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p> SACommand cmd;</p>
+      <p><strong>cmd.setConnection(&amp;con);</strong></p>
+      </font>
+      <hr> <a name="Open"></a>
+      <h3>Open</h3>
+      <font face="Courier">
+      <p> /*<br>
+Explicitly open command.<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p> SACommand cmd(&amp;con);</p>
+      <p><strong>cmd.Open();</strong></p>
+      </font>
+      <hr> <a name="isOpened"></a>
+      <h3>isOpened</h3>
+      <font face="Courier">
+      <p> /*<br>
+Close the command if it is opened.<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>SACommand cmd(&amp;con);</p>
+      <p> ...</p>
+      <p>if(<strong>cmd.isOpened()</strong> )</p>
+      <p><strong>&nbsp;&nbsp;&nbsp; </strong>cmd.Close();</p>
+      </font>
+      <hr> <a name="Close"></a>
+      <h3>Close</h3>
+      <font face="Courier">
+      <p> <font face="Courier"> /*<br>
+Close the command if it is opened.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SAConnection con;</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SACommand cmd(&amp;con);</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier"> ...</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier"> if(cmd.isOpened())</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier"><strong>&nbsp;&nbsp;&nbsp; cmd.Close();</strong></font></p>
+      <font face="Courier"> </font></font>
+      <hr> <a name="setCommandText"></a>
+      <h3>setCommandText</h3>
+      <font face="Courier">
+      <p> /*<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>...</p>
+      <p>SACommand cmd(&amp;con);</p>
+      <p><strong>cmd.setCommandText("Select * from test_tbl");</strong></p>
+      <p>cmd.Execute();</p>
+      <p>...</p>
+      </font>
+      <hr> <a name="CommandText"></a>
+      <h3>CommandText</h3>
+      <font face="Courier">
+      <p> /*<br>
+Queries current command text.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>SACommand cmd(&amp;con);</p>
+      <p> ...</p>
+      <p>SAString sCmd = <strong>cmd.CommandText()</strong> ;</p>
+      </font>
+      <hr> <a name="CommandType"></a>
+      <h3>CommandType</h3>
+      <font face="Courier"> <font face="Courier">
+      <p> /*<br>
+Queries current command type.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>SACommand cmd(&amp;con, "Select * from test_tbl");</p>
+      <p>if(cmd.CommandType() != SA_CmdSQLStmt)</p>
+      <p>&nbsp;&nbsp;&nbsp; printf("Very strange!\n");</p>
+      </font> </font>
+      <hr> <a name="Prepare"></a>
+      <h3>Prepare</h3>
+      <font face="Courier">
+      <p> /*<br>
+Explicitly prepare a command.<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p>SACommand cmd(&amp;con, "Select * from test_tbl");</p>
+      <p><strong>cmd.Prepare();</strong></p>
+      <p>...</p>
+      </font>
+      <hr> <a name="Execute"></a>
+      <h3>Execute</h3>
+      <font face="Courier">
+      <p> <font face="Courier"> /*<br>
+Execute a command.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SAConnection con;</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">con.Connect("dbname", "username",
+"password", SA_Oracle_Client);</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SACommand cmd(&amp;con, "Select * from
+test_tbl");</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier"><strong>cmd.Execute();</strong></font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">...</font></p>
+      <font face="Courier"> </font></font>
+      <hr> <a name="isResultSet"></a>
+      <h3>isResultSet</h3>
+      <font face="Courier">
+      <p> /*<br>
+Check whether executed command have a result set pending (even empty).<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p>SACommand cmd(&amp;con, "Select * from test_tbl");</p>
+      <p>cmd.Execute();</p>
+      <p>if(<strong>cmd.isResultSet()</strong>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp; /* Fetch result set here*/<br>
+&nbsp;&nbsp;&nbsp; ...<br>
+}<br>
+else<br>
+&nbsp;&nbsp; printf("Very strange!\n");</p>
+      </font>
+      <hr> <a name="RowsAffected"></a>
+      <h3>RowsAffected</h3>
+      <font face="Courier">
+      <p> /*<br>
+Queries number of rows affected by the last operation.<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p>SACommand cmd(&amp;con, "Delete * from test_tbl");</p>
+      <p> cmd.Execute();</p>
+      <p>printf("Rows deleted: %d\n", cmd.RowsAffected());</p>
+      </font>
+      <hr> <a name="FetchNext"></a>
+      <h3>FetchNext</h3>
+      <font face="Courier"> </font>
+      <p><font face="Courier"> /*<br>
+Fetch result set row by row.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SAConnection con;</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">con.Connect("dbname", "username",
+"password", SA_Oracle_Client);</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SACommand cmd(&amp;con, "Select * from
+test_tbl");</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">cmd.Execute();</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">while(<strong>cmd.FetchNext()</strong>)<br>
+{<br>
+&nbsp;&nbsp;&nbsp; ...<br>
+} </font></p>
+      <p> </p>
+      <hr> <a name="CreateParam"></a>
+      <p></p>
+      <h3>CreateParam</h3>
+      <font face="Courier">
+      <p> /*<br>
+Create params explicitly.<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p> SACommand cmd(&amp;con, "test_proc");</p>
+      <p><strong>cmd.CreateParam("nInput", SA_dtLong, sizeof(long),
+SA_ParamInput);</strong> </p>
+      <p><strong><strong>cmd.CreateParam("nOutput", SA_dtLong,
+sizeof(long), SA_ParamOutput);</strong></strong> </p>
+      <p>cmd &lt;&lt; SAPos("nInput") &lt;&lt; 1L; /*bind input*/</p>
+      <p> cmd.Execute();</p>
+      <p>printf("Output value: %ld\n", cmd.Param("nOutput").asLong());</p>
+      </font>
+      <hr> <a name="DestroyParams"></a>
+      <h3>DestroyParams</h3>
+      <font face="Courier">
+      <p> /*<br>
+Destroy params explicitly.<br>
+&gt; Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p> SAConnection con;</p>
+      <p>SACommand cmd(&amp;con, "test_proc");</p>
+      <p>...</p>
+      <p><strong>cmd.DestroyParams();</strong></p>
+      </font>
+      <hr> <a name="ParamCount"></a>
+      <h3>ParamCount</h3>
+      <font face="Courier">
+      <p> /*<br>
+Print procedure parameters names.<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p>SACommand cmd(&amp;con, "test_proc");</p>
+      <p>for(int i = 0; i &lt; <strong>cmd.ParamCount(); </strong>++i)<br>
+{<br>
+&nbsp;&nbsp;&nbsp; printf("Param %d name: %s\n", i+1, (const char
+*)cmd.ParamByIndex().Name());<br>
+}</p>
+      </font>
+      <hr> <a name="ParamByIndex"></a>
+      <h3>ParamByIndex</h3>
+      <font face="Courier">
+      <p> <font face="Courier"> /*<br>
+Print procedure parameters names.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SAConnection con;</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">con.Connect("dbname", "username",
+"password", SA_Oracle_Client);</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SACommand cmd(&amp;con, "test_proc");</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">for(int i = 0; i &lt; cmd.ParamCount();
+++i)<br>
+{<br>
+&nbsp;&nbsp;&nbsp; printf("Param %d name: %s\n", i+1, (const char *)<strong>cmd.ParamByIndex(i)</strong>.Name());<br>
+}</font></p>
+      <font face="Courier"> </font></font>
+      <hr> <a name="Param"></a>
+      <h3>Param</h3>
+      <font face="Courier">
+      <p> /*<br>
+Bind parameters by name and position.<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p>SACommand cmd(&amp;con, "Select * from test_tbl where fid = :1
+or fid = :fidvalue2");</p>
+      <p><strong>cmd.Param(1)</strong>.setAsLong() = 15;</p>
+      <p><strong>cmd.Param("fidvalue2")</strong>.setAsLong() = 32;</p>
+      <p> cmd.Execute();</p>
+      <p> ...</p>
+      </font>
+      <hr> <a name="operator_bind"></a>
+      <h3>operator &lt;&lt;</h3>
+      <font face="Courier"> <font face="Courier">
+      <p> /*<br>
+Bind parameters by name and position.<br>
+Exception handling is omitted for simplicity.<br>
+*/</p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_Oracle_Client);</p>
+      <p>SACommand cmd(&amp;con, "Select * from test_tbl where fid = :1
+or fid = :fidvalue2");</p>
+      <p><strong>cmd &lt;&lt; 15L &lt;&lt; SAPos("fidvalue2") &lt;&lt;
+32L;</strong> </p>
+      <p> cmd.Execute();</p>
+      <p> ...</p>
+      </font> </font>
+      <p></p>
+      <hr> <a name="FieldCount"></a>
+      <h3>FieldCount</h3>
+      <font face="Courier">
+      <p><font face="Courier"> </font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">/*<br>
+Print select statement fields names.<br>
+Exception handling is omitted for simplicity.<br>
+*/</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SAConnection con;</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">con.Connect("dbname", "username",
+"password", SA_Oracle_Client);</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SACommand cmd(&amp;con, "Select * from
+test_tbl");</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">cmd.Execute();</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">for(int i = 0; i &lt; <strong>cmd.FieldCount();
+      </strong>++i)<br>
+{<br>
+&nbsp;&nbsp;&nbsp; printf("Field %d name: %s\n", i+1, (const char
+*)cmd.Field(i+1).Name());<br>
+}</font></p>
+      <font face="Courier"> </font></font>
+      <hr> <a name="Field"></a>
+      <h3>Field</h3>
+      <font face="Courier"> </font>
+      <p><font face="Courier">/*<br>
+Exception handling is omitted for simplicity.<br>
+*/</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SAConnection con;</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">con.Connect("dbname", "username",
+"password", SA_Oracle_Client);</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SACommand cmd(&amp;con, "Select fid from
+test_tbl");</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">cmd.Execute();</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">if(cmd.FetchNext())<br>
+{<br>
+&nbsp;&nbsp;&nbsp; if(<strong>cmd.Field(1)</strong>.asLong() != <strong>cmd.Field("fid")</strong>.asLong())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf("Very strange!\n");<br>
+}</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier"> </font> </p>
+      <hr> <a name="operator_get"></a>
+      <p></p>
+      <h3>operator []</h3>
+      <font face="Courier"> </font>
+      <p><font face="Courier"><font face="Courier">/*<br>
+Exception handling is omitted for simplicity.<br>
+*/</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">SAConnection con;</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">con.Connect("dbname",
+"username", "password", SA_Oracle_Client);</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">SACommand
+cmd(&amp;con, "Select fid from test_tbl");</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">cmd.Execute();</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">if(cmd.FetchNext())<br>
+{<br>
+&nbsp;&nbsp;&nbsp; if(<strong>cmd[1]</strong>.asLong() != <strong>cmd["fid"]</strong>.asLong())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf("Very strange!\n");<br>
+}</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"> </font></font> </p>
+      <hr> <a name="NativeHandles"></a>
+      <p></p>
+      <h3>NativeHandles</h3>
+      <p><font face="Courier">/*<br>
+Exception handling is omitted for simplicity.<br>
+*/</font><font face="Courier"></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">#include
+&lt;ora7API.h&gt;<br>
+#include &lt;oraAPI.h&gt;</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">SAConnection con;</font></font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">con.Connect("dbname", "username",
+"password", SA_Oracle_Client);</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">SACommand cmd(&amp;con, "Select * from
+test_tbl");</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">cmd.Open(); /* make sure command handles
+are initialized*/</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">if(con.ClientVersion() &gt;= 0x0008000)
+/* OCI 8.x */<br>
+{</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; ora8API *p_ora8API =
+(ora8API *)con.NativeAPI();</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; ora8CommandHandles
+*p_ora8CH = (ora8CommandHandles *)cmd.NativeHandles();</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; /* call any OCI*
+function(s) */<br>
+&nbsp;&nbsp;&nbsp; /* passing required command handles */<br>
+&nbsp;&nbsp;&nbsp; /* f.ex., p_ora8CH-&gt;m_pOCIStmt */<br>
+&nbsp;&nbsp;&nbsp; ...</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">}<br>
+else /* OCI 7.x */<br>
+{</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; ora7API *p_ora7API =
+(ora7API *)con.NativeAPI();</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; ora7CommandHandles
+*p_ora7CH = (ora7CommandHandles *)cmd.NativeHandles();</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">&nbsp;&nbsp;&nbsp; /* call any o*
+function(s) */<br>
+&nbsp;&nbsp;&nbsp; /* passing required command handles */<br>
+&nbsp;&nbsp;&nbsp; /* f.ex., p_ora7CH-&gt;m_cda */<br>
+&nbsp;&nbsp;&nbsp; ...</font></p>
+      <font face="Courier"> </font>
+      <p><font face="Courier">}</font></p>
+      <hr>
+      <h3><a name="Option">Option</a></h3>
+      <font face="Courier"><font face="Courier">
+      <p> /*<br>
+Example 1. InterBase server option SQL Dialect.<br>
+Exception handling is omitted for simplicity.<br>
+*/ </p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_InterBase_Client);</p>
+      <p> /* assume t_field is a TIMESTAMP type field (introduced in
+SQL Dialect 3)<br>
+*/<br>
+SACommand cmd(&amp;con, "Select t_field from test_tbl");</p>
+      <p><strong>cmd.setOption("SQLDialect")</strong>= "1";</p>
+      <p>cmd.Execute(); // returns an error<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// because there is no TIMESTAMP <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// data type in SQL Dialect 1.</p>
+      <p><strong>cmd.setOption("SQLDialect")</strong>="3";</p>
+      <p> cmd.setCommandText("Select t_field from test_tbl");</p>
+      <p>cmd.Execute(); // no error</p>
+      <p>while(cmd.FetchNext())<br>
+{<br>
+&nbsp;&nbsp;&nbsp; ...<br>
+}</p>
+      <font face="Courier"><font face="Courier">
+      <p> /*<br>
+Example 2. SQLBase server option SQLPPCX (cursor-context preservation).<br>
+Exception handling is omitted for simplicity.<br>
+*/ </p>
+      <p>SAConnection con;</p>
+      <p>con.Connect("dbname", "username", "password",
+SA_SQLBase_Client);</p>
+      <p> SACommand cmd(&amp;con, "Select fid from test_tbl");</p>
+      <strong> </strong>
+      <p><strong>cmd.setOption("SQLPPCX")</strong>="on";</p>
+      <p>cmd.Execute();</p>
+      <p>con.Commit(); // result set will not be destroyed<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// after that command because SQLPPCX<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// option is "on"&nbsp;</p>
+      <p>while(cmd.FetchNext())<br>
+{&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; printf("%d\n", cmd[1].asLong());<br>
+}</p>
+      <p><strong>cmd.setOption("SQLPPCX")</strong>="off";</p>
+      <p> cmd.setCommandText("Select t_field from test_tbl");</p>
+      <p>cmd.Execute();</p>
+      <p>con.Commit(); // result set will be destroyed<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// after that command because SQPPCX<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// option is "off"&nbsp;</p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"> /*<br>
+Example 3. SQLServer command option OpenCursor.<br>
+Exception handling is omitted for simplicity.<br>
+*/ </font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">/*The following code
+of Example 3 is incorrect,<br>
+it cause an error. See the right code below.*/</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">SAConnection con;</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">con.Connect("dbname",
+"username", "password", SA_SQLServer_Client);</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"> SACommand
+cmd1(&amp;con, "Select fid from test_tbl");</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"> SACommand
+cmd2(&amp;con, "Insert into temp_tbl (fid_tmp) values (:1)");</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">cmd1.Execute();</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">while(cmd1.FetchNext())<br>
+{&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; cmd2 &lt;&lt; cmd1[1].asLong();<br>
+&nbsp;&nbsp;&nbsp; cmd2.Execute(); // returns an error<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// "Attempt to initiate<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// a new SQLServer operation with<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// results pending"<br>
+}<br>
+/* end of incorrect code */</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">/*The following code
+of Example 3 is correct.*/</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">SAConnection con;</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">con.Connect("dbname",
+"username", "password", SA_SQLServer_Client);</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"> SACommand
+cmd1(&amp;con, "Select fid from test_tbl");</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"><strong>cmd1.setOption("OpenCursor")</strong>="100";</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier"> SACommand
+cmd2(&amp;con, "Insert into temp_tbl (fid_tmp) values (:1)");</font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">cmd1.Execute();<br>
+      </font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">while(cmd1.FetchNext())<br>
+{&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; cmd2 &lt;&lt; cmd1[1].asLong();<br>
+&nbsp;&nbsp;&nbsp; cmd2.Execute(); // no error<br>
+}<br>
+      </font></font></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p></p>
+      <font face="Courier"><font face="Courier"> </font></font>
+      <p><font face="Courier"><font face="Courier">con.Commit();&nbsp;&nbsp;</font>
+      </font></p>
+      </font> </font></font> </font>
+      <hr>
+      <h3>Problems and Questions</h3>
+      <p> If you haven't found the answer to your questions or have
+some problems on using the Library, please, send e-mail to <a
+ href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

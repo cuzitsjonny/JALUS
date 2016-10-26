@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+
+      SQL, server, client, database, programming, development, software, 
+
+      Win32, Windows, Linux, Unix, Solaris,
+
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - How To - Query examples</title>
+</head>
+<body
+ style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); background-image: url(../images/bg.gif);">
+<!--class="GlbHdr"-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+ cellpadding="0" cellspacing="2" frame="hsides" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"><a href="../HowTo/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>How To</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table cellpadding="1" cellspacing="1" width="100%">
+  <tbody>
+    <tr>
+      <td align="left" valign="top"><!--class="LeftMenu"-->
+      <table cellpadding="2" cellspacing="2" frame="void" width="165">
+        <tbody>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="connect.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Connecting to databases</font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="transactions.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Transactions</font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="commands.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Executing an SQL command</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="procedures.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Executing stored procedures</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="bind.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Binding input parameters</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" alt=""
+                       style="height: 12px; width: 12px;" usemap="" align="middle" border="0"
+                       height="12" hspace="0" width="12">
+              </td>
+              <td>
+                  <a href="fetch.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Fetching result set</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="fetch_multiple.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Fetching multiple result sets</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="performance.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Optimizing Database Performance</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" alt=""
+                       style="height: 12px; width: 12px;" usemap="" align="middle" border="0"
+                       height="12" hspace="0" width="12">
+              </td>
+              <td>
+                  <a href="return_param.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Returning output parameters</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" alt=""
+                       style="height: 12px; width: 12px;" usemap="" align="middle" border="0"
+                       height="12" hspace="0" width="12">
+              </td>
+              <td>
+                  <a href="blobs.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Working with Long or Lob(CLob, BLob) Data</font>
+                  </a><font color="white" face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="datetime.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Working with date/time values</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" alt=""
+                       style="height: 12px; width: 12px;" usemap="" align="middle" border="0"
+                       height="12" hspace="0" width="12">
+              </td>
+              <td>
+                  <a href="errors.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Error handling</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a style="text-decoration: none;"
+                     href="native_api.html">
+                      <font color="white" face="sans-serif" size="2">
+                          Using
+                          native API
+                      </font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/red.gif" align="middle" height="12"
+                       width="12">
+              </td>
+              <td>
+                  <a href="query_exampl.html" style="text-decoration: none;">
+                      <font color="white" face="sans-serif" size="2">
+                          Query
+                          examples
+                      </font>
+                  </a><font color="white" face="sans-serif" size="2"> </font>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+      <td width="30">
+      <p> </p>
+      <br>
+      </td>
+      <td valign="top">
+      <center>
+      <h1>Query Examples</h1>
+      <h3 align="left">Steps</h3>
+      </center>
+      <p> <a href="../Examples/step1.cpp">Step&nbsp;1</a>. <strong>Connecting
+to database (and error handling)</strong><br>
+This step shows how to connect to/disconnect from databases using the
+Library. It also shows how to handle errors.<br>
+      <a href="../Examples/step2.cpp">Step 2</a>. <strong>Executing a
+simple SQL command</strong><br>
+This step show the example of executing a simple query without any
+parameters and result set.<br>
+      <a href="../Examples/step3.cpp">Step 3</a>. <strong>Binding
+input parameters</strong><br>
+This step shows 2 methods for providing input parameters in SQLAPI++:
+direct assignment and stream-based.<br>
+      <a href="../Examples/step4.cpp">Step 4.</a> <strong>Executing a
+select query (and fetching result set)</strong><br>
+This step shows how to process result set using SQLAPI++.<br>
+      <a href="../Examples/step5.cpp">Step 5.</a> <strong>Binding
+LongBinary, LongChar, BLob and CLob data</strong><br>
+This step shows 2 methods for binding Long or Lob data: traditional
+(bind all the data in one piece) and piecewise (using user defined
+callbacks for providing data).<br>
+      <a href="../Examples/step6.cpp">Step 6.</a> <strong>Fetching
+LongBinary, LongChar, BLob and CLob data</strong><br>
+This step shows 2 methods for fetching Long or Lob data: traditional
+(read all the data in one piece) and piecewise (using user defined
+callbacks for reading data).<br>
+      <a href="../Examples/step7.cpp">Step 7.</a> <strong>
+Multithreading support and cancelling queries</strong><br>
+This step shows how to create a thread with long running query. </p>
+      <h3>Advanced examples</h3>
+      <p><a href="../Examples/refcursors.cpp">Using Oracle REF CURSORs</a>.
+This example demonstrates how to get Oracle REF CURSORs from a stored
+procedure and than fetch it using SQLAPI++ Library. <br>
+      <a href="../Examples/nestedcursors.cpp">Using Oracle nested
+cursors</a>. This example shows how SQLAPI++ handles queries with
+nested cursors. </p>
+      <h3>Problems and Questions</h3>
+      <p>If you haven't found the answer to your questions or have some
+problems on using the Library, please, send e-mail to <a
+ href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      <p>&nbsp;</p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

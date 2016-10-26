@@ -1,0 +1,539 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - How To - Working with Long or Lob(CLob,
+BLob) data</title>
+</head>
+<body
+ style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); background-image: url(../images/bg.gif);">
+<!--class="GlbHdr"-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+ cellpadding="0" cellspacing="2" frame="hsides" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"><a href="../HowTo/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>How To</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table cellpadding="1" cellspacing="1" width="100%">
+  <tbody>
+    <tr>
+      <td align="left" valign="top"><!--class="LeftMenu"-->
+      <table cellpadding="2" cellspacing="2" frame="void" width="165">
+        <tbody>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="connect.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Connecting to databases</font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="transactions.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Transactions</font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="commands.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Executing an SQL command</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="procedures.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Executing stored procedures</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="bind.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Binding input parameters</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="fetch.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Fetching result set</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="fetch_multiple.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Fetching multiple result sets</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="performance.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Optimizing Database Performance</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="return_param.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Returning output parameters</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/red.gif" align="middle" height="12"
+                       width="12">
+              </td>
+              <td>
+                  <a href="blobs.html" style="text-decoration: none;">
+                      <font color="white" face="sans-serif" size="2">
+                          Working with Long or
+                          Lob(CLob, BLob) Data
+                      </font>
+                  </a><font color="white" face="sans-serif"
+                            size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="datetime.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Working with date/time values</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="errors.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Error handling</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a style="text-decoration: none;"
+                     href="native_api.html">
+                      <font color="white" face="sans-serif" size="2">
+                          Using
+                          native API
+                      </font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="query_exampl.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Query examples</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+      <td width="30">
+      <p> </p>
+      <br>
+      </td>
+      <td valign="top">
+      <center>
+      <h1>Working with Long or Lob(CLob, BLob) data</h1>
+      </center>
+      <center></center>
+      <p>SQLAPI++ supports four types for working with this kind of
+data (see <a href="#Server%20specific%20notes">Server specific notes</a>
+later on this page for details about how SQLAPI++ maps this types on a
+different SQL platforms):</p>
+      <p>
+      <table style="width: 100%;" border="1" cellpadding="1"
+ cellspacing="1" width="100%">
+        <tbody>
+          <tr bgcolor="navy">
+            <td><font style="background-color: rgb(0, 0, 128);"
+ color="white">Name</font></td>
+            <td><font style="background-color: rgb(0, 0, 128);"
+ color="white">C enum constant</font></td>
+            <td><font style="background-color: rgb(0, 0, 128);"
+ color="white">Description</font></td>
+          </tr>
+          <tr>
+            <td>LongBinary</td>
+            <td>SA_dtLongBinary</td>
+            <td>Generally this type is mapped to an appropriate SQL
+type that holds long binary data of variable length but does NOT
+supports "handle" semantics.</td>
+          </tr>
+          <tr>
+            <td>LongChar</td>
+            <td>SA_dtLongChar</td>
+            <td>Generally this type is mapped to an appropriate SQL
+type that holds long character data of variable length but does NOT
+supports "handle" semantics.</td>
+          </tr>
+          <tr>
+            <td>BLob (Binary Large object)</td>
+            <td>SA_dtBLob</td>
+            <td>Generally this type is mapped to an appropriate SQL
+type that holds large binary data of variable length and does supports
+"handle" semantics.</td>
+          </tr>
+          <tr>
+            <td>CLob (Character Large object)</td>
+            <td>SA_dtCLob</td>
+            <td>Generally this type is mapped to an appropriate SQL
+type that holds large character data of variable length and does
+supports "handle" semantics.</td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>Working with Long or Lob data assumes the following:</p>
+      <ul>
+        <li><a href="#Binding%20Long%20or%20Lob%20data">Binding Long or
+Lob data</a> into input variables (SQL statements) or input parameters
+(stored procedures/functions). </li>
+        <li><a href="#Reading%20Long%20or%20Lob%20data">Reading Long or
+Lob data</a> (from fields in result set or from output parameters of
+stored procedure)</li>
+      </ul>
+      <a name="Binding Long or Lob data"></a>
+      <h4>Binding Long or Lob data</h4>
+      <p>Suppose, we want to update BLob field named FBLOB from table
+named TEST where some other field named FKEY is equal to 'KEY' (<em>Update
+TEST set FBLOB = :fblob where FKEY = 'KEY' </em> ). Field should be
+updated with the content of a file named 'blob.bin'.</p>
+      <p>As usual, the first thing to do is to create the objects.<br>
+      <strong><font face="" size="2"><font face="System"><font size="-0">SACommand
+cmd(&amp;Connection, "Update TEST set FBLOB = :fblob where FKEY = 'KEY'
+");<br>
+      </font></font></font></strong>For more information see <a
+ href="connect.html">Connecting to databases</a>. </p>
+      <p>Next step is used to actually bind the content of a file into
+input variable:<br>
+      <strong>SAString sContent =
+SomeFunctionThatReadFileContent("blob.bin");<br>
+      </strong>The above line reads the whole content of a file.<br>
+      <strong>cmd.Param("fblob").setAsBLob() = sContent;<br>
+      </strong>The above line binds parameter <em>:fblob</em> with
+value of file content previously read.</p>
+      <p>All that we need now is to execute a query:<br>
+      <strong>cmd.Execute();</strong> </p>
+      <p>For using piecewise capabilities of SQLAPI++ for binding Long
+or Lob types see <a href="../Examples/step5.cpp">example</a>.</p>
+      <a name="Reading Long or Lob data"></a>
+      <h4>Reading Long or Lob data</h4>
+      <p>Suppose, we want to retrieve BLob field named FBLOB from table
+named TEST where some other field named FKEY (primary key) is equal to
+'KEY' (Select FBLOB from TEST where FKEY = 'KEY'). Field should be read
+into a file named 'blob.bin'.</p>
+      <p>As usual, the first thing to do is to create the objects:<br>
+      <strong><font face="" size="2"><font face="System"><font size="-0">SACommand
+cmd(&amp;Connection, "Select FBLOB from TEST where FKEY = 'KEY' ");</font></font></font></strong>
+      <br>
+For more information see <a href="connect.html">Connecting to databases</a>
+      </p>
+      <p>Next thing to do is to execute a query:<br>
+      <strong>cmd.Execute();</strong> </p>
+      <p>Next step is used to actually fetch the row and access BLob
+data:<br>
+      <strong>if(cmd.FetchNext())&nbsp; // or while(cmd.FetchNext())<br>
+{<br>
+&nbsp;&nbsp;&nbsp; SAString sBLob = cmd.Field("FBLOB").asBLob();<br>
+&nbsp;&nbsp;&nbsp; SomeFunctionToSaveBLobToFile("blob.bin", sBLob);<br>
+}</strong> </p>
+      <p>For using piecewise capabilities of SQLAPI++ for&nbsp;reading
+Long or Lob types see <a href="../Examples/step6.cpp">example</a>.</p>
+      <h3><a name="Server specific notes"></a>Server specific notes</h3>
+      <p><strong>1.</strong> Binding Lob(CLob, BLob) data when working
+with <strong><a href="../ServerSpecific/Oracle.html"
+ title="Oracle server specific information">Oracle</a></strong> server
+has some differences from others. It's necessary for a name of bind
+variable to be the same as the column name it associated with. </p>
+      <p><font face="System">Ex.:&nbsp;&nbsp;&nbsp;&nbsp; Update TEST
+set <font color="maroon" face="">FBLOB = :fblob</font> where FKEY =
+'KEY'</font> </p>
+      <p> Therefore, it's impossible to bind Lob(CLob, BLob) data to
+Oracle database by position. </p>
+      <p><strong>2.</strong> Working with PostgreSQL Large Objects data
+(Oid field type) in <a href="../ServerSpecific/PostgreSQL.html"><strong>PostgreSQL</strong></a>
+server has some particular features. Generally when you fetch Oid field
+data (which can point to any object, not necessary PostgreSQL Large
+Object) SQLAPI++ returns its value as a number (SQLAPI++ returns an
+object identifier). If you want to retrieve Oid field as PostgreSQL
+Large Object you should set command-related option <strong>OidTypeInterpretation</strong>
+to <em>"LargeObject"</em>value before the command execution. See <a
+ href="../OnLineDoc/Command_setOption.html">SACommand::setOption</a>
+for more detailes. </p>
+      <p><strong>3.</strong> The table below shows how SQLAPI++ data
+types correspond with servers original data types.</p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/Oracle.html"
+ title="Oracle server specific information">Oracle</a></strong></p>
+            </td>
+            <td>
+            <p>When using OCI8:<br>
+            <em>SA_dtLongBinary</em> &lt;= &gt; LONG RAW<br>
+            <em>SA_dtLongChar</em> &lt;= &gt; LONG<br>
+            <em>SA_dtBLob</em> &lt;= &gt; BLOB, FILE<br>
+            <em>SA_dtCLob </em>&lt;= &gt; CLOB</p>
+            <p>When using OCI7:<br>
+            <em>SA_dtLongBinary</em> &lt;= &gt; LONG RAW<br>
+            <em>SA_dtLongChar</em> &lt;= &gt; LONG<br>
+            <em>SA_dtBLob</em> = &gt; LONG RAW<br>
+            <em>SA_dtCLob </em>= &gt; LONG</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/SQLServer.html"
+ title="SQL Server server specific information">SQL Server</a> </strong>
+            </p>
+            </td>
+            <td>
+            <p><em>SA_dtLongBinary</em> &lt;= &gt; IMAGE<br>
+            <em>SA_dtLongChar</em> &lt;= &gt; TEXT<br>
+            <em>SA_dtBLob</em> = &gt; IMAGE<br>
+            <em>SA_dtCLob </em>=&gt; TEXT</p>
+            </td>
+          </tr>
+          <tr>
+            <td><strong><a href="../ServerSpecific/Sybase.html"
+ title="Sybase server specific information">Sybase</a></strong> </td>
+            <td>
+            <p><em>SA_dtLongBinary</em> &lt;= &gt; IMAGE<br>
+            <em>SA_dtLongChar</em> &lt;= &gt; TEXT<br>
+            <em>SA_dtBLob</em> = &gt; IMAGE<br>
+            <em>SA_dtCLob </em>=&gt; TEXT</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/DB2.html"
+ title="DB2 server specific information">DB2</a></strong> </p>
+            </td>
+            <td>
+            <p><em>SA_dtLongBinary</em> &lt;= &gt; LONG VARGRAPHIC<br>
+            <em>SA_dtLongChar</em> &lt;= &gt; LONG VARCHAR<br>
+            <em>SA_dtBLob</em> &lt;= &gt; BLOB<br>
+            <em>SA_dtCLob </em>&lt;=&gt; CLOB, DBCLOB</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/Informix.html"
+ title="Informix server specific information">Informix</a></strong> </p>
+            </td>
+            <td>
+            <p><em>SA_dtLongBinary</em> &lt;= &gt; BYTE<br>
+            <em>SA_dtLongChar</em> &lt;= &gt; TEXT<br>
+            <em>SA_dtBLob</em> = &gt; BYTE<br>
+            <em>SA_dtCLob </em>=&gt; TEXT</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/InterBase.html"
+ title="InterBase server specific information">InterBase</a></strong></p>
+            </td>
+            <td>
+            <p><em>SA_dtLongBinary</em> = &gt; BLOB, subtype 0<br>
+            <em>SA_dtLongChar</em> = &gt;BLOB, subtype 1<br>
+            <em>SA_dtBLob</em> &lt;=&gt; BLOB, subtype 0<br>
+            <em>SA_dtCLob </em>&lt;=&gt; BLOB, subtype 1</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/SQLBase.html"
+ title="SQLBase server specific information">SQLBase</a></strong></p>
+            </td>
+            <td>
+            <p><em>SA_dtLongBinary</em> &lt;= &gt; LONG VARCHAR<br>
+            <em>SA_dtLongChar</em> &lt;= &gt; LONG VARCHAR<br>
+            <em>SA_dtBLob</em> =&gt; LONG VARCHAR<br>
+            <em>SA_dtCLob </em>=&gt; LONG VARCHAR</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/MySQL.html"
+ title="MySQL server specific information">MySQL</a></strong></p>
+            </td>
+            <td>
+            <p><em>SA_dtLongBinary</em> &lt;= &gt; BLOB<br>
+            <em>SA_dtLongChar</em> &lt;= &gt; TEXT<br>
+            <em>SA_dtBLob</em> = &gt; BLOB<br>
+            <em>SA_dtCLob </em>= &gt; TEXT</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/PostgreSQL.html"
+ title="PostgreSQL server specific information">PostgreSQL</a></strong></p>
+            </td>
+            <td>
+            <p><em>SA_dtLongBinary</em> &lt;= &gt; BYTEA<br>
+            <em>SA_dtLongChar</em> &lt;= &gt; TEXT<br>
+            <em>SA_dtBLob</em> &lt;= &gt; Large Object<br>
+            <em>SA_dtCLob &lt; </em>= &gt; Large Object</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><a href="../ServerSpecific/ODBC.html"
+ title="ODBC server specific information">ODBC</a></strong></p>
+            </td>
+            <td>
+            <p>SQLAPI++ maps data types to ODBC constants. Actual
+mapping from constant to SQL type is ODBC driver specific.</p>
+            <p><em>SA_dtLongBinary</em> &lt;=&gt; SQL_LONGVARBINARY<br>
+            <em>SA_dtLongChar</em> &lt;= &gt; SQL_LONGVARCHAR<br>
+            <em>SA_dtBLob</em> = &gt; SQL_LONGVARBINARY<br>
+            <em>SA_dtCLob </em>=&gt; SQL_LONGVARCHAR</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>&nbsp;</p>
+      <h3>Problems and Questions</h3>
+      <p>If you haven't found the answer to your questions or have some
+problems on using the Library, please, send e-mail to <a
+ href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

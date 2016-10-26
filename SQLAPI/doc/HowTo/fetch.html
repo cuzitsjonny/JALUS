@@ -1,0 +1,376 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - How To - Fetching result set</title>
+</head>
+<body
+ style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); background-image: url(../images/bg.gif);">
+<!--class="GlbHdr"-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+ cellpadding="0" cellspacing="2" frame="hsides" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"><a href="../HowTo/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>How To</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table cellpadding="1" cellspacing="1" width="100%">
+  <tbody>
+    <tr>
+      <td align="left" valign="top"><!--class="LeftMenu"-->
+      <table cellpadding="2" cellspacing="2" frame="void" width="165">
+        <tbody>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="connect.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Connecting to databases</font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="transactions.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Transactions</font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="commands.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Executing an SQL command</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="procedures.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Executing stored procedures</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="bind.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Binding input parameters</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/red.gif" align="middle" height="12"
+                       width="12">
+              </td>
+              <td>
+                  <a href="fetch.html" style="text-decoration: none;">
+                      <font color="white" face="sans-serif" size="2">Fetching result set</font>
+                  </a><font color="white" face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="fetch_multiple.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Fetching multiple result sets</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="performance.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Optimizing Database Performance</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="return_param.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Returning output parameters</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="blobs.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Working with Long or Lob(CLob, BLob) Data</font>
+                  </a><font color="white" face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="datetime.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Working with date/time values</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="errors.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Error handling</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a style="text-decoration: none;"
+                     href="native_api.html">
+                      <font color="white" face="sans-serif" size="2">
+                          Using
+                          native API
+                      </font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="query_exampl.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Query examples</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+      <td width="30">
+      <p> </p>
+      <br>
+      </td>
+      <td valign="top">
+      <center>
+      <h1>Fetching result set</h1>
+      </center>
+      <p>To execute a command and process a result set you should do
+the following:</p>
+      <ol>
+        <li>Create a command object and set a command text. </li>
+        <li>Bind input parameters (if needed). </li>
+        <li>Execute the command. </li>
+        <li>Process the result set.</li>
+      </ol>
+      <p>For example, let's fetch rows from the table <em>EMPLOYEES (
+NAME CHAR(25), AGE INTEGER)</em> .</p>
+      <h4>Step 1. Creating a command object and setting a command text.</h4>
+      <p>To execute a command we need two objects: <a
+ href="../OnLineDoc/Connection.html">SAConnection</a> (connection
+object) and <a href="../OnLineDoc/Command.html">SACommand</a> (command
+object).</p>
+      <p><strong><font face="" size="2"><font face="System"><font>SACommand
+cmd(&amp;Connection, "select name, age from employees where age&gt;:1");</font></font></font></strong>
+      </p>
+      <p>The line above creates a command object <em>cmd</em> based on
+previously created and connected connection object <em>Connection</em>
+(for creating and connection <em>Connection</em> object see <a
+ href="connect.html">Connecting to databases</a> ). Second parameter is
+the command text. This command will select all rows from the table <em>EMPLOYEES</em>
+where the value of field <em>AGE</em> more than some input value.</p>
+      <h4>Step 2. Binding input parameters.</h4>
+      <p>To associate a value with input variable use <a
+ href="../OnLineDoc/Command_operator_bind.html">SACommand::operator&lt;&lt;</a>:</p>
+      <p><font face="System">cmd &lt;&lt; 25;</font></p>
+      <p>This line sets the input parameter marked by <em>:1</em> to
+value <em>25</em>.</p>
+      <p>The Library provides several ways for binding input variables.
+To get more details see <a href="bind.html">Binding input parameters</a>.</p>
+      <h4>Step 3. Execute the command.</h4>
+      <p>To execute a command use <a
+ href="../OnLineDoc/Command_Execute.html">SACommand::Execute</a> method:</p>
+      <p><font face="System">cmd.Execute();</font></p>
+      <p>This command selects all rows from the table where field <em>AGE</em>
+value more than <em>25</em>. The result of command execution is the <em>result
+set</em> - a set of rows corresponding with the request.&nbsp;</p>
+      <p>To check whether a result set exists after the command
+execution use <a href="../OnLineDoc/Command_isResultSet.html">SACommand::isResultSet</a>
+method:</p>
+      <p><font face="System">bool is_result = cmd.isResultSet(); <br>
+      </font></p>
+      <h4>Step 4. Processing the result set.</h4>
+      <p>After the command execution a set of <a
+ href="../OnLineDoc/Field.html">SAField</a>objects is created
+implicitly. Each <a href="../OnLineDoc/Field.html">SAField</a> object
+represents a column in the result set. To get the number of columns in
+the result set call <a href="../OnLineDoc/Command_FieldCount.html">SACommand::FieldCount</a>
+method:</p>
+      <p><font face="System">long col_count = cmd.FieldCount();</font></p>
+      <p>Each field can be reached by its name or position. To get a
+field information (name, type, size, etc) directly after the command
+execution you can call <a href="../OnLineDoc/Command_Field.html">SACommand::Field</a>
+method:</p>
+      <p><font face="System">SAField&amp; Field = cmd.Field("age");</font></p>
+      <p>The line above associates the column <em>AGE</em> in the
+result set with <em>Field</em> variable. We can do the same getting
+column <em>AGE</em> by its position in the result set:</p>
+      <p><font face="System">SAField&amp; Field = cmd.Field(2);</font></p>
+      <p>A field value is updated only after row fetching. To fetch row
+by row from the result set use <a
+ href="../OnLineDoc/Command_FetchNext.html">SACommand::FetchNext</a>
+method:</p>
+      <p><font face="System">while(cmd.FetchNext())<br>
+&nbsp;&nbsp;&nbsp; printf("Name: %s, age: %d \n", <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+cmd.Field("name").asString(), <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+cmd.Field("age").asLong()); </font></p>
+      <p>In example above we reached a field value accessing
+appropriated <a href="../OnLineDoc/Field.html">SAField</a> object.
+Another way to get a field value is to use <a
+ href="../OnLineDoc/Command_operator_get.html">SACommand::operator[]</a>:</p>
+      <p><font face="System">while(cmd.FetchNext())<br>
+&nbsp;&nbsp;&nbsp; printf("Name: %s, age: %d \n", <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+cmd[1].asString(), <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+cmd[2].asLong()); </font></p>
+      <p><br>
+&nbsp; </p>
+      <p>You can use <a href="../OnLineDoc/Field.html"><strong>SAField</strong></a><strong>
+operators</strong> for quick accessing values. In this case you can
+organize a fetching process as shown below:</p>
+      <p><font face="System">while(cmd.FetchNext())<br>
+{<br>
+&nbsp;&nbsp;&nbsp; SAString sName = cmd.Field("name");<br>
+&nbsp;&nbsp;&nbsp; long nAge = cmd.Field("age");<br>
+&nbsp;&nbsp;&nbsp; printf("Name: %s, age: %d \n", sName, nAge);<br>
+} <br>
+      </font><br>
+or another variant:</p>
+      <p><font face="System">while(cmd.FetchNext())<br>
+{<br>
+&nbsp;&nbsp;&nbsp; SAString sName = cmd[1];<br>
+&nbsp;&nbsp;&nbsp; long nAge = cmd[2];<br>
+&nbsp;&nbsp;&nbsp; printf("Name: %s, age: %d \n", sName, nAge);<br>
+} <br>
+      </font></p>
+      <p>Processing Long, BLob and CLob data can have some differences
+from processing other data types. <font color="black" face="">See <a
+ href="blobs.html">Working with Long or Lob(CLob, BLob) Data</a> to get
+more information.</font></p>
+      <h3>Problems and Questions</h3>
+      <p>If you haven't found the answer to your questions or have some
+problems on using the Library, please, send e-mail to <a
+ href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      <p>&nbsp;</p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

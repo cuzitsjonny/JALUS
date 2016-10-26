@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+<meta http-equiv="content-type" content="text/html; charset=windows-1251">
+
+
+  <meta name="KEYWORDS" content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - Online Documentation - SACommand::FetchNext</title>
+</head><body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--GlbHdr-->
+<table id="TABLE1" frame="hsides" width="600" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" height="40">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" width="70" align="center" bgcolor="#000094"><a href="../index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" width="70" align="center" bgcolor="#000094"><a href="../HowTo/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" width="70" align="center" bgcolor="#00bb00"><a href="../OnLineDoc/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" width="70" align="center" bgcolor="#000094"><a href="../Support/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" width="70" align="center" bgcolor="#000094"> <a href="../Download/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" width="70" align="center" bgcolor="#000094"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+&nbsp;
+<p>&nbsp;</p>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--LeftMenu-->
+      <table frame="void" width="165" cellspacing="5">
+        <tbody>
+          <tr>
+            <td>
+            <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/red.gif" width="12" align="middle" height="12"> <a href="Command.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SACommand</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" width="12" align="middle" height="12"> <a href="Connection.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAConnection</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" width="12" align="middle" height="12"> <a href="Exception.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" width="12" align="middle" height="12"> <a href="Field.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAField</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" width="12" align="middle" height="12"> <a href="Param.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAParam</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" width="12" align="middle" height="12"> <a href="String.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAString</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" width="12" align="middle" height="12"> <a href="DateTime.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SADateTime</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" width="12" align="middle" height="12"> <a href="Numeric.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SANumeric</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><img src="../images/green.gif" width="12" align="middle" height="12"> <a href="Interval.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAInterval</font></a></td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="Enums.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p>&nbsp;&nbsp;</p>
+      </td>
+<!--Content--> <td valign="top" align="left">
+      <table width="100%" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr>
+            <td align="left"> <a href="Command_Usage.html" style="text-decoration: none;">
+            <h3>Usage</h3>
+            </a> </td>
+            <td align="left"> <a href="Command.html" style="text-decoration: none;">
+            <h3>Class Members</h3>
+            </a> </td>
+            <td align="left"> <a href="Command_Examples.html#FetchNext" style="text-decoration: none;">
+            <h3>Examples</h3>
+            </a> </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+            
+            <h1>SACommand::FetchPrior, SACommand::FetchFirst, SACommand::FetchLast</h1>
+            <br>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p><b><font face="Arial">bool FetchPrior() throw (SAException);<br>
+</font></b></p>
+      <p> Fetches previous row from a result set.<br>
+</p>
+      <p><b><font face="Arial">bool FetchFirst() throw (SAException);<br>
+</font></b></p>
+
+      
+      <p> Fetches the first row&nbsp; from a result set. </p>
+
+      
+      <p><b><font face="Arial">bool FetchNext() throw (SAException);<br>
+</font></b></p>
+
+      
+      <p> Fetches the last row from a result set. </p>
+
+      
+      <h3>Return value</h3>
+      <p><strong>True</strong> if the row was fetched; otherwise <strong>false</strong>
+. </p>
+      <h3>Remarks</h3>
+      <p> Use <strong>FetchPrior, FetchFirst, FetchLast</strong> method to fetch rows
+from the scrollable result set. The scrollable result set option should be set before SACommand executed (<span style="font-style: italic;">SQLite </span>and <span style="font-style: italic;">InterBase </span>don't support this feature). See <span style="font-weight: bold;">server specific notes</span> to discover how SQLAPI++ supports the scrollable result set for cetain DBMS.<br>
+</p>
+      <p> Each column of fetched row is represented by <strong>SAField</strong>
+object. If a result set exists after the last command execution, a set
+of <b>SAField</b> objects is created implicitly. To check whether a
+result set exists use <a href="Command_isResultSet.html">isResultSet</a>
+method. Each 'fetch' method updates value parts of <strong>SAField</strong>
+objects. </p>
+      <p>To get field description or value use <a href="Command_Field.html">Field</a> method. </p><h3>See also</h3><a href="index.html#SQL%20database%20servers%20specific%20information">Server specific notes</a><br>
+<p><a href="Command_isResultSet.html">isResultSet</a>, <a href="Command_Field.html">Field</a>, <a href="Command_FieldCount.html">FieldCount</a></p>
+      <p><a href="Field.html">SAField</a>&nbsp; </p>
+      <p><a href="../HowTo/errors.html">Error handling</a> </p>
+      <h3>Problems and Questions</h3>
+      <p> If you haven't found the answer to your questions or have
+some problems on using the Library, please, send e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body></html>

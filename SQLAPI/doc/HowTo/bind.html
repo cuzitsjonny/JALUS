@@ -1,0 +1,462 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="KEYWORDS"
+ content="      library, C++, 
+
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+  <meta name="DESCRIPTION"
+ content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+  <title>SQLAPI++ Library - How To - Binding Input Parameters</title>
+</head>
+<body
+ style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); background-image: url(../images/bg.gif);">
+<!--class="GlbHdr"-->
+<table id="TABLE1" align="right" border="2" bordercolor="#004fcd"
+ cellpadding="0" cellspacing="2" frame="hsides" height="40" width="600">
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Home</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center"
+ bgcolor="#00bb00" width="70"><a href="../HowTo/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>How To</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../OnLineDoc/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center"
+ bgcolor="#000094" width="70"><a href="../Support/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Download/index.html"
+ style="text-decoration: none;"> <font color="white" face="sans-serif"
+ size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094"
+ width="70"><a href="../Order/index.html" style="text-decoration: none;">
+      <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table cellpadding="1" cellspacing="1" width="100%">
+  <tbody>
+    <tr>
+      <td align="left" valign="top"><!--class="LeftMenu"-->
+      <table cellpadding="2" cellspacing="2" frame="void" width="165">
+        <tbody>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="connect.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Connecting to databases</font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="transactions.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Transactions</font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="commands.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Executing an SQL command</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="procedures.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Executing stored procedures</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/red.gif"
+                       style="height: 12px; width: 12px;" align="middle" height="12"
+                       width="12">
+              </td>
+              <td>
+                  <a href="bind.html" style="text-decoration: none;">
+                      <font color="white" face="sans-serif" size="2">Binding input parameters</font>
+                  </a><font color="white" face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="fetch.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Fetching result set</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="fetch_multiple.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Fetching multiple result sets</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="performance.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Optimizing Database Performance</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="return_param.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Returning output parameters</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="blobs.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Working with Long or Lob(CLob, BLob) Data</font>
+                  </a><font color="white" face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="datetime.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Working with date/time values</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="errors.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Error handling</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a style="text-decoration: none;"
+                     href="native_api.html">
+                      <font color="white" face="sans-serif" size="2">
+                          Using
+                          native API
+                      </font>
+                  </a>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <img src="../images/green.gif" align="middle"
+                       height="12" width="12">
+              </td>
+              <td>
+                  <a href="query_exampl.html"
+                     style="text-decoration: none;">
+                      <font color="white" face="sans-serif"
+                            size="2">Query examples</font>
+                  </a><font color="white"
+                            face="sans-serif" size="2"></font>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+      <td width="30">
+      <p> </p>
+      <br>
+      </td>
+      <td valign="top">
+      <center>
+      <h1>Binding Input Parameters</h1>
+      </center>
+      <p>You should assign values for input variables any time you want
+to execute an SQL command or a stored procedure with input parameters.</p>
+      <p>Suppose, we want to insert some rows into the table <em>EMPLOYEES
+( NAME CHAR(25), AGE INTEGER, COMMENT CHAR(25)).</em> In the following
+examples we'll consider the different methods to write the appropriated
+command text and bind input variables: </p>
+      <ul>
+        <li><a
+ href="bind.html#Assigning%20a%20value%20with%20SAParam%20object">assigning
+a value to <strong>SAParam</strong> object</a>; </li>
+        <li><a href="bind.html#Using%20the%20stream%20operator%3C%3C">using
+the stream <strong>operator&lt;&lt;</strong></a>.</li>
+      </ul>
+      <h2> <a name="Assigning a value with SAParam object">Assigning a
+value with SAParam object</a> </h2>
+      <p><a href="../OnLineDoc/Param.html">SAParam</a> object
+represents a parameter object associated with a command.</p>
+      <h3>Example 1. </h3>
+      <p>Let's execute the next SQL command to insert a row into the
+table:</p>
+      <p><em>insert into EMPLOYEES (NAME, AGE, COMMENT) values (:1, :2,
+:3)</em></p>
+      <p>This command has three input parameters to set values to <em>NAME,
+AGE</em> and <em>COMMENT</em> columns.&nbsp; In that example input
+parameters are marked by <em>:1, :2, :3</em>. It means we will
+identify a parameter by its <strong>position</strong> . </p>
+      <p>To create and execute the command we should do the following:</p>
+      <ol>
+        <li>Create a command object <em>cmd</em> (for more details see
+          <a href="commands.html">Executing an SQL command</a> and <a
+ href="procedures.html">Executing stored procedures</a>):<br>
+          <br>
+          <font face="System">SACommand cmd(&amp;Connection, "insert
+into employees (name, age, comment) values (:1, :2, :3)");</font><br>
+          <br>
+After creating <em>cmd</em> object and passing a command text three <a
+ href="../OnLineDoc/Param.html">SAParam</a> objects are created
+automatically. </li>
+        <li>Bind input variables by assigning values to <a
+ href="../OnLineDoc/Param.html">SAParam</a> objects.<br>
+Because of identifying parameters by their positions we should call <a
+ href="../OnLineDoc/Command_Param.html">SACommand::Param</a> method
+with the next syntax:<br>
+          <br>
+          <font face="System">cmd.Param(1).setAsString() = "Roy Mann";<br>
+cmd.Param(2).setAsLong() = 42;<br>
+          <font face="System">cmd.Param(3).setAsNull();</font> <br>
+          </font><br>
+The lines above set the value <em>"Roy Mann"</em> to the parameter
+marked by <em>:1</em>,&nbsp; <em>42</em> to the parameter marked by <em>:2</em>
+and <em>null</em> value to the parameter marked by <em>:3</em>. </li>
+        <li>Execute the command:<br>
+          <br>
+          <font face="System">cmd.Execute();<br>
+          </font></li>
+      </ol>
+      <h3>Example 2. </h3>
+      <p> We can use another variant of command text to insert a row
+into the table:</p>
+      <p><em>insert into EMPLOYEES (NAME, AGE) values (:name, :age,
+:comment)</em></p>
+      <p>This command has three input parameters to set values to <em>NAME</em>
+and <em>AGE</em> columns.&nbsp; In that example input parameters are
+marked by <em>:name, :age, :comment</em>. It means we will identify a
+parameter by its <strong>name</strong> . </p>
+      <p>To create and execute the command we should do the following:</p>
+      <ol>
+        <li>Create a command object <em>cmd</em> (for more details see
+          <a href="commands.html">Executing an SQL command</a> and <a
+ href="procedures.html">Executing stored procedures</a>):<br>
+          <br>
+          <font face="System">SACommand cmd(&amp;Connection, "insert
+into employees (name, age, comment) values (:name, :age, :comment)");</font><br>
+          <br>
+After creating <em>cmd</em>object three <a
+ href="../OnLineDoc/Param.html">SAParam</a> objects are created
+automatically. </li>
+        <li>Bind input variables by assigning a value to <a
+ href="../OnLineDoc/Param.html">SAParam</a> object.<br>
+Because of identifying parameters by their names we should call <a
+ href="../OnLineDoc/Command_Param.html">SACommand::Param</a> method
+with the next syntax:<br>
+          <br>
+          <font face="System">cmd.Param("name").setAsString() = "Roy
+Mann";<br>
+cmd.Param("age").setAsLong() = 42;<br>
+          <font face="System">cmd.Param("comment").setAsString() =
+"Manager";</font> <br>
+          </font><br>
+The lines above sets the value <em>"Roy Mann"</em> to the parameter
+marked by <em>:name</em> , <em>42</em> to the parameter marked by <em>:age</em>
+and <em>"Manager"</em> to the parameter marked by <em>:comment</em>. </li>
+        <li>Execute the command:<br>
+          <br>
+          <font face="System">cmd.Execute();<br>
+          </font></li>
+      </ol>
+      <p>&nbsp;</p>
+      <h2> <a name="Using the stream operator&lt;&lt;">Using the stream
+operator&lt;&lt;</a> </h2>
+      <p><a href="../OnLineDoc/Command_operator_bind.html">SACommand::operator&lt;&lt;</a>
+is a stream operator, so usually it is more convenient to use it
+instead of assigning <a href="../OnLineDoc/Param.html">SAParam</a>
+objects.</p>
+      <h3>Example 3. </h3>
+      <p>Let's execute the next SQL command to insert a row into the
+table:</p>
+      <p><em>insert into EMPLOYEES (NAME, AGE, COMMENT) values (:1, :2,
+:3)</em></p>
+      <p>This command has three input parameters to set values to <em>NAME,
+AGE</em> and <em>COMMENT</em> columns.&nbsp; In that example input
+parameters are marked by <em>:1, :2, :3</em>. It means we will
+identify a parameter by its <strong>position</strong> . </p>
+      <p>To create and execute the command we should do the following:</p>
+      <ol>
+        <li>Create a command object <em>cmd</em> (for more details see
+          <a href="commands.html">Executing an SQL command</a> and <a
+ href="procedures.html">Executing stored procedures</a>):<br>
+          <br>
+          <font face="System">SACommand cmd(&amp;Connection, "insert
+into employees (name, age, comment) values (:1, :2, :3)");</font><br>
+          <br>
+After creating <em>cmd</em> object three <a
+ href="../OnLineDoc/Param.html">SAParam</a> objects are created
+automatically but in contrast to the previous examples we will not use
+them explicitly. </li>
+        <li>Bind input variables by using <a
+ href="../OnLineDoc/Command_operator_bind.html">SACommand::operator&lt;&lt;</a>.<br>
+Because of identifying parameters by their positions we can put the
+values into a stream:<br>
+          <br>
+          <font face="System">cmd &lt;&lt; "Roy Mann" &lt;&lt; 42
+&lt;&lt; SANull();<br>
+          </font><br>
+          <p>The line above sets the value <em>"Roy Mann"</em> to the
+parameter marked by <em>:1</em>,&nbsp; <em>42</em> to the parameter
+marked by <em>:2</em> and <em>null</em> value to the parameter marked
+by <em>:3</em> . </p>
+          <p>The order that you associate the values is important (i.e.
+the first '&lt;&lt;' associates a bind with <em>:1</em>, the second
+'&lt;&lt;' with <em>:2</em>, the third '&lt;&lt;' with <em>:3</em> ).
+          </p>
+        </li>
+        <li>Execute the command:<br>
+          <br>
+          <font face="System">cmd.Execute();<br>
+          </font></li>
+      </ol>
+      <h3>Example 4. </h3>
+      <p> We can use another variant of command text to insert a row
+into the table:</p>
+      <p><em>insert into EMPLOYEES (NAME, AGE, COMMENT) values (:name,
+:age, :comment)</em></p>
+      <p>This command has three input parameters to set values to <em>NAME,
+AGE</em> and <em>COMMENT</em> columns.&nbsp; In that example input
+parameters are marked by <em>:name, :age, :comment</em>. It means we
+will identify a parameter by its <strong>name</strong> . </p>
+      <p>To create and execute the command we should do the following:</p>
+      <ol>
+        <li>Create a command object <em>cmd</em> (for more details see
+          <a href="commands.html">Executing an SQL command</a> and <a
+ href="procedures.html">Executing stored procedures</a>):<br>
+          <br>
+          <font face="System">SACommand cmd(&amp;Connection, "insert
+into employees (name, age, comment) values (:name, :age, :comment)");</font><br>
+          <br>
+After creating <em>cmd</em> object three <a
+ href="http://www.sqlapi.com/OnLineDoc/Param.html">SAParam</a> objects
+are created automatically, but we will not use them explicitly. </li>
+        <li>Bind input variables by putting values into a stream.<br>
+Because of identifying parameters by their names we should use more
+complex sequence of stream elements. In <strong>Example 3</strong> we
+put into a stream only parameters values according to their positions
+(numbers). Now we should explicitly specify the position of bind
+variable before putting a value into a stream. To specify a position
+use <strong>SAPos</strong> object:<br>
+          <br>
+          <font face="System">cmd &lt;&lt; SAPos("name") &lt;&lt; "Roy
+Mann" &lt;&lt; SAPos("age") &lt;&lt; 42 &lt;&lt; SAPos("comment")
+&lt;&lt; "Manager";<br>
+          </font><br>
+        </li>
+        <li>Execute the command:<br>
+          <br>
+          <font face="System">cmd.Execute();</font></li>
+      </ol>
+      <p>Binding Long, BLob and CLob data can have some differences
+from binding other data types. <font color="black" face="">See <a
+ href="blobs.html">Working with Long or Lob(CLob, BLob) Data</a> to get
+more information.</font></p>
+      <h3>Problems and Questions</h3>
+      <p>If you haven't found the answer to your questions or have some
+problems on using the Library, please, send e-mail to <a
+ href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      <p>&nbsp;</p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

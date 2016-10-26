@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <meta name="KEYWORDS" content="      library, C++, 
+      Oracle, SQLServer, DB2, Sybase, Informix, InterBase, SQLBase, ODBC, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+    <meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+    <title>SQLAPI++ Library - Q&amp;A</title>
+</head>
+<body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); background-image: url(../images/bg.gif);">
+    <!--class="GlbHdr"-->
+    <table id="TABLE1" frame="hsides" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" height="40" width="600">
+        <tbody>
+            <tr>
+                <!--class="GlbDefault"-->
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../index.html" style="text-decoration: none;"><font color="white" face="sans-serif" size="3"><b>Home</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../HowTo/index.html" style="text-decoration: none;"><font color="white" face="sans-serif" size="3"><b>How To</b></font></a></td>
+                <!--class="GlbDefault"-->
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../OnLineDoc/index.html" style="text-decoration: none;"><font color="white" face="sans-serif" size="3"><b>Online Documentation</b></font></a></td>
+                <!--class="GlbActive"-->
+                <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"><a href="index.html" style="text-decoration: none;"><font color="white" face="sans-serif" size="3"><b>Support</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Download/index.html" style="text-decoration: none;"><font color="white" face="sans-serif" size="3"><b>Download</b></font></a></td>
+                <td bordercolor="black" align="center" bgcolor="#000094" width="70"><a href="../Order/index.html" style="text-decoration: none;"><font color="white" face="sans-serif" size="3"><b>Order</b></font></a></td>
+            </tr>
+        </tbody>
+    </table>
+    &nbsp;
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <table width="100%">
+        <tbody>
+            <tr>
+                <td valign="top" width="165">
+                    <!--class="LeftMenu"-->
+                    <table frame="void" cellspacing="5" width="165">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <br>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <!--empty column-->
+                <td width="20">
+                    <p></p>
+                    <br>
+                </td>
+                <!--Content-->
+                <td style="left: 195px; top: 0px;" align="left" valign="top">
+                    <center>
+                        <h1>SQLAPI++ Q&amp;A</h1>
+                    </center>
+                    <p>
+                        1. <a href="FAQ.html#QandA1">When linking a programm that
+uses SQLAPI++ I got an error: <strong>unresolved external symbol
+"__declspec(dllimport) public: virtual __thiscall ..."</strong>. What
+is missing?</a>
+                    </p>
+                    <p>
+                        2. <a href="FAQ.html#QandA2">How can I get status return code
+from stored procedure on Sybase?</a>&nbsp;
+                    </p>
+                    <p>
+                        3. <a href="FAQ.html#QandA3">I work with Sybase ASE. I have a
+stored procedure that has an input-output parameter. But when I call
+SAParam::ParamDirType method for this parameter it always returns
+SA_ParamInput, and when I try to get the parameter's value after the
+command execution I receive nothing. What is wrong?</a>&nbsp;
+                    </p>
+                    <p>
+                        4. <a href="FAQ.html#QandA4">Why is the "sybinit.err" file
+sometimes being appended to at a successful SQLAPI++ connection to
+ASE/ASA using Open Client? Console application also outputs some
+warning(s) about context allocation failure.</a>&nbsp;
+                    </p>
+                    <p>
+                        5. <a href="FAQ.html#QandA5">I execute a "Select..."
+statement and then call SACommand::RowsAffected() method to determine
+the number of rows to be returned by the command, but the result is
+always incorrect (-1 or 0 most of the times). What is wrong?</a><br>
+                    </p>
+                    <p>
+                        6. <a href="FAQ.html#QandA6">When linking a
+programm
+that uses SQLAPI++ under Microsoft Visual Studio 2005 I got an error:
+error LNK2001: unresolved external symbol "public: __thiscall
+SAString::SAString(wchar_t const *)".&nbsp; I do include sqlapiu.lib in
+the project. What's wrong?</a>
+                    </p>
+                    <p>
+                        7. <a href="FAQ.html#QandA7">When linking a
+programm with static SQLAPI++ library I got an error:
+sqlapis.lib(samisc.obj) : error LNK2019: unresolved external symbol
+_GetFileVersionInfoA@16 referenced in function "void * __cdecl
+SAGetVersionInfo(char const *)" (?SAGetVersionInfo@@YAPAXPBD@Z)</a>
+                    </p>
+                    <p>8. <a href="FAQ.html#QandA8">How can I connect to Microsoft SQL Server from Linux using SQLAPI++?</a></p>
+                    <p>9. <a href="FAQ.html#QandA9">Is there a way to get the number of rows returned by some result set?</a></p>
+                    <p>
+                        10. <a href="FAQ.html#QandA10">I got the .diff files, but how can I apply them to my existing source code?
+Could you please help me?</a>
+                    </p>
+                    <p>
+                        11. <a href="FAQ.html#QandA11">When compiling step1.cpp on Linux got an error: libsqlapi.so: undefined reference to `dlerror', 'dlopen', 
+                        'dlsym'... Could you help?</a>
+                    </p>
+                    <p>
+                        12. <a href="FAQ.html#QandA12">Could I have multiple SACommand in one SAConnection? I tested under MySQL database, keep SACommands being opened,
+                             and always get error "Commands out of sync; you can't run this command now".</a>
+                    </p>
+
+                    <hr>
+                    <h3 align="left"><a name="QandA1"></a>1. When linking a programm
+that uses SQLAPI++ I got an error: unresolved external symbol
+"__declspec(dllimport) public: virtual __thiscall ...". What is missing?</h3>
+                    <p align="left">
+                        Probably you forgot to include sqlapi.lib<sup>*</sup>
+                        (or other SQLAPI++ library, depends on the compiler and/or
+static/dynamic version) into the project. To link with SQLAPI++ Library
+you have to include sqlapi.lib into you project (as well as *.cpp).<br>
+                        For example, in Visual C++ you have to do the following:
+                    </p>
+                    <ol>
+                        <li>
+                            <div align="left">
+                                In workspace tree select the project that
+you link with SQLAPI++.
+                            </div>
+                        </li>
+                        <li>
+                            <div align="left">
+                                Use "Add Files to Project..." command on
+the right click menu and add sqlapi.lib to you project.
+                            </div>
+                        </li>
+                        <li>
+                            <div align="left">
+                                Press F7 button to compile and link you
+project.
+                            </div>
+                        </li>
+                    </ol>
+                    <p align="left">
+                        *&nbsp; sqlapi.lib should be used when linking
+with dynamic version of SQLAPI++ using Microsoft Visual C++.<br>
+                        To link with a static version using MSVC++ use sqlapis.lib.<br>
+                        To link with a dynamic version using Borland C++ compiler use
+sqlapib.lib.<br>
+                        To link with a static version using Borland C++ compiler use
+sqlapibs.lib.<br>
+                        To link with a dynamic version using Borland C++ Builder compiler use
+sqlapibb.lib.<br>
+                        To link with a static version using Borland C++ Builder compiler use
+sqlapibbs.lib.<br>
+                        To link with a debug version use appropriate lib file that ends with
+'d'.
+                    </p>
+                    <h3 align="left"><a name="QandA2"></a>2. How can I get status
+return code from stored procedure on Sybase (or SQL Server)?</h3>
+                    <p align="left">
+                        SQLAPI++ Library automatically creates <strong>SAParam
+object</strong> to represent procedure status return code. After a
+command execution you can check it value. This SAParam object's name is
+     
+                        <strong>"RETURN_VALUE"</strong>, object's type is <strong>SA_dtLong</strong>
+                        , object's direction type is <strong>SA_ParamReturn</strong>.
+                    </p>
+                    <h3 align="left"><a name="QandA3"></a>3. I work with Sybase ASE.
+I have a stored procedure that has an input-output parameter. But when
+I call SAParam::ParamDirType method for this parameter it always
+returns SA_ParamInput, and when I try to get the parameter's value
+after the command execution I receive nothing. What is wrong?</h3>
+                    <p>
+                        <strong>Sybase ASE</strong> server does not provide
+information about parameter's direction type, that's why SQLAPI++
+Library defines all parameters (except status result code) as input
+(SA_ParamInput). If you have input-output parameters in the procedure
+you have to call <strong>SAParam::setParamDirType</strong> method for
+these parameters before command execution and set parameter's direction
+type explicitly (SA_ParamInputOutput).<br>
+                        You shouldn't call this method for procedure status result code because
+it is detected correctly (as SA_ParamReturn) by the Library.
+                    </p>
+                    <p>
+                        There is no need to call this method for <strong>Sybase ASA</strong>
+                        because all parameters are detected correctly automatically (including
+the direction type).
+                    </p>
+                    <h3 align="left"><a name="QandA4"></a>4. Why is the "sybinit.err"
+file sometimes being appended to at a successful SQLAPI++ connection to
+ASE/ASA using Open Client? Console application also outputs some
+warning(s) about context allocation failure.</h3>
+                    <p>
+                        SQLAPI++ has to set the version of Client-Library behavior
+when it connects to Sybase. By default SQLAPI++ tries to set 12.5
+behavior; if it fails, SQLAPI++ tries to set 11.0 behavior and so on
+from the highest version to the lowest one until it succeeds. Finally
+the connection is successful, but every time when it fails Sybase
+server generates the appropriate error message and adds the same error
+message to the "sybinit.err" file.
+                    </p>
+                    <p>
+                        The solution is to set the CS_VERSION option to "Detect" using
+     
+                        <a href="../OnLineDoc/Connection_setOption.html">SAConnection::setOption</a>
+                        method. In that case SQLAPI++ automatically detects the maximum
+available version of behavior via the version of Client-Library.
+                    </p>
+                    <h3 align="left"><a name="QandA5"></a>5. I execute a "Select..."
+statement and then call SACommand::RowsAffected() method to determine
+the number of rows to be returned by the command, but the result is
+always incorrect (-1 or 0 most of the times). What is wrong?</h3>
+                    <p>
+                        SACommand::RowsAffected() is only applicable to
+INSERT/UPDATE/DELETE queries. It is database APIs limitation, not the
+one of SQLAPI++. The only way to get to<br>
+                        know result set size in advance is to execute "Select count(*)..."
+command.
+                    </p>
+                    <h3 align="left"><a name="QandA6"></a>6. When linking a
+programm
+that uses SQLAPI++ under Microsoft Visual Studio 2005 I got an error:
+error LNK2001: unresolved external symbol "public: __thiscall
+SAString::SAString(wchar_t const *)".&nbsp; I do include sqlapiu.lib in
+the project. What's wrong?<br>
+                    </h3>
+                    <p>
+                        We provide SQLAPI++ binaries those are linked with Microsoft
+Visual Studio 6. Visual C++&nbsp; 2005 compiler turns the '<span class="nonLinkTerms"><b>/Zc:wchar_t</b>' option on by default. This is
+incompatible with Visual C++ 6. To avoid this problem you can turn off </span><span class="nonLinkTerms"><b>'/Zc:wchar_t option'</b> (use '<span style="font-weight: bold;">/Zc:wchar_t-</span>'&nbsp; or look at the
+project options dialog 'Treat wchar_t as Build-in Type' item). But the
+best solution - rebuilding SQLAPI++ with Visual C++ 2005 compiler.<br>
+</span>
+                    </p>
+                    <h3 align="left"><a name="QandA7"></a>7. When linking a
+programm with static SQLAPI++ library I got an error:
+sqlapis.lib(samisc.obj) : error LNK2019: unresolved external symbol
+_GetFileVersionInfoA@16 referenced in function "void * __cdecl
+SAGetVersionInfo(char const *)" (?SAGetVersionInfo@@YAPAXPBD@Z) </h3>
+                    <p>
+                        Since SQLAPI++ 3.7.25 you also need the libraries: user32.lib,
+version.lib, oleaut32.lib and ole32.lib
+                    </p>
+                    <h3 align="left"><a name="QandA8"></a>8. How can I connect to Microsoft SQL Server from Linux using SQLAPI++?</h3>
+                    <p>
+                        There is the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=28160">SQL Server ODBC/SQLNCLI Driver for Linux</a>
+                        that provides native connectivity from Linux to Microsoft SQL Server. SQLAPI++ support this client software but Microsoft releases this driver only for x86-64 Linux platforms.
+                        When you'd like to run the software on 32-bit Linux or any ther Unix like system you must use ODBC
+connection. You need ODBC driver manger&nbsp; (most known are&nbsp; <a href="http://www.iodbc.org">iODBC </a>or <a href="http://www.unixodbc.org/">unixODBC</a>)
+and MSSQL ODBC driver (<a href="http://www.google.com/url?sa=t&amp;source=web&amp;cd=9&amp;ved=0CDoQFjAI&amp;url=http%3A%2F%2Fwww.freetds.org%2Ffaq.html&amp;ei=s3m9TM6nEIOZOvaQ8Eo&amp;usg=AFQjCNG8-SSAOq3lKiRww45AYI5-eg39zg&amp;sig2=Zaj8roLMDGPrinBI0VwFJQ">FreeTDS</a> ODBC driver or commercial <a href="http://www.easysoft.com/products/data_access/odbc-sql-server-driver/index.html">EasySOFT </a>one.)<br>
+                        You must install and configure ODBC software. Often Linux distrubution
+mantainers split the software into several packages, for example Debian
+Lenny includes the next iODBC and FreeTDS packages:
+     
+                    </p>
+                    <pre>iodbc - GTK+ config frontend for the iODBC Driver Manager<br>libiodbc2-dev - iODBC Driver Manager (development files)<br>libiodbc2 - iODBC Driver Manager<br>freetds-common - configuration files for FreeTDS SQL client libraries<br>freetds-dev - MS SQL and Sybase client library (static libs and headers)<br>libct4 - libraries for connecting to MS SQL and Sybase SQL servers<br>libsybdb5 - libraries for connecting to MS SQL and Sybase SQL servers<br>tdsodbc - ODBC driver for connecting to MS SQL and Sybase SQL servers<br></pre>
+                    It's enough to have installed only iodbc, libiodbc2,
+freetds-common and tdsodbc packages. For the first time it's better to
+configure and test DSN (any driver manager includes
+console tool for command line SQL):
+                    <pre>bedlam:~# cat ~/.odbc.ini<br>[ODBC Data Sources]<br>MSSQL = FreeTDS driver<br><br>[MSSQL]<br>Driver = /usr/lib/odbc/libtdsodbc.so<br>Server = BEDLAM-M\SQLEXP2008EN<br>Database = pubs<br>TDS_Version = 7.0<br><br>bedlam:~# cat ~/.odbcinst.ini<br>[ODBC Drivers]<br>FreeTDS driver = Installed<br><br>[FreeTDS driver]<br>Driver = /usr/lib/odbc/libtdsodbc.so<br>Setup  = /usr/lib/odbc/libtdsS.so<br></pre>
+                    iodbc package provides iodbctest tool I run with parameters to check the ODBC DSN status:
+                    <pre>bedlam-home:~# iodbctest "DSN=MSSQL;UID=sa;PWD=xxx"<br>iODBC Demonstration program<br>This program shows an interactive SQL processor<br>Driver Manager: 03.52.0607.1008<br>Driver: 0.82 (libtdsodbc.so)<br><br>SQL&gt;<br></pre>
+                    Then I can use SQLAPI++:
+                    <pre>con.Connect("MSSQL", "sa", "xxx", SA_ODBC_Client);<br></pre>
+                    or without DSN configured:
+                    <pre>conn.Connect("DRIVER={FreeTDS driver};SERVER=BEDLAM-M\\SQLEXP2008EN;DATABASE=pubs;TDS_Version=7.0", "sa", "xxx", SA_ODBC_Client);<br></pre>
+                    <h3 align="left"><a name="QandA9"></a>9. Is there a way to get the number of rows returned by some result set?</h3>
+                    <p>
+                        Generally it's impossible. Because any DBMS can counts the result
+set rows only when all rows already cached at the client side. For such
+cases SACommand::RowsAffected() method returns the result set row
+count.
+                    </p>
+
+                    <h3 align="left"><a name="QandA10"></a>10. I got the .diff file, but how can I apply them to my existing source code?<br>
+                    </h3>
+                    <p>
+                        You need a <a href="http://savannah.gnu.org/projects/patch/">GNU patch</a> tool. Version for win32 can be downloaded from <a href="http://sourceforge.net/projects/gnuwin32/files/patch/">SouceForge</a>. Then run it from the console like:<br>
+                    </p>
+                    <pre>C:\SQLAPI\src&gt;patch.exe &lt; myClient.cpp.diff
+patching file myClient.cpp
+
+C:\SQLAPI\src&gt;
+</pre>
+                    <h3 align="left"><a name="QandA11"></a>11. When compiling step1.cpp on Linux got an error: libsqlapi.so: undefined reference to `dlerror', 'dlopen', 
+                        'dlsym'... Could you help?<br>
+                    </h3>
+                    <p>
+                        SQLAPI++ uses libdl library API to load DBMS API. So you should include this library when you linking your binary file with SQLAPI, like:
+                    </p>
+                    <pre>g++ -I../inclide -L../lib step1.cpp -o step1.out -lsqlapi -ldl</pre>
+                    <p>
+                        or with static SQLAPI without libpath:
+                    </p>
+                    <pre>g++ -I../inclide step1.cpp -o step1.out ../lib/libsqlapi.a -lsqlapi -ldl</pre>
+                    <br>
+
+                    <h3 align="left"><a name="QandA12"/>12. Could I have multiple SACommand in one SAConnection? I tested under MySQL database, keep SACommands being opened,
+                             and always get error "Commands out of sync; you can't run this command now".
+                    </h3>
+                    <p>
+                    Default MySQL API doesn't allow to have several opened result set per connection. This is exactly what <b>mysql_use_result</b> does. 
+                        The connection is blocked until you don't fetch all result set rows. When you'd like to run another command when there is 
+                        not fetched result set at the same connection you must use another solution. The simplest - using MySQL 'store' result set:
+<pre>
+SACommand cmd(&con, "select ...");
+cmd.setOption("HandleResult") = "store";
+cmd.Execute();
+...
+</pre>
+
+<p>Then SQLAPI uses <b>mysql_store_result</b> and all rows cached at he client side after query is executed and you can fetch the result and execute another command at the same connection.
+The not good thing - this solution uses local MySQL client data cache. So MySQL guys added another feature - statement API. statement API allows to execute command but the result set stored at the client side. SQLAPI++ can use this feature with 'SELECT' commands. The limitation - the single, forward-only result set only:</p>
+                    <pre>
+SACommand cmd(&con, "select ...");
+cmd.setOption("UseStatement") = "TRUE";
+cmd.Execute();
+... 
+                        </pre>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

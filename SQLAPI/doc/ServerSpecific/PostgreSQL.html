@@ -1,0 +1,618 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+
+  
+<meta name="KEYWORDS" content="      library, C++, 
+      PostgreSQL, 
+      SQL, server, client, database, programming, development, software, 
+      Win32, Windows, Linux, Unix, Solaris,
+      Microsoft, Borland, Centura, Gupta, IBM">
+
+  
+<meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, MySQL, PostgreSQL, ODBC).
+It uses native APIs, provides low-level access to database-specific features.">
+
+  
+<title>SQLAPI++ Library - Server Specific Guide - PostgreSQL</title>
+
+</head><body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
+<!--class="GlbHdr"-->
+<table id="TABLE1" frame="hsides" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" height="40" width="600">
+
+  <tbody>
+    <tr>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Home</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../HowTo/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>How To</b></font></a></td>
+<!--class="GlbActive"--> <td bordercolor="black" align="center" bgcolor="#00bb00" width="70"> <a href="../OnLineDoc/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Online Documentation</b></font></a></td>
+<!--class="GlbDefault"--> <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Support/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Support</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Download/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Download</b></font></a></td>
+      <td bordercolor="black" align="center" bgcolor="#000094" width="70"> <a href="../Order/index.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="3"> <b>Order</b></font></a></td>
+    </tr>
+  </tbody>
+</table>
+
+&nbsp;
+<p>&nbsp;</p>
+
+<table width="100%">
+
+  <tbody>
+    <tr>
+      <td valign="top" width="165"><!--class="LeftMenu"-->
+      <table frame="void" cellspacing="5" width="165">
+        <tbody>
+          <tr>
+            <td>
+            <p><br>
+            </p>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Command.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SACommand</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Connection.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAConnection</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Exception.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAException</font></a> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Field.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAField</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Param.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAParam</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/String.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SAString</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/DateTime.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SADateTime</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td><img src="../images/green.gif" align="middle" height="12" width="12"> <a href="../OnLineDoc/Numeric.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> SANumeric</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+          <tr>
+            <td>
+            <hr></td>
+          </tr>
+          <tr>
+            <td> <a href="../OnLineDoc/Enums.html" style="text-decoration: none;"> <font color="white" face="sans-serif" size="2"> Enums and Typedefs</font></a><font color="white" face="sans-serif" size="2"> </font> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+<!--empty column--> <td width="20">
+      <p> </p>
+      <br>
+      </td>
+<!--Content--> <td align="left" valign="top">
+      <center>
+      <h2><a href="index.html">Server Specific Guide</a></h2>
+      <h1>PostgreSQL</h1>
+      <p align="left">SQLAPI++ allows to work with a number of SQL
+database servers. It provides common mechanisms to access database, and
+as a general rule they work for any database server. But each server
+has some specific features which a developer has to
+know in order to leverage server's unique features and avoid potential
+errors.</p>
+      <p align="left">This page collects all <strong>specific</strong>
+information that concerns working with <strong>PostgreSQL</strong>
+server using SQLAPI++ Library. Full information about using SQLAPI++
+see in <a href="../HowTo/index.html">How To</a> and <a href="../OnLineDoc/index.html">Online Documentation</a>. </p>
+      <p align="left">Available topics: </p>
+      </center>
+      <p><a href="PostgreSQL.html#Connecting%20to%20a%20database">Connecting
+to
+a database</a></p>
+      <p><a href="PostgreSQL.html#Transaction%20isolation%20levels">Transaction
+isolation
+levels</a></p>
+      <p><a href="PostgreSQL.html#Working%20with%20Long%20or%20Lob%28CLob,%20BLob%29%20data">Working
+with
+Long or Lob(CLob, BLob) data</a></p>
+      <p><a href="PostgreSQL.html#Returning%20output%20parameters">Returning
+output
+parameters</a></p>
+      <p><a href="PostgreSQL.html#Cancelling%20queries">Cancelling
+queries</a></p>
+      <p><a href="PostgreSQL.html#Connection_and_command_options">Connection,
+command,
+parameter and field options</a></p>
+      <p><a href="PostgreSQL.html#Getting%20native%20PostgreSQL%20API">Getting
+native
+PostgreSQL API</a></p>
+      <p><a href="PostgreSQL.html#Getting%20native%20PostgreSQL%20connection%20related%20handles">Getting
+native
+PostgreSQL connection related handles</a></p>
+      <p><a href="PostgreSQL.html#Getting%20native%20PostgreSQL%20command%20related%20handles">Getting
+native
+PostgreSQL command related handles</a></p>
+      <p><a href="PostgreSQL.html#Error%20handling">Error handling</a></p>
+      <p><a href="PostgreSQL.html#Special%20header%20files%20-%20Compile%20time">Special
+header
+files - Compile time</a></p>
+      <p>&nbsp;</p>
+      <h3><a name="Connecting to a database">Connecting to a database</a>
+      </h3>
+      <p>To connect to a database you should create a connection object
+and then connect it. A connection object is represented by <a href="../OnLineDoc/Connection.html">SAConnection</a> class. After the
+connection is created you need to connect it to <strong>PostgreSQL</strong>
+server using <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>
+method</p>
+      <p><font face="Arial"><b>void Connect( const SAString &amp;</b>sDBString<b>,
+const
+SAString &amp;</b>sUserID<b>, const SAString &amp;</b>sPassword<b>,
+SAClient_t</b> eSAClient<b> = SA_Client_NotSpecified );</b><b> <br>
+      </b></font></p>
+      <p>with the following parameters:</p>
+      <p><em>sDBString.</em>&nbsp; A string describes PostgreSQL connection optinons, The fromat is "[&lt;<strong>server_name</strong>&gt;]@][<strong>&lt;database_name&gt;</strong>][;&lt;<b>options</b>&gt;]":</p>
+      <ul>
+        <li><strong>"" or "@"</strong> - empty string or '@' character,
+connects to a local server. </li>
+        <li> <strong>"&lt;</strong><strong><strong>database_name</strong>&gt;" or "@ <strong>&lt;</strong></strong><strong><strong><strong>database_name</strong>&gt;</strong></strong>" - connects to a database with the specified
+name on local server.</li>
+        <li> <strong>"&lt;server_name&gt;@"</strong> - connects to the
+specified server.</li>
+        <li><strong>"&lt;server_name&gt;@&lt;database_name&gt;" </strong>-
+connects
+to a database with the specified name on the specified server.</li>
+      </ul>
+<p>&lt;<b>server_name</b>&gt; can be a cobination of hostname/address and port number (&lt;<b>server_name</b>&gt; = &lt;<b>host</b>&gt;[,&lt;<b>port</b>&gt;])) or unix_socket path.<br>
+    &lt;<b>options</b>&gt; string used for <b>PQsetdbLogin</b> function<b> pgoptions</b> parameter (these are the server process parameters).<br>
+   &lt;<b>database_name</b>&gt; string defines the database name for the connection but it can also define the client options like:  "dbname=mydb connect_timeout=10"
+</p>
+
+      <p><em>sUserID.</em>&nbsp;&nbsp;&nbsp; A string containing a user
+name to use when establishing the connection.<br>
+      <em>sPassword.</em>&nbsp;&nbsp;&nbsp; A string containing a
+password to use when establishing the connection.<br>
+      <em>eSAClient.</em>&nbsp;&nbsp;&nbsp; Optional. One of the
+following values from <strong>SAClient_t</strong> enum: </p>
+      <ul>
+        <li><strong>SA_PostgreSQL_Client</strong>&nbsp;&nbsp;&nbsp;
+PostgreSQL client. </li>
+        <li><strong>SA_Client_NotSpecified</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+Used
+by default if <em>eSAClient</em>parameter is omitted.&nbsp; You
+can use this default value only if you have call <a href="../OnLineDoc/Connection_setClient.html">SAConnection::setClient</a>
+method with <strong>SA_PostgreSQL_Client</strong> constant before.</li>
+      </ul>
+      <p> The SQLAPI++ Library requires libpq version 7.1.x or higher.</p>
+      <p>For more details see <a href="../HowTo/connect.html">How To -
+Connecting to databases</a>, <a href="../OnLineDoc/Connection_Usage.html">SAConnection object</a>, <a href="../OnLineDoc/Connection_Connect.html">SAConnection::Connect</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Transaction isolation levels">Transaction isolation
+levels</a> </h3>
+      <p> SQL-92 defines four isolation levels, all of which are
+supported by SQLAPI++:</p>
+      <ul>
+        <li> Read uncommitted (the lowest level where transactions are
+isolated just enough to ensure that physically corrupt data is not
+read) </li>
+        <li> Read committed </li>
+        <li>Repeatable read</li>
+        <li>Serializable (the highest level, where transactions are
+completely isolated from one another) </li>
+      </ul>
+      <p>SQLAPI++ maps different isolation levels on <strong>
+PostgreSQL</strong> server in the following way:</p>
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>SA_ReadUncommitted</strong>
+= 'READ COMMITTED'<br>
+      <strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_ReadCommitted</strong>
+= 'READ COMMITTED' <br>
+      <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_RepeatableRead</strong>
+= 'READ COMMITTED'<br>
+      <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_Serializable</strong> =
+'SERIALIZABLE'</p>
+      <p>For more details see<a href="../OnLineDoc/Connection_setIsolationLevel.html">
+SAConnection::setIsolationLevel</a>. </p>
+      <p>&nbsp;</p>
+      <h3><a name="Working with Long or Lob(CLob, BLob) data">Working
+with Long or Lob(CLob, BLob) data</a> </h3>
+      <p> SQLAPI++ supports four types for working with Long or
+Lob(CLob, BLob) data:</p>
+      <p>
+      <table style="width: 100%;" border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+          <tr bgcolor="navy">
+            <td><font style="background-color: rgb(0, 0, 128);" color="white">Name</font></td>
+            <td><font style="background-color: rgb(0, 0, 128);" color="white">C enum constant</font></td>
+          </tr>
+          <tr>
+            <td>LongBinary</td>
+            <td>SA_dtLongBinary</td>
+          </tr>
+          <tr>
+            <td>LongChar</td>
+            <td>SA_dtLongChar</td>
+          </tr>
+          <tr>
+            <td>BLob (Binary Large object)</td>
+            <td>SA_dtBLob</td>
+          </tr>
+          <tr>
+            <td>CLob (Character Large object)</td>
+            <td>SA_dtCLob</td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>The table below shows how SQLAPI++ data types correspond with
+servers original data types:</p>
+      <p><em>SA_dtLongBinary</em> &lt;= &gt; BYTEA<br>
+      <em>SA_dtLongChar</em> &lt;= &gt; TEXT<br>
+      <em>SA_dtBLob</em> &lt; = &gt; Large Object<br>
+      <em>SA_dtCLob &lt; </em>=&gt; Large Object</p>
+      <p> Working with PostgreSQL Large Objects data (Oid field type)
+in <strong>PostgreSQL</strong> server has some particular features.
+Generally when you fetch Oid field data (which can point to any object,
+not necessary PostgreSQL Large Object) SQLAPI++ returns its value as a
+number (SQLAPI++ returns an object identifier). If you want to retrieve
+Oid field as PostgreSQL Large Object you should set command-related
+option <strong>OidTypeInterpretation</strong> to <em>"LargeObject"</em>value
+before
+the command execution. See <a href="../OnLineDoc/Command_setOption.html">SACommand::setOption</a>
+for more detailes.</p>
+      <p> For more details see <a href="../HowTo/blobs.html">How To -
+Working with Long or Lob(CLob, BLob) data</a></p>
+      <p>&nbsp;</p>
+      <h3><a name="Returning output parameters">Returning output
+parameters</a> </h3>
+ <p> In  <strong> PostgreSQL</strong> output parameters are available
+immediately after calling <a href="../OnLineDoc/Command_Execute.html">SACommand::Execute</a>.</p>
+<p>SQLAPI++ Library automatically creates <a href="../OnLineDoc/Param.html">SAParam</a> object to represent
+function return value. You can refer to this <a href="../OnLineDoc/Param.html">SAParam</a> object using SQLAPI++
+predefined name <strong>"RETURN_VALUE"</strong>. When  <strong> PostgreSQL </strong>function has output parameters SQLAPI++ <strong>"RETURN_VALUE"</strong> parameter is not assigned. </p>
+<p>For more details see <a href="../OnLineDoc/Command_Execute.html">SACommand::Execute</a>, <a href="../OnLineDoc/Param_Usage.html">SAParam object</a>, <a href="../HowTo/return_param.html">How To - Returning Output Parameters</a>.</p>
+  <br>
+<h3><a name="Cancelling queries">Cancelling queries</a> </h3>
+      <p>Using <a href="../OnLineDoc/Command_Cancel.html">SACommand::Cancel</a>
+method you can cancel the following types of processing on a statement:</p>
+      <ul type="disc">
+        <li>A function running asynchronously on the statement.<br>
+        </li>
+        <li>A function running on the statement on another thread. </li>
+      </ul>
+      <p>SQLAPI++ calls <strong>PQrequestCancel</strong> function to
+cancel a query. To get more details see <strong> <strong>PQrequestCancel</strong></strong>
+function description in <strong>PostgreSQL</strong> documentation.</p>
+      <p>For more details see <a href="../OnLineDoc/Command_Cancel.html">SACommand::Cancel</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Connection_and_command_options">Connection, command,
+parameter and field options</a> </h3>
+      <p>A server specific option can relate to a connection,
+command,&nbsp; parameter or field. We recommend you specify each option
+in an appropriate object, although it is possible to specify them in
+the parental object as well. In that case the option affects all the
+child objects. </p>
+      <p>A connection related option must be specified in a&nbsp; <a href="../OnLineDoc/Connection.html">SAConnection</a> object. </p>
+      <p>A command related option may be specified in either <a href="../OnLineDoc/Connection.html">SAConnection</a> object or <a href="../OnLineDoc/Command.html">SACommand</a> object. If it is
+specified in <a href="../OnLineDoc/Connection.html">SAConnection</a>
+object it affects all the commands on that connection. </p>
+      <p>A parameter related option may be specified in <a href="../OnLineDoc/Connection.html">SAConnection</a> object, <a href="../OnLineDoc/Command.html">SACommand</a> object or <a href="../OnLineDoc/Param.html">SAParam</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the parameters on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+object it affects all the parameters on that command. </p>
+      <p>A field related option may be specified in <a href="../OnLineDoc/Connection.html">SAConnection</a> object, <a href="../OnLineDoc/Command.html">SACommand</a> object or <a href="../OnLineDoc/Field.html">SAField</a> object. If it is specified
+in <a href="../OnLineDoc/Connection.html">SAConnection</a> object it
+affects all the commands and therefore all the fields on that
+connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand</a>
+object it affects all the fields on that command. </p>
+      <p> Specific options for <strong>PostgreSQL</strong> server:</p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td width="17%">
+            <p><strong><font color="white" face="">Option name / Scope</font>&nbsp;
+
+            </strong></p>
+            </td>
+            <td>
+            <p><strong><font color="white" face=""> Description</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>
+            <p align="center"> LIBPQ.LIBS </p>
+            </strong>
+            <p align="center"> Connection related. Should be specified
+before the first connection is made.<strong></strong> </p>
+            </td>
+            <td>
+            <p> Forces SQLAPI++ Library to use specified LIBPQ library.<br>
+            <br>
+            <em>Valid values</em> : Any valid LIBPQ library name list.
+Names separated by ';' on Windows or ':' on other OS.<br>
+            <em>Default value</em>: Windows - "libpq.dll;pq.dll", Linux
+-&nbsp; "libpq.so:libpq.so.5:libpq.so.4:libpq.so.3".<br>
+            <br>
+            </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><strong><p align="center"><strong><font face="" size="3">APPNAME</font></strong><br>
+            </p>
+            </strong>
+            
+            <p align="center"><font face="" size="3">Connection
+related. Should be specified before connection is made. </font></p>
+            </td>
+            <td style="vertical-align: top;">Specifies the client application name (PostgreSQL 9.0 and higher '<tt class="LITERAL">application_name' configuration parameter</tt>).<br>
+
+            <br>
+
+            <em>Valid values</em>: client application name string. <br>
+
+            <em>Default value: </em>none.</td>
+          </tr>
+<tr>
+            <td><strong> </strong>
+            <p align="center"><strong> <strong>OidTypeInterpretation</strong>
+            </strong></p>
+            <strong> </strong>
+            <p align="center"><strong> <strong></strong></strong>Command
+related&nbsp;</p>
+            </td>
+            <td>
+            <p> Forces SQLAPI++ Library to interpret fields of Oid type
+as an object identifier or a Large Object.<br>
+            </p>
+            <p><em>Valid values</em>: "LargeObject" and "Oid". <br>
+            <em>Default value</em>: "Oid".</p>
+            <p> After you set "LargeObject" value to this option,
+SQLAPI++ interprets Oid type fields data as BLob data. Otherwise, it
+reads them as object identifiers (as ordinary numbers).</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"><strong> ClientEncoding</strong></p>
+            <strong> </strong>
+            <p align="center"><strong> <strong></strong></strong>Connection
+related.
+            </p>
+            </td>
+            <td style="vertical-align: top;">Uses PQsetClientEncoding
+to set up PostgreSQL client encoding.<br>
+            <br>
+            <em>Valid values</em>:&nbsp; See PostgreSQL documentation.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"><strong> UseCursor</strong></p>
+            <strong> </strong>
+            <p align="center"><strong> <strong></strong></strong>Command
+related.<br>
+            </p>
+            </td>
+            <td style="vertical-align: top;">Forces SQLAPI++ to use
+server side cursor within "select .." statement.<br>
+            <em><br>
+Valid values</em>: "True" and "1".&nbsp; <em>Default value</em>:
+"False".<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"><strong> PreFetchRows</strong></p>
+            <strong> </strong>
+            <p align="center"><strong> <strong></strong></strong>Command
+related.</p>
+            </td>
+            <td style="vertical-align: top;">
+            <p>Forces SQLAPI++ Library to fetch rows in bulk within the
+server side cursor, rather
+than retrieving records one by one.</p>
+            <p><em>Valid values</em>: String containing number of rows
+in the fetch buffer. <br>
+            <em>Default value</em>: "1".</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><strong>
+            <p align="center">UseDynamicCursor<br>
+or<br>
+Scrollable<br>
+            </p>
+            </strong>
+            <div style="text-align: center;"> Command related. </div>
+            </td>
+            <td style="vertical-align: top;">Forces SQLAPI++ to use
+scrollable dynamic server side cursor.<br>
+            <br>
+            <em>Valid values</em>: "True", "1". <em>Default value</em>:
+"false".</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>For more details see <a href="../OnLineDoc/Connection_setOption.html">SAConnection::setOption</a>,
+
+      <a href="../OnLineDoc/Command_setOption.html">SACommand::setOption</a>,
+
+      <a href="../OnLineDoc/Field_setOption.html">SAField::setOption</a>,
+
+      <a href="../OnLineDoc/Param_setOption.html">SAParam::setOption</a>.
+
+      </p>
+      <p>&nbsp;</p>
+      <h3><a name="Getting native PostgreSQL API">Getting native
+PostgreSQL API</a> </h3>
+      <p>You can call client specific API functions which are not
+directly supported by SQLAPI++ Library. <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>
+method returns a pointer to the set of native API functions available
+for <strong>PostgreSQL</strong>. To use the database API directly you
+have to downcast this <strong>saAPI</strong> pointer to the
+appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with <strong>PostgreSQL</strong>
+API. </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td style="width: 300px;" width="300">
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+            <td>
+            <p><strong><font color="white" face="">Additional <br>
+include file</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p>Cast the result to <strong>class pgAPI</strong>:</p>
+            <p><font face="System">saAPI *pResult = con.NativeAPI();<br>
+pgAPI *p_pgAPI = (pgAPI *)pResult;</font></p>
+            </td>
+            <td><strong>
+            <p><strong>#include &lt;pgAPI.h&gt;</strong></p>
+            </strong></td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions see this DBMS
+specific documentation.&nbsp; </p>
+      <p>For more details see <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Getting native PostgreSQL connection related handles">Getting
+native
+PostgreSQL connection related handles</a> </h3>
+      <p>You have to use native API handles when you want to call
+specific <strong>PostgreSQL</strong> API functions which are not
+directly supported by the Library. API functions usually need to
+receive one or more active handles as a parameter(s). <a href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>
+method returns a pointer to the set of native API <strong>connection
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saConnectionHandles</strong> pointer to the
+appropriate type and use its implementation-specific members. The
+following table shows what type cast you have to make and what
+additional header file you have to include to work with specific <strong>PostgreSQL</strong>
+API. </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td>
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><font color="maroon" face="">Cast the result</font></strong>
+to <strong>class pgConnectionHandles</strong>:</p>
+            <font face="System"><font face="System"> </font></font>
+            <p><font face="System"><font face="System"><strong><font color="maroon" face="">#include &lt;pgAPI.h&gt;</font> </strong></font></font></p>
+            <font face="System"><font face="System"> </font></font>
+            <p><font face="System"><font face="System">saConnectionHandles
+*pResult
+= con.NativeHandles</font>();<br>
+pgConnectionHandles *p_pgCH =<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(pgConnectionHandles
+*)pResult;</font></p>
+            <font face="System"> </font>
+            <p><font face="System"><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </font></p>
+            <font face="System"> </font>
+            <ul>
+              <font face="System">
+              <li><font face="Times New Roman">PGconn
+*conn;</font> </li>
+              </font>
+            </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp; </p>
+      <p>For more details see <a href="../OnLineDoc/Connection_NativeHandles.html">SAConnection::NativeHandles</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Getting native PostgreSQL command related handles">Getting
+native
+PostgreSQL command related handles</a> </h3>
+      <p>You have to use native API handles when you want to call
+specific <strong>PostgreSQL</strong> API functions which are not
+directly supported by the Library. API functions usually need to
+receive one or more active handles as a parameter(s). <a href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>
+method returns a pointer to the set of native API <strong>command
+related</strong> handles. To use API handles directly you have to
+downcast <strong>saCommandHandles</strong> pointer to the appropriate
+type and use its implementation-specific members. The following table
+shows what type cast you have to make and what additional header file
+you have to include to work with specific <strong>PostgreSQL</strong>
+API. </p>
+      <p>
+      <table border="1" cellpadding="5" width="100%">
+        <tbody>
+          <tr bgcolor="#000094">
+            <td>
+            <p><strong><font color="white" face="">Type casting</font> </strong></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            <p><strong><font color="maroon" face="">Cast the result</font></strong>
+to <strong>class pgCommandHandles</strong>:</p>
+            <font face="System"><font face="System">
+            <p><strong><font color="maroon" face="">#include
+&lt;pgAPI.h&gt;</font> </strong></p>
+            <p>saCommandHandles *pResult = cmd.NativeHandles();<br>
+pgCommandHandles *p_pgCH =<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(pgCommandHandles
+*)pResult;</p>
+            <p><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </p>
+            <ul>
+              <li><font face="Times New Roman"> PGresult *res;</font></li>
+            </ul>
+            </font></font></td>
+          </tr>
+        </tbody>
+      </table>
+      </p>
+      <p>To get more information about DBMS API functions and handles
+see this DBMS specific documentation.&nbsp; </p>
+      <p>For more details see <a href="../OnLineDoc/Command_NativeHandles.html">SACommand::NativeHandles</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Error handling">Error handling</a> </h3>
+      <p>When an error occurs inside SQLAPI++ Library it throws an
+exception of type <a href="../OnLineDoc/Exception.html">SAException</a>.
+
+      <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+method gets an error position in SQL statement. In <strong>PostgreSQL</strong>
+server <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
+method returns -1 because <strong>PostgreSQL</strong> does not support
+this function.</p>
+      <p>For more details see <a href="../HowTo/errors.html">How To -
+Error handling</a>, <a href="../OnLineDoc/Exception_Usage.html">SAException
+object</a>.</p>
+      <p>&nbsp;</p>
+      <h3><a name="Special header files - Compile time">Special header
+files - Compile time</a> </h3>
+      <p>The header files are in the <strong>include</strong>
+subdirectory of SQLAPI++ distributions:<br>
+      <strong>#include &lt;SQLAPI.h&gt; </strong>- main header, should
+be used whenever SQLAPI++ is used.<br>
+      <strong> #include &lt;pgAPI.h&gt; </strong>- <strong>PostgreSQL</strong>
+, should be included if direct libpq calls are required.</p>
+      <p>For more details see <a href="../OnLineDoc/index.html#Instructions%20for%20Compiling%20and%20Linking%20Applications%20with%20SQLAPI++">Online
+Documentation
+- Instructions for Compiling and Linking Applications
+with SQLAPI++</a>&nbsp;</p>
+      <p>&nbsp;</p>
+      <h3>Problems and Questions</h3>
+      <p>If you haven't found the answer to you questions or have some
+problems on using the Library, please, send e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</body></html>

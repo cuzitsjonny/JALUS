@@ -1,0 +1,988 @@
+#include "Characters.h"
+#include "Config.h"
+#include "Logger.h"
+#include "Objects.h"
+#include "InventoryItems.h"
+#include "Locations.h"
+
+string Characters::name;
+
+void Characters::init(string name, string structure)
+{
+	Characters::name = name;
+
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "CREATE TABLE IF NOT EXISTS";
+		ss << " " << name << " ";
+		ss << "(";
+		ss << structure;
+		ss << ");";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		Logger::error("Failed to init SQLTable! (Name: " + name + ") Error: '" + string(x.ErrMessage()) + "'");
+		exit(-1);
+	}
+}
+
+long long Characters::createCharacter(long long accountID, string name, string unapprovedName, bool isUnapprovedNameRejected, long gmLevel, CharacterStyle style)
+{
+	long long id = Objects::createObject(1);
+
+	if (Characters::getCharacterID(name) > -1)
+		name = to_string(id);
+
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "INSERT INTO";
+		ss << " " << Characters::name << " ";
+		ss << "(id, account_id, name, unapproved_name, is_unapproved_name_rejected, gm_level)";
+		ss << " VALUES ";
+		ss << "('" << id << "', '" << accountID << "', '" << name << "', '" << unapprovedName << "', '" << isUnapprovedNameRejected << "', '" << gmLevel << "');";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	InventoryItems::createInventoryItem(id, CharacterStyles::getLOTFromStyle(style.shirtColor, style.shirtStyle), 0, 1, true, true);
+	InventoryItems::createInventoryItem(id, CharacterStyles::getLOTFromStyle(style.pantsColor), 1, 1, true, true);
+
+	CharacterStyles::saveCharacterStyle(style, id);
+
+	Location loc;
+	loc.position.x = -627.1862F;
+	loc.position.y = 613.326233F;
+	loc.position.z = -47.2231674F;
+	loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
+	loc.mapClone = 0;
+
+	Locations::saveLocation(loc, id);
+
+	return id;
+}
+
+void Characters::deleteCharacter(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "DELETE FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	InventoryItems::deleteInventoryItems(charID);
+	CharacterStyles::deleteCharacterStyle(charID);
+	Locations::deleteLocation(charID);
+	Objects::deleteObject(charID);
+}
+
+long long Characters::getCharacterID(string name)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT id FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE name = '" << name << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("id").asNumeric();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+bool Characters::isCustomNameAlreadyPending(string name)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	bool r = false;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT id FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE unapproved_name = '" << name << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		r = cmd.FetchFirst();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+long long Characters::getAccountID(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT account_id FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("account_id").asNumeric();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+vector<long long> Characters::getCharacterIDs(long long accountID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<long long> r;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT id FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE account_id = '" << accountID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			r.push_back(cmd.Field("id").asNumeric());
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+string Characters::getName(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	string r = "";
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT name FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("name").asString();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+string Characters::getUnapprovedName(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	string r = "";
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT unapproved_name FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("unapproved_name").asString();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+bool Characters::isUnapprovedNameRejected(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	bool r = false;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT is_unapproved_name_rejected FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("is_unapproved_name_rejected").asBool();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+long Characters::getLevel(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT level FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("level").asLong();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+long long Characters::getUniverseScore(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT universe_score FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("universe_score").asLong();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+long long Characters::getCurrency(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT currency FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("currency").asLong();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+long long Characters::getReputation(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT reputation FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("reputation").asLong();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+long Characters::getGMLevel(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT gm_level FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("gm_level").asLong();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+long Characters::getInventorySize(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT inventory_size FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("inventory_size").asLong();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+void Characters::setName(string name, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET name = '" << name << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void Characters::setUnapprovedName(string unapprovedName, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET unapproved_name = '" << unapprovedName << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void Characters::setIsUnapprovedNameRejected(bool isUnapprovedNameRejected, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET is_unapproved_name_rejected = '" << isUnapprovedNameRejected << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void Characters::setLevel(long level, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET level = '" << level << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void Characters::setUniverseScore(long long universeScore, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET universe_score = '" << universeScore << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void Characters::setCurrency(long long currency, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET currency = '" << currency << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void Characters::setReputation(long long reputation, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET reputation = '" << reputation << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void Characters::setGMLevel(long gmLevel, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET gm_level = '" << gmLevel << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void Characters::setInventorySize(long inventorySize, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET inventory_size = '" << inventorySize << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
