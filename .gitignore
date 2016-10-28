@@ -3,6 +3,7 @@
 [Rr]elease/
 [Oo]bj/
 [Ll]og/
+.vs/
 
 # VS Cache DB
 *.sdf
