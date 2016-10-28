@@ -8,7 +8,6 @@
 # VS Cache DB
 *.suo
 *.sdf
-*.VC.*
 
 # Lib Files
 !*.lib
