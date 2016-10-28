@@ -252,34 +252,196 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 
 		Server::sendPacket(packet, clientAddress);
 
-		ReplicaObject* object = new ReplicaObject(session->charID, 1, to_wstring(Characters::getName(session->charID)), Characters::getGMLevel(session->charID));
-		object->controllablePhysicsIndex->flag_5 = true;
+		BitStream* replica = new BitStream();
+		replica->Write((unsigned char)ID_REPLICA_MANAGER_CONSTRUCTION);
+		replica->Write(true);
+		replica->Write((unsigned short)42);
+
+		replica->Write(session->charID);
+		replica->Write((unsigned long)1);
+
+		string name = Characters::getName(session->charID);
+		replica->Write((unsigned char)name.length());
+		for (int i = 0; i < name.length(); i++)
+		{
+			replica->Write(name[i]);
+		}
+
+		replica->Write((unsigned long)0);
+		replica->Write((unsigned char)0);
+
+		// ControllablePhysics
+		replica->Write(false);
+		replica->Write(true);
+
+		for (int i = 0; i < 7; i++)
+		{
+			replica->Write((unsigned long)0);
+		}
+
+		replica->Write(false);
+
+		replica->Write(true);
+		replica->Write((unsigned long)0);
+		replica->Write(false);
+
+		replica->Write(true);
+		replica->Write(false);
+
+		replica->Write(true);
 
 		Location loc = Locations::getLocation(session->charID);
-		object->controllablePhysicsIndex->pos_x = loc.position.x;
-		object->controllablePhysicsIndex->pos_y = loc.position.y;
-		object->controllablePhysicsIndex->pos_z = loc.position.z;
+		replica->Write(loc.position.x);
+		replica->Write(loc.position.y);
+		replica->Write(loc.position.z);
+		replica->Write(loc.rotation.x);
+		replica->Write(loc.rotation.y);
+		replica->Write(loc.rotation.z);
+		replica->Write(loc.rotation.w);
+		replica->Write(true);
+		replica->Write(false);
 
-		object->controllablePhysicsIndex->rot_x = loc.rotation.x;
-		object->controllablePhysicsIndex->rot_y = loc.rotation.y;
-		object->controllablePhysicsIndex->rot_z = loc.rotation.z;
-		object->controllablePhysicsIndex->rot_w = loc.rotation.w;
+		replica->Write(false);
+		replica->Write(false);
+		replica->Write(false);
 
-		object->controllablePhysicsIndex->is_player_on_ground = true;
+		// Destructible
+		replica->Write(false);
+		replica->Write(false);
+
+		// Stats
+		replica->Write(true);
+
+		for (int i = 0; i < 9; i++)
+		{
+			replica->Write((unsigned long)0);
+		}
+
+		replica->Write(true);
+		replica->Write((unsigned long)4);
+		replica->Write((float)4);
+		replica->Write((unsigned long)0);
+		replica->Write((float)0);
+		replica->Write((unsigned long)0);
+		replica->Write((float)0);
+
+		replica->Write((unsigned long)0);
+		replica->Write(true);
+		replica->Write(false);
+		replica->Write(false);
+
+		replica->Write((float)4);
+		replica->Write((float)0);
+		replica->Write((float)0);
+
+		replica->Write((unsigned long)1);
+		replica->Write((unsigned long)1);
+
+		replica->Write(false);
+		replica->Write(false);
+		replica->Write(false);
+
+		replica->Write(true);
+		replica->Write(false);
+
+		// Character
+		replica->Write(true);
+		replica->Write(false);
+		replica->Write((unsigned char)0);
+
+		replica->Write(true);
+		replica->Write((unsigned long)1);
+
+		replica->Write(true);
+		replica->Write(false);
+		replica->Write(true);
+
+		replica->Write(false);
+		replica->Write(false);
+		replica->Write(false);
+		replica->Write(false);
 
 		CharacterStyle style = CharacterStyles::getCharacterStyle(session->charID);
-		object->characterIndex->hair_color = style.hairColor;
-		object->characterIndex->hair_style = style.hairStyle;
-		object->characterIndex->shirt_color = style.shirtColor;
-		object->characterIndex->pants_color = style.pantsColor;
-		object->characterIndex->eyebrows_style = style.eyebrows;
-		object->characterIndex->eyes_style = style.eyes;
-		object->characterIndex->mouth_style = style.mouth;
+		replica->Write(style.hairColor);
+		replica->Write(style.hairStyle);
+		replica->Write((unsigned long)0);
+		replica->Write(style.shirtColor);
+		replica->Write(style.pantsColor);
+		replica->Write((unsigned long)0);
+		replica->Write((unsigned long)0);
+		replica->Write(style.eyebrows);
+		replica->Write(style.eyes);
+		replica->Write(style.mouth);
+		replica->Write(session->accountID);
+		replica->Write((unsigned long long)0);
+		replica->Write((unsigned long long)0);
+		replica->Write(Characters::getUniverseScore(session->charID));
+		replica->Write(false);
 
-		object->characterIndex->account_id = session->accountID;
-		object->characterIndex->universe_score = Characters::getUniverseScore(session->charID);
+		for (int i = 0; i < 27; i++)
+		{
+			replica->Write((unsigned long long)0);
+		}
 
-		Server::getReplicaManager()->Construct(object, false, clientAddress, false);
+		replica->Write(false);
+		replica->Write(false);
+
+		replica->Write(true);
+		replica->Write(false);
+		replica->Write(false);
+		replica->Write((unsigned char)0);
+		replica->Write(false);
+		replica->Write((unsigned char)0);
+
+		replica->Write(true);
+		replica->Write((unsigned long)0);
+
+		replica->Write(true);
+		replica->Write((unsigned long long)0);
+		replica->Write((unsigned char)0);
+		replica->Write(false);
+		replica->Write((long)-1);
+
+		// Inventory
+		replica->Write(true);
+		vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
+		replica->Write((unsigned long)items.size());
+
+		for (int i = 0; i < items.size(); i++)
+		{
+			InventoryItem item = items.at(i);
+
+			replica->Write(item.objectID);
+			replica->Write(item.lot);
+
+			replica->Write(false);
+
+			replica->Write(true);
+			replica->Write(item.count);
+
+			replica->Write(item.slot > 0);
+			if (item.slot > 0)
+				replica->Write(item.slot);
+
+			replica->Write(false);
+			replica->Write(false);
+			replica->Write(true);
+		}
+
+		replica->Write(true);
+		replica->Write((unsigned long)0);
+
+		// Skill
+		replica->Write(false);
+
+		// Render
+		replica->Write((unsigned long)0);
+
+		// 107
+		replica->Write(true);
+		replica->Write((unsigned long long)0);
+
+		Server::sendPacket(replica, clientAddress);
 
 		Server::sendPacket(PacketUtils::createGMBase(session->charID, 1642), clientAddress);
 		Server::sendPacket(PacketUtils::createGMBase(session->charID, 509), clientAddress);

@@ -193,57 +193,9 @@ ReplicaReturnResult ReplicaObject::Deserialize(RakNet::BitStream* inBitStream, R
 
 void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 {
-	if (isConstruction)
-	{
-		bitStream->Write(objectID);
-		bitStream->Write(lot);
+	
 
-		bitStream->Write((unsigned char)name.length());
-		for (int i = 0; i < name.length(); i++)
-		{
-			bitStream->Write(name[i]);
-		}
-
-		bitStream->Write((unsigned long)0);
-
-		bitStream->Write(false);
-		bitStream->Write(false);
-
-		bitStream->Write(spawnerID > -1);
-		if (spawnerID > -1)
-			bitStream->Write(spawnerID);
-
-		bitStream->Write(false);
-		bitStream->Write(false);
-		bitStream->Write(false);
-
-		bitStream->Write(lot == 1);
-		if (lot == 1)
-			bitStream->Write((unsigned char)gmLevel);
-	}
-
-	bitStream->Write(parentID > -1 || childIDs.size() > 0);
-	if (parentID > -1 || childIDs.size() > 0)
-	{
-		bitStream->Write(parentID > -1);
-		if (parentID > -1)
-		{
-			bitStream->Write(parentID);
-			bitStream->Write(false);
-		}
-
-		bitStream->Write(childIDs.size() > 0);
-		if (childIDs.size() > 0)
-		{
-			bitStream->Write((unsigned short)childIDs.size());
-			for (int i = 0; i < childIDs.size(); i++)
-			{
-				bitStream->Write(childIDs.at(i));
-			}
-		}
-	}
-
-	if (controllablePhysicsIndex != nullptr)
+	/*if (controllablePhysicsIndex != nullptr)
 		controllablePhysicsIndex->writeToBitStream(bitStream, isConstruction);
 	if (simplePhysicsIndex != nullptr)
 		simplePhysicsIndex->writeToBitStream(bitStream, isConstruction);
@@ -262,5 +214,5 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 	if (renderIndex != nullptr)
 		renderIndex->writeToBitStream(bitStream, isConstruction);
 	if (component107Index != nullptr)
-		component107Index->writeToBitStream(bitStream, isConstruction);
+		component107Index->writeToBitStream(bitStream, isConstruction);*/
 }
