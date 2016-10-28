@@ -10,6 +10,7 @@
 #include "InventoryItems.h"
 #include "ServerLoop.h"
 #include "ReplicaObject.h"
+#include "GameMessages.h"
 
 void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddress, ClientToWorldPacketID packetID)
 {
@@ -53,6 +54,12 @@ void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddr
 		}
 
 		ServerLoop::routePacket(remoteConnectionType, rPacketID, data, clientAddress);
+		break;
+	}
+
+	case CLIENT_WORLD_GAME_MSG:
+	{
+		GameMessages::processGameMessage(data, clientAddress);
 		break;
 	}
 

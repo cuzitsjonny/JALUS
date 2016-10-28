@@ -170,6 +170,7 @@
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="ControllablePhysicsIndex.cpp" />
     <ClCompile Include="DestructibleIndex.cpp" />
+    <ClCompile Include="GameMessages.cpp" />
     <ClCompile Include="General.cpp" />
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="InventoryIndex.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="ControllablePhysicsIndex.h" />
     <ClInclude Include="DestructibleIndex.h" />
+    <ClInclude Include="GameMessages.h" />
     <ClInclude Include="General.h" />
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="InventoryIndex.h" />

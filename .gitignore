@@ -6,7 +6,9 @@
 .vs/
 
 # VS Cache DB
+*.suo
 *.sdf
+*.db
 
 # Lib Files
 !*.lib
