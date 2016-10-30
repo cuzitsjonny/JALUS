@@ -190,3 +190,44 @@ void Objects::deleteObject(long long objectID)
 		catch (SAException &) {}
 	}
 }
+
+long Objects::getLOT(long long objectID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT lot FROM";
+		ss << " " << Objects::name << " ";
+		ss << "WHERE id = '" << objectID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("lot").asLong();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}

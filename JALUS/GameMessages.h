@@ -1,7 +1,10 @@
 #pragma once
 #include "Common.h"
 
-typedef unsigned short GameMessageID;
+enum GameMessageID : unsigned short
+{
+	GAME_MESSAGE_ID_READY_FOR_UPDATES = 888
+};
 
 class GameMessages
 {

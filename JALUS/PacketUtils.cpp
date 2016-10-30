@@ -14,7 +14,7 @@ BitStream* PacketUtils::createPacketBase(unsigned short remoteConnectionType, un
 
 BitStream* PacketUtils::createGMBase(long long objectID, short gameMessageID)
 {
-	BitStream* bs = PacketUtils::createPacketBase(RCT_WORLD_TO_CLIENT, CLIENT_WORLD_GAME_MSG);
+	BitStream* bs = PacketUtils::createPacketBase(RCT_WORLD_TO_CLIENT, WORLD_CLIENT_GAME_MSG);
 
 	bs->Write(objectID);
 	bs->Write(gameMessageID);
