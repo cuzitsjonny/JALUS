@@ -199,7 +199,7 @@ vector<ComponentsRegistryEntry> CDClient::getComponentsRegistryEntries(long lot)
 	return r;
 }
 
-vector<long> CDClient::getInventoryComponentEntries(long lot)
+vector<long> CDClient::getInventoryIndexInfo(long lot)
 {
 	SAConnection con;
 	SACommand cmd;

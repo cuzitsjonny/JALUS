@@ -39,6 +39,6 @@ public:
 	static string getMinifigureName(long name_first, long name_middle, long name_last);
 	static bool isActivityZone(ZoneID zoneID);
 	static vector<ComponentsRegistryEntry> getComponentsRegistryEntries(long lot);
-	static vector<long> getInventoryComponentEntries(long lot);
+	static vector<long> getInventoryIndexInfo(long lot);
 	static StatsIndexInfo getStatsIndexInfo(long componentID);
 };

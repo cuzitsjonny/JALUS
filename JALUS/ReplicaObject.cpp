@@ -23,7 +23,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		switch (e.componentType)
 		{
 
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_CHARACTER:
+		/*case ReplicaComponentID::REPLICA_COMPONENT_ID_CHARACTER:
 		{
 			characterIndex = new CharacterIndex();
 			break;
@@ -33,7 +33,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		{
 			component107Index = new Component107Index();
 			break;
-		}
+		}*/
 
 		case ReplicaComponentID::REPLICA_COMPONENT_ID_CONTROLLABLE_PHYSICS:
 		{
@@ -45,7 +45,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		{
 			destructibleIndex = new DestructibleIndex();
 
-			if (statsIndexParent < 0)
+			/*if (statsIndexParent < 0)
 			{
 				statsIndex = new StatsIndex();
 				statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE;
@@ -61,11 +61,11 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 				statsIndex->current_imagination = info.imagination;
 				statsIndex->max_imagination = info.imagination;
 				statsIndex->is_smashable = info.isSmashable;
-			}
+			}*/
 			break;
 		}
 
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_INVENTORY:
+		/*case ReplicaComponentID::REPLICA_COMPONENT_ID_INVENTORY:
 		{
 			inventoryIndex = new InventoryIndex((lot == 1), objectID);
 
@@ -96,7 +96,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		{
 			scriptIndex = new ScriptIndex();
 			break;
-		}
+		}*/
 
 		case ReplicaComponentID::REPLICA_COMPONENT_ID_SIMPLE_PHYSICS:
 		{
@@ -104,11 +104,11 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 			break;
 		}
 
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_SKILL:
+		/*case ReplicaComponentID::REPLICA_COMPONENT_ID_SKILL:
 		{
 			skillIndex = new SkillIndex();
 			break;
-		}
+		}*/
 
 		default:
 		{
@@ -128,7 +128,7 @@ ReplicaObject::~ReplicaObject()
 		delete simplePhysicsIndex;
 	if (destructibleIndex != nullptr)
 		delete destructibleIndex;
-	if (statsIndex != nullptr)
+	/*if (statsIndex != nullptr)
 		delete statsIndex;
 	if (characterIndex != nullptr)
 		delete characterIndex;
@@ -141,7 +141,7 @@ ReplicaObject::~ReplicaObject()
 	if (renderIndex != nullptr)
 		delete renderIndex;
 	if (component107Index != nullptr)
-		delete component107Index;
+		delete component107Index;*/
 }
 
 ReplicaReturnResult ReplicaObject::SendConstruction(RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags, RakNet::BitStream* outBitStream, bool* includeTimestamp)
@@ -193,15 +193,75 @@ ReplicaReturnResult ReplicaObject::Deserialize(RakNet::BitStream* inBitStream, R
 
 void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 {
-	
+	if (isConstruction)
+	{
+		bitStream->Write(objectID);
+		bitStream->Write(lot);
 
-	/*if (controllablePhysicsIndex != nullptr)
+		bitStream->Write((unsigned char)name.length());
+		for (int i = 0; i < name.length(); i++)
+		{
+			bitStream->Write(name[i]);
+		}
+
+		bitStream->Write((unsigned long)0); // time since created on server
+		bitStream->Write(false); // has compressed LDF?
+		bitStream->Write(false); // has TriggerComponent?
+
+		bitStream->Write(spawnerID > -1);
+		if (spawnerID > -1)
+		{
+			bitStream->Write(spawnerID);
+		}
+
+		bitStream->Write(spawnerNodeID > -1);
+		if (spawnerNodeID > -1)
+		{
+			bitStream->Write(spawnerNodeID);
+		}
+
+		bitStream->Write(scale > -1.0);
+		if (scale > -1.0)
+		{
+			bitStream->Write(scale);
+		}
+
+		bitStream->Write(false); // has object world state
+
+		bitStream->Write(gmLevel > 0);
+		if (gmLevel > 0)
+		{
+			bitStream->Write(gmLevel);
+		}
+	}
+
+	bitStream->Write(true);
+
+	bitStream->Write(parentID > -1);
+	if (parentID > -1)
+	{
+		bitStream->Write(parentID);
+		bitStream->Write(false);
+	}
+
+	bitStream->Write(childIDs.size() > 0);
+	if (childIDs.size() > 0)
+	{
+		bitStream->Write((unsigned short)childIDs.size());
+
+		for (int i = 0; i < childIDs.size(); i++)
+		{
+			bitStream->Write(childIDs.at(i));
+		}
+	}
+
+	if (controllablePhysicsIndex != nullptr)
 		controllablePhysicsIndex->writeToBitStream(bitStream, isConstruction);
 	if (simplePhysicsIndex != nullptr)
 		simplePhysicsIndex->writeToBitStream(bitStream, isConstruction);
 	if (destructibleIndex != nullptr)
 		destructibleIndex->writeToBitStream(bitStream, isConstruction);
-	if (statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE)
+	/*if (statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE)
 		statsIndex->writeToBitStream(bitStream, isConstruction);
 	if (characterIndex != nullptr)
 		characterIndex->writeToBitStream(bitStream, isConstruction);

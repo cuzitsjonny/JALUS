@@ -31,47 +31,39 @@ public:
 	unsigned long data_4_0_0;
 	bool data_4_0_1;
 
-	bool flag_5 = false;
-
-	float pos_x;
-	float pos_y;
-	float pos_z;
-
-	float rot_x;
-	float rot_y;
-	float rot_z;
-	float rot_w;
-
-	bool is_player_on_ground;
-	bool unknown = false;
+	bool flag_5 = false; // TOGGLE MANUALLY!
+	float pos_x; // SET MANUALLY!
+	float pos_y; // SET MANUALLY!
+	float pos_z; // SET MANUALLY!
+	float rot_x; // SET MANUALLY!
+	float rot_y; // SET MANUALLY!
+	float rot_z; // SET MANUALLY!
+	float rot_w; // SET MANUALLY!
+	bool is_on_ground; // SET MANUALLY!
+	bool data_5_8 = false;
 
 	bool flag_velocity = false;
-
 	float vel_x;
 	float vel_y;
 	float vel_z;
 
 	bool flag_angular_velocity = false;
-
 	float ang_vel_x;
 	float ang_vel_y;
 	float ang_vel_z;
 
-	bool flag_on_moving_platform = false;
+	bool flag_5_11 = false;
+	long long data_5_11_0;
+	float data_5_11_1;
+	float data_5_11_2;
+	float data_5_11_3;
 
-	long long platform_object_id;
+	bool flag_5_11_4;
+	float data_5_11_4_0;
+	float data_5_11_4_1;
+	float data_5_11_4_2;
 
-	float platform_unknown_0_0;
-	float platform_unknown_0_1;
-	float platform_unknown_0_2;
-
-	bool flag_platform_unknown;
-
-	float platform_unknown_1_0;
-	float platform_unknown_1_1;
-	float platform_unknown_1_2;
-
-	bool flag_unknown;
+	bool data_5_12 = false;
 
 	void writeToBitStream(BitStream* bitStream, bool isConstruction);
 };

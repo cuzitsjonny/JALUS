@@ -1,16 +1,9 @@
 #pragma once
 #include "Common.h"
 #include "ReplicaComponent.h"
-#include "CharacterIndex.h"
-#include "Component107Index.h"
 #include "ControllablePhysicsIndex.h"
-#include "DestructibleIndex.h"
-#include "InventoryIndex.h"
-#include "RenderIndex.h"
-#include "ScriptIndex.h"
 #include "SimplePhysicsIndex.h"
-#include "SkillIndex.h"
-#include "StatsIndex.h"
+#include "DestructibleIndex.h"
 
 class ReplicaObject : public Replica
 {
@@ -22,18 +15,20 @@ public:
 	long long spawnerID = -1;
 	long long parentID = -1;
 	vector<long long> childIDs;
+	long spawnerNodeID = -1;
+	float scale = -1.0;
 
 	int statsIndexParent;
 	ControllablePhysicsIndex* controllablePhysicsIndex = nullptr;
 	SimplePhysicsIndex* simplePhysicsIndex = nullptr;
 	DestructibleIndex* destructibleIndex = nullptr;
-	StatsIndex* statsIndex = nullptr;
+	/*StatsIndex* statsIndex = nullptr;
 	CharacterIndex* characterIndex = nullptr;
 	InventoryIndex* inventoryIndex = nullptr;
 	ScriptIndex* scriptIndex = nullptr;
 	SkillIndex* skillIndex = nullptr;
 	RenderIndex* renderIndex = nullptr;
-	Component107Index* component107Index = nullptr;
+	Component107Index* component107Index = nullptr;*/
 
 	ReplicaObject(long long objectID, long lot, wstring name, long gmLevel);
 	~ReplicaObject();

@@ -4,7 +4,7 @@ void DestructibleIndex::writeToBitStream(BitStream* bitStream, bool isConstructi
 {
 	if (isConstruction)
 	{
-		bitStream->Write(flag_0);
-		bitStream->Write(flag_1);
+		bitStream->Write(data_0);
+		bitStream->Write(data_1);
 	}
 }

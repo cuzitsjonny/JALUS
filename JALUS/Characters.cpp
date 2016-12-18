@@ -91,6 +91,10 @@ long long Characters::createCharacter(long long accountID, string name, string u
 	loc.position.x = -627.1862F;
 	loc.position.y = 613.326233F;
 	loc.position.z = -47.2231674F;
+	loc.rotation.x = 0.0F;
+	loc.rotation.y = 0.0F;
+	loc.rotation.z = 0.0F;
+	loc.rotation.w = 0.0F;
 	loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
 	loc.mapClone = 0;
 

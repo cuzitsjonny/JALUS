@@ -114,40 +114,19 @@
     <ClCompile Include="ReplicaObject.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterIndex.cpp">
-      <Filter>Quelldateien\Indexe</Filter>
+    <ClCompile Include="TemporaryItems.cpp">
+      <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Component107Index.cpp">
-      <Filter>Quelldateien\Indexe</Filter>
+    <ClCompile Include="GameMessages.cpp">
+      <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="ControllablePhysicsIndex.cpp">
-      <Filter>Quelldateien\Indexe</Filter>
-    </ClCompile>
-    <ClCompile Include="DestructibleIndex.cpp">
-      <Filter>Quelldateien\Indexe</Filter>
-    </ClCompile>
-    <ClCompile Include="InventoryIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
     <ClCompile Include="SimplePhysicsIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
-    <ClCompile Include="StatsIndex.cpp">
-      <Filter>Quelldateien\Indexe</Filter>
-    </ClCompile>
-    <ClCompile Include="SkillIndex.cpp">
-      <Filter>Quelldateien\Indexe</Filter>
-    </ClCompile>
-    <ClCompile Include="ScriptIndex.cpp">
-      <Filter>Quelldateien\Indexe</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderIndex.cpp">
-      <Filter>Quelldateien\Indexe</Filter>
-    </ClCompile>
-    <ClCompile Include="TemporaryItems.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMessages.cpp">
+    <ClCompile Include="DestructibleIndex.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,36 +218,6 @@
     <ClInclude Include="ReplicaObject.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="SimplePhysicsIndex.h">
-      <Filter>Headerdateien\Indexe</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterIndex.h">
-      <Filter>Headerdateien\Indexe</Filter>
-    </ClInclude>
-    <ClInclude Include="Component107Index.h">
-      <Filter>Headerdateien\Indexe</Filter>
-    </ClInclude>
-    <ClInclude Include="ControllablePhysicsIndex.h">
-      <Filter>Headerdateien\Indexe</Filter>
-    </ClInclude>
-    <ClInclude Include="DestructibleIndex.h">
-      <Filter>Headerdateien\Indexe</Filter>
-    </ClInclude>
-    <ClInclude Include="InventoryIndex.h">
-      <Filter>Headerdateien\Indexe</Filter>
-    </ClInclude>
-    <ClInclude Include="ScriptIndex.h">
-      <Filter>Headerdateien\Indexe</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderIndex.h">
-      <Filter>Headerdateien\Indexe</Filter>
-    </ClInclude>
-    <ClInclude Include="SkillIndex.h">
-      <Filter>Headerdateien\Indexe</Filter>
-    </ClInclude>
-    <ClInclude Include="StatsIndex.h">
-      <Filter>Headerdateien\Indexe</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentsRegistryEntry.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -283,6 +232,15 @@
     </ClInclude>
     <ClInclude Include="GameMessages.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllablePhysicsIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="SimplePhysicsIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="DestructibleIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

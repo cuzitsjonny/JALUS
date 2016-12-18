@@ -34,9 +34,9 @@ int _tmain(int argc, _TCHAR* argv[])
 				Logger::info("Server started! (Port: " + to_string(Config::getPort()) + ") (ServerRole: " + ServerRoles::toString(serverRole) + ")");
 				ServerLoop::start();
 
-				//for (int i = 0; i < 206; i++)
+				//for (int i = 0; i < 14098; i++)
 				//{
-				//	string file = ".\\test\\world_2_" + to_string(i) + ".bin";
+				//	string file = ".\\test\\world_2 (" + to_string(i + 1) + ").bin";
 				//	string newName = "";
 
 				//	if (!fexists(".\\test2\\"))
@@ -83,7 +83,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				//			unsigned short gmID;
 				//			bs->Read(gmID);
 
-				//			newName += ("-" + to_string(gmID));
+				//			newName += ("-" + to_string(gmID) + "-" + to_string(objectID));
 				//		}
 
 				//		newName += ".bin";

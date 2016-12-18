@@ -4,8 +4,8 @@
 class DestructibleIndex
 {
 public:
-	bool flag_0 = false;
-	bool flag_1 = false;
+	bool data_0 = false;
+	bool data_1 = false;
 
 	void writeToBitStream(BitStream* bitStream, bool isConstruction);
 };

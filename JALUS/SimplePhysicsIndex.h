@@ -18,14 +18,14 @@ public:
 	bool flag_3 = true;
 	unsigned long data_3_0 = 5;
 
-	bool flag_4 = false;
-	float pos_x;
-	float pos_y;
-	float pos_z;
-	float rot_x;
-	float rot_y;
-	float rot_z;
-	float rot_w;
+	bool flag_4 = false; // TOGGLE MANUALLY!
+	float pos_x; // SET MANUALLY!
+	float pos_y; // SET MANUALLY!
+	float pos_z; // SET MANUALLY!
+	float rot_x; // SET MANUALLY!
+	float rot_y; // SET MANUALLY!
+	float rot_z; // SET MANUALLY!
+	float rot_w; // SET MANUALLY!
 
 	void writeToBitStream(BitStream* bitStream, bool isConstruction);
 };

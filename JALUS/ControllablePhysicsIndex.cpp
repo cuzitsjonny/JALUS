@@ -56,14 +56,12 @@ void ControllablePhysicsIndex::writeToBitStream(BitStream* bitStream, bool isCon
 		bitStream->Write(pos_x);
 		bitStream->Write(pos_y);
 		bitStream->Write(pos_z);
-
 		bitStream->Write(rot_x);
 		bitStream->Write(rot_y);
 		bitStream->Write(rot_z);
 		bitStream->Write(rot_w);
-
-		bitStream->Write(is_player_on_ground);
-		bitStream->Write(unknown);
+		bitStream->Write(is_on_ground);
+		bitStream->Write(data_5_8);
 
 		bitStream->Write(flag_velocity);
 		if (flag_velocity)
@@ -81,27 +79,26 @@ void ControllablePhysicsIndex::writeToBitStream(BitStream* bitStream, bool isCon
 			bitStream->Write(ang_vel_z);
 		}
 
-		bitStream->Write(flag_on_moving_platform);
-		if (flag_on_moving_platform)
+		bitStream->Write(flag_5_11);
+		if (flag_5_11)
 		{
-			bitStream->Write(platform_object_id);
+			bitStream->Write(data_5_11_0);
+			bitStream->Write(data_5_11_1);
+			bitStream->Write(data_5_11_2);
+			bitStream->Write(data_5_11_3);
 
-			bitStream->Write(platform_unknown_0_0);
-			bitStream->Write(platform_unknown_0_1);
-			bitStream->Write(platform_unknown_0_2);
-
-			bitStream->Write(flag_platform_unknown);
-			if (flag_platform_unknown)
+			bitStream->Write(flag_5_11_4);
+			if (flag_5_11_4)
 			{
-				bitStream->Write(platform_unknown_1_0);
-				bitStream->Write(platform_unknown_1_1);
-				bitStream->Write(platform_unknown_1_2);
+				bitStream->Write(data_5_11_4_0);
+				bitStream->Write(data_5_11_4_1);
+				bitStream->Write(data_5_11_4_2);
 			}
 		}
 
 		if (!isConstruction)
 		{
-			bitStream->Write(flag_unknown);
+			bitStream->Write(data_5_12);
 		}
 	}
 }
