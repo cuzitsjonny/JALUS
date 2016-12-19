@@ -45,7 +45,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		{
 			destructibleIndex = new DestructibleIndex();
 
-			/*if (statsIndexParent < 0)
+			if (statsIndexParent < 0)
 			{
 				statsIndex = new StatsIndex();
 				statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE;
@@ -54,14 +54,14 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 				statsIndex->flag_1 = true;
 
 				statsIndex->faction_id = info.factionID;
-				statsIndex->current_health = info.health;
+				statsIndex->cur_health = info.health;
 				statsIndex->max_health = info.health;
-				statsIndex->current_armor = info.armor;
+				statsIndex->cur_armor = info.armor;
 				statsIndex->max_armor = info.armor;
-				statsIndex->current_imagination = info.imagination;
+				statsIndex->cur_imagination = info.imagination;
 				statsIndex->max_imagination = info.imagination;
 				statsIndex->is_smashable = info.isSmashable;
-			}*/
+			}
 			break;
 		}
 
@@ -128,9 +128,9 @@ ReplicaObject::~ReplicaObject()
 		delete simplePhysicsIndex;
 	if (destructibleIndex != nullptr)
 		delete destructibleIndex;
-	/*if (statsIndex != nullptr)
+	if (statsIndex != nullptr)
 		delete statsIndex;
-	if (characterIndex != nullptr)
+	/*if (characterIndex != nullptr)
 		delete characterIndex;
 	if (inventoryIndex != nullptr)
 		delete inventoryIndex;
@@ -261,9 +261,9 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 		simplePhysicsIndex->writeToBitStream(bitStream, isConstruction);
 	if (destructibleIndex != nullptr)
 		destructibleIndex->writeToBitStream(bitStream, isConstruction);
-	/*if (statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE)
+	if (statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE)
 		statsIndex->writeToBitStream(bitStream, isConstruction);
-	if (characterIndex != nullptr)
+	/*if (characterIndex != nullptr)
 		characterIndex->writeToBitStream(bitStream, isConstruction);
 	if (inventoryIndex != nullptr)
 		inventoryIndex->writeToBitStream(bitStream, isConstruction);

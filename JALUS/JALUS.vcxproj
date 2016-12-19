@@ -186,6 +186,7 @@
     <ClCompile Include="Sessions.cpp" />
     <ClCompile Include="SHA512.cpp" />
     <ClCompile Include="SimplePhysicsIndex.cpp" />
+    <ClCompile Include="StatsIndex.cpp" />
     <ClCompile Include="TemporaryItems.cpp" />
     <ClCompile Include="TimeUtils.cpp" />
     <ClCompile Include="TransitionInfos.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Sessions.h" />
     <ClInclude Include="SHA512.h" />
     <ClInclude Include="SimplePhysicsIndex.h" />
+    <ClInclude Include="StatsIndex.h" />
     <ClInclude Include="StatsIndexInfo.h" />
     <ClInclude Include="TemporaryItems.h" />
     <ClInclude Include="TimeUtils.h" />

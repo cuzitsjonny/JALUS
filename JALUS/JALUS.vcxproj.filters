@@ -126,8 +126,11 @@
     <ClCompile Include="SimplePhysicsIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
+    <ClCompile Include="StatsIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
     <ClCompile Include="DestructibleIndex.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +243,9 @@
       <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
     <ClInclude Include="DestructibleIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
   </ItemGroup>

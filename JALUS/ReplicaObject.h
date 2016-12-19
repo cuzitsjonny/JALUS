@@ -4,6 +4,7 @@
 #include "ControllablePhysicsIndex.h"
 #include "SimplePhysicsIndex.h"
 #include "DestructibleIndex.h"
+#include "StatsIndex.h"
 
 class ReplicaObject : public Replica
 {
@@ -22,8 +23,8 @@ public:
 	ControllablePhysicsIndex* controllablePhysicsIndex = nullptr;
 	SimplePhysicsIndex* simplePhysicsIndex = nullptr;
 	DestructibleIndex* destructibleIndex = nullptr;
-	/*StatsIndex* statsIndex = nullptr;
-	CharacterIndex* characterIndex = nullptr;
+	StatsIndex* statsIndex = nullptr;
+	/*CharacterIndex* characterIndex = nullptr;
 	InventoryIndex* inventoryIndex = nullptr;
 	ScriptIndex* scriptIndex = nullptr;
 	SkillIndex* skillIndex = nullptr;
