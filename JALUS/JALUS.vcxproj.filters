@@ -132,10 +132,6 @@
     <ClCompile Include="DestructibleIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="CharacterStats.cpp">
-      <Filter>Quelldateien</Filter>
-=======
     <ClCompile Include="ScriptIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
@@ -153,7 +149,6 @@
     </ClCompile>
     <ClCompile Include="CharacterIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
->>>>>>> origin/master
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,10 +266,6 @@
     <ClInclude Include="StatsIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="CharacterStats.h">
-      <Filter>Headerdateien</Filter>
-=======
     <ClInclude Include="ScriptIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
@@ -292,7 +283,6 @@
     </ClInclude>
     <ClInclude Include="CharacterIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
->>>>>>> origin/master
     </ClInclude>
   </ItemGroup>
 </Project>
