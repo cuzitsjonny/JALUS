@@ -4,6 +4,7 @@
 #include "Objects.h"
 #include "InventoryItems.h"
 #include "Locations.h"
+#include "CharacterStats.h"
 
 string Characters::name;
 
@@ -86,6 +87,7 @@ long long Characters::createCharacter(long long accountID, string name, string u
 	InventoryItems::createInventoryItem(id, CharacterStyles::getLOTFromStyle(style.pantsColor), 1, 1, true, true);
 
 	CharacterStyles::saveCharacterStyle(style, id);
+	CharacterStats::saveCharacterStats(CharacterStats(), id);
 
 	Location loc;
 	loc.position.x = -627.1862F;

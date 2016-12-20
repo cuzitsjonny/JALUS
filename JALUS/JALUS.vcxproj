@@ -162,6 +162,7 @@
     <ClCompile Include="CDClient.cpp" />
     <ClCompile Include="Characters.cpp" />
     <ClCompile Include="CharactersInstance.cpp" />
+    <ClCompile Include="CharacterStats.cpp" />
     <ClCompile Include="CharacterStyles.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Common.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="CDClient.h" />
     <ClInclude Include="Characters.h" />
     <ClInclude Include="CharactersInstance.h" />
+    <ClInclude Include="CharacterStats.h" />
     <ClInclude Include="CharacterStyles.h" />
     <ClInclude Include="Commands.h" />
     <ClInclude Include="Common.h" />

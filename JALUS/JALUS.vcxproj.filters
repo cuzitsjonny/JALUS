@@ -132,6 +132,9 @@
     <ClCompile Include="DestructibleIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterStats.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="StatsIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterStats.h">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
