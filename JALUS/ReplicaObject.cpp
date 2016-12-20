@@ -7,15 +7,14 @@
 #include "Characters.h"
 #include "Accounts.h"
 
-ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel)
+ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Location loc)
 {
 	this->objectID = objectID;
 	this->lot = lot;
 	this->name = name;
 	this->gmLevel = gmLevel;
-	this->statsIndexParent = -1;
-
-	childIDs = vector<long long>();
+	this->zoneID = loc.zoneID;
+	this->mapClone = loc.mapClone;
 
 	vector<ComponentsRegistryEntry> cr = CDClient::getComponentsRegistryEntries(lot);
 	for (int i = 0; i < cr.size(); i++)
@@ -54,6 +53,15 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		case ReplicaComponentID::REPLICA_COMPONENT_ID_CONTROLLABLE_PHYSICS:
 		{
 			controllablePhysicsIndex = new ControllablePhysicsIndex();
+			controllablePhysicsIndex->flag_5 = true;
+			controllablePhysicsIndex->pos_x = loc.position.x;
+			controllablePhysicsIndex->pos_y = loc.position.y;
+			controllablePhysicsIndex->pos_z = loc.position.z;
+			controllablePhysicsIndex->rot_x = loc.rotation.x;
+			controllablePhysicsIndex->rot_y = loc.rotation.y;
+			controllablePhysicsIndex->rot_z = loc.rotation.z;
+			controllablePhysicsIndex->rot_w = loc.rotation.w;
+			controllablePhysicsIndex->is_on_ground = true;
 			break;
 		}
 
@@ -124,6 +132,14 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		case ReplicaComponentID::REPLICA_COMPONENT_ID_SIMPLE_PHYSICS:
 		{
 			simplePhysicsIndex = new SimplePhysicsIndex();
+			simplePhysicsIndex->flag_4 = true;
+			simplePhysicsIndex->pos_x = loc.position.x;
+			simplePhysicsIndex->pos_y = loc.position.y;
+			simplePhysicsIndex->pos_z = loc.position.z;
+			simplePhysicsIndex->rot_x = loc.rotation.x;
+			simplePhysicsIndex->rot_y = loc.rotation.y;
+			simplePhysicsIndex->rot_z = loc.rotation.z;
+			simplePhysicsIndex->rot_w = loc.rotation.w;
 			break;
 		}
 
@@ -146,28 +162,46 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 ReplicaObject::~ReplicaObject()
 {
 	if (controllablePhysicsIndex != nullptr)
+	{
 		delete controllablePhysicsIndex;
+	}
 	if (simplePhysicsIndex != nullptr)
+	{
 		delete simplePhysicsIndex;
+	}
 	if (destructibleIndex != nullptr)
+	{
 		delete destructibleIndex;
+	}
 	if (statsIndex != nullptr)
+	{
 		delete statsIndex;
+	}
 	if (characterIndex != nullptr)
+	{
 		delete characterIndex;
+	}
 	if (inventoryIndex != nullptr)
 	{
 		delete inventoryIndex;
 		TemporaryItems::removeItems(objectID);
 	}
 	if (scriptIndex != nullptr)
+	{
 		delete scriptIndex;
+	}
 	if (skillIndex != nullptr)
+	{
 		delete skillIndex;
+	}
 	if (renderIndex != nullptr)
+	{
 		delete renderIndex;
+	}
 	if (index107 != nullptr)
+	{
 		delete index107;
+	}
 }
 
 ReplicaReturnResult ReplicaObject::SendConstruction(RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags, RakNet::BitStream* outBitStream, bool* includeTimestamp)
@@ -176,9 +210,9 @@ ReplicaReturnResult ReplicaObject::SendConstruction(RakNetTime currentTime, Syst
 	b.Write((unsigned char)0x24);
 	b.Write(true);
 	b.Write((short)0x0a0a);*/
-	writeToBitStream(outBitStream, true);
 	/*writeToBitStream(&b, true);
 	saveToFile(&b, ".\\debug_rm_object.bin");*/
+	writeToBitStream(outBitStream, true);
 	return REPLICA_PROCESSING_DONE;
 }
 ReplicaReturnResult ReplicaObject::SendDestruction(RakNet::BitStream* outBitStream, SystemAddress systemAddress, bool* includeTimestamp)

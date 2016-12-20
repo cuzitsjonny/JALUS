@@ -179,6 +179,7 @@
     <ClCompile Include="LDF.cpp" />
     <ClCompile Include="Locations.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="LUZCache.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="PacketUtils.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="LDF.h" />
     <ClInclude Include="Locations.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="LUZCache.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="PacketUtils.h" />
     <ClInclude Include="PingTool.h" />

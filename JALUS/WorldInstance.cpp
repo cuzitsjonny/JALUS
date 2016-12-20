@@ -248,6 +248,8 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 	}
 }
 
+#include "Objects.h"
+
 void WorldInstance::sendServerState(SystemAddress clientAddress)
 {
 	Session* session = Sessions::getSession(clientAddress);
@@ -259,21 +261,22 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 		Server::sendPacket(packet, clientAddress);
 
 		Location loc = Locations::getLocation(session->charID);
-
 		wstring name = to_wstring(Characters::getName(session->charID));
 		long gmLevel = Characters::getGMLevel(session->charID);
-		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel);
 
-		replica->controllablePhysicsIndex->flag_5 = true;
-		replica->controllablePhysicsIndex->pos_x = loc.position.x;
-		replica->controllablePhysicsIndex->pos_y = loc.position.y;
-		replica->controllablePhysicsIndex->pos_z = loc.position.z;
-		replica->controllablePhysicsIndex->rot_x = loc.rotation.x;
-		replica->controllablePhysicsIndex->rot_y = loc.rotation.y;
-		replica->controllablePhysicsIndex->rot_z = loc.rotation.z;
-		replica->controllablePhysicsIndex->rot_w = loc.rotation.w;
-		replica->controllablePhysicsIndex->is_on_ground = true;
-
+		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel, loc);
 		Server::getReplicaManager()->Construct(replica, false, clientAddress, false);
+
+		Location greeterLoc = Location();
+		greeterLoc.position.x = -620.9204711914062F;
+		greeterLoc.position.y = 613.3262329101562F;
+		greeterLoc.position.z = -30.623197555541992F;
+		greeterLoc.rotation.x = 0.0F;
+		greeterLoc.rotation.y = -0.7592979669570923F;
+		greeterLoc.rotation.z = 0.0F;
+		greeterLoc.rotation.w = 0.6507431864738464F;
+
+		ReplicaObject* greeter = new ReplicaObject(Objects::generateObjectID(), 14349, L"", 0, greeterLoc);
+		Server::getReplicaManager()->Construct(greeter, false, clientAddress, false);
 	}
 }

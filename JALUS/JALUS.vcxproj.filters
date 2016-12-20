@@ -156,6 +156,9 @@
     <ClCompile Include="TransitionInfos.cpp">
       <Filter>Quelldateien\Datenbank</Filter>
     </ClCompile>
+    <ClCompile Include="LUZCache.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -291,6 +294,9 @@
       <Filter>Headerdateien\Datenbank</Filter>
     </ClInclude>
     <ClInclude Include="ReplicaComponent.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="LUZCache.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

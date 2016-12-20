@@ -11,6 +11,7 @@
 #include "Index107.h"
 #include "InventoryIndex.h"
 #include "CharacterIndex.h"
+#include "Locations.h"
 
 class ReplicaObject : public Replica
 {
@@ -19,13 +20,15 @@ public:
 	long lot;
 	wstring name;
 	long gmLevel;
+	ZoneID zoneID;
+	long mapClone;
 	long long spawnerID = -1;
 	long long parentID = -1;
-	vector<long long> childIDs;
+	vector<long long> childIDs = vector<long long>();
 	long spawnerNodeID = -1;
 	float scale = -1.0;
 
-	int statsIndexParent;
+	int statsIndexParent = -1;
 	ControllablePhysicsIndex* controllablePhysicsIndex = nullptr;
 	SimplePhysicsIndex* simplePhysicsIndex = nullptr;
 	DestructibleIndex* destructibleIndex = nullptr;
@@ -37,7 +40,7 @@ public:
 	RenderIndex* renderIndex = nullptr;
 	Index107* index107 = nullptr;
 
-	ReplicaObject(long long objectID, long lot, wstring name, long gmLevel);
+	ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Location loc);
 	~ReplicaObject();
 
 	ReplicaReturnResult SendConstruction(RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags, RakNet::BitStream* outBitStream, bool* includeTimestamp);

@@ -5,6 +5,7 @@
 #include "InventoryItems.h"
 #include "Locations.h"
 #include "CharacterStats.h"
+#include "LUZCache.h"
 
 string Characters::name;
 
@@ -90,15 +91,20 @@ long long Characters::createCharacter(long long accountID, string name, string u
 	CharacterStats::saveCharacterStats(CharacterStats(), id);
 
 	Location loc;
-	loc.position.x = -627.1862F;
-	loc.position.y = 613.326233F;
-	loc.position.z = -47.2231674F;
-	loc.rotation.x = 0.0F;
-	loc.rotation.y = 0.0F;
-	loc.rotation.z = 0.0F;
-	loc.rotation.w = 0.0F;
+
 	loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
 	loc.mapClone = 0;
+
+	Position spp = LUZCache::getByZoneID(loc.zoneID)->spawnPointPos;
+	Rotation spr = LUZCache::getByZoneID(loc.zoneID)->spawnPointRot;
+
+	loc.position.x = spp.x;
+	loc.position.y = spp.y;
+	loc.position.z = spp.z;
+	loc.rotation.x = spr.x;
+	loc.rotation.y = spr.y;
+	loc.rotation.z = spr.z;
+	loc.rotation.w = spr.w;
 
 	Locations::saveLocation(loc, id);
 
