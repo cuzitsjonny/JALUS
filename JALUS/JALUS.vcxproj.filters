@@ -132,6 +132,21 @@
     <ClCompile Include="DestructibleIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
+    <ClCompile Include="Index107.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -246,6 +261,21 @@
       <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
     <ClInclude Include="StatsIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="Index107.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
   </ItemGroup>
