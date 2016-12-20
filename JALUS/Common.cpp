@@ -88,10 +88,11 @@ bool isValidIPAddress(const char* str)
 
 long long randomInRange(long long min, long long max)
 {
-	unsigned int seed = sqrt(pow(((GetTime() + rand()) - USHRT_MAX), 2));
-	srand(seed);
-	long long range = max - min + 1;
-	return rand() % range + min;
+	std::random_device rd;
+	std::mt19937 eng(rd());
+	std::uniform_int_distribution<long long> distr(min, max);
+
+	return distr(eng);
 }
 
 void saveToFile(unsigned char* data, unsigned int size, const char* filePath)

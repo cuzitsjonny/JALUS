@@ -88,8 +88,11 @@ void Objects::init(string name, string structure)
 
 long long Objects::generateObjectID()
 {
-	long long min = 288300000000000000;
-	long long max = 288399999999999999;
+	/*long long min = 288300000000000000;
+	long long max = 288399999999999999;*/
+
+	long long min = 1000000000000000000;
+	long long max = 1999999999999999999;
 
 	long long rand = randomInRange(min, max);
 

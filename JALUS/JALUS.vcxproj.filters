@@ -147,6 +147,9 @@
     <ClCompile Include="InventoryIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -276,6 +279,9 @@
       <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
     <ClInclude Include="InventoryIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
   </ItemGroup>

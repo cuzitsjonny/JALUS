@@ -160,6 +160,7 @@
     <ClCompile Include="AuthenticationInstance.cpp" />
     <ClCompile Include="Bans.cpp" />
     <ClCompile Include="CDClient.cpp" />
+    <ClCompile Include="CharacterIndex.cpp" />
     <ClCompile Include="Characters.cpp" />
     <ClCompile Include="CharactersInstance.cpp" />
     <ClCompile Include="CharacterStyles.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="AuthenticationInstance.h" />
     <ClInclude Include="Bans.h" />
     <ClInclude Include="CDClient.h" />
+    <ClInclude Include="CharacterIndex.h" />
     <ClInclude Include="Characters.h" />
     <ClInclude Include="CharactersInstance.h" />
     <ClInclude Include="CharacterStyles.h" />

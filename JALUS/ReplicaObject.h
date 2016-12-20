@@ -10,6 +10,7 @@
 #include "RenderIndex.h"
 #include "Index107.h"
 #include "InventoryIndex.h"
+#include "CharacterIndex.h"
 
 class ReplicaObject : public Replica
 {
@@ -29,7 +30,7 @@ public:
 	SimplePhysicsIndex* simplePhysicsIndex = nullptr;
 	DestructibleIndex* destructibleIndex = nullptr;
 	StatsIndex* statsIndex = nullptr;
-	/*CharacterIndex* characterIndex = nullptr;*/
+	CharacterIndex* characterIndex = nullptr;
 	InventoryIndex* inventoryIndex = nullptr;
 	ScriptIndex* scriptIndex = nullptr;
 	SkillIndex* skillIndex = nullptr;

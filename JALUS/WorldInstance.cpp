@@ -256,33 +256,13 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 	{
 		BitStream* packet = PacketUtils::createPacketBase(RCT_WORLD_TO_CLIENT, WORLD_CLIENT_SERVER_STATES);
 		packet->Write((unsigned char)1);
-
-		// THIS PART IS HIGHLY WIP AND ONLY WORKS FOR ONE HARDCODED CHARACTER WITH THE OBJECT_ID 1152921510436607007! (.BIN NOT EVEN INCLUDED ON GITHUB)
-		/*Server::sendPacket(packet, clientAddress);
-
-		vector<unsigned char> replica_player = readAllBytes(".\\replica_player.bin");
-		BitStream* replica = new BitStream();
-
-		for (int i = 0; i < replica_player.size(); i++)
-		{
-			replica->Write(replica_player.at(i));
-		}
-
-		Server::sendPacket(replica, clientAddress);*/
-		// END
+		Server::sendPacket(packet, clientAddress);
 
 		Location loc = Locations::getLocation(session->charID);
 
-		ReplicaObject* replica = new ReplicaObject(session->charID, 1, to_wstring(Characters::getName(session->charID)), 0);
-
-		/*replica->simplePhysicsIndex->flag_4 = true;
-		replica->simplePhysicsIndex->pos_x = loc.position.x;
-		replica->simplePhysicsIndex->pos_y = loc.position.y;
-		replica->simplePhysicsIndex->pos_z = loc.position.z;
-		replica->simplePhysicsIndex->rot_x = loc.rotation.x;
-		replica->simplePhysicsIndex->rot_y = loc.rotation.y;
-		replica->simplePhysicsIndex->rot_z = loc.rotation.z;
-		replica->simplePhysicsIndex->rot_w = loc.rotation.w;*/
+		wstring name = to_wstring(Characters::getName(session->charID));
+		long gmLevel = Characters::getGMLevel(session->charID);
+		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel);
 
 		replica->controllablePhysicsIndex->flag_5 = true;
 		replica->controllablePhysicsIndex->pos_x = loc.position.x;

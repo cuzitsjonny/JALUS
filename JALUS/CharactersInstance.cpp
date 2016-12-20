@@ -264,6 +264,10 @@ long long CharactersInstance::redirectToWorldInstance(BitStream* data, SystemAdd
 				TransitionInfos::insertTransitionInfo(clientAddress, session->accountID, id, session->transitionKey);
 				General::redirectToServer(clientAddress, nextInstanceAddress, nextInstancePort, false);
 			}
+
+			return id;
 		}
 	}
+
+	return -1;
 }
