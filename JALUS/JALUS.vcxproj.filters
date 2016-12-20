@@ -19,8 +19,11 @@
     <Filter Include="Quelldateien\Indexe">
       <UniqueIdentifier>{7b7de3bf-145f-4ae6-beeb-36294ce9623e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headerdateien\Components">
-      <UniqueIdentifier>{3d6f970d-ac00-4723-8887-ee51013ec3e8}</UniqueIdentifier>
+    <Filter Include="Headerdateien\Datenbank">
+      <UniqueIdentifier>{9def877c-cabf-4ec5-b0b5-01e8377f10f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Datenbank">
+      <UniqueIdentifier>{fe6c8bb9-68b1-4c87-b82e-d7a5c0771354}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,46 +66,19 @@
     <ClCompile Include="PacketUtils.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Accounts.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="SHA512.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="AuthenticationInstance.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Bans.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="TimeUtils.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="TransitionInfos.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="CharactersInstance.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Sessions.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Characters.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterStyles.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="InventoryItems.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="CDClient.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Locations.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="WorldInstance.cpp">
@@ -150,6 +126,36 @@
     <ClCompile Include="CharacterIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
+    <ClCompile Include="Accounts.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="Bans.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="CDClient.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterStats.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterStyles.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryItems.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="Locations.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="TransitionInfos.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -188,46 +194,19 @@
     <ClInclude Include="PacketUtils.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Accounts.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="SHA512.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="AuthenticationInstance.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Bans.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="TimeUtils.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TransitionInfos.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="CharactersInstance.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Sessions.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Characters.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterStyles.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="InventoryItems.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="CDClient.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Locations.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="WorldInstance.h">
@@ -247,9 +226,6 @@
     </ClInclude>
     <ClInclude Include="TemporaryItems.h">
       <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="ReplicaComponent.h">
-      <Filter>Headerdateien\Components</Filter>
     </ClInclude>
     <ClInclude Include="GameMessages.h">
       <Filter>Headerdateien</Filter>
@@ -283,6 +259,39 @@
     </ClInclude>
     <ClInclude Include="CharacterIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="Accounts.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="Bans.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="CDClient.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterStats.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterStyles.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryItems.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="Locations.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionInfos.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="ReplicaComponent.h">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
