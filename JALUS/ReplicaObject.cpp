@@ -7,14 +7,12 @@
 #include "Characters.h"
 #include "Accounts.h"
 
-ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Location loc)
+ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot)
 {
 	this->objectID = objectID;
 	this->lot = lot;
 	this->name = name;
 	this->gmLevel = gmLevel;
-	this->zoneID = loc.zoneID;
-	this->mapClone = loc.mapClone;
 
 	vector<ComponentsRegistryEntry> cr = CDClient::getComponentsRegistryEntries(lot);
 	for (int i = 0; i < cr.size(); i++)
@@ -54,13 +52,13 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		{
 			controllablePhysicsIndex = new ControllablePhysicsIndex();
 			controllablePhysicsIndex->flag_5 = true;
-			controllablePhysicsIndex->pos_x = loc.position.x;
-			controllablePhysicsIndex->pos_y = loc.position.y;
-			controllablePhysicsIndex->pos_z = loc.position.z;
-			controllablePhysicsIndex->rot_x = loc.rotation.x;
-			controllablePhysicsIndex->rot_y = loc.rotation.y;
-			controllablePhysicsIndex->rot_z = loc.rotation.z;
-			controllablePhysicsIndex->rot_w = loc.rotation.w;
+			controllablePhysicsIndex->pos_x = pos.x;
+			controllablePhysicsIndex->pos_y = pos.y;
+			controllablePhysicsIndex->pos_z = pos.z;
+			controllablePhysicsIndex->rot_x = rot.x;
+			controllablePhysicsIndex->rot_y = rot.y;
+			controllablePhysicsIndex->rot_z = rot.z;
+			controllablePhysicsIndex->rot_w = rot.w;
 			controllablePhysicsIndex->is_on_ground = true;
 			break;
 		}
@@ -133,13 +131,13 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		{
 			simplePhysicsIndex = new SimplePhysicsIndex();
 			simplePhysicsIndex->flag_4 = true;
-			simplePhysicsIndex->pos_x = loc.position.x;
-			simplePhysicsIndex->pos_y = loc.position.y;
-			simplePhysicsIndex->pos_z = loc.position.z;
-			simplePhysicsIndex->rot_x = loc.rotation.x;
-			simplePhysicsIndex->rot_y = loc.rotation.y;
-			simplePhysicsIndex->rot_z = loc.rotation.z;
-			simplePhysicsIndex->rot_w = loc.rotation.w;
+			simplePhysicsIndex->pos_x = pos.x;
+			simplePhysicsIndex->pos_y = pos.y;
+			simplePhysicsIndex->pos_z = pos.z;
+			simplePhysicsIndex->rot_x = rot.x;
+			simplePhysicsIndex->rot_y = rot.y;
+			simplePhysicsIndex->rot_z = rot.z;
+			simplePhysicsIndex->rot_w = rot.w;
 			break;
 		}
 

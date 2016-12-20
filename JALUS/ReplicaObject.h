@@ -20,8 +20,7 @@ public:
 	long lot;
 	wstring name;
 	long gmLevel;
-	ZoneID zoneID;
-	long mapClone;
+	bool broadcast = true;
 	long long spawnerID = -1;
 	long long parentID = -1;
 	vector<long long> childIDs = vector<long long>();
@@ -40,7 +39,7 @@ public:
 	RenderIndex* renderIndex = nullptr;
 	Index107* index107 = nullptr;
 
-	ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Location loc);
+	ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot);
 	~ReplicaObject();
 
 	ReplicaReturnResult SendConstruction(RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags, RakNet::BitStream* outBitStream, bool* includeTimestamp);

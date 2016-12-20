@@ -264,19 +264,7 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 		wstring name = to_wstring(Characters::getName(session->charID));
 		long gmLevel = Characters::getGMLevel(session->charID);
 
-		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel, loc);
+		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel, loc.position, loc.rotation);
 		Server::getReplicaManager()->Construct(replica, false, clientAddress, false);
-
-		Location greeterLoc = Location();
-		greeterLoc.position.x = -620.9204711914062F;
-		greeterLoc.position.y = 613.3262329101562F;
-		greeterLoc.position.z = -30.623197555541992F;
-		greeterLoc.rotation.x = 0.0F;
-		greeterLoc.rotation.y = -0.7592979669570923F;
-		greeterLoc.rotation.z = 0.0F;
-		greeterLoc.rotation.w = 0.6507431864738464F;
-
-		ReplicaObject* greeter = new ReplicaObject(Objects::generateObjectID(), 14349, L"", 0, greeterLoc);
-		Server::getReplicaManager()->Construct(greeter, false, clientAddress, false);
 	}
 }

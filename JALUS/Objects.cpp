@@ -104,8 +104,8 @@ long long Objects::generateObjectID()
 
 long long Objects::generateSpawnerID()
 {
-	long long min = 700000000000000000;
-	long long max = 799999999999999999;
+	long long min = 70000000000000;
+	long long max = 79999999999999;
 
 	long long rand = randomInRange(min, max);
 
