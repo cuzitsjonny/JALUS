@@ -5,6 +5,12 @@
 #include "SimplePhysicsIndex.h"
 #include "DestructibleIndex.h"
 #include "StatsIndex.h"
+#include "ScriptIndex.h"
+#include "SkillIndex.h"
+#include "RenderIndex.h"
+#include "Index107.h"
+#include "InventoryIndex.h"
+#include "CharacterIndex.h"
 
 class ReplicaObject : public Replica
 {
@@ -24,12 +30,12 @@ public:
 	SimplePhysicsIndex* simplePhysicsIndex = nullptr;
 	DestructibleIndex* destructibleIndex = nullptr;
 	StatsIndex* statsIndex = nullptr;
-	/*CharacterIndex* characterIndex = nullptr;
+	CharacterIndex* characterIndex = nullptr;
 	InventoryIndex* inventoryIndex = nullptr;
 	ScriptIndex* scriptIndex = nullptr;
 	SkillIndex* skillIndex = nullptr;
 	RenderIndex* renderIndex = nullptr;
-	Component107Index* component107Index = nullptr;*/
+	Index107* index107 = nullptr;
 
 	ReplicaObject(long long objectID, long lot, wstring name, long gmLevel);
 	~ReplicaObject();

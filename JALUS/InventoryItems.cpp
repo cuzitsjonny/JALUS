@@ -433,7 +433,7 @@ vector<InventoryItem> InventoryItems::getEquippedInventoryItems(long long ownerI
 			InventoryItem item;
 
 			item.objectID = cmd.Field("id").asNumeric();
-			item.ownerID = cmd.Field("owner_id").asNumeric();
+			item.ownerID = ownerID;
 			item.itemType = (ItemType)cmd.Field("item_type").asLong();
 			item.invType = (InventoryType)cmd.Field("inventory_type").asLong();
 			item.slot = cmd.Field("slot").asLong();

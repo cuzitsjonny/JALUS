@@ -4,6 +4,8 @@
 #include "Objects.h"
 #include "TemporaryItems.h"
 #include "Server.h"
+#include "Characters.h"
+#include "Accounts.h"
 
 ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel)
 {
@@ -23,17 +25,31 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		switch (e.componentType)
 		{
 
-		/*case ReplicaComponentID::REPLICA_COMPONENT_ID_CHARACTER:
+		case ReplicaComponentID::REPLICA_COMPONENT_ID_CHARACTER:
 		{
 			characterIndex = new CharacterIndex();
+
+			characterIndex->flag_1 = true;
+			characterIndex->level = Characters::getLevel(objectID);
+
+			CharacterStyle style = CharacterStyles::getCharacterStyle(objectID);
+			characterIndex->hair_color = style.hairColor;
+			characterIndex->hair_style = style.hairStyle;
+			characterIndex->shirt_color = style.shirtColor;
+			characterIndex->pants_color = style.pantsColor;
+			characterIndex->eyebrows_style = style.eyebrows;
+			characterIndex->eyes_style = style.eyes;
+			characterIndex->mouth_style = style.mouth;
+			characterIndex->account_id = Characters::getAccountID(objectID);
+			characterIndex->lego_score = Characters::getUniverseScore(objectID);
 			break;
 		}
 
 		case ReplicaComponentID::REPLICA_COMPONENT_ID_107:
 		{
-			component107Index = new Component107Index();
+			index107 = new Index107();
 			break;
-		}*/
+		}
 
 		case ReplicaComponentID::REPLICA_COMPONENT_ID_CONTROLLABLE_PHYSICS:
 		{
@@ -65,11 +81,11 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 			break;
 		}
 
-		/*case ReplicaComponentID::REPLICA_COMPONENT_ID_INVENTORY:
+		case ReplicaComponentID::REPLICA_COMPONENT_ID_INVENTORY:
 		{
-			inventoryIndex = new InventoryIndex((lot == 1), objectID);
+			inventoryIndex = new InventoryIndex();
 
-			vector<long> lots = CDClient::getInventoryComponentEntries(lot);
+			vector<long> lots = CDClient::getInventoryIndexInfo(lot);
 			for (int k = 0; k < lots.size(); k++)
 			{
 				long long id = Objects::generateObjectID();
@@ -82,6 +98,13 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 				item.ownerID = objectID;
 
 				TemporaryItems::addItem(item);
+				inventoryIndex->items.push_back(item);
+			}
+
+			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(objectID);
+			for (int k = 0; k < items.size(); k++)
+			{
+				inventoryIndex->items.push_back(items.at(k));
 			}
 			break;
 		}
@@ -96,7 +119,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		{
 			scriptIndex = new ScriptIndex();
 			break;
-		}*/
+		}
 
 		case ReplicaComponentID::REPLICA_COMPONENT_ID_SIMPLE_PHYSICS:
 		{
@@ -104,11 +127,11 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 			break;
 		}
 
-		/*case ReplicaComponentID::REPLICA_COMPONENT_ID_SKILL:
+		case ReplicaComponentID::REPLICA_COMPONENT_ID_SKILL:
 		{
 			skillIndex = new SkillIndex();
 			break;
-		}*/
+		}
 
 		default:
 		{
@@ -130,29 +153,32 @@ ReplicaObject::~ReplicaObject()
 		delete destructibleIndex;
 	if (statsIndex != nullptr)
 		delete statsIndex;
-	/*if (characterIndex != nullptr)
+	if (characterIndex != nullptr)
 		delete characterIndex;
 	if (inventoryIndex != nullptr)
+	{
 		delete inventoryIndex;
+		TemporaryItems::removeItems(objectID);
+	}
 	if (scriptIndex != nullptr)
 		delete scriptIndex;
 	if (skillIndex != nullptr)
 		delete skillIndex;
 	if (renderIndex != nullptr)
 		delete renderIndex;
-	if (component107Index != nullptr)
-		delete component107Index;*/
+	if (index107 != nullptr)
+		delete index107;
 }
 
 ReplicaReturnResult ReplicaObject::SendConstruction(RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags, RakNet::BitStream* outBitStream, bool* includeTimestamp)
 {
-	outBitStream->Write((unsigned char)0x24);
-	outBitStream->Write(true);
-	outBitStream->Write((short)0x0a0a);
-	saveToFile(outBitStream, ".\\test_rm_0.bin");
+	/*BitStream b;
+	b.Write((unsigned char)0x24);
+	b.Write(true);
+	b.Write((short)0x0a0a);*/
 	writeToBitStream(outBitStream, true);
-	saveToFile(outBitStream, ".\\test_rm_written.bin");
-	//Server::getReplicaManager()->SetScope(this, true, systemAddress, false);
+	/*writeToBitStream(&b, true);
+	saveToFile(&b, ".\\debug_rm_object.bin");*/
 	return REPLICA_PROCESSING_DONE;
 }
 ReplicaReturnResult ReplicaObject::SendDestruction(RakNet::BitStream* outBitStream, SystemAddress systemAddress, bool* includeTimestamp)
@@ -263,7 +289,7 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 		destructibleIndex->writeToBitStream(bitStream, isConstruction);
 	if (statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE)
 		statsIndex->writeToBitStream(bitStream, isConstruction);
-	/*if (characterIndex != nullptr)
+	if (characterIndex != nullptr)
 		characterIndex->writeToBitStream(bitStream, isConstruction);
 	if (inventoryIndex != nullptr)
 		inventoryIndex->writeToBitStream(bitStream, isConstruction);
@@ -273,6 +299,6 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 		skillIndex->writeToBitStream(bitStream, isConstruction);
 	if (renderIndex != nullptr)
 		renderIndex->writeToBitStream(bitStream, isConstruction);
-	if (component107Index != nullptr)
-		component107Index->writeToBitStream(bitStream, isConstruction);*/
+	if (index107 != nullptr)
+		index107->writeToBitStream(bitStream, isConstruction);
 }
