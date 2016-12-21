@@ -11,6 +11,7 @@
 #include "ServerLoop.h"
 #include "ReplicaObject.h"
 #include "GameMessages.h"
+#include "ObjectsManager.h"
 
 void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddress, ClientToWorldPacketID packetID)
 {
@@ -265,6 +266,7 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 		long gmLevel = Characters::getGMLevel(session->charID);
 
 		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel, loc.position, loc.rotation);
-		Server::getReplicaManager()->Construct(replica, false, clientAddress, false);
+		/*Server::getReplicaManager()->Construct(replica, false, clientAddress, false);*/
+		ObjectsManager::addPlayer(replica, clientAddress);
 	}
 }

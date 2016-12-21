@@ -6,6 +6,8 @@
 #include "Server.h"
 #include "Characters.h"
 #include "Accounts.h"
+#include "LVLCache.h"
+#include "ObjectsManager.h"
 
 ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot)
 {
@@ -14,145 +16,173 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 	this->name = name;
 	this->gmLevel = gmLevel;
 
-	vector<ComponentsRegistryEntry> cr = CDClient::getComponentsRegistryEntries(lot);
-	for (int i = 0; i < cr.size(); i++)
+	if (lot != 176)
 	{
-		ComponentsRegistryEntry e = cr.at(i);
-
-		switch (e.componentType)
+		if (!Objects::isInSpawnerIDRange(objectID))
 		{
-
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_CHARACTER:
-		{
-			characterIndex = new CharacterIndex();
-
-			characterIndex->flag_1 = true;
-			characterIndex->level = Characters::getLevel(objectID);
-
-			CharacterStyle style = CharacterStyles::getCharacterStyle(objectID);
-			characterIndex->hair_color = style.hairColor;
-			characterIndex->hair_style = style.hairStyle;
-			characterIndex->shirt_color = style.shirtColor;
-			characterIndex->pants_color = style.pantsColor;
-			characterIndex->eyebrows_style = style.eyebrows;
-			characterIndex->eyes_style = style.eyes;
-			characterIndex->mouth_style = style.mouth;
-			characterIndex->account_id = Characters::getAccountID(objectID);
-			characterIndex->lego_score = Characters::getUniverseScore(objectID);
-			break;
-		}
-
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_107:
-		{
-			index107 = new Index107();
-			break;
-		}
-
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_CONTROLLABLE_PHYSICS:
-		{
-			controllablePhysicsIndex = new ControllablePhysicsIndex();
-			controllablePhysicsIndex->flag_5 = true;
-			controllablePhysicsIndex->pos_x = pos.x;
-			controllablePhysicsIndex->pos_y = pos.y;
-			controllablePhysicsIndex->pos_z = pos.z;
-			controllablePhysicsIndex->rot_x = rot.x;
-			controllablePhysicsIndex->rot_y = rot.y;
-			controllablePhysicsIndex->rot_z = rot.z;
-			controllablePhysicsIndex->rot_w = rot.w;
-			controllablePhysicsIndex->is_on_ground = true;
-			break;
-		}
-
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE:
-		{
-			destructibleIndex = new DestructibleIndex();
-
-			if (statsIndexParent < 0)
+			vector<ComponentsRegistryEntry> cr = CDClient::getComponentsRegistryEntries(lot);
+			for (int i = 0; i < cr.size(); i++)
 			{
-				statsIndex = new StatsIndex();
-				statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE;
+				ComponentsRegistryEntry e = cr.at(i);
 
-				StatsIndexInfo info = CDClient::getStatsIndexInfo(e.componentID);
-				statsIndex->flag_1 = true;
+				switch (e.componentType)
+				{
 
-				statsIndex->faction_id = info.factionID;
-				statsIndex->cur_health = info.health;
-				statsIndex->max_health = info.health;
-				statsIndex->cur_armor = info.armor;
-				statsIndex->max_armor = info.armor;
-				statsIndex->cur_imagination = info.imagination;
-				statsIndex->max_imagination = info.imagination;
-				statsIndex->is_smashable = info.isSmashable;
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_CHARACTER:
+				{
+					characterIndex = new CharacterIndex();
+
+					characterIndex->flag_1 = true;
+					characterIndex->level = Characters::getLevel(objectID);
+
+					CharacterStyle style = CharacterStyles::getCharacterStyle(objectID);
+					characterIndex->hair_color = style.hairColor;
+					characterIndex->hair_style = style.hairStyle;
+					characterIndex->shirt_color = style.shirtColor;
+					characterIndex->pants_color = style.pantsColor;
+					characterIndex->eyebrows_style = style.eyebrows;
+					characterIndex->eyes_style = style.eyes;
+					characterIndex->mouth_style = style.mouth;
+					characterIndex->account_id = Characters::getAccountID(objectID);
+					characterIndex->lego_score = Characters::getUniverseScore(objectID);
+					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_107:
+				{
+					index107 = new Index107();
+					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_CONTROLLABLE_PHYSICS:
+				{
+					controllablePhysicsIndex = new ControllablePhysicsIndex();
+					controllablePhysicsIndex->flag_5 = true;
+					controllablePhysicsIndex->pos_x = pos.x;
+					controllablePhysicsIndex->pos_y = pos.y;
+					controllablePhysicsIndex->pos_z = pos.z;
+					controllablePhysicsIndex->rot_x = rot.x;
+					controllablePhysicsIndex->rot_y = rot.y;
+					controllablePhysicsIndex->rot_z = rot.z;
+					controllablePhysicsIndex->rot_w = rot.w;
+					controllablePhysicsIndex->is_on_ground = true;
+					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE:
+				{
+					destructibleIndex = new DestructibleIndex();
+
+					if (statsIndexParent < 0)
+					{
+						statsIndex = new StatsIndex();
+						statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE;
+
+						StatsIndexInfo info = CDClient::getStatsIndexInfo(e.componentID);
+						statsIndex->flag_1 = true;
+
+						statsIndex->faction_id = info.factionID;
+						statsIndex->cur_health = info.health;
+						statsIndex->max_health = info.health;
+						statsIndex->cur_armor = info.armor;
+						statsIndex->max_armor = info.armor;
+						statsIndex->cur_imagination = info.imagination;
+						statsIndex->max_imagination = info.imagination;
+						statsIndex->is_smashable = info.isSmashable;
+					}
+					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_INVENTORY:
+				{
+					inventoryIndex = new InventoryIndex();
+
+					vector<long> lots = CDClient::getInventoryIndexInfo(lot);
+					for (int k = 0; k < lots.size(); k++)
+					{
+						long long id = Objects::generateObjectID();
+
+						InventoryItem item = InventoryItem();
+						item.objectID = id;
+						item.lot = lots.at(k);
+						item.count = 1;
+						item.slot = k;
+						item.ownerID = objectID;
+
+						TemporaryItems::addItem(item);
+						inventoryIndex->items.push_back(item);
+					}
+
+					vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(objectID);
+					for (int k = 0; k < items.size(); k++)
+					{
+						inventoryIndex->items.push_back(items.at(k));
+					}
+					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_RENDER:
+				{
+					renderIndex = new RenderIndex();
+					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_SCRIPT:
+				{
+					scriptIndex = new ScriptIndex();
+					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_SIMPLE_PHYSICS:
+				{
+					simplePhysicsIndex = new SimplePhysicsIndex();
+					simplePhysicsIndex->flag_4 = true;
+					simplePhysicsIndex->pos_x = pos.x;
+					simplePhysicsIndex->pos_y = pos.y;
+					simplePhysicsIndex->pos_z = pos.z;
+					simplePhysicsIndex->rot_x = rot.x;
+					simplePhysicsIndex->rot_y = rot.y;
+					simplePhysicsIndex->rot_z = rot.z;
+					simplePhysicsIndex->rot_w = rot.w;
+					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_SKILL:
+				{
+					skillIndex = new SkillIndex();
+					break;
+				}
+
+				default:
+				{
+					Logger::info("LOT " + to_string(lot) + " requested an unknown component with ID " + to_string(e.componentType) + "!");
+					break;
+				}
+
+				}
 			}
-			break;
 		}
+	}
+	else
+	{
+		vector<ObjectProperty> properties = LVLCache::getObjectProperties(objectID);
+		string spawntemplate = "";
 
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_INVENTORY:
+		for (int i = 0; i < properties.size(); i++)
 		{
-			inventoryIndex = new InventoryIndex();
+			ObjectProperty pro = properties.at(i);
 
-			vector<long> lots = CDClient::getInventoryIndexInfo(lot);
-			for (int k = 0; k < lots.size(); k++)
-			{
-				long long id = Objects::generateObjectID();
-
-				InventoryItem item = InventoryItem();
-				item.objectID = id;
-				item.lot = lots.at(k);
-				item.count = 1;
-				item.slot = k;
-				item.ownerID = objectID;
-
-				TemporaryItems::addItem(item);
-				inventoryIndex->items.push_back(item);
-			}
-
-			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(objectID);
-			for (int k = 0; k < items.size(); k++)
-			{
-				inventoryIndex->items.push_back(items.at(k));
-			}
-			break;
+			if (iequals(pro.key, "spawntemplate"))
+				spawntemplate = pro.value;
 		}
 
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_RENDER:
+		if (spawntemplate.length() > 0)
 		{
-			renderIndex = new RenderIndex();
-			break;
-		}
-
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_SCRIPT:
-		{
-			scriptIndex = new ScriptIndex();
-			break;
-		}
-
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_SIMPLE_PHYSICS:
-		{
-			simplePhysicsIndex = new SimplePhysicsIndex();
-			simplePhysicsIndex->flag_4 = true;
-			simplePhysicsIndex->pos_x = pos.x;
-			simplePhysicsIndex->pos_y = pos.y;
-			simplePhysicsIndex->pos_z = pos.z;
-			simplePhysicsIndex->rot_x = rot.x;
-			simplePhysicsIndex->rot_y = rot.y;
-			simplePhysicsIndex->rot_z = rot.z;
-			simplePhysicsIndex->rot_w = rot.w;
-			break;
-		}
-
-		case ReplicaComponentID::REPLICA_COMPONENT_ID_SKILL:
-		{
-			skillIndex = new SkillIndex();
-			break;
-		}
-
-		default:
-		{
-			Logger::info("LOT " + to_string(lot) + " requested an unknown component with ID " + to_string(e.componentType) + "!");
-			break;
-		}
-
+			long long id = Objects::generateObjectID();
+			ReplicaObject* replica = new ReplicaObject(id, stol(spawntemplate), L"", 0, pos, rot);
+			replica->scale = scale;
+			replica->spawnerID = objectID;
+			Server::getReplicaManager()->ReferencePointer(replica);
 		}
 	}
 }
@@ -204,13 +234,10 @@ ReplicaObject::~ReplicaObject()
 
 ReplicaReturnResult ReplicaObject::SendConstruction(RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags, RakNet::BitStream* outBitStream, bool* includeTimestamp)
 {
-	/*BitStream b;
-	b.Write((unsigned char)0x24);
-	b.Write(true);
-	b.Write((short)0x0a0a);*/
-	/*writeToBitStream(&b, true);
-	saveToFile(&b, ".\\debug_rm_object.bin");*/
-	writeToBitStream(outBitStream, true);
+	if (!Objects::isInSpawnerIDRange(objectID))
+	{
+		writeToBitStream(outBitStream, true);
+	}
 	return REPLICA_PROCESSING_DONE;
 }
 ReplicaReturnResult ReplicaObject::SendDestruction(RakNet::BitStream* outBitStream, SystemAddress systemAddress, bool* includeTimestamp)
@@ -319,7 +346,7 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 		simplePhysicsIndex->writeToBitStream(bitStream, isConstruction);
 	if (destructibleIndex != nullptr)
 		destructibleIndex->writeToBitStream(bitStream, isConstruction);
-	if (statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE)
+	if (statsIndexParent == ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE)
 		statsIndex->writeToBitStream(bitStream, isConstruction);
 	if (characterIndex != nullptr)
 		characterIndex->writeToBitStream(bitStream, isConstruction);

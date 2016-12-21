@@ -159,6 +159,12 @@
     <ClCompile Include="LUZCache.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="LVLCache.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsManager.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -297,6 +303,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="LUZCache.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="LVLCache.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsManager.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -13,6 +13,8 @@ public:
 	static long long generateObjectID();
 	static long long generateSpawnerID();
 
+	static bool isInSpawnerIDRange(long long objectID);
+
 	static long long createObject(long lot);
 	static void deleteObject(long long objectID);
 	static long getLOT(long long objectID);

@@ -2,6 +2,8 @@
 #include "Config.h"
 #include "Logger.h"
 #include "TemporaryItems.h"
+#include "Server.h"
+#include "ReplicaObject.h"
 
 string Objects::name;
 
@@ -46,7 +48,13 @@ bool Objects::validate(long long objectID)
 	if (r)
 		r = (!TemporaryItems::isObjectIDOccupied(objectID));
 
-	// Implement ObjectsManager validation!
+	int i = 0;
+	while (r && i < Server::getReplicaManager()->GetReplicaCount())
+	{
+		ReplicaObject* replica = (ReplicaObject*)Server::getReplicaManager()->GetReplicaAtIndex(i);
+		r = (replica->objectID != objectID);
+		i++;
+	}
 
 	return r;
 }
@@ -113,6 +121,14 @@ long long Objects::generateSpawnerID()
 		return rand;
 	else
 		return Objects::generateSpawnerID();
+}
+
+bool Objects::isInSpawnerIDRange(long long objectID)
+{
+	long long min = 70000000000000;
+	long long max = 79999999999999;
+
+	return (objectID < max && objectID >= min);
 }
 
 long long Objects::createObject(long lot)

@@ -88,10 +88,8 @@ void LUZCache::init(vector<string> names)
 {
 	for (int i = 0; i < names.size(); i++)
 	{
-		string path = names.at(i);
-		string zoneID = to_string(ServerRoles::toZoneID(Server::getServerRole()));
-
-		LUZFile file = LUZFile(".\\maps\\" + zoneID + "\\" + path);
+		string name = names.at(i);
+		LUZFile file = LUZFile(".\\maps\\" + ServerRoles::toString(Server::getServerRole()) + "\\" + name);
 		files.push_back(file);
 	}
 }

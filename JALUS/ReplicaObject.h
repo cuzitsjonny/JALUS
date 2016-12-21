@@ -21,6 +21,7 @@ public:
 	wstring name;
 	long gmLevel;
 	bool broadcast = true;
+	SystemAddress clientAddress = UNASSIGNED_SYSTEM_ADDRESS;
 	long long spawnerID = -1;
 	long long parentID = -1;
 	vector<long long> childIDs = vector<long long>();

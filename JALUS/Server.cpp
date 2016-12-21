@@ -12,6 +12,7 @@
 #include "Locations.h"
 #include "CharacterStats.h"
 #include "LUZCache.h"
+#include "LVLCache.h"
 
 ServerRole Server::serverRole;
 SocketDescriptor Server::socketDescriptor;
@@ -61,11 +62,18 @@ bool Server::start()
 			Server::peerInterface->AttachPlugin(&Server::replicaManager);
 			Server::peerInterface->SetNetworkIDManager(&Server::networkIDManager);
 
-			Server::replicaManager.SetAutoParticipateNewConnections(true);
+			/*Server::replicaManager.SetAutoParticipateNewConnections(true);*/
+			Server::replicaManager.SetAutoConstructToNewParticipants(true);
 			Server::replicaManager.SetAutoSerializeInScope(true);
 			Server::replicaManager.SetDefaultScope(true);
 
 			Server::networkIDManager.SetIsNetworkIDAuthority(true);
+
+			LUZFile* luzFile = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::serverRole));
+			for (int i = 0; i < luzFile->childFiles.size(); i++)
+			{
+				LVLCache::loadObjects(luzFile->childFiles.at(i));
+			}
 		}
 	}
 
