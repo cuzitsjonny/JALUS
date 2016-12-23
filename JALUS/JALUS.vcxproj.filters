@@ -165,6 +165,18 @@
     <ClCompile Include="ObjectsManager.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Missions.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="CurrentMissionTasks.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectibleIndex.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="PhantomPhysicsIndex.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -310,6 +322,18 @@
     </ClInclude>
     <ClInclude Include="ObjectsManager.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Missions.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="CurrentMissionTasks.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectibleIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="PhantomPhysicsIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

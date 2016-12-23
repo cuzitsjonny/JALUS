@@ -6,6 +6,8 @@
 #include "CharactersInstance.h"
 #include "Sessions.h"
 #include "WorldInstance.h"
+#include "ReplicaObject.h"
+#include "ObjectsManager.h"
 
 bool ServerLoop::run;
 vector<char> ServerLoop::input;
@@ -169,7 +171,29 @@ void ServerLoop::start()
 			case ID_DISCONNECTION_NOTIFICATION:
 			{
 				if (Server::isCharactersInstance() || Server::isWorldInstance())
+				{
+					if (Server::isWorldInstance())
+					{
+						ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(clientAddress);
+						ControllablePhysicsIndex* index = replica->controllablePhysicsIndex;
+
+						Location loc = Location();
+						loc.zoneID = ServerRoles::toZoneID(Server::getServerRole());
+						loc.mapClone = 0;
+						loc.position.x = index->pos_x;
+						loc.position.y = index->pos_y;
+						loc.position.z = index->pos_z;
+						loc.rotation.x = index->rot_x;
+						loc.rotation.y = index->rot_y;
+						loc.rotation.z = index->rot_z;
+						loc.rotation.w = index->rot_w;
+						Locations::saveLocation(loc, replica->objectID);
+
+						ObjectsManager::removePlayer(clientAddress);
+					}
+					
 					Sessions::removeSession(clientAddress);
+				}
 				Logger::info("Client disconnected! (Address: " + string(clientAddress.ToString()) + ")");
 				break;
 			}

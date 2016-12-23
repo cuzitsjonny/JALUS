@@ -1,5 +1,6 @@
 #include "CDClient.h"
 #include "Config.h"
+#include "Logger.h"
 
 // !!! SQLite besitzt keine SACommand::FetchFirst() Funktion !!!
 
@@ -284,6 +285,179 @@ StatsIndexInfo CDClient::getStatsIndexInfo(long componentID)
 			r.armor = cmd.Field("armor").asLong();
 			r.imagination = cmd.Field("imagination").asLong();
 			r.isSmashable = cmd.Field("isSmashable").asBool();
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+vector<MissionNPCInfo> CDClient::getMissionNPCIndexInfo(long lot)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<MissionNPCInfo> r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT component_id FROM";
+		ss << " ComponentsRegistry ";
+		ss << "WHERE id = '" << lot << "' AND component_type = '73';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		long componentID = -1;
+		if (cmd.FetchNext())
+		{
+			componentID = cmd.Field("component_id").asLong();
+		}
+
+		if (componentID > 0)
+		{
+			ss.str("");
+
+			ss << "SELECT missionID, offersMission, acceptsMission FROM";
+			ss << " MissionNPCComponent ";
+			ss << "WHERE id = '" << componentID << "';";
+
+			cmd.setCommandText(ss.str().c_str());
+			cmd.Execute();
+
+			while (cmd.FetchNext())
+			{
+				MissionNPCInfo mi = MissionNPCInfo();
+
+				mi.missionID = cmd.Field("missionID").asLong();
+				mi.offersMission = cmd.Field("offersMission").asBool();
+				mi.acceptsMission = cmd.Field("acceptsMission").asBool();
+
+				r.push_back(mi);
+			}
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+vector<long> CDClient::getPrereqMissionIDs(long missionID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<long> r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT prereqMissionID FROM";
+		ss << " Missions ";
+		ss << "WHERE id = '" << missionID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			string prereqStr = string(cmd.Field("prereqMissionID").asString());
+			vector<string> p = split(prereqStr, ',');
+
+			for (int i = 0; i < p.size(); i++)
+			{
+				r.push_back(stol(p.at(i)));
+			}
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+vector<MissionTask> CDClient::getMissionTasks(long missionID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<MissionTask> r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT taskType, target, targetGroup, targetValue, uid FROM";
+		ss << " MissionTasks ";
+		ss << "WHERE id = '" << missionID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		long componentID = -1;
+		if (cmd.FetchNext())
+		{
+			MissionTask mt = MissionTask();
+
+			mt.type = (MissionTaskType)cmd.Field("taskType").asLong();
+			mt.targetValue = (float)cmd.Field("targetValue").asDouble();
+			mt.uid = cmd.Field("uid").asLong();
+
+			string targetStr = string(cmd.Field("target").asString());
+			if (targetStr.length() > 0)
+			{
+				mt.targets.push_back(stol(targetStr));
+			}
+
+			string targetGroupStr = string(cmd.Field("targetGroup").asString());
+			if (targetGroupStr.length() > 0)
+			{
+				vector<string> p = split(targetGroupStr, ',');
+				for (int i = 0; i < p.size(); i++)
+				{
+					mt.targets.push_back(stol(p.at(i)));
+				}
+			}
+
+			r.push_back(mt);
 		}
 
 		con.Commit();

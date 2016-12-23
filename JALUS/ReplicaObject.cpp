@@ -9,12 +9,14 @@
 #include "LVLCache.h"
 #include "ObjectsManager.h"
 
-ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot)
+ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot, long long spawnerID, long mapClone)
 {
 	this->objectID = objectID;
 	this->lot = lot;
 	this->name = name;
 	this->gmLevel = gmLevel;
+	this->spawnerID = spawnerID;
+	this->mapClone = mapClone;
 
 	if (lot != 176)
 	{
@@ -93,6 +95,42 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 					break;
 				}
 
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_COLLECTIBLE:
+				{
+					vector<ObjectProperty> properties = LVLCache::getObjectProperties(spawnerID);
+					string collectibleID = "";
+
+					for (int i = 0; i < properties.size(); i++)
+					{
+						ObjectProperty pro = properties.at(i);
+
+						if (iequals(pro.key, "collectible_id"))
+							collectibleID = pro.value;
+					}
+
+					collectibleIndex = new CollectibleIndex();
+					collectibleIndex->collectible_id = stoi(collectibleID);
+
+					if (statsIndexParent < 0)
+					{
+						statsIndex = new StatsIndex();
+						statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_COLLECTIBLE;
+
+						StatsIndexInfo info = CDClient::getStatsIndexInfo(e.componentID);
+						statsIndex->flag_1 = true;
+
+						statsIndex->faction_id = info.factionID;
+						statsIndex->cur_health = info.health;
+						statsIndex->max_health = info.health;
+						statsIndex->cur_armor = info.armor;
+						statsIndex->max_armor = info.armor;
+						statsIndex->cur_imagination = info.imagination;
+						statsIndex->max_imagination = info.imagination;
+						statsIndex->is_smashable = info.isSmashable;
+					}
+					break;
+				}
+
 				case ReplicaComponentID::REPLICA_COMPONENT_ID_INVENTORY:
 				{
 					inventoryIndex = new InventoryIndex();
@@ -147,6 +185,20 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 					break;
 				}
 
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_PHANTOM_PHYSICS:
+				{
+					phantomPhysicsIndex = new PhantomPhysicsIndex();
+					phantomPhysicsIndex->flag_0 = true;
+					phantomPhysicsIndex->pos_x = pos.x;
+					phantomPhysicsIndex->pos_y = pos.y;
+					phantomPhysicsIndex->pos_z = pos.z;
+					phantomPhysicsIndex->rot_x = rot.x;
+					phantomPhysicsIndex->rot_y = rot.y;
+					phantomPhysicsIndex->rot_z = rot.z;
+					phantomPhysicsIndex->rot_w = rot.w;
+					break;
+				}
+
 				case ReplicaComponentID::REPLICA_COMPONENT_ID_SKILL:
 				{
 					skillIndex = new SkillIndex();
@@ -179,9 +231,8 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 		if (spawntemplate.length() > 0)
 		{
 			long long id = Objects::generateObjectID();
-			ReplicaObject* replica = new ReplicaObject(id, stol(spawntemplate), L"", 0, pos, rot);
+			ReplicaObject* replica = new ReplicaObject(id, stol(spawntemplate), L"", 0, pos, rot, objectID);
 			replica->scale = scale;
-			replica->spawnerID = objectID;
 			Server::getReplicaManager()->ReferencePointer(replica);
 		}
 	}
@@ -197,9 +248,17 @@ ReplicaObject::~ReplicaObject()
 	{
 		delete simplePhysicsIndex;
 	}
+	if (phantomPhysicsIndex != nullptr)
+	{
+		delete phantomPhysicsIndex;
+	}
 	if (destructibleIndex != nullptr)
 	{
 		delete destructibleIndex;
+	}
+	if (collectibleIndex != nullptr)
+	{
+		delete collectibleIndex;
 	}
 	if (statsIndex != nullptr)
 	{
@@ -344,10 +403,15 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 		controllablePhysicsIndex->writeToBitStream(bitStream, isConstruction);
 	if (simplePhysicsIndex != nullptr)
 		simplePhysicsIndex->writeToBitStream(bitStream, isConstruction);
+	if (phantomPhysicsIndex != nullptr)
+		phantomPhysicsIndex->writeToBitStream(bitStream, isConstruction);
 	if (destructibleIndex != nullptr)
 		destructibleIndex->writeToBitStream(bitStream, isConstruction);
-	if (statsIndexParent == ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE)
+	if (statsIndexParent == ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE
+		|| statsIndexParent == ReplicaComponentID::REPLICA_COMPONENT_ID_COLLECTIBLE)
 		statsIndex->writeToBitStream(bitStream, isConstruction);
+	if (collectibleIndex != nullptr)
+		collectibleIndex->writeToBitStream(bitStream, isConstruction);
 	if (characterIndex != nullptr)
 		characterIndex->writeToBitStream(bitStream, isConstruction);
 	if (inventoryIndex != nullptr)

@@ -12,6 +12,8 @@
 #include "ReplicaObject.h"
 #include "GameMessages.h"
 #include "ObjectsManager.h"
+#include "LUZCache.h"
+#include "Missions.h"
 
 void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddress, ClientToWorldPacketID packetID)
 {
@@ -61,6 +63,12 @@ void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddr
 	case CLIENT_WORLD_GAME_MSG:
 	{
 		GameMessages::processGameMessage(data, clientAddress);
+		break;
+	}
+
+	case CLIENT_WORLD_POSITION_UPDATE:
+	{
+		WorldInstance::broadcastPositionUpdate(data, clientAddress);
 		break;
 	}
 
@@ -144,6 +152,48 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 
 		stringstream xml;
 		xml << "<obj v=\"1\">";
+
+		xml << "<mis>";
+
+		vector<MissionInfo> misDone = Missions::getAllDoneMissions(session->charID);
+		if (misDone.size() > 0)
+		{
+			xml << "<done>";
+
+			for (int i = 0; i < misDone.size(); i++)
+			{
+				MissionInfo info = misDone.at(i);
+
+				xml << "<m id=\"" << info.missionID << "\" cts=\"" << info.doneTimestamp << "\" cct=\"" << info.doneCount << "\"/>";
+			}
+
+			xml << "</done>";
+		}
+
+		vector<MissionInfo> misCur = Missions::getAllCurrentMissions(session->charID);
+		if (misCur.size() > 0)
+		{
+			xml << "<cur>";
+
+			for (int i = 0; i < misCur.size(); i++)
+			{
+				MissionInfo info = misCur.at(i);
+
+				xml << "<m id=\"" << info.missionID << "\">";
+
+				for (int k = 0; k < info.missionTasks.size(); k++)
+				{
+					xml << "<sv v=\"" << info.missionTasks.at(k).value << "\"/>";
+				}
+
+				xml << "</m>";
+			}
+
+			xml << "</cur>";
+		}
+
+		xml << "</mis>";
+
 		xml << "<buff/>";
 		xml << "<skil/>";
 		xml << "<mf/>";
@@ -159,9 +209,9 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 
 		long inventorySize = Characters::getInventorySize(session->charID);
 		xml << "<b t=\"0\" m=\"" << inventorySize << "\"/>";
-		/*xml << "<b t=\"2\" m=\"" << inventorySize << "\"/>";
+		xml << "<b t=\"2\" m=\"" << inventorySize << "\"/>";
 		xml << "<b t=\"5\" m=\"" << inventorySize << "\"/>";
-		xml << "<b t=\"7\" m=\"" << inventorySize << "\"/>";*/
+		xml << "<b t=\"7\" m=\"" << inventorySize << "\"/>";
 
 		xml << "</bag>";
 
@@ -266,7 +316,72 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 		long gmLevel = Characters::getGMLevel(session->charID);
 
 		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel, loc.position, loc.rotation);
-		/*Server::getReplicaManager()->Construct(replica, false, clientAddress, false);*/
+		replica->clientAddress = clientAddress;
+
 		ObjectsManager::addPlayer(replica, clientAddress);
+	}
+}
+
+void WorldInstance::broadcastPositionUpdate(BitStream* data, SystemAddress clientAddress)
+{
+	Session* session = Sessions::getSession(clientAddress);
+
+	if (session != nullptr)
+	{
+		ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+		ControllablePhysicsIndex* index = replica->controllablePhysicsIndex;
+
+		data->Read(index->pos_x);
+		data->Read(index->pos_y);
+		data->Read(index->pos_z);
+
+		data->Read(index->rot_x);
+		data->Read(index->rot_y);
+		data->Read(index->rot_z);
+		data->Read(index->rot_w);
+
+		data->Read(index->is_on_ground);
+		data->Read(index->data_5_8);
+
+		data->Read(index->flag_velocity);
+		if (index->flag_velocity)
+		{
+			data->Read(index->vel_x);
+			data->Read(index->vel_y);
+			data->Read(index->vel_z);
+		}
+
+		data->Read(index->flag_angular_velocity);
+		if (index->flag_angular_velocity)
+		{
+			data->Read(index->ang_vel_x);
+			data->Read(index->ang_vel_y);
+			data->Read(index->ang_vel_z);
+		}
+
+		data->Read(index->flag_5_11);
+		if (index->flag_5_11)
+		{
+			data->Read(index->data_5_11_0);
+			data->Read(index->data_5_11_1);
+			data->Read(index->data_5_11_2);
+			data->Read(index->data_5_11_3);
+
+			data->Read(index->flag_5_11_4);
+			if (index->flag_5_11_4)
+			{
+				data->Read(index->data_5_11_4_0);
+				data->Read(index->data_5_11_4_1);
+				data->Read(index->data_5_11_4_2);
+			}
+		}
+
+		for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+		{
+			SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+			if (participant != clientAddress)
+				ObjectsManager::serializeObject(replica, participant);
+		}
 	}
 }

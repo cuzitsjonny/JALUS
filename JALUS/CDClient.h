@@ -2,6 +2,15 @@
 #include "ZoneIDs.h"
 #include "ComponentsRegistryEntry.h"
 #include "StatsIndexInfo.h"
+#include "CurrentMissionTasks.h"
+
+class MissionNPCInfo
+{
+public:
+	long missionID = -1;
+	bool offersMission = false;
+	bool acceptsMission = false;
+};
 
 enum ItemType
 {
@@ -41,4 +50,7 @@ public:
 	static vector<ComponentsRegistryEntry> getComponentsRegistryEntries(long lot);
 	static vector<long> getInventoryIndexInfo(long lot);
 	static StatsIndexInfo getStatsIndexInfo(long componentID);
+	static vector<MissionNPCInfo> getMissionNPCIndexInfo(long lot);
+	static vector<long> getPrereqMissionIDs(long missionID);
+	static vector<MissionTask> getMissionTasks(long missionID);
 };

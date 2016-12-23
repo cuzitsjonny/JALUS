@@ -12,6 +12,9 @@
 #include "InventoryIndex.h"
 #include "CharacterIndex.h"
 #include "Locations.h"
+#include "Missions.h"
+#include "CollectibleIndex.h"
+#include "PhantomPhysicsIndex.h"
 
 class ReplicaObject : public Replica
 {
@@ -23,16 +26,20 @@ public:
 	bool broadcast = true;
 	SystemAddress clientAddress = UNASSIGNED_SYSTEM_ADDRESS;
 	long long spawnerID = -1;
+	long mapClone = 0;
 	long long parentID = -1;
 	vector<long long> childIDs = vector<long long>();
 	long spawnerNodeID = -1;
 	float scale = -1.0;
+	vector<MissionInfo> currentMissions = vector<MissionInfo>();
 
 	int statsIndexParent = -1;
 	ControllablePhysicsIndex* controllablePhysicsIndex = nullptr;
 	SimplePhysicsIndex* simplePhysicsIndex = nullptr;
+	PhantomPhysicsIndex* phantomPhysicsIndex = nullptr;
 	DestructibleIndex* destructibleIndex = nullptr;
 	StatsIndex* statsIndex = nullptr;
+	CollectibleIndex* collectibleIndex = nullptr;
 	CharacterIndex* characterIndex = nullptr;
 	InventoryIndex* inventoryIndex = nullptr;
 	ScriptIndex* scriptIndex = nullptr;
@@ -40,7 +47,7 @@ public:
 	RenderIndex* renderIndex = nullptr;
 	Index107* index107 = nullptr;
 
-	ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot);
+	ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot, long long spawnerID = -1, long mapClone = 0);
 	~ReplicaObject();
 
 	ReplicaReturnResult SendConstruction(RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags, RakNet::BitStream* outBitStream, bool* includeTimestamp);
