@@ -171,10 +171,13 @@
     <ClCompile Include="CurrentMissionTasks.cpp">
       <Filter>Quelldateien\Datenbank</Filter>
     </ClCompile>
-    <ClCompile Include="CollectibleIndex.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="PhantomPhysicsIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectibleIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
+    <ClCompile Include="Chat.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="PhantomPhysicsIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="Chat.h">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

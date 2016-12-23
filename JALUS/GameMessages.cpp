@@ -7,6 +7,8 @@
 #include "CDClient.h"
 #include "Missions.h"
 #include "Sessions.h"
+#include "Chat.h"
+#include "LUZCache.h"
 
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
@@ -77,9 +79,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 									{
 										withInfo.value = withValue.value;
 										newInfo.missionTasks.push_back(withInfo);
-										/*Logger::info("Submitting MissionID " + to_string(info.missionID) + " with Value " + to_string(withInfo.value) + " and Index " + to_string(k + 1));
+
 										GameMessages::notifyMission(session->charID, info.missionID, MissionState::MISSION_STATE_ACTIVE, false, clientAddress);
-										GameMessages::notifyMissionTask(session->charID, info.missionID, (k + 1), withInfo.value, clientAddress);*/
+										GameMessages::notifyMissionTask(session->charID, info.missionID, k, withInfo.value, clientAddress);
+
+										if (withInfo.value == withInfo.targetValue)
+										{
+											GameMessages::notifyMission(session->charID, info.missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
+										}
 									}
 								}
 							}
@@ -287,21 +294,11 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					{
 						for (int l = 0; l < task->targets.size(); l++)
 						{
-							Logger::info("Target: " + to_string(task->targets.at(l)));
 							if (collectible->lot == task->targets.at(l))
 							{
 								task->value++;
 								CurrentMissionTasks::setValue(task->uid, task->value, session->charID);
-
-								if (collectible->lot == 4768)
-								{
-									long collectibleID = collectible->collectibleIndex->collectible_id + 256000;
-									GameMessages::notifyMissionTask(session->charID, info->missionID, k, collectibleID, clientAddress);
-								}
-								else
-								{
-									GameMessages::notifyMissionTask(session->charID, info->missionID, k, task->value, clientAddress);
-								}
+								GameMessages::notifyMissionTask(session->charID, info->missionID, k, task->value, clientAddress);
 
 								if (task->value >= task->targetValue)
 								{
@@ -319,6 +316,31 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				}
 			}
 			break;
+		}
+
+		case GAME_MESSAGE_ID_REQUEST_DIE:
+		{
+			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+			{
+				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+				GameMessages::die(session->charID, L"electro-shock-death", false, participant);
+			}
+			break;
+		}
+
+		case GAME_MESSAGE_ID_REQUEST_RESURRECT:
+		{
+			Position spawnPos = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()))->spawnPointPos;
+			Rotation spawnRot = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()))->spawnPointRot;
+
+			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+			{
+				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+				GameMessages::teleport(session->charID, false, false, true, true, spawnPos, participant, spawnRot);
+				GameMessages::resurrect(session->charID, false, participant);
+			}
 		}
 
 		default:
@@ -362,7 +384,7 @@ void GameMessages::notifyMission(long long objectID, long missionID, MissionStat
 	Server::sendPacket(packet, receiver);
 }
 
-void GameMessages::notifyMissionTask(long objectID, long missionID, long taskIndex, float updatedValue, SystemAddress receiver)
+void GameMessages::notifyMissionTask(long long objectID, long missionID, long taskIndex, float updatedValue, SystemAddress receiver)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_NOTIFY_MISSION_TASK);
 
@@ -370,6 +392,79 @@ void GameMessages::notifyMissionTask(long objectID, long missionID, long taskInd
 	packet->Write(1 << (taskIndex + 1));
 	packet->Write((unsigned char)1);
 	packet->Write(updatedValue);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::die(long long objectID, wstring deathType, bool spawnLoot, SystemAddress receiver, long long killerID, long long lootOwnerID)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_DIE);
+
+	packet->Write(true);
+	packet->Write(spawnLoot);
+	packet->Write(false);
+	packet->Write((unsigned long)deathType.length());
+
+	for (int i = 0; i < deathType.length(); i++)
+	{
+		packet->Write(deathType[i]);
+	}
+
+	packet->Write(0.0F);
+	packet->Write(0.0F);
+	packet->Write(0.0F);
+	packet->Write(false);
+
+	if (killerID > 1)
+	{
+		packet->Write(killerID);
+	}
+	else
+	{
+		packet->Write(objectID);
+	}
+
+	if (lootOwnerID > 1)
+	{
+		packet->Write(true);
+		packet->Write(lootOwnerID); 
+	}
+	else
+	{
+		packet->Write(false);
+	}
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::resurrect(long long objectID, bool rezImmediately, SystemAddress receiver)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_RESURRECT);
+
+	packet->Write(rezImmediately);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::teleport(long long objectID, bool noGravTeleport, bool ignoreY, bool setRotation, bool skipAllChecks, Position pos, SystemAddress receiver, Rotation rot)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_TELEPORT);
+
+	packet->Write(noGravTeleport);
+	packet->Write(ignoreY);
+	packet->Write(setRotation);
+	packet->Write(skipAllChecks);
+	packet->Write(pos.x);
+	packet->Write(pos.y);
+	packet->Write(pos.z);
+
+	if (setRotation)
+	{
+		packet->Write(rot.w);
+		packet->Write(rot.x);
+		packet->Write(rot.y);
+		packet->Write(rot.z);
+	}
 
 	Server::sendPacket(packet, receiver);
 }

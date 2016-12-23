@@ -10,4 +10,5 @@ public:
 	static void sendCharacterData(SystemAddress clientAddress);
 	static void sendServerState(SystemAddress clientAddress);
 	static void broadcastPositionUpdate(BitStream* data, SystemAddress clientAddress);
+	static string broadcastChatMessage(BitStream* data, SystemAddress clientAddress);
 };

@@ -14,6 +14,7 @@
 #include "ObjectsManager.h"
 #include "LUZCache.h"
 #include "Missions.h"
+#include "Chat.h"
 
 void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddress, ClientToWorldPacketID packetID)
 {
@@ -69,6 +70,34 @@ void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddr
 	case CLIENT_WORLD_POSITION_UPDATE:
 	{
 		WorldInstance::broadcastPositionUpdate(data, clientAddress);
+		break;
+	}
+
+	case CLIENT_WORLD_STRING_CHECK:
+	{
+		Session* session = Sessions::getSession(clientAddress);
+
+		if (session != nullptr)
+		{
+			data->IgnoreBytes(1);
+			unsigned char requestID;
+			data->Read(requestID);
+
+			BitStream* packet = PacketUtils::createPacketBase(RCT_WORLD_TO_CLIENT, WORLD_CLIENT_CHAT_MODERATION_STRING);
+
+			packet->Write((unsigned char)1);
+			packet->Write((unsigned short)0);
+			packet->Write(requestID);
+
+			Server::sendPacket(packet, clientAddress);
+		}
+		break;
+	}
+
+	case CLIENT_WORLD_GENERAL_CHAT_MESSAGE:
+	{
+		string message = WorldInstance::broadcastChatMessage(data, clientAddress);
+		Logger::info("Client sent chat message! (Message: '" + message + "') (Address: " + string(clientAddress.ToString()) + ")");
 		break;
 	}
 
@@ -383,5 +412,57 @@ void WorldInstance::broadcastPositionUpdate(BitStream* data, SystemAddress clien
 			if (participant != clientAddress)
 				ObjectsManager::serializeObject(replica, participant);
 		}
+
+		switch (ServerRoles::toZoneID(Server::getServerRole()))
+		{
+
+		case ZONE_ID_VENTURE_EXPLORER:
+		{
+			if (index->pos_y < 562)
+			{
+				for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+				{
+					SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+					GameMessages::die(session->charID, L"electro-shock-death", false, participant);
+				}
+			}
+			break;
+		}
+
+		default:
+			break;
+
+		}
 	}
+}
+
+string WorldInstance::broadcastChatMessage(BitStream* data, SystemAddress clientAddress)
+{
+	Session* session = Sessions::getSession(clientAddress);
+
+	if (session != nullptr)
+	{
+		unsigned char byte1;
+		data->Read(byte1);
+		unsigned char byte2;
+		data->Read(byte2);
+		unsigned char byte3;
+		data->Read(byte3);
+
+		unsigned long len;
+		data->Read(len);
+		wstring message = PacketUtils::readWStringFromBitStream(data, len);
+
+		for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+		{
+			SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+			Chat::sendChatMessage(message, participant, to_wstring(Characters::getName(session->charID)), session->charID, false, byte1);
+		}
+
+		return to_string(message);
+	}
+
+	return "ERROR: NO SESSION FOUND!";
 }
