@@ -168,7 +168,7 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 
 		LDF ldf;
 		ldf.writeLongLong(L"accountID", session->accountID);
-		ldf.writeLong(L"chatmode", 0);
+		ldf.writeLong(L"chatmode", 1);
 		ldf.writeBoolean(L"editor_enabled", false);
 		ldf.writeLong(L"editor_level", 0);
 		ldf.writeBoolean(L"freetrial", false);
