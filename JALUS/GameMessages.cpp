@@ -13,6 +13,7 @@
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
 	Session* session = Sessions::getSession(clientAddress);
+
 	if (session != nullptr)
 	{
 		long long objectID;
@@ -112,89 +113,67 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			data->Read(isMultiInteractUse);
 			long multiInteractID;
 			data->Read(multiInteractID);
-			long multiInteractType;
+			MultiInteractType multiInteractType;
 			data->Read(multiInteractType);
 			long long objectID;
 			data->Read(objectID);
 
-			long lot = ObjectsManager::getObjectByID(objectID)->lot;
-			ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+			Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_INTERACT, session->charID, objectID, clientAddress);
 
-			for (int i = 0; i < replica->currentMissions.size(); i++)
+			if (isMultiInteractUse)
 			{
-				MissionInfo* info = &replica->currentMissions.at(i);
-
-				for (int k = 0; k < info->missionTasks.size(); k++)
+				switch (multiInteractType)
 				{
-					MissionTask* task = &info->missionTasks.at(k);
 
-					switch (task->type)
-					{
+				case MULTI_INTERACT_TYPE_MISSION:
+				{
+					GameMessages::offerMission(session->charID, multiInteractID, objectID, clientAddress);
+					break;
+				}
 
-					case MISSION_TASK_TYPE_INTERACT:
+				default:
+					break;
+
+				}
+			}
+			else
+			{
+				long lot = ObjectsManager::getObjectByID(objectID)->lot;
+				vector<MissionNPCInfo> mnpc = CDClient::getMissionNPCIndexInfo(lot);
+
+				for (int i = 0; i < mnpc.size(); i++)
+				{
+					MissionNPCInfo info = mnpc.at(i);
+
+					if (info.acceptsMission)
 					{
-						for (int l = 0; l < task->targets.size(); l++)
+						if (Missions::isDoingMission(info.missionID, session->charID))
 						{
-							if (lot == task->targets.at(l))
+							GameMessages::offerMission(session->charID, info.missionID, objectID, clientAddress, false);
+						}
+					}
+				}
+
+				for (int i = 0; i < mnpc.size(); i++)
+				{
+					MissionNPCInfo info = mnpc.at(i);
+
+					if (info.offersMission)
+					{
+						if (!Missions::hasDoneMission(info.missionID, session->charID))
+						{
+							vector<long> prereq = CDClient::getPrereqMissionIDs(info.missionID);
+							bool ready = true;
+
+							for (int k = 0; k < prereq.size(); k++)
 							{
-								task->value++;
-								CurrentMissionTasks::setValue(task->uid, task->value, session->charID);
-
-								vector<float> updates = vector<float>();
-								updates.push_back(task->value);
-
-								GameMessages::notifyMissionTask(session->charID, info->missionID, 0, updates, clientAddress);
-
-								if (task->value == task->targetValue)
-								{
-									GameMessages::notifyMission(session->charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
-								}
+								if (ready)
+									ready = Missions::hasDoneMission(prereq.at(k), session->charID);
 							}
-						}
-						break;
-					}
 
-					default:
-						break;
-
-					}
-				}
-			}
-
-			vector<MissionNPCInfo> mnpc = CDClient::getMissionNPCIndexInfo(lot);
-
-			for (int i = 0; i < mnpc.size(); i++)
-			{
-				MissionNPCInfo info = mnpc.at(i);
-
-				if (info.acceptsMission)
-				{
-					if (Missions::isDoingMission(info.missionID, session->charID))
-					{
-						GameMessages::offerMission(session->charID, info.missionID, objectID, clientAddress, false);
-					}
-				}
-			}
-
-			for (int i = 0; i < mnpc.size(); i++)
-			{
-				MissionNPCInfo info = mnpc.at(i);
-
-				if (info.offersMission)
-				{
-					if (!Missions::hasDoneMission(info.missionID, session->charID))
-					{
-						vector<long> prereq = CDClient::getPrereqMissionIDs(info.missionID);
-						bool ready = true;
-
-						for (int k = 0; k < prereq.size(); k++)
-						{
 							if (ready)
-								ready = Missions::hasDoneMission(prereq.at(k), session->charID);
+								GameMessages::offerMission(session->charID, info.missionID, objectID, clientAddress);
 						}
-
-						if (ready)
-							GameMessages::offerMission(session->charID, info.missionID, objectID, clientAddress);
 					}
 				}
 			}
@@ -287,49 +266,12 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_HAS_BEEN_COLLECTED:
 		{
-			ReplicaObject* collectible = ObjectsManager::getObjectByID(objectID);
-			ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+			long long playerID;
+			data->Read(playerID);
 
-			for (int i = 0; i < replica->currentMissions.size(); i++)
+			if (playerID == session->charID)
 			{
-				MissionInfo* info = &replica->currentMissions.at(i);
-
-				for (int k = 0; k < info->missionTasks.size(); k++)
-				{
-					MissionTask* task = &info->missionTasks.at(k);
-
-					switch (task->type)
-					{
-
-					case MISSION_TASK_TYPE_COLLECT_COLLECTIBLE:
-					{
-						for (int l = 0; l < task->targets.size(); l++)
-						{
-							if (collectible->lot == task->targets.at(l))
-							{
-								task->value++;
-								CurrentMissionTasks::setValue(task->uid, task->value, session->charID);
-
-								long collectibleID = collectible->collectibleIndex->collectible_id;
-								vector<float> updates = vector<float>();
-								updates.push_back((float)collectibleID);
-
-								GameMessages::notifyMissionTask(session->charID, info->missionID, 0, updates, clientAddress);
-
-								if (task->value >= task->targetValue)
-								{
-									GameMessages::notifyMission(session->charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
-								}
-							}
-						}
-						break;
-					}
-
-					default:
-						break;
-
-					}
-				}
+				Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_COLLECT_COLLECTIBLE, session->charID, objectID, clientAddress);
 			}
 			break;
 		}

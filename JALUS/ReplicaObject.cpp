@@ -89,6 +89,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 				case ReplicaComponentID::REPLICA_COMPONENT_ID_CONTROLLABLE_PHYSICS:
 				{
 					controllablePhysicsIndex = new ControllablePhysicsIndex();
+
 					controllablePhysicsIndex->flag_5 = true;
 					controllablePhysicsIndex->pos_x = pos.x;
 					controllablePhysicsIndex->pos_y = pos.y;
@@ -112,7 +113,6 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 
 						StatsIndexInfo info = CDClient::getStatsIndexInfo(e.componentID);
 						statsIndex->flag_1 = true;
-
 						statsIndex->faction_id = info.factionID;
 						statsIndex->cur_health = info.health;
 						statsIndex->max_health = info.health;
@@ -148,7 +148,6 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 
 						StatsIndexInfo info = CDClient::getStatsIndexInfo(e.componentID);
 						statsIndex->flag_1 = true;
-
 						statsIndex->faction_id = info.factionID;
 						statsIndex->cur_health = info.health;
 						statsIndex->max_health = info.health;
@@ -204,6 +203,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 				case ReplicaComponentID::REPLICA_COMPONENT_ID_SIMPLE_PHYSICS:
 				{
 					simplePhysicsIndex = new SimplePhysicsIndex();
+
 					simplePhysicsIndex->flag_4 = true;
 					simplePhysicsIndex->pos_x = pos.x;
 					simplePhysicsIndex->pos_y = pos.y;
@@ -218,6 +218,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 				case ReplicaComponentID::REPLICA_COMPONENT_ID_PHANTOM_PHYSICS:
 				{
 					phantomPhysicsIndex = new PhantomPhysicsIndex();
+
 					phantomPhysicsIndex->flag_0 = true;
 					phantomPhysicsIndex->pos_x = pos.x;
 					phantomPhysicsIndex->pos_y = pos.y;

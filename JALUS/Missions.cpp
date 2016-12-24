@@ -2,6 +2,9 @@
 #include "Config.h"
 #include "Logger.h"
 #include "CurrentMissionTasks.h"
+#include "ReplicaObject.h"
+#include "ObjectsManager.h"
+#include "GameMessages.h"
 
 string Missions::name;
 
@@ -449,4 +452,75 @@ vector<MissionInfo> Missions::getAllCurrentMissions(long long charID)
 	}
 
 	return r;
+}
+
+void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charID, long long objectID, SystemAddress clientAddress)
+{
+	ReplicaObject* other = ObjectsManager::getObjectByID(objectID);
+	ReplicaObject* player = ObjectsManager::getObjectByID(charID);
+
+	for (int i = 0; i < player->currentMissions.size(); i++)
+	{
+		MissionInfo* info = &player->currentMissions.at(i);
+
+		for (int k = 0; k < info->missionTasks.size(); k++)
+		{
+			MissionTask* task = &info->missionTasks.at(k);
+
+			switch (task->type)
+			{
+
+			case MISSION_TASK_TYPE_INTERACT:
+			{
+				for (int l = 0; l < task->targets.size(); l++)
+				{
+					if (other->lot == task->targets.at(l))
+					{
+						task->value++;
+						CurrentMissionTasks::setValue(task->uid, task->value, charID);
+
+						vector<float> updates = vector<float>();
+						updates.push_back(task->value);
+
+						GameMessages::notifyMissionTask(charID, info->missionID, 0, updates, clientAddress);
+
+						if (task->value == task->targetValue)
+						{
+							GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
+						}
+					}
+				}
+				break;
+			}
+
+			case MISSION_TASK_TYPE_COLLECT_COLLECTIBLE:
+			{
+				for (int l = 0; l < task->targets.size(); l++)
+				{
+					if (other->lot == task->targets.at(l))
+					{
+						task->value++;
+						CurrentMissionTasks::setValue(task->uid, task->value, charID);
+
+						long collectibleID = other->collectibleIndex->collectible_id;
+						vector<float> updates = vector<float>();
+						updates.push_back((float)collectibleID);
+
+						GameMessages::notifyMissionTask(charID, info->missionID, 0, updates, clientAddress);
+
+						if (task->value >= task->targetValue)
+						{
+							GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
+						}
+					}
+				}
+				break;
+			}
+
+			default:
+				break;
+
+			}
+		}
+	}
 }

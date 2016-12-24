@@ -236,7 +236,7 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 		xml << "<inv>";
 		xml << "<bag>";
 
-		long inventorySize = Characters::getInventorySize(session->charID);
+		long inventorySize = Characters::getMaxInventory(session->charID);
 		xml << "<b t=\"0\" m=\"" << inventorySize << "\"/>";
 		xml << "<b t=\"2\" m=\"" << inventorySize << "\"/>";
 		xml << "<b t=\"5\" m=\"" << inventorySize << "\"/>";
@@ -346,6 +346,8 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 
 		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel, loc.position, loc.rotation);
 		replica->clientAddress = clientAddress;
+		replica->statsIndex->max_health = Characters::getMaxHealth(session->charID);
+		replica->statsIndex->max_imagination = Characters::getMaxImagination(session->charID);
 
 		ObjectsManager::addPlayer(replica, clientAddress);
 	}

@@ -30,4 +30,6 @@ public:
 
 	static vector<MissionInfo> getAllDoneMissions(long long charID);
 	static vector<MissionInfo> getAllCurrentMissions(long long charID);
+
+	static void callOnMissionTaskUpdate(MissionTaskType taskType, long long charID, long long objectID, SystemAddress clientAddress);
 };

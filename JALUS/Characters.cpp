@@ -647,7 +647,7 @@ long Characters::getGMLevel(long long charID)
 	return r;
 }
 
-long Characters::getInventorySize(long long charID)
+long Characters::getMaxInventory(long long charID)
 {
 	SAConnection con;
 	SACommand cmd;
@@ -662,7 +662,7 @@ long Characters::getInventorySize(long long charID)
 			SA_MySQL_Client);
 
 		stringstream ss;
-		ss << "SELECT inventory_size FROM";
+		ss << "SELECT max_inventory FROM";
 		ss << " " << Characters::name << " ";
 		ss << "WHERE id = '" << charID << "';";
 
@@ -671,7 +671,89 @@ long Characters::getInventorySize(long long charID)
 		cmd.Execute();
 
 		if (cmd.FetchFirst())
-			r = cmd.Field("inventory_size").asLong();
+			r = cmd.Field("max_inventory").asLong();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+long Characters::getMaxHealth(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT max_health FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("max_health").asLong();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+long Characters::getMaxImagination(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT max_imagination FROM";
+		ss << " " << Characters::name << " ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("max_imagination").asLong();
 
 		con.Commit();
 		con.Disconnect();
@@ -968,7 +1050,7 @@ void Characters::setGMLevel(long gmLevel, long long charID)
 	}
 }
 
-void Characters::setInventorySize(long inventorySize, long long charID)
+void Characters::setMaxInventory(long maxInventory, long long charID)
 {
 	SAConnection con;
 	SACommand cmd;
@@ -983,7 +1065,77 @@ void Characters::setInventorySize(long inventorySize, long long charID)
 		stringstream ss;
 		ss << "UPDATE";
 		ss << " " << Characters::name << " ";
-		ss << "SET inventory_size = '" << inventorySize << "' ";
+		ss << "SET max_inventory = '" << maxInventory << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void Characters::setMaxHealth(long maxHealth, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET max_health = '" << maxHealth << "' ";
+		ss << "WHERE id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void Characters::setMaxImagination(long maxImagination, long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Characters::name << " ";
+		ss << "SET max_imagination = '" << maxImagination << "' ";
 		ss << "WHERE id = '" << charID << "';";
 
 		cmd.setConnection(&con);

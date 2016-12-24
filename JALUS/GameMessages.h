@@ -20,6 +20,11 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_SET_CURRENCY = 133
 };
 
+enum MultiInteractType : unsigned long
+{
+	MULTI_INTERACT_TYPE_MISSION = 0
+};
+
 enum MissionState : unsigned long
 {
 	MISSION_STATE_UNKNOWN = 0,

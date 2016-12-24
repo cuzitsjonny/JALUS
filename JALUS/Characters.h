@@ -24,7 +24,9 @@ public:
 	static long long getCurrency(long long charID);
 	static long long getReputation(long long charID);
 	static long getGMLevel(long long charID);
-	static long getInventorySize(long long charID);
+	static long getMaxInventory(long long charID);
+	static long getMaxHealth(long long charID);
+	static long getMaxImagination(long long charID);
 
 	static void setName(string name, long long charID);
 	static void setUnapprovedName(string unapprovedName, long long charID);
@@ -34,5 +36,7 @@ public:
 	static void setCurrency(long long currency, long long charID);
 	static void setReputation(long long reputation, long long charID);
 	static void setGMLevel(long gmLevel, long long charID);
-	static void setInventorySize(long inventorySize, long long charID);
+	static void setMaxInventory(long maxInventory, long long charID);
+	static void setMaxHealth(long maxHealth, long long charID);
+	static void setMaxImagination(long maxImagination, long long charID);
 };
