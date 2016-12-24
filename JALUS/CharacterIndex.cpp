@@ -67,10 +67,33 @@ void CharacterIndex::writeToBitStream(BitStream* bitStream, bool isConstruction)
 		bitStream->Write(data_19);
 		bitStream->Write(lego_score);
 		bitStream->Write(is_free_to_play);
-		for (int i = 0; i < 27; i++)
-		{
-			bitStream->Write((unsigned long long)0);
-		}
+		bitStream->Write(totalAmountOfCurrencyCollected);
+		bitStream->Write(numberOfBricksCollected);
+		bitStream->Write(numberOfSmashablesSmashed);
+		bitStream->Write(numberOfQuickBuildsCompleted);
+		bitStream->Write(numberOfEnemiesSmashed);
+		bitStream->Write(numberOfRocketsUsed);
+		bitStream->Write(numberOfMissionsCompleted);
+		bitStream->Write(numberOfPetsTamed);
+		bitStream->Write(numberOfImaginationPowerupsCollected);
+		bitStream->Write(numberOfLifePowerupsCollected);
+		bitStream->Write(numberOfArmorPowerupsCollected);
+		bitStream->Write(totalDistanceTraveled);
+		bitStream->Write(numberOfTimesSmashed);
+		bitStream->Write(totalDamageTaken);
+		bitStream->Write(totalDamageHealed);
+		bitStream->Write(totalArmorRepaired);
+		bitStream->Write(totalImaginationRestored);
+		bitStream->Write(totalImaginationUsed);
+		bitStream->Write(totalDistanceDriven);
+		bitStream->Write(totalTimeAirborneInARaceCar);
+		bitStream->Write(numberOfRacingImaginationPowerupsCollected);
+		bitStream->Write(numberOfRacingImaginationCratesSmashed);
+		bitStream->Write(numberOfTimesRaceCarBoostActivated);
+		bitStream->Write(numberOfWrecksInARaceCar);
+		bitStream->Write(numberOfRacingSmashablesSmashed);
+		bitStream->Write(numberOfRacesFinished);
+		bitStream->Write(numberOfFirstPlaceRacesFinished);
 		bitStream->Write(data_49);
 		bitStream->Write(landing_rocket_info.length() > 0);
 		if (landing_rocket_info.length() > 0)

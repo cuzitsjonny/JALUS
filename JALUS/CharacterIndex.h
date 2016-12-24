@@ -43,7 +43,33 @@ public:
 	unsigned long long data_19 = 0;
 	long long lego_score; // SET MANUALLY!
 	bool is_free_to_play = false;
-	// character stats
+	unsigned long long totalAmountOfCurrencyCollected; // SET MANUALLY!
+	unsigned long long numberOfBricksCollected; // SET MANUALLY!
+	unsigned long long numberOfSmashablesSmashed; // SET MANUALLY!
+	unsigned long long numberOfQuickBuildsCompleted; // SET MANUALLY!
+	unsigned long long numberOfEnemiesSmashed; // SET MANUALLY!
+	unsigned long long numberOfRocketsUsed; // SET MANUALLY!
+	unsigned long long numberOfMissionsCompleted; // SET MANUALLY!
+	unsigned long long numberOfPetsTamed; // SET MANUALLY!
+	unsigned long long numberOfImaginationPowerupsCollected; // SET MANUALLY!
+	unsigned long long numberOfLifePowerupsCollected; // SET MANUALLY!
+	unsigned long long numberOfArmorPowerupsCollected; // SET MANUALLY!
+	unsigned long long totalDistanceTraveled; // SET MANUALLY!
+	unsigned long long numberOfTimesSmashed; // SET MANUALLY!
+	unsigned long long totalDamageTaken; // SET MANUALLY!
+	unsigned long long totalDamageHealed; // SET MANUALLY!
+	unsigned long long totalArmorRepaired; // SET MANUALLY!
+	unsigned long long totalImaginationRestored; // SET MANUALLY!
+	unsigned long long totalImaginationUsed; // SET MANUALLY!
+	unsigned long long totalDistanceDriven; // SET MANUALLY!
+	unsigned long long totalTimeAirborneInARaceCar; // SET MANUALLY!
+	unsigned long long numberOfRacingImaginationPowerupsCollected; // SET MANUALLY!
+	unsigned long long numberOfRacingImaginationCratesSmashed; // SET MANUALLY!
+	unsigned long long numberOfTimesRaceCarBoostActivated; // SET MANUALLY!
+	unsigned long long numberOfWrecksInARaceCar; // SET MANUALLY!
+	unsigned long long numberOfRacingSmashablesSmashed; // SET MANUALLY!
+	unsigned long long numberOfRacesFinished; // SET MANUALLY!
+	unsigned long long numberOfFirstPlaceRacesFinished; // SET MANUALLY!
 	bool data_49 = false;
 	wstring landing_rocket_info = L"";
 

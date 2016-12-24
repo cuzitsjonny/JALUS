@@ -54,7 +54,7 @@ void CharacterStats::saveCharacterStats(CharacterStats stats, long long charID)
 		stringstream ss;
 		ss << "REPLACE INTO";
 		ss << " " << CharacterStats::name << " ";
-		ss << "(total_amount_of_currency_collected, number_of_bricks_collected, number_of_smashables_smashed, ";
+		ss << "(id, total_amount_of_currency_collected, number_of_bricks_collected, number_of_smashables_smashed, ";
 		ss << "number_of_quick_builds_completed, number_of_enemies_smashed, number_of_rockets_used, ";
 		ss << "number_of_missions_completed, number_of_pets_tamed, number_of_imagination_powerups_collected, ";
 		ss << "number_of_life_powerups_collected, number_of_armor_powerups_collected, total_distance_traveled, ";
@@ -65,7 +65,8 @@ void CharacterStats::saveCharacterStats(CharacterStats stats, long long charID)
 		ss << "number_of_racing_smashables_smashed, number_of_races_finished, number_of_first_place_races_finished)";
 		ss << " VALUES ";
 		ss << "(";
-		ss << "'" << stats.totalAmountOfCurrencyCollected << "'";
+		ss << "'" << charID << "'";
+		ss << ", '" << stats.totalAmountOfCurrencyCollected << "'";
 		ss << ", '" << stats.numberOfBricksCollected << "'";
 		ss << ", '" << stats.numberOfSmashablesSmashed << "'";
 		ss << ", '" << stats.numberOfQuickBuildsCompleted << "'";

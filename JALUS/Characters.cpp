@@ -6,6 +6,8 @@
 #include "Locations.h"
 #include "CharacterStats.h"
 #include "LUZCache.h"
+#include "Missions.h"
+#include "CurrentMissionTasks.h"
 
 string Characters::name;
 
@@ -144,6 +146,8 @@ void Characters::deleteCharacter(long long charID)
 		catch (SAException &) {}
 	}
 
+	Missions::deleteMissions(charID);
+	CurrentMissionTasks::deleteMissionTasks(charID);
 	InventoryItems::deleteInventoryItems(charID);
 	CharacterStyles::deleteCharacterStyle(charID);
 	Locations::deleteLocation(charID);

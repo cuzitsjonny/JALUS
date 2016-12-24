@@ -81,7 +81,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 										newInfo.missionTasks.push_back(withInfo);
 
 										GameMessages::notifyMission(session->charID, info.missionID, MissionState::MISSION_STATE_ACTIVE, false, clientAddress);
-										GameMessages::notifyMissionTask(session->charID, info.missionID, k, withInfo.value, clientAddress);
+
+										for (int m = 0; m < withInfo.value; m++)
+										{
+											vector<float> updates = vector<float>();
+											updates.push_back((float)(m + 1));
+
+											GameMessages::notifyMissionTask(session->charID, info.missionID, 0, updates, clientAddress);
+										}
 
 										if (withInfo.value == withInfo.targetValue)
 										{
@@ -132,7 +139,11 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 							{
 								task->value++;
 								CurrentMissionTasks::setValue(task->uid, task->value, session->charID);
-								GameMessages::notifyMissionTask(session->charID, info->missionID, k, task->value, clientAddress);
+
+								vector<float> updates = vector<float>();
+								updates.push_back(task->value);
+
+								GameMessages::notifyMissionTask(session->charID, info->missionID, 0, updates, clientAddress);
 
 								if (task->value == task->targetValue)
 								{
@@ -228,7 +239,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					GameMessages::notifyMission(session->charID, missionID, MissionState::MISSION_STATE_COMPLETE, false, clientAddress);
 					Missions::setMissionDone(missionID, session->charID);
 					Missions::incrementMissionDoneCount(missionID, session->charID);
-					CurrentMissionTasks::removeMissionTasks(missionID, session->charID);
+					CurrentMissionTasks::deleteMissionTasks(missionID, session->charID);
 				}
 			}
 
@@ -298,7 +309,12 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 							{
 								task->value++;
 								CurrentMissionTasks::setValue(task->uid, task->value, session->charID);
-								GameMessages::notifyMissionTask(session->charID, info->missionID, k, task->value, clientAddress);
+
+								long collectibleID = collectible->collectibleIndex->collectible_id;
+								vector<float> updates = vector<float>();
+								updates.push_back((float)collectibleID);
+
+								GameMessages::notifyMissionTask(session->charID, info->missionID, 0, updates, clientAddress);
 
 								if (task->value >= task->targetValue)
 								{
@@ -384,14 +400,18 @@ void GameMessages::notifyMission(long long objectID, long missionID, MissionStat
 	Server::sendPacket(packet, receiver);
 }
 
-void GameMessages::notifyMissionTask(long long objectID, long missionID, long taskIndex, float updatedValue, SystemAddress receiver)
+void GameMessages::notifyMissionTask(long long objectID, long missionID, long taskIndex, vector<float> updates, SystemAddress receiver)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_NOTIFY_MISSION_TASK);
 
 	packet->Write(missionID);
 	packet->Write(1 << (taskIndex + 1));
-	packet->Write((unsigned char)1);
-	packet->Write(updatedValue);
+	packet->Write((unsigned char)updates.size());
+
+	for (int i = 0; i < updates.size(); i++)
+	{
+		packet->Write(updates.at(i));
+	}
 
 	Server::sendPacket(packet, receiver);
 }
@@ -465,6 +485,33 @@ void GameMessages::teleport(long long objectID, bool noGravTeleport, bool ignore
 		packet->Write(rot.y);
 		packet->Write(rot.z);
 	}
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::modifyLegoScore(long long objectID, long long score, SystemAddress receiver)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_MODIFY_LEGO_SCORE);
+
+	packet->Write(score);
+	packet->Write(false);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::setCurrency(long long objectID, long long currency, Position pos, SystemAddress receiver)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_SET_CURRENCY);
+
+	packet->Write(currency);
+	packet->Write(false);
+	packet->Write(pos.x);
+	packet->Write(pos.y);
+	packet->Write(pos.z);
+	packet->Write(false);
+	packet->Write(false);
+	packet->Write(false);
+	packet->Write(false);
 
 	Server::sendPacket(packet, receiver);
 }

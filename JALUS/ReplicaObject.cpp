@@ -8,6 +8,7 @@
 #include "Accounts.h"
 #include "LVLCache.h"
 #include "ObjectsManager.h"
+#include "CharacterStats.h"
 
 ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot, long long spawnerID, long mapClone)
 {
@@ -47,6 +48,35 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 					characterIndex->mouth_style = style.mouth;
 					characterIndex->account_id = Characters::getAccountID(objectID);
 					characterIndex->lego_score = Characters::getUniverseScore(objectID);
+
+					CharacterStats stats = CharacterStats::getCharacterStats(objectID);
+					characterIndex->totalAmountOfCurrencyCollected = stats.totalAmountOfCurrencyCollected;
+					characterIndex->numberOfBricksCollected = stats.numberOfBricksCollected;
+					characterIndex->numberOfSmashablesSmashed = stats.numberOfSmashablesSmashed;
+					characterIndex->numberOfQuickBuildsCompleted = stats.numberOfQuickBuildsCompleted;
+					characterIndex->numberOfEnemiesSmashed = stats.numberOfEnemiesSmashed;
+					characterIndex->numberOfRocketsUsed = stats.numberOfRocketsUsed;
+					characterIndex->numberOfMissionsCompleted = stats.numberOfMissionsCompleted;
+					characterIndex->numberOfPetsTamed = stats.numberOfPetsTamed;
+					characterIndex->numberOfImaginationPowerupsCollected = stats.numberOfImaginationPowerupsCollected;
+					characterIndex->numberOfLifePowerupsCollected = stats.numberOfLifePowerupsCollected;
+					characterIndex->numberOfArmorPowerupsCollected = stats.numberOfArmorPowerupsCollected;
+					characterIndex->totalDistanceTraveled = stats.totalDistanceTraveled;
+					characterIndex->numberOfTimesSmashed = stats.numberOfTimesSmashed;
+					characterIndex->totalDamageTaken = stats.totalDamageTaken;
+					characterIndex->totalDamageHealed = stats.totalDamageHealed;
+					characterIndex->totalArmorRepaired = stats.totalArmorRepaired;
+					characterIndex->totalImaginationRestored = stats.totalImaginationRestored;
+					characterIndex->totalImaginationUsed = stats.totalImaginationUsed;
+					characterIndex->totalDistanceDriven = stats.totalDistanceDriven;
+					characterIndex->totalTimeAirborneInARaceCar = stats.totalTimeAirborneInARaceCar;
+					characterIndex->numberOfRacingImaginationPowerupsCollected = stats.numberOfRacingImaginationPowerupsCollected;
+					characterIndex->numberOfRacingImaginationCratesSmashed = stats.numberOfRacingImaginationCratesSmashed;
+					characterIndex->numberOfTimesRaceCarBoostActivated = stats.numberOfTimesRaceCarBoostActivated;
+					characterIndex->numberOfWrecksInARaceCar = stats.numberOfWrecksInARaceCar;
+					characterIndex->numberOfRacingSmashablesSmashed = stats.numberOfRacingSmashablesSmashed;
+					characterIndex->numberOfRacesFinished = stats.numberOfRacesFinished;
+					characterIndex->numberOfFirstPlaceRacesFinished = stats.numberOfFirstPlaceRacesFinished;
 					break;
 				}
 

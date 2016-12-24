@@ -76,6 +76,40 @@ void Missions::addMission(long missionID, long long charID)
 	}
 }
 
+void Missions::deleteMissions(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "DELETE FROM";
+		ss << " " << Missions::name << " ";
+		ss << "WHERE character_id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
 void Missions::setMissionDone(long long missionID, long long charID)
 {
 	SAConnection con;

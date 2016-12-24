@@ -26,7 +26,8 @@ public:
 	static void init(string name, string structure);
 
 	static void addMissionTask(long missionID, long uniqueID, long long charID);
-	static void removeMissionTasks(long missionID, long long charID);
+	static void deleteMissionTasks(long missionID, long long charID);
+	static void deleteMissionTasks(long long charID);
 
 	static void setValue(long uniqueID, float value, long long charID);
 	static float getValue(long uniqueID, long long charID);

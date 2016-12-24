@@ -76,7 +76,7 @@ void CurrentMissionTasks::addMissionTask(long missionID, long uniqueID, long lon
 	}
 }
 
-void CurrentMissionTasks::removeMissionTasks(long missionID, long long charID)
+void CurrentMissionTasks::deleteMissionTasks(long missionID, long long charID)
 {
 	SAConnection con;
 	SACommand cmd;
@@ -92,6 +92,40 @@ void CurrentMissionTasks::removeMissionTasks(long missionID, long long charID)
 		ss << "DELETE FROM";
 		ss << " " << CurrentMissionTasks::name << " ";
 		ss << "WHERE mission_id = '" << missionID << "' AND character_id = '" << charID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+void CurrentMissionTasks::deleteMissionTasks(long long charID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "DELETE FROM";
+		ss << " " << CurrentMissionTasks::name << " ";
+		ss << "WHERE character_id = '" << charID << "';";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());

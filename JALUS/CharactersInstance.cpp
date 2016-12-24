@@ -156,6 +156,16 @@ long long CharactersInstance::performCharacterCreation(BitStream* data, SystemAd
 
 			string name = CDClient::getMinifigureName(name_f, name_m, name_l);
 
+			// ToDo: Unimplement that later!
+			if (customName.length() > 0)
+			{
+				if (!rejectCustomName)
+				{
+					name = customName;
+					customName = "";
+				}
+			}
+
 			data->IgnoreBytes(9);
 
 			CharacterStyle style = PacketUtils::readCharacterStyleFromBitStream(data);

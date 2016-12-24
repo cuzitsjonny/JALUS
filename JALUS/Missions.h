@@ -19,6 +19,7 @@ public:
 	static void init(string name, string structure);
 
 	static void addMission(long missionID, long long charID);
+	static void deleteMissions(long long charID);
 	static void setMissionDone(long long missionID, long long charID);
 	static void incrementMissionDoneCount(long long missionID, long long charID);
 

@@ -15,7 +15,9 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_REQUEST_DIE = 38,
 	GAME_MESSAGE_ID_RESURRECT = 160,
 	GAME_MESSAGE_ID_REQUEST_RESURRECT = 159,
-	GAME_MESSAGE_ID_TELEPORT = 19
+	GAME_MESSAGE_ID_TELEPORT = 19,
+	GAME_MESSAGE_ID_MODIFY_LEGO_SCORE = 1459,
+	GAME_MESSAGE_ID_SET_CURRENCY = 133
 };
 
 enum MissionState : unsigned long
@@ -46,8 +48,10 @@ public:
 	static void processGameMessage(BitStream* data, SystemAddress clientAddress);
 	static void offerMission(long long objectID, long missionID, long long offererID, SystemAddress receiver, bool sendTwice = true);
 	static void notifyMission(long long objectID, long missionID, MissionState missionState, bool sendingRewards, SystemAddress receiver);
-	static void notifyMissionTask(long long objectID, long missionID, long taskIndex, float updatedValue, SystemAddress receiver);
+	static void notifyMissionTask(long long objectID, long missionID, long taskIndex, vector<float> updates, SystemAddress receiver);
 	static void die(long long objectID, wstring deathType, bool spawnLoot, SystemAddress receiver, long long killerID = 1, long long lootOwnerID = 1);
 	static void resurrect(long long objectID, bool rezImmediately, SystemAddress receiver);
 	static void teleport(long long objectID, bool noGravTeleport, bool ignoreY, bool setRotation, bool skipAllChecks, Position pos, SystemAddress receiver, Rotation rot = Rotation());
+	static void modifyLegoScore(long long objectID, long long score, SystemAddress receiver);
+	static void setCurrency(long long objectID, long long currency, Position pos, SystemAddress receiver);
 };
