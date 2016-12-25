@@ -183,6 +183,9 @@
     <ClCompile Include="Flags.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Helpers.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="Flags.h">
       <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers.h">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

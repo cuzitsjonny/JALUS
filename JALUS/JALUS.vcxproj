@@ -176,6 +176,7 @@
     <ClCompile Include="Flags.cpp" />
     <ClCompile Include="GameMessages.cpp" />
     <ClCompile Include="General.cpp" />
+    <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="Index107.cpp" />
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="InventoryIndex.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="Flags.h" />
     <ClInclude Include="GameMessages.h" />
     <ClInclude Include="General.h" />
+    <ClInclude Include="Helpers.h" />
     <ClInclude Include="Index107.h" />
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="InventoryIndex.h" />

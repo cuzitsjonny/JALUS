@@ -24,7 +24,8 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_NOTIFY_SERVER_LEVEL_PROCESSING_COMPLETE = 1734,
 	GAME_MESSAGE_ID_UPDATE_REPUTATION = 746,
 	GAME_MESSAGE_ID_SET_INVENTORY_SIZE = 389,
-	GAME_MESSAGE_ID_RESTORE_TO_POST_LOAD_STATS = 1468
+	GAME_MESSAGE_ID_RESTORE_TO_POST_LOAD_STATS = 1468,
+	GAME_MESSAGE_ID_RESPOND_TO_MISSION = 249
 };
 
 enum MultiInteractType : unsigned long
@@ -35,12 +36,13 @@ enum MultiInteractType : unsigned long
 enum MissionState : unsigned long
 {
 	MISSION_STATE_UNKNOWN = 0,
-	MISSION_STATE_AVAILABLE = 1,
-	MISSION_STATE_ACTIVE = 2,
-	MISSION_STATE_READY_TO_COMPLETE = 3,
-	MISSION_STATE_COMPLETE = 8,
-	MISSION_STATE_FAIL = 5,
-	MISSION_STATE_READY_TO_COMPLETE_REPORTED = 6
+	MISSION_STATE_AVAILABLE,
+	MISSION_STATE_ACTIVE,
+	MISSION_STATE_READY_TO_COMPLETE,
+	MISSION_STATE_COMPLETE,
+	MISSION_STATE_FAIL,
+	MISSION_STATE_READY_TO_COMPLETE_REPORTED,
+	MISSION_STATE_REMOVE_FROM_MISSION_CHECKER = 8,
 };
 
 // This is Simon's enum //
@@ -64,7 +66,7 @@ public:
 	static void die(long long objectID, wstring deathType, bool spawnLoot, SystemAddress receiver, long long killerID = 1, long long lootOwnerID = 1);
 	static void resurrect(long long objectID, bool rezImmediately, SystemAddress receiver);
 	static void teleport(long long objectID, bool noGravTeleport, bool ignoreY, bool setRotation, bool skipAllChecks, Position pos, SystemAddress receiver, Rotation rot = Rotation());
-	static void modifyLegoScore(long long objectID, long long score, SystemAddress receiver);
+	static void modifyLegoScore(long long objectID, long long score, bool updateScoreBar, SystemAddress receiver);
 	static void setCurrency(long long objectID, long long currency, Position pos, SystemAddress receiver);
 	static void notifyClientFlagChange(long long objectID, long flagID, bool value, SystemAddress receiver);
 	static void updateReputation(long long objectID, long long reputation, SystemAddress receiver);

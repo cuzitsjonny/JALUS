@@ -8,6 +8,7 @@
 #include "Characters.h"
 #include "Server.h"
 #include "PacketUtils.h"
+#include "Flags.h"
 
 string Missions::name;
 
@@ -487,7 +488,7 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 							vector<float> updates = vector<float>();
 							updates.push_back(task->value);
 
-							GameMessages::notifyMissionTask(charID, info->missionID, 0, updates, clientAddress);
+							GameMessages::notifyMissionTask(charID, info->missionID, k, updates, clientAddress);
 
 							if (task->value >= task->targetValue)
 							{
@@ -521,7 +522,7 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 							vector<float> updates = vector<float>();
 							updates.push_back((float)collectibleID);
 
-							GameMessages::notifyMissionTask(charID, info->missionID, 0, updates, clientAddress);
+							GameMessages::notifyMissionTask(charID, info->missionID, k, updates, clientAddress);
 
 							if (task->value >= task->targetValue)
 							{
@@ -552,7 +553,7 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 						vector<float> updates = vector<float>();
 						updates.push_back(task->value);
 
-						GameMessages::notifyMissionTask(charID, info->missionID, 0, updates, clientAddress);
+						GameMessages::notifyMissionTask(charID, info->missionID, k, updates, clientAddress);
 
 						if (task->value >= task->targetValue)
 						{
@@ -580,19 +581,21 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 
 void Missions::completeMission(long missionID, long long charID, SystemAddress clientAddress)
 {
-	GameMessages::notifyMission(charID, missionID, MissionState::MISSION_STATE_COMPLETE, false, clientAddress);
+	GameMessages::notifyMission(charID, missionID, MissionState::MISSION_STATE_COMPLETE, true, clientAddress);
 	Missions::setMissionDone(missionID, charID);
 	Missions::incrementMissionDoneCount(missionID, charID);
 	CurrentMissionTasks::deleteMissionTasks(missionID, charID);
 	Missions::rewardMission(missionID, charID, clientAddress);
+	GameMessages::notifyMission(charID, missionID, MissionState::MISSION_STATE_REMOVE_FROM_MISSION_CHECKER, false, clientAddress);
 
 	if (missionID == 173)
 	{
-		GameMessages::notifyMission(charID, 664, MissionState::MISSION_STATE_COMPLETE, false, clientAddress);
+		GameMessages::notifyMission(charID, 664, MissionState::MISSION_STATE_COMPLETE, true, clientAddress);
 		Missions::setMissionDone(664, charID);
 		Missions::incrementMissionDoneCount(664, charID);
 		CurrentMissionTasks::deleteMissionTasks(664, charID);
 		Missions::rewardMission(664, charID, clientAddress);
+		GameMessages::notifyMission(charID, 664, MissionState::MISSION_STATE_REMOVE_FROM_MISSION_CHECKER, false, clientAddress);
 	}
 }
 
@@ -600,11 +603,12 @@ void Missions::rewardMission(long missionID, long long charID, SystemAddress cli
 {
 	MissionRewards rewards = CDClient::getMissionRewards(missionID);
 	ReplicaObject* replica = ObjectsManager::getObjectByID(charID);
+	bool isMission = CDClient::isMission(missionID);
 
 	long long newUniverseScore = Characters::getUniverseScore(charID) + rewards.universeScore;
 	Characters::setUniverseScore(newUniverseScore, charID);
 	replica->characterIndex->lego_score = newUniverseScore;
-	GameMessages::modifyLegoScore(charID, rewards.universeScore, clientAddress);
+	GameMessages::modifyLegoScore(charID, rewards.universeScore, isMission, clientAddress);
 
 	long long newReputation = Characters::getReputation(charID) + rewards.reputation;
 	Characters::setReputation(newReputation, charID);
@@ -617,7 +621,7 @@ void Missions::rewardMission(long missionID, long long charID, SystemAddress cli
 
 	long long newCurrency = Characters::getCurrency(charID) + rewards.currency;
 	Characters::setCurrency(newCurrency, charID);
-	GameMessages::setCurrency(charID, newCurrency, pos, clientAddress);
+	if (isMission) GameMessages::setCurrency(charID, newCurrency, pos, clientAddress);
 
 	if (rewards.maxHealth > -1)
 	{

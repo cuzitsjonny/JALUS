@@ -9,6 +9,7 @@
 #include "Missions.h"
 #include "CurrentMissionTasks.h"
 #include "Flags.h"
+#include "Helpers.h"
 
 string Characters::name;
 
@@ -111,7 +112,8 @@ long long Characters::createCharacter(long long accountID, string name, string u
 
 	Locations::saveLocation(loc, id);
 
-	Missions::addMission(664, id);
+	Helpers::addMissionWithTasks(664, id);
+	Helpers::addMissionWithTasks(488, id);
 
 	return id;
 }

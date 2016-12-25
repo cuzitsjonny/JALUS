@@ -432,8 +432,7 @@ vector<MissionTask> CDClient::getMissionTasks(long missionID)
 		cmd.setCommandText(ss.str().c_str());
 		cmd.Execute();
 
-		long componentID = -1;
-		if (cmd.FetchNext())
+		while (cmd.FetchNext())
 		{
 			MissionTask mt = MissionTask();
 

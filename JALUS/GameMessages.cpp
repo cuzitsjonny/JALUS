@@ -92,7 +92,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 											vector<float> updates = vector<float>();
 											updates.push_back((float)(m + 1));
 
-											GameMessages::notifyMissionTask(session->charID, info.missionID, 0, updates, clientAddress);
+											GameMessages::notifyMissionTask(session->charID, info.missionID, k, updates, clientAddress);
 										}
 
 										if (withInfo.value >= withInfo.targetValue)
@@ -210,6 +210,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			long long responder;
 			data->Read(responder);
 
+			Logger::info("MissionDialogueOK received! {");
+			Logger::info("   objectID: " + to_string(objectID));
+			Logger::info("   isComplete: " + to_string(isComplete));
+			Logger::info("   missionState: " + to_string(missionState));
+			Logger::info("   missionID: " + to_string(missionID));
+			Logger::info("   responder: " + to_string(responder));
+			Logger::info("}");
+
 			if (!Missions::isDoingMission(missionID, session->charID))
 			{
 				Missions::addMission(missionID, session->charID);
@@ -249,7 +257,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				{
 					if (Missions::isDoingMission(info.missionID, session->charID))
 					{
-						GameMessages::notifyMission(session->charID, info.missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
 						GameMessages::offerMission(session->charID, info.missionID, objectID, clientAddress);
 					}
 				}
@@ -336,6 +343,27 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		case GAME_MESSAGE_ID_NOTIFY_SERVER_LEVEL_PROCESSING_COMPLETE:
 		{
 			Characters::setLevel(Characters::getLevel(session->charID) + 1, session->charID);
+			break;
+		}
+
+		case GAME_MESSAGE_ID_RESPOND_TO_MISSION:
+		{
+			long missionID;
+			data->Read(missionID);
+			long long playerID;
+			data->Read(playerID);
+			long long receiver;
+			data->Read(receiver);
+			long rewardLOT;
+			data->Read(rewardLOT);
+
+			Logger::info("RespondToMission received! {");
+			Logger::info("   objectID: " + to_string(objectID));
+			Logger::info("   missionID: " + to_string(missionID));
+			Logger::info("   playerID: " + to_string(playerID));
+			Logger::info("   receiver: " + to_string(receiver));
+			Logger::info("   rewardLOT: " + to_string(rewardLOT));
+			Logger::info("}");
 			break;
 		}
 
@@ -469,13 +497,22 @@ void GameMessages::teleport(long long objectID, bool noGravTeleport, bool ignore
 	Server::sendPacket(packet, receiver);
 }
 
-void GameMessages::modifyLegoScore(long long objectID, long long score, SystemAddress receiver)
+void GameMessages::modifyLegoScore(long long objectID, long long score, bool updateScoreBar, SystemAddress receiver)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_MODIFY_LEGO_SCORE);
 
 	packet->Write(score);
-	packet->Write((long)129);
-	packet->Write((unsigned char)0);
+
+	if (updateScoreBar)
+	{
+		packet->Write((long)129);
+		packet->Write((unsigned char)0);
+	}
+	else
+	{
+		packet->Write(true);
+		packet->Write((unsigned long)0);
+	}
 
 	Server::sendPacket(packet, receiver);
 }
