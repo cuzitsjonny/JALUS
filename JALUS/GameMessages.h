@@ -1,6 +1,7 @@
 #pragma once
 #include "Common.h"
 #include "Locations.h"
+#include "InventoryItems.h"
 
 enum GameMessageID : unsigned short
 {
@@ -17,7 +18,13 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_REQUEST_RESURRECT = 159,
 	GAME_MESSAGE_ID_TELEPORT = 19,
 	GAME_MESSAGE_ID_MODIFY_LEGO_SCORE = 1459,
-	GAME_MESSAGE_ID_SET_CURRENCY = 133
+	GAME_MESSAGE_ID_SET_CURRENCY = 133,
+	GAME_MESSAGE_ID_SET_FLAG = 471,
+	GAME_MESSAGE_ID_NOTIFY_CLIENT_FLAG_CHANGE = 472,
+	GAME_MESSAGE_ID_NOTIFY_SERVER_LEVEL_PROCESSING_COMPLETE = 1734,
+	GAME_MESSAGE_ID_UPDATE_REPUTATION = 746,
+	GAME_MESSAGE_ID_SET_INVENTORY_SIZE = 389,
+	GAME_MESSAGE_ID_RESTORE_TO_POST_LOAD_STATS = 1468
 };
 
 enum MultiInteractType : unsigned long
@@ -59,4 +66,7 @@ public:
 	static void teleport(long long objectID, bool noGravTeleport, bool ignoreY, bool setRotation, bool skipAllChecks, Position pos, SystemAddress receiver, Rotation rot = Rotation());
 	static void modifyLegoScore(long long objectID, long long score, SystemAddress receiver);
 	static void setCurrency(long long objectID, long long currency, Position pos, SystemAddress receiver);
+	static void notifyClientFlagChange(long long objectID, long flagID, bool value, SystemAddress receiver);
+	static void updateReputation(long long objectID, long long reputation, SystemAddress receiver);
+	static void setInventorySize(long long objectID, InventoryType type, long size, SystemAddress receiver);
 };

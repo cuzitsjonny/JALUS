@@ -17,6 +17,7 @@ class MissionRewards
 public:
 	long long universeScore = 0;
 	long long currency = 0;
+	long long reputation = 0;
 	vector<long> itemLOTs = vector<long>();
 	vector<long> itemCounts = vector<long>();
 	vector<long> emotes = vector<long>();
@@ -67,4 +68,6 @@ public:
 	static vector<long> getPrereqMissionIDs(long missionID);
 	static vector<MissionTask> getMissionTasks(long missionID);
 	static MissionRewards getMissionRewards(long missionID);
+	static bool isMission(long missionID);
+	static vector<long> getAchievements(long prereqMissionID = -1);
 };

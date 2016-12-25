@@ -9,6 +9,8 @@
 #include "Sessions.h"
 #include "Chat.h"
 #include "LUZCache.h"
+#include "Flags.h"
+#include "Characters.h"
 
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
@@ -56,6 +58,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					//enableJetpack->Write(false); // iWarningEffectID
 					//Server::sendPacket(enableJetpack, clientAddress);
 
+					Server::sendPacket(PacketUtils::createGMBase(session->charID, GameMessageID::GAME_MESSAGE_ID_RESTORE_TO_POST_LOAD_STATS), clientAddress);
+
 					vector<MissionInfo> misCur = Missions::getAllCurrentMissions(session->charID);
 					if (misCur.size() > 0)
 					{
@@ -91,9 +95,16 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 											GameMessages::notifyMissionTask(session->charID, info.missionID, 0, updates, clientAddress);
 										}
 
-										if (withInfo.value == withInfo.targetValue)
+										if (withInfo.value >= withInfo.targetValue)
 										{
-											GameMessages::notifyMission(session->charID, info.missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
+											if (CDClient::isMission(info.missionID))
+											{
+												GameMessages::notifyMission(session->charID, info.missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
+											}
+											else
+											{
+												Missions::completeMission(info.missionID, session->charID, clientAddress);
+											}
 										}
 									}
 								}
@@ -101,6 +112,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 							replica->currentMissions.push_back(newInfo);
 						}
+					}
+
+					vector<Flag> flags = Flags::getFlags(session->charID);
+					for (int i = 0; i < flags.size(); i++)
+					{
+						Flag f = flags.at(i);
+
+						GameMessages::notifyClientFlagChange(session->charID, f.flagID, f.value, clientAddress);
 					}
 				}
 			}
@@ -215,10 +234,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			{
 				if (isComplete)
 				{
-					GameMessages::notifyMission(session->charID, missionID, MissionState::MISSION_STATE_COMPLETE, false, clientAddress);
-					Missions::setMissionDone(missionID, session->charID);
-					Missions::incrementMissionDoneCount(missionID, session->charID);
-					CurrentMissionTasks::deleteMissionTasks(missionID, session->charID);
+					Missions::completeMission(missionID, session->charID, clientAddress);
 				}
 			}
 
@@ -299,6 +315,28 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				GameMessages::teleport(session->charID, false, false, true, true, spawnPos, participant, spawnRot);
 				GameMessages::resurrect(session->charID, false, participant);
 			}
+			break;
+		}
+
+		case GAME_MESSAGE_ID_SET_FLAG:
+		{
+			bool value;
+			data->Read(value);
+			long flagID;
+			data->Read(flagID);
+
+			if (objectID == session->charID)
+			{
+				Flags::setFlagValue(value, flagID, session->charID);
+				Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, session->charID, flagID, clientAddress);
+			}
+			break;
+		}
+
+		case GAME_MESSAGE_ID_NOTIFY_SERVER_LEVEL_PROCESSING_COMPLETE:
+		{
+			Characters::setLevel(Characters::getLevel(session->charID) + 1, session->charID);
+			break;
 		}
 
 		default:
@@ -436,7 +474,8 @@ void GameMessages::modifyLegoScore(long long objectID, long long score, SystemAd
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_MODIFY_LEGO_SCORE);
 
 	packet->Write(score);
-	packet->Write(false);
+	packet->Write((long)129);
+	packet->Write((unsigned char)0);
 
 	Server::sendPacket(packet, receiver);
 }
@@ -454,6 +493,35 @@ void GameMessages::setCurrency(long long objectID, long long currency, Position 
 	packet->Write(false);
 	packet->Write(false);
 	packet->Write(false);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::notifyClientFlagChange(long long objectID, long flagID, bool value, SystemAddress receiver)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_NOTIFY_CLIENT_FLAG_CHANGE);
+
+	packet->Write(value);
+	packet->Write(flagID);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::updateReputation(long long objectID, long long reputation, SystemAddress receiver)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_UPDATE_REPUTATION);
+
+	packet->Write(reputation);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::setInventorySize(long long objectID, InventoryType type, long size, SystemAddress receiver)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_SET_INVENTORY_SIZE);
+
+	packet->Write(type);
+	packet->Write(size);
 
 	Server::sendPacket(packet, receiver);
 }

@@ -173,6 +173,7 @@
     <ClCompile Include="ControllablePhysicsIndex.cpp" />
     <ClCompile Include="CurrentMissionTasks.cpp" />
     <ClCompile Include="DestructibleIndex.cpp" />
+    <ClCompile Include="Flags.cpp" />
     <ClCompile Include="GameMessages.cpp" />
     <ClCompile Include="General.cpp" />
     <ClCompile Include="Index107.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="ControllablePhysicsIndex.h" />
     <ClInclude Include="CurrentMissionTasks.h" />
     <ClInclude Include="DestructibleIndex.h" />
+    <ClInclude Include="Flags.h" />
     <ClInclude Include="GameMessages.h" />
     <ClInclude Include="General.h" />
     <ClInclude Include="Index107.h" />

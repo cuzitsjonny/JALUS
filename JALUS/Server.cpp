@@ -15,6 +15,7 @@
 #include "LVLCache.h"
 #include "Missions.h"
 #include "CurrentMissionTasks.h"
+#include "Flags.h"
 
 ServerRole Server::serverRole;
 SocketDescriptor Server::socketDescriptor;
@@ -41,6 +42,7 @@ void Server::init(ServerRole serverRole)
 	CharacterStats::init("CharacterStats", "id BIGINT(20) PRIMARY KEY, total_amount_of_currency_collected BIGINT(20) UNSIGNED, number_of_bricks_collected BIGINT(20) UNSIGNED, number_of_smashables_smashed BIGINT(20) UNSIGNED, number_of_quick_builds_completed BIGINT(20) UNSIGNED, number_of_enemies_smashed BIGINT(20) UNSIGNED, number_of_rockets_used BIGINT(20) UNSIGNED, number_of_missions_completed BIGINT(20) UNSIGNED, number_of_pets_tamed BIGINT(20) UNSIGNED, number_of_imagination_powerups_collected BIGINT(20) UNSIGNED, number_of_life_powerups_collected BIGINT(20) UNSIGNED, number_of_armor_powerups_collected BIGINT(20) UNSIGNED, total_distance_traveled BIGINT(20) UNSIGNED, number_of_times_smashed BIGINT(20) UNSIGNED, total_damage_taken BIGINT(20) UNSIGNED, total_damage_healed BIGINT(20) UNSIGNED, total_armor_repaired BIGINT(20) UNSIGNED, total_imagination_restored BIGINT(20) UNSIGNED, total_imagination_used BIGINT(20) UNSIGNED, total_distance_driven BIGINT(20) UNSIGNED, total_time_airborne_in_a_race_car BIGINT(20) UNSIGNED, number_of_racing_imagination_powerups_collected BIGINT(20) UNSIGNED, number_of_racing_imagination_crates_smashed BIGINT(20) UNSIGNED, number_of_times_race_car_boost_activated BIGINT(20) UNSIGNED, number_of_wrecks_in_a_race_car BIGINT(20) UNSIGNED, number_of_racing_smashables_smashed BIGINT(20) UNSIGNED, number_of_races_finished BIGINT(20) UNSIGNED, number_of_first_place_races_finished BIGINT(20) UNSIGNED");
 	Missions::init("Missions", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, mission_id INT(11), character_id BIGINT(20), is_done TINYINT(1), done_timestamp BIGINT(20), done_count INT(11)");
 	CurrentMissionTasks::init("CurrentMissionTasks", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, mission_id INT(11), character_id BIGINT(20), unique_id INT(11), value VARCHAR(255)");
+	Flags::init("Flags", "id BIGINT(20), value TINYINT(1), flag_id INT(11), unique_id BIGINT(20) AUTO_INCREMENT PRIMARY KEY");
 
 	vector<string> luzFiles = vector <string>();
 	luzFiles.push_back("nd_space_ship.luz");

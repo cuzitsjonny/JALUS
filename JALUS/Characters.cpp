@@ -8,6 +8,7 @@
 #include "LUZCache.h"
 #include "Missions.h"
 #include "CurrentMissionTasks.h"
+#include "Flags.h"
 
 string Characters::name;
 
@@ -110,6 +111,8 @@ long long Characters::createCharacter(long long accountID, string name, string u
 
 	Locations::saveLocation(loc, id);
 
+	Missions::addMission(664, id);
+
 	return id;
 }
 
@@ -146,6 +149,7 @@ void Characters::deleteCharacter(long long charID)
 		catch (SAException &) {}
 	}
 
+	Flags::deleteFlags(charID);
 	Missions::deleteMissions(charID);
 	CurrentMissionTasks::deleteMissionTasks(charID);
 	InventoryItems::deleteInventoryItems(charID);

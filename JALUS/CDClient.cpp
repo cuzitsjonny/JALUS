@@ -453,11 +453,167 @@ vector<MissionTask> CDClient::getMissionTasks(long missionID)
 				vector<string> p = split(targetGroupStr, ',');
 				for (int i = 0; i < p.size(); i++)
 				{
-					mt.targets.push_back(stol(p.at(i)));
+					if (p.at(i).length() > 0)
+						mt.targets.push_back(stol(p.at(i)));
 				}
 			}
 
 			r.push_back(mt);
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+MissionRewards CDClient::getMissionRewards(long missionID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	MissionRewards r = MissionRewards();
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT reward_item1, reward_item1_count, reward_item2, reward_item2_count, reward_item3, reward_item3_count, reward_item4, reward_item4_count, reward_emote, reward_emote2, reward_emote3, reward_emote4, reward_maximagination, reward_maxhealth, reward_maxinventory, LegoScore, reward_reputation, reward_currency FROM";
+		ss << " Missions ";
+		ss << "WHERE id = '" << missionID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchNext())
+		{
+			for (int i = 1; i < 5; i++)
+			{
+				string index = to_string(i);
+				string lot = string(cmd.Field(("reward_item" + index).c_str()).asString());
+				string count = string(cmd.Field(("reward_item" + index + "_count").c_str()).asString());
+
+				if (lot.length() > 0 && count.length() > 0)
+				{
+					r.itemLOTs.push_back(stol(lot));
+					r.itemCounts.push_back(stol(count));
+				}
+
+				if (i == 1)
+					index = "";
+
+				string emote = string(cmd.Field(("reward_emote" + index).c_str()).asString());
+
+				if (emote.length() > 0)
+					r.emotes.push_back(stol(emote));
+			}
+
+			r.currency = cmd.Field("reward_currency").asNumeric();
+			r.reputation = cmd.Field("reward_reputation").asNumeric();
+			r.universeScore = cmd.Field("LegoScore").asNumeric();
+
+			r.maxHealth = cmd.Field("reward_maxhealth").asLong();
+			r.maxImagination = cmd.Field("reward_maximagination").asLong();
+			r.maxInventory = cmd.Field("reward_maxinventory").asLong();
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+bool CDClient::isMission(long missionID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	bool r = false;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT isMission FROM";
+		ss << " Missions ";
+		ss << "WHERE id = '" << missionID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchNext())
+		{
+			r = cmd.Field("isMission").asBool();
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+vector<long> CDClient::getAchievements(long prereqMissionID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<long> r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT id FROM";
+		ss << " Missions ";
+
+		if (prereqMissionID > -1)
+		{
+			ss << "WHERE prereqMissionID LIKE '%" << prereqMissionID << "%' AND isMission = '0';";
+		}
+		else
+		{
+			ss << "WHERE (prereqMissionID IS NULL OR prereqMissionID = '') AND isMission = '0';";
+		}
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			r.push_back(cmd.Field("id").asLong());
 		}
 
 		con.Commit();

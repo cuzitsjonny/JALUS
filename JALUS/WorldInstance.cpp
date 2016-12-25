@@ -346,8 +346,12 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 
 		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel, loc.position, loc.rotation);
 		replica->clientAddress = clientAddress;
+
 		replica->statsIndex->max_health = Characters::getMaxHealth(session->charID);
+		replica->statsIndex->cur_health = replica->statsIndex->max_health;
+
 		replica->statsIndex->max_imagination = Characters::getMaxImagination(session->charID);
+		replica->statsIndex->cur_imagination = replica->statsIndex->max_imagination;
 
 		ObjectsManager::addPlayer(replica, clientAddress);
 	}

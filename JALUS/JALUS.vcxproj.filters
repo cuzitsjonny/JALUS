@@ -180,6 +180,9 @@
     <ClCompile Include="Chat.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Flags.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -340,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="Chat.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Flags.h">
+      <Filter>Headerdateien\Datenbank</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
