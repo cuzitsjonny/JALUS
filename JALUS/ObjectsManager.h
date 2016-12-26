@@ -12,4 +12,5 @@ public:
 	static void serializeObject(ReplicaObject* object, SystemAddress clientAddress = UNASSIGNED_SYSTEM_ADDRESS);
 	static ReplicaObject* getObjectByID(long long objectID);
 	static ReplicaObject* getObjectBySystemAddress(SystemAddress clientAddress);
+	static vector<ReplicaObject*> getObjectsByLOT(long lot);
 };

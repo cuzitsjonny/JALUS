@@ -15,6 +15,9 @@
 #include "LUZCache.h"
 #include "Missions.h"
 #include "Chat.h"
+#include "Config.h"
+#include "TransitionInfos.h"
+#include "CharactersInstance.h"
 
 void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddress, ClientToWorldPacketID packetID)
 {
@@ -98,6 +101,22 @@ void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddr
 	{
 		string message = WorldInstance::broadcastChatMessage(data, clientAddress);
 		Logger::info("Client sent chat message! (Message: '" + message + "') (Address: " + string(clientAddress.ToString()) + ")");
+		break;
+	}
+
+	case CLIENT_WORLD_CHARACTER_LIST_REQUEST:
+	{
+		Session* session = Sessions::getSession(clientAddress);
+
+		if (session != nullptr)
+		{
+			string nextInstanceAddress = Config::getCharactersInstanceAddress();
+			unsigned short nextInstancePort = Config::getCharactersInstancePort();
+
+			TransitionInfos::insertTransitionInfo(clientAddress, session->accountID, session->charID, session->transitionKey);
+			CharactersInstance::sendCharacterList(clientAddress);
+			General::redirectToServer(clientAddress, nextInstanceAddress, nextInstancePort, false);
+		}
 		break;
 	}
 
@@ -212,7 +231,7 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 
 				for (int k = 0; k < info.missionTasks.size(); k++)
 				{
-					xml << "<sv v=\"" << info.missionTasks.at(k).value << "\"/>";
+					xml << "<sv v=\"" << info.missionTasks.at(k).value.size() << "\"/>";
 				}
 
 				xml << "</m>";

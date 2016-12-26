@@ -25,7 +25,13 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_UPDATE_REPUTATION = 746,
 	GAME_MESSAGE_ID_SET_INVENTORY_SIZE = 389,
 	GAME_MESSAGE_ID_RESTORE_TO_POST_LOAD_STATS = 1468,
-	GAME_MESSAGE_ID_RESPOND_TO_MISSION = 249
+	GAME_MESSAGE_ID_RESPOND_TO_MISSION = 249,
+	GAME_MESSAGE_ID_PLAY_FX_EFFECT = 154,
+	GAME_MESSAGE_ID_STOP_FX_EFFECT = 155,
+	GAME_MESSAGE_ID_FIRE_EVENT_SERVER_SIDE = 770,
+	GAME_MESSAGE_ID_FIRE_EVENT_CLIENT_SIDE = 1213,
+	GAME_MESSAGE_ID_TOOGLE_GHOST_REFERENCE_OVERRIDE = 767,
+	GAME_MESSAGE_ID_SET_GHOST_REFERENCE_POSITION = 768
 };
 
 enum MultiInteractType : unsigned long
@@ -62,7 +68,7 @@ public:
 	static void processGameMessage(BitStream* data, SystemAddress clientAddress);
 	static void offerMission(long long objectID, long missionID, long long offererID, SystemAddress receiver, bool sendTwice = true);
 	static void notifyMission(long long objectID, long missionID, MissionState missionState, bool sendingRewards, SystemAddress receiver);
-	static void notifyMissionTask(long long objectID, long missionID, long taskIndex, vector<float> updates, SystemAddress receiver);
+	static void notifyMissionTask(long long objectID, long missionID, long taskIndex, float update, SystemAddress receiver);
 	static void die(long long objectID, wstring deathType, bool spawnLoot, SystemAddress receiver, long long killerID = 1, long long lootOwnerID = 1);
 	static void resurrect(long long objectID, bool rezImmediately, SystemAddress receiver);
 	static void teleport(long long objectID, bool noGravTeleport, bool ignoreY, bool setRotation, bool skipAllChecks, Position pos, SystemAddress receiver, Rotation rot = Rotation());
@@ -71,4 +77,6 @@ public:
 	static void notifyClientFlagChange(long long objectID, long flagID, bool value, SystemAddress receiver);
 	static void updateReputation(long long objectID, long long reputation, SystemAddress receiver);
 	static void setInventorySize(long long objectID, InventoryType type, long size, SystemAddress receiver);
+	static void playFXEffect(long long objectID, long effectID, wstring effectType, float scale, string name, float priority, long long secondary, SystemAddress receiver, bool serialize = true);
+	static void fireEventClientSide(long long objectID, wstring args, long long object, long long senderID, SystemAddress receiver, long long param1 = 0, long param2 = -1);
 };

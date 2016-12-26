@@ -114,6 +114,7 @@ long long Characters::createCharacter(long long accountID, string name, string u
 
 	Helpers::addMissionWithTasks(664, id);
 	Helpers::addMissionWithTasks(488, id);
+	Helpers::addMissionWithTasks(757, id);
 
 	return id;
 }

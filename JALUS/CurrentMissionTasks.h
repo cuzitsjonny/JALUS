@@ -15,10 +15,18 @@ class MissionTask
 {
 public:
 	long uid = -1;
-	float value = 0.0F;
+	vector<float> value = vector<float>();
 	float targetValue = 0.0F;
 	vector<long> targets = vector<long>();
 	MissionTaskType type = MissionTaskType::MISSION_TASK_TYPE_UNKNOWN;
+};
+
+class Vectors
+{
+public:
+	static string toString(vector<float> v);
+	static vector<float> fromString(string str);
+	static bool contains(vector<float> v, float f);
 };
 
 class CurrentMissionTasks
@@ -32,8 +40,8 @@ public:
 	static void deleteMissionTasks(long missionID, long long charID);
 	static void deleteMissionTasks(long long charID);
 
-	static void setValue(long uniqueID, float value, long long charID);
-	static float getValue(long uniqueID, long long charID);
+	static void setValue(long uniqueID, vector<float> value, long long charID);
+	static vector<float> getValue(long uniqueID, long long charID);
 
 	static vector<MissionTask> getMissionTasks(long missionID, long long charID);
 };

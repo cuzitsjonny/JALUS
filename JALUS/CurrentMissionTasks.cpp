@@ -56,7 +56,7 @@ void CurrentMissionTasks::addMissionTask(long missionID, long uniqueID, long lon
 		ss << " " << CurrentMissionTasks::name << " ";
 		ss << "(id, mission_id, character_id, unique_id, value)";
 		ss << " VALUES ";
-		ss << "(NULL, '" << missionID << "', '" << charID << "', '" << uniqueID << "', '" << 0 << "');";
+		ss << "(NULL, '" << missionID << "', '" << charID << "', '" << uniqueID << "', '');";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
@@ -144,7 +144,7 @@ void CurrentMissionTasks::deleteMissionTasks(long long charID)
 	}
 }
 
-void CurrentMissionTasks::setValue(long uniqueID, float value, long long charID)
+void CurrentMissionTasks::setValue(long uniqueID, vector<float> value, long long charID)
 {
 	SAConnection con;
 	SACommand cmd;
@@ -161,7 +161,7 @@ void CurrentMissionTasks::setValue(long uniqueID, float value, long long charID)
 		stringstream ss;
 		ss << "UPDATE";
 		ss << " " << CurrentMissionTasks::name << " ";
-		ss << "SET value = '" << value << "' ";
+		ss << "SET value = '" << Vectors::toString(value) << "' ";
 		ss << "WHERE unique_id = '" << uniqueID << "' AND character_id = '" << charID << "';";
 
 		cmd.setConnection(&con);
@@ -181,12 +181,12 @@ void CurrentMissionTasks::setValue(long uniqueID, float value, long long charID)
 	}
 }
 
-float CurrentMissionTasks::getValue(long uniqueID, long long charID)
+vector<float> CurrentMissionTasks::getValue(long uniqueID, long long charID)
 {
 	SAConnection con;
 	SACommand cmd;
 
-	float r = -1.0F;
+	vector<float> r = vector<float>();
 
 	try
 	{
@@ -205,7 +205,9 @@ float CurrentMissionTasks::getValue(long uniqueID, long long charID)
 		cmd.Execute();
 
 		if (cmd.FetchFirst())
-			r = atof(cmd.Field("value").asString());
+		{
+			r = Vectors::fromString(string(cmd.Field("value").asString()));
+		}
 
 		con.Commit();
 		con.Disconnect();
@@ -250,7 +252,7 @@ vector<MissionTask> CurrentMissionTasks::getMissionTasks(long missionID, long lo
 			MissionTask mt = MissionTask();
 
 			mt.uid = cmd.Field("unique_id").asLong();
-			mt.value = atof(cmd.Field("value").asString());
+			mt.value = Vectors::fromString(string(cmd.Field("value").asString()));
 
 			r.push_back(mt);
 		}
@@ -268,4 +270,47 @@ vector<MissionTask> CurrentMissionTasks::getMissionTasks(long missionID, long lo
 	}
 
 	return r;
+}
+
+string Vectors::toString(vector<float> v)
+{
+	string str = "";
+
+	for (int i = 0; i < v.size(); i++)
+	{
+		if (i == 0)
+		{
+			str += to_string(v.at(0));
+		}
+		else
+		{
+			str += ("," + to_string(v.at(i)));
+		}
+	}
+
+	return str;
+}
+
+vector<float> Vectors::fromString(string str)
+{
+	vector<float> r = vector<float>();
+	vector<string> p = split(str, ',');
+
+	for (int i = 0; i < p.size(); i++)
+	{
+		r.push_back(stof(p.at(i)));
+	}
+
+	return r;
+}
+
+bool Vectors::contains(vector<float> v, float f)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		if (v.at(i) == f)
+			return true;
+	}
+
+	return false;
 }

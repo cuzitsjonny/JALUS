@@ -9,6 +9,7 @@
 #include "Server.h"
 #include "PacketUtils.h"
 #include "Flags.h"
+#include "LVLCache.h"
 
 string Missions::name;
 
@@ -482,24 +483,67 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 					{
 						if (other->lot == task->targets.at(l))
 						{
-							task->value++;
+							if (!Vectors::contains(task->value, (float)other->lot))
+								task->value.push_back((float)other->lot);
+
 							CurrentMissionTasks::setValue(task->uid, task->value, charID);
+							GameMessages::notifyMissionTask(charID, info->missionID, k, task->value.at(task->value.size() - 1), clientAddress);
 
-							vector<float> updates = vector<float>();
-							updates.push_back(task->value);
-
-							GameMessages::notifyMissionTask(charID, info->missionID, k, updates, clientAddress);
-
-							if (task->value >= task->targetValue)
+							if (task->value.size() >= task->targetValue)
 							{
-								if (CDClient::isMission(info->missionID))
-								{
+								if (!CDClient::isMission(info->missionID))
+								/*{
 									GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
 								}
-								else
+								else*/
 								{
 									Missions::completeMission(info->missionID, charID, clientAddress);
 								}
+							}
+						}
+
+						if (other->lot == 6842)
+						{
+							vector<ObjectProperty> properties = LVLCache::getObjectProperties(other->objectID);
+							string number = "";
+
+							for (int k = 0; k < properties.size(); k++)
+							{
+								ObjectProperty pro = properties.at(k);
+
+								if (iequals(pro.key, "number"))
+									number = pro.value;
+							}
+
+							if (number.length() > 0)
+							{
+								long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(number);
+								Flags::setFlagValue(true, flagID, charID);
+								Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, charID, flagID, clientAddress);
+								GameMessages::fireEventClientSide(other->objectID, L"achieve", other->objectID, charID, clientAddress);
+							}
+						}
+						
+						if (other->lot == 8139)
+						{
+							vector<ObjectProperty> properties = LVLCache::getObjectProperties(other->objectID);
+							string storyText = "";
+
+							for (int k = 0; k < properties.size(); k++)
+							{
+								ObjectProperty pro = properties.at(k);
+
+								if (iequals(pro.key, "storyText"))
+									storyText = pro.value;
+							}
+
+							if (storyText.length() > 0)
+							{
+								vector<string> p = split(storyText, '_');
+								long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(p.at(p.size() - 1)) + 10000;
+								Flags::setFlagValue(true, flagID, charID);
+								Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, charID, flagID, clientAddress);
+								GameMessages::fireEventClientSide(other->objectID, L"achieve", other->objectID, charID, clientAddress);
 							}
 						}
 					}
@@ -515,22 +559,20 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 					{
 						if (other->lot == task->targets.at(l))
 						{
-							task->value++;
-							CurrentMissionTasks::setValue(task->uid, task->value, charID);
-
 							long collectibleID = other->collectibleIndex->collectible_id;
-							vector<float> updates = vector<float>();
-							updates.push_back((float)collectibleID);
+							if (!Vectors::contains(task->value, (float)collectibleID))
+								task->value.push_back((float)collectibleID);
 
-							GameMessages::notifyMissionTask(charID, info->missionID, k, updates, clientAddress);
+							CurrentMissionTasks::setValue(task->uid, task->value, charID);
+							GameMessages::notifyMissionTask(charID, info->missionID, k, task->value.at(task->value.size() - 1), clientAddress);
 
-							if (task->value >= task->targetValue)
+							if (task->value.size() >= task->targetValue)
 							{
-								if (CDClient::isMission(info->missionID))
-								{
+								if (!CDClient::isMission(info->missionID))
+								/*{
 									GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
 								}
-								else
+								else*/
 								{
 									Missions::completeMission(info->missionID, charID, clientAddress);
 								}
@@ -547,21 +589,19 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 				{
 					if (objectID == task->targets.at(l))
 					{
-						task->value++;
+						if (!Vectors::contains(task->value, (float)objectID))
+							task->value.push_back((float)objectID);
+
 						CurrentMissionTasks::setValue(task->uid, task->value, charID);
+						GameMessages::notifyMissionTask(charID, info->missionID, k, task->value.size(), clientAddress);
 
-						vector<float> updates = vector<float>();
-						updates.push_back(task->value);
-
-						GameMessages::notifyMissionTask(charID, info->missionID, k, updates, clientAddress);
-
-						if (task->value >= task->targetValue)
+						if (task->value.size() >= task->targetValue)
 						{
-							if (CDClient::isMission(info->missionID))
-							{
+							if (!CDClient::isMission(info->missionID))
+							/*{
 								GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
 							}
-							else
+							else*/
 							{
 								Missions::completeMission(info->missionID, charID, clientAddress);
 							}
@@ -581,21 +621,19 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 
 void Missions::completeMission(long missionID, long long charID, SystemAddress clientAddress)
 {
-	GameMessages::notifyMission(charID, missionID, MissionState::MISSION_STATE_COMPLETE, true, clientAddress);
-	Missions::setMissionDone(missionID, charID);
-	Missions::incrementMissionDoneCount(missionID, charID);
-	CurrentMissionTasks::deleteMissionTasks(missionID, charID);
-	Missions::rewardMission(missionID, charID, clientAddress);
-	GameMessages::notifyMission(charID, missionID, MissionState::MISSION_STATE_REMOVE_FROM_MISSION_CHECKER, false, clientAddress);
-
-	if (missionID == 173)
+	if (!Missions::hasDoneMission(missionID, charID))
 	{
-		GameMessages::notifyMission(charID, 664, MissionState::MISSION_STATE_COMPLETE, true, clientAddress);
-		Missions::setMissionDone(664, charID);
-		Missions::incrementMissionDoneCount(664, charID);
-		CurrentMissionTasks::deleteMissionTasks(664, charID);
-		Missions::rewardMission(664, charID, clientAddress);
-		GameMessages::notifyMission(charID, 664, MissionState::MISSION_STATE_REMOVE_FROM_MISSION_CHECKER, false, clientAddress);
+		if (missionID == 173)
+		{
+			Missions::completeMission(664, charID, clientAddress);
+		}
+
+		GameMessages::notifyMission(charID, missionID, MissionState::MISSION_STATE_COMPLETE, true, clientAddress);
+		Missions::setMissionDone(missionID, charID);
+		Missions::incrementMissionDoneCount(missionID, charID);
+		CurrentMissionTasks::deleteMissionTasks(missionID, charID);
+		Missions::rewardMission(missionID, charID, clientAddress);
+		GameMessages::notifyMission(charID, missionID, MissionState::MISSION_STATE_REMOVE_FROM_MISSION_CHECKER, false, clientAddress);
 	}
 }
 
@@ -619,9 +657,10 @@ void Missions::rewardMission(long missionID, long long charID, SystemAddress cli
 	pos.y = replica->controllablePhysicsIndex->pos_y;
 	pos.z = replica->controllablePhysicsIndex->pos_z;
 
-	long long newCurrency = Characters::getCurrency(charID) + rewards.currency;
+	long long curCurrency = Characters::getCurrency(charID);
+	long long newCurrency = curCurrency + rewards.currency;
 	Characters::setCurrency(newCurrency, charID);
-	if (isMission) GameMessages::setCurrency(charID, newCurrency, pos, clientAddress);
+	GameMessages::setCurrency(charID, (isMission ? newCurrency : curCurrency), pos, clientAddress);
 
 	if (rewards.maxHealth > -1)
 	{

@@ -11,6 +11,7 @@
 #include "LUZCache.h"
 #include "Flags.h"
 #include "Characters.h"
+#include "LVLCache.h"
 
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
@@ -25,6 +26,13 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		switch (gameMessageID)
 		{
+
+		case GAME_MESSAGE_ID_TOOGLE_GHOST_REFERENCE_OVERRIDE:
+		case GAME_MESSAGE_ID_SET_GHOST_REFERENCE_POSITION:
+		{
+			// Don't worry about those. They're just NetDevil bullshit.
+			break;
+		}
 
 		case GAME_MESSAGE_ID_READY_FOR_UPDATES:
 		{
@@ -70,6 +78,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 							MissionInfo newInfo = MissionInfo();
 							newInfo.missionID = info.missionID;
 
+							GameMessages::notifyMission(session->charID, info.missionID, MissionState::MISSION_STATE_ACTIVE, false, clientAddress);
+
 							vector<MissionTask> tasksCur = CDClient::getMissionTasks(info.missionID);
 
 							for (int k = 0; k < info.missionTasks.size(); k++)
@@ -85,27 +95,40 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 										withInfo.value = withValue.value;
 										newInfo.missionTasks.push_back(withInfo);
 
-										GameMessages::notifyMission(session->charID, info.missionID, MissionState::MISSION_STATE_ACTIVE, false, clientAddress);
-
-										for (int m = 0; m < withInfo.value; m++)
+										switch (withInfo.type)
 										{
-											vector<float> updates = vector<float>();
-											updates.push_back((float)(m + 1));
 
-											GameMessages::notifyMissionTask(session->charID, info.missionID, k, updates, clientAddress);
+										case MISSION_TASK_TYPE_FLAG_CHANGE:
+										{
+											for (int m = 0; m < withInfo.value.size(); m++)
+											{
+												GameMessages::notifyMissionTask(session->charID, info.missionID, k, (m + 1), clientAddress);
+											}
+											break;
 										}
 
-										if (withInfo.value >= withInfo.targetValue)
+										default:
 										{
-											if (CDClient::isMission(info.missionID))
+											for (int m = 0; m < withInfo.value.size(); m++)
 											{
-												GameMessages::notifyMission(session->charID, info.missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
+												GameMessages::notifyMissionTask(session->charID, info.missionID, k, withInfo.value.at(m), clientAddress);
 											}
-											else
-											{
-												Missions::completeMission(info.missionID, session->charID, clientAddress);
-											}
+											break;
 										}
+
+										}
+
+										//if (withInfo.value.size() >= withInfo.targetValue)
+										//{
+										//	if (!CDClient::isMission(info.missionID))
+										//	/*{
+										//		GameMessages::notifyMission(session->charID, info.missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
+										//	}
+										//	else*/
+										//	{
+										//		Missions::completeMission(info.missionID, session->charID, clientAddress);
+										//	}
+										//}
 									}
 								}
 							}
@@ -120,6 +143,61 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						Flag f = flags.at(i);
 
 						GameMessages::notifyClientFlagChange(session->charID, f.flagID, f.value, clientAddress);
+					}
+
+					vector<ReplicaObject*> binocs = ObjectsManager::getObjectsByLOT(6842);
+					for (int i = 0; i < binocs.size(); i++)
+					{
+						vector<ObjectProperty> properties = LVLCache::getObjectProperties(binocs.at(i)->objectID);
+						string number = "";
+
+						for (int k = 0; k < properties.size(); k++)
+						{
+							ObjectProperty pro = properties.at(k);
+
+							if (iequals(pro.key, "number"))
+								number = pro.value;
+						}
+
+						if (number.length() > 0)
+						{
+							long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(number);
+
+							if (!Flags::getFlagValue(flagID, session->charID))
+							{
+								GameMessages::playFXEffect(binocs.at(i)->objectID, 1564, L"cast", 1.0F, "binocular_alert", 1.0F, -1, clientAddress);
+							}
+						}
+					}
+
+					vector<ReplicaObject*> plaques = ObjectsManager::getObjectsByLOT(8139);
+					for (int i = 0; i < plaques.size(); i++)
+					{
+						vector<ObjectProperty> properties = LVLCache::getObjectProperties(plaques.at(i)->objectID);
+						string storyText = "";
+
+						for (int k = 0; k < properties.size(); k++)
+						{
+							ObjectProperty pro = properties.at(k);
+
+							if (iequals(pro.key, "storyText"))
+								storyText = pro.value;
+						}
+
+						if (storyText.length() > 0)
+						{
+							vector<string> p = split(storyText, '_');
+							long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(p.at(p.size() - 1)) + 10000;
+
+							if (!Flags::getFlagValue(flagID, session->charID))
+							{
+								GameMessages::playFXEffect(plaques.at(i)->objectID, 2854, L"attract", 1.0F, "plaque_attract", 1.0F, -1, clientAddress);
+							}
+							else
+							{
+								GameMessages::playFXEffect(plaques.at(i)->objectID, 2855, L"display", 1.0F, "plaquefx", 1.0F, -1, clientAddress);
+							}
+						}
 					}
 				}
 			}
@@ -408,18 +486,14 @@ void GameMessages::notifyMission(long long objectID, long missionID, MissionStat
 	Server::sendPacket(packet, receiver);
 }
 
-void GameMessages::notifyMissionTask(long long objectID, long missionID, long taskIndex, vector<float> updates, SystemAddress receiver)
+void GameMessages::notifyMissionTask(long long objectID, long missionID, long taskIndex, float update, SystemAddress receiver)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_NOTIFY_MISSION_TASK);
 
 	packet->Write(missionID);
 	packet->Write(1 << (taskIndex + 1));
-	packet->Write((unsigned char)updates.size());
-
-	for (int i = 0; i < updates.size(); i++)
-	{
-		packet->Write(updates.at(i));
-	}
+	packet->Write((unsigned char)1);
+	packet->Write(update);
 
 	Server::sendPacket(packet, receiver);
 }
@@ -431,8 +505,8 @@ void GameMessages::die(long long objectID, wstring deathType, bool spawnLoot, Sy
 	packet->Write(true);
 	packet->Write(spawnLoot);
 	packet->Write(false);
-	packet->Write((unsigned long)deathType.length());
 
+	packet->Write((unsigned long)deathType.length());
 	for (int i = 0; i < deathType.length(); i++)
 	{
 		packet->Write(deathType[i]);
@@ -559,6 +633,77 @@ void GameMessages::setInventorySize(long long objectID, InventoryType type, long
 
 	packet->Write(type);
 	packet->Write(size);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::playFXEffect(long long objectID, long effectID, wstring effectType, float scale, string name, float priority, long long secondary, SystemAddress receiver, bool serialize)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_PLAY_FX_EFFECT);
+
+	packet->Write(true);
+	packet->Write(effectID);
+	
+	packet->Write((unsigned long)effectType.length());
+	for (int i = 0; i < effectType.length(); i++)
+	{
+		packet->Write(effectType[i]);
+	}
+
+	packet->Write(scale != 1.0F);
+	if (scale != 1.0F)
+	{
+		packet->Write(scale);
+	}
+
+	packet->Write((unsigned long)name.length());
+	for (int i = 0; i < name.length(); i++)
+	{
+		packet->Write(name[i]);
+	}
+
+	packet->Write(priority != 1.0F);
+	if (priority != 1.0F)
+	{
+		packet->Write(priority);
+	}
+
+	packet->Write(secondary > -1);
+	if (secondary > -1)
+	{
+		packet->Write(secondary);
+	}
+
+	packet->Write(serialize);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::fireEventClientSide(long long objectID, wstring args, long long object, long long senderID, SystemAddress receiver, long long param1, long param2)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_FIRE_EVENT_CLIENT_SIDE);
+
+	packet->Write((unsigned long)args.length());
+	for (int i = 0; i < args.length(); i++)
+	{
+		packet->Write(args[i]);
+	}
+
+	packet->Write(object);
+	
+	packet->Write(param1 != 0);
+	if (param1 != 0)
+	{
+		packet->Write(param1);
+	}
+
+	packet->Write(param2 > -1);
+	if (param2 > -1)
+	{
+		packet->Write(param2);
+	}
+
+	packet->Write(senderID);
 
 	Server::sendPacket(packet, receiver);
 }

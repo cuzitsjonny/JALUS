@@ -79,3 +79,18 @@ ReplicaObject* ObjectsManager::getObjectBySystemAddress(SystemAddress clientAddr
 
 	return nullptr;
 }
+
+vector<ReplicaObject*> ObjectsManager::getObjectsByLOT(long lot)
+{
+	vector<ReplicaObject*> r = vector<ReplicaObject*>();
+
+	for (int i = 0; i < Server::getReplicaManager()->GetReplicaCount(); i++)
+	{
+		ReplicaObject* object = (ReplicaObject*)Server::getReplicaManager()->GetReplicaAtIndex(i);
+
+		if (object->lot == lot)
+			r.push_back(object);
+	}
+
+	return r;
+}
