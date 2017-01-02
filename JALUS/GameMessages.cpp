@@ -236,6 +236,52 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			else
 			{
 				long lot = ObjectsManager::getObjectByID(objectID)->lot;
+
+				if (lot == 6842)
+				{
+					vector<ObjectProperty> properties = LVLCache::getObjectProperties(objectID);
+					string number = "";
+
+					for (int k = 0; k < properties.size(); k++)
+					{
+						ObjectProperty pro = properties.at(k);
+
+						if (iequals(pro.key, "number"))
+							number = pro.value;
+					}
+
+					if (number.length() > 0)
+					{
+						long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(number);
+						Flags::setFlagValue(true, flagID, session->charID);
+						Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, session->charID, flagID, clientAddress);
+						GameMessages::fireEventClientSide(objectID, L"achieve", objectID, session->charID, clientAddress);
+					}
+				}
+
+				if (lot == 8139)
+				{
+					vector<ObjectProperty> properties = LVLCache::getObjectProperties(objectID);
+					string storyText = "";
+
+					for (int k = 0; k < properties.size(); k++)
+					{
+						ObjectProperty pro = properties.at(k);
+
+						if (iequals(pro.key, "storyText"))
+							storyText = pro.value;
+					}
+
+					if (storyText.length() > 0)
+					{
+						vector<string> p = split(storyText, '_');
+						long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(p.at(p.size() - 1)) + 10000;
+						Flags::setFlagValue(true, flagID, session->charID);
+						Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, session->charID, flagID, clientAddress);
+						GameMessages::fireEventClientSide(objectID, L"achieve", objectID, session->charID, clientAddress);
+					}
+				}
+
 				vector<MissionNPCInfo> mnpc = CDClient::getMissionNPCIndexInfo(lot);
 
 				for (int i = 0; i < mnpc.size(); i++)

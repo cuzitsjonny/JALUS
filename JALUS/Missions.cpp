@@ -477,9 +477,9 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 
 			case MISSION_TASK_TYPE_INTERACT:
 			{
-				for (int l = 0; l < task->targets.size(); l++)
+				if (other != nullptr)
 				{
-					if (other != nullptr)
+					for (int l = 0; l < task->targets.size(); l++)
 					{
 						if (other->lot == task->targets.at(l))
 						{
@@ -492,58 +492,13 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 							if (task->value.size() >= task->targetValue)
 							{
 								if (!CDClient::isMission(info->missionID))
-								/*{
+									/*{
 									GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
-								}
-								else*/
+									}
+									else*/
 								{
 									Missions::completeMission(info->missionID, charID, clientAddress);
 								}
-							}
-						}
-
-						if (other->lot == 6842)
-						{
-							vector<ObjectProperty> properties = LVLCache::getObjectProperties(other->objectID);
-							string number = "";
-
-							for (int k = 0; k < properties.size(); k++)
-							{
-								ObjectProperty pro = properties.at(k);
-
-								if (iequals(pro.key, "number"))
-									number = pro.value;
-							}
-
-							if (number.length() > 0)
-							{
-								long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(number);
-								Flags::setFlagValue(true, flagID, charID);
-								Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, charID, flagID, clientAddress);
-								GameMessages::fireEventClientSide(other->objectID, L"achieve", other->objectID, charID, clientAddress);
-							}
-						}
-						
-						if (other->lot == 8139)
-						{
-							vector<ObjectProperty> properties = LVLCache::getObjectProperties(other->objectID);
-							string storyText = "";
-
-							for (int k = 0; k < properties.size(); k++)
-							{
-								ObjectProperty pro = properties.at(k);
-
-								if (iequals(pro.key, "storyText"))
-									storyText = pro.value;
-							}
-
-							if (storyText.length() > 0)
-							{
-								vector<string> p = split(storyText, '_');
-								long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(p.at(p.size() - 1)) + 10000;
-								Flags::setFlagValue(true, flagID, charID);
-								Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, charID, flagID, clientAddress);
-								GameMessages::fireEventClientSide(other->objectID, L"achieve", other->objectID, charID, clientAddress);
 							}
 						}
 					}
@@ -553,9 +508,9 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 
 			case MISSION_TASK_TYPE_COLLECT_COLLECTIBLE:
 			{
-				for (int l = 0; l < task->targets.size(); l++)
+				if (other != nullptr)
 				{
-					if (other != nullptr)
+					for (int l = 0; l < task->targets.size(); l++)
 					{
 						if (other->lot == task->targets.at(l))
 						{
@@ -569,10 +524,10 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 							if (task->value.size() >= task->targetValue)
 							{
 								if (!CDClient::isMission(info->missionID))
-								/*{
+									/*{
 									GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
-								}
-								else*/
+									}
+									else*/
 								{
 									Missions::completeMission(info->missionID, charID, clientAddress);
 								}
