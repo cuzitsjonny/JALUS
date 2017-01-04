@@ -466,6 +466,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_NOTIFY_SERVER_LEVEL_PROCESSING_COMPLETE:
 		{
+			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+			{
+				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+				if (participant != clientAddress)
+					Server::sendPacket(PacketUtils::createGMBase(session->charID, GameMessageID::GAME_MESSAGE_ID_NOTIFY_SERVER_LEVEL_PROCESSING_COMPLETE), participant);
+			}
+
 			Characters::setLevel(Characters::getLevel(session->charID) + 1, session->charID);
 			break;
 		}
@@ -487,6 +495,103 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Logger::info("   playerID: " + to_string(playerID));
 			Logger::info("   receiver: " + to_string(receiver));
 			Logger::info("   rewardLOT: " + to_string(rewardLOT));
+			Logger::info("}");
+			break;
+		}
+
+		case GAME_MESSAGE_ID_START_SKILL:
+		{
+			bool usedMouse = false;
+			long long consumableItemID = 0;
+			float casterLatency = 0.0F;
+			long castType = 0;
+			float lcp_x = 0.0F;
+			float lcp_y = 0.0F;
+			float lcp_z = 0.0F;
+			long long optionalOriginatorID;
+			long long optionalTargetID = 0;
+			float orr_x = 0.0F;
+			float orr_y = 0.0F;
+			float orr_z = 0.0F;
+			float orr_w = 0.0F;
+			BitStream* bitStream = new BitStream();
+			unsigned long skillID;
+			unsigned long uiSkillHandle = 0;
+
+			bool f;
+
+			data->Read(usedMouse);
+
+			data->Read(f);
+			if (f)
+			{
+				data->Read(consumableItemID);
+			}
+
+			data->Read(f);
+			if (f)
+			{
+				data->Read(casterLatency);
+			}
+
+			data->Read(f);
+			if (f)
+			{
+				data->Read(castType);
+			}
+
+			data->Read(f);
+			if (f)
+			{
+				data->Read(lcp_x);
+				data->Read(lcp_y);
+				data->Read(lcp_z);
+			}
+
+			data->Read(optionalOriginatorID);
+
+			data->Read(f);
+			if (f)
+			{
+				data->Read(optionalTargetID);
+			}
+
+			data->Read(f);
+			if (f)
+			{
+				data->Read(orr_x);
+				data->Read(orr_y);
+				data->Read(orr_z);
+				data->Read(orr_w);
+			}
+
+			unsigned long len;
+			data->Read(len);
+
+			for (int i = 0; i < len; i++)
+			{
+				char c;
+				data->Read(c);
+				bitStream->Write(c);
+			}
+
+			data->Read(skillID);
+
+			data->Read(f);
+			if (f)
+			{
+				data->Read(uiSkillHandle);
+			}
+			
+			Logger::info("StartSkill received! {");
+			Logger::info("   usedMouse: " + to_string(usedMouse));
+			Logger::info("   consumableItemID: " + to_string(consumableItemID));
+			Logger::info("   casterLatency: " + to_string(casterLatency));
+			Logger::info("   castType: " + to_string(castType));
+			Logger::info("   optionalOriginatorID: " + to_string(optionalOriginatorID));
+			Logger::info("   optionalTargetID: " + to_string(optionalTargetID));
+			Logger::info("   skillID: " + to_string(skillID));
+			Logger::info("   bitStream Size: " + to_string(bitStream->GetNumberOfBytesUsed()));
 			Logger::info("}");
 			break;
 		}
