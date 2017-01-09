@@ -12,6 +12,7 @@
 #include "Flags.h"
 #include "Characters.h"
 #include "LVLCache.h"
+#include "Commands.h"
 
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
@@ -54,6 +55,17 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					flagChange->Write((unsigned char)185);
 					flagChange->Write((unsigned long)0);
 					Server::sendPacket(flagChange, clientAddress);
+
+					for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+					{
+						SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+						GameMessages::playFXEffect(session->charID, 2599, L"create", 1.0F, "mythranBodyGlow", 1.0F, -1, participant);
+						GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, 2599, L"create", 1.0F, "mythranBodyGlow", 1.0F, -1, clientAddress);
+
+						GameMessages::playFXEffect(session->charID, 1564, L"cast", 1.0F, "binocular_alert", 1.0F, -1, participant);
+						GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, 1564, L"cast", 1.0F, "binocular_alert", 1.0F, -1, clientAddress);
+					}
 
 					//BitStream* enableJetpack = PacketUtils::createGMBase(ready, 561);
 					//enableJetpack->Write(true);
@@ -496,6 +508,16 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Logger::info("   receiver: " + to_string(receiver));
 			Logger::info("   rewardLOT: " + to_string(rewardLOT));
 			Logger::info("}");
+
+			ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+
+			for (int i = 0; i < replica->currentMissions.size(); i++)
+			{
+				MissionInfo* info = &replica->currentMissions.at(i);
+
+				if (info->missionID == missionID)
+					info->rewardLOT = rewardLOT;
+			}
 			break;
 		}
 
@@ -593,6 +615,79 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Logger::info("   skillID: " + to_string(skillID));
 			Logger::info("   bitStream Size: " + to_string(bitStream->GetNumberOfBytesUsed()));
 			Logger::info("}");
+			break;
+		}
+
+		case GAME_MESSAGE_ID_PARSE_CHAT_MESSAGE:
+		{
+			unsigned long clientState;
+			data->Read(clientState);
+
+			wstring str = L"";
+			unsigned long len;
+			data->Read(len);
+
+			for (int i = 0; i < len; i++)
+			{
+				wchar_t c;
+				data->Read(c);
+				str += c;
+			}
+
+			if (str[0] == L'/')
+			{
+				Logger::info("Character " + to_string(session->charID) + " used a command! (Command: '" + to_string(str) + "')");
+
+				vector<string> rawCMD = split(to_string(str).substr(1), ' ');
+
+				string cmd = "";
+				string curArgument = "";
+				vector<string> args;
+
+				bool opened = false;
+				for (int i = 0; i < rawCMD.size(); i++)
+				{
+					for (int k = 0; k < rawCMD.at(i).length(); k++)
+					{
+						char v = rawCMD.at(i)[k];
+
+						if (i == 0)
+							cmd += v;
+						else
+						{
+							if ((k == 0 || k == rawCMD.at(i).length() - 1) && v == '"')
+							{
+								if (opened)
+								{
+									args.push_back(curArgument);
+									curArgument = "";
+									opened = false;
+								}
+								else
+									opened = true;
+							}
+							else
+								curArgument += v;
+						}
+					}
+
+					if (!opened)
+					{
+						if (curArgument != "")
+						{
+							args.push_back(curArgument);
+							curArgument = "";
+						}
+					}
+					else
+						curArgument += " ";
+				}
+
+				Commands::performCommand(CommandSender(session->charID), cmd, args);
+
+				args.clear();
+				rawCMD.clear();
+			}
 			break;
 		}
 
@@ -702,14 +797,20 @@ void GameMessages::resurrect(long long objectID, bool rezImmediately, SystemAddr
 void GameMessages::teleport(long long objectID, bool noGravTeleport, bool ignoreY, bool setRotation, bool skipAllChecks, Position pos, SystemAddress receiver, Rotation rot)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_TELEPORT);
+	ReplicaObject* replica = ObjectsManager::getObjectByID(objectID);
 
-	packet->Write(noGravTeleport);
 	packet->Write(ignoreY);
 	packet->Write(setRotation);
 	packet->Write(skipAllChecks);
 	packet->Write(pos.x);
 	packet->Write(pos.y);
 	packet->Write(pos.z);
+	packet->Write(true);
+	packet->Write(noGravTeleport);
+
+	replica->controllablePhysicsIndex->pos_x = pos.x;
+	replica->controllablePhysicsIndex->pos_y = pos.y;
+	replica->controllablePhysicsIndex->pos_z = pos.z;
 
 	if (setRotation)
 	{
@@ -717,9 +818,15 @@ void GameMessages::teleport(long long objectID, bool noGravTeleport, bool ignore
 		packet->Write(rot.x);
 		packet->Write(rot.y);
 		packet->Write(rot.z);
+
+		replica->controllablePhysicsIndex->rot_w = rot.w;
+		replica->controllablePhysicsIndex->rot_x = rot.x;
+		replica->controllablePhysicsIndex->rot_y = rot.y;
+		replica->controllablePhysicsIndex->rot_z = rot.z;
 	}
 
 	Server::sendPacket(packet, receiver);
+	ObjectsManager::serializeObject(replica);
 }
 
 void GameMessages::modifyLegoScore(long long objectID, long long score, bool updateScoreBar, SystemAddress receiver)
@@ -855,6 +962,37 @@ void GameMessages::fireEventClientSide(long long objectID, wstring args, long lo
 	}
 
 	packet->Write(senderID);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::addItemToInventory(long long objectID, bool isBound, long lot, InventoryType invType, long count, long totalCount, long long stackObjectID, short slot, SystemAddress receiver, bool showFlyingLoot)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_ADD_ITEM_TO_INVENTORY_CLIENT_SYNC);
+
+	packet->Write(isBound);
+	packet->Write(false);
+	packet->Write(false);
+	packet->Write(false);
+	packet->Write((unsigned long)0);
+	packet->Write(lot);
+	packet->Write(false);
+
+	packet->Write(true);
+	packet->Write(invType);
+
+	packet->Write(true);
+	packet->Write(count);
+
+	packet->Write(true);
+	packet->Write(totalCount);
+
+	packet->Write(stackObjectID);
+	packet->Write(0.0F);
+	packet->Write(0.0F);
+	packet->Write(0.0F);
+	packet->Write(showFlyingLoot);
+	packet->Write((unsigned long)slot);
 
 	Server::sendPacket(packet, receiver);
 }

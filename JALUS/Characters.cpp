@@ -88,8 +88,8 @@ long long Characters::createCharacter(long long accountID, string name, string u
 		catch (SAException &) {}
 	}
 
-	InventoryItems::createInventoryItem(id, CharacterStyles::getLOTFromStyle(style.shirtColor, style.shirtStyle), 0, 1, true, true);
-	InventoryItems::createInventoryItem(id, CharacterStyles::getLOTFromStyle(style.pantsColor), 1, 1, true, true);
+	InventoryItems::createInventoryItem(id, CharacterStyles::getLOTFromStyle(style.shirtColor, style.shirtStyle), 1, true, true);
+	InventoryItems::createInventoryItem(id, CharacterStyles::getLOTFromStyle(style.pantsColor), 1, true, true);
 
 	CharacterStyles::saveCharacterStyle(style, id);
 	CharacterStats::saveCharacterStats(CharacterStats(), id);
@@ -157,6 +157,7 @@ void Characters::deleteCharacter(long long charID)
 	CurrentMissionTasks::deleteMissionTasks(charID);
 	InventoryItems::deleteInventoryItems(charID);
 	CharacterStyles::deleteCharacterStyle(charID);
+	CharacterStats::deleteCharacterStats(charID);
 	Locations::deleteLocation(charID);
 	Objects::deleteObject(charID);
 }

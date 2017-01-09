@@ -9,6 +9,7 @@ public:
 	long long doneTimestamp = -1;
 	long doneCount = 0;
 	vector<MissionTask> missionTasks = vector<MissionTask>();
+	long rewardLOT = 0;
 };
 
 class Missions

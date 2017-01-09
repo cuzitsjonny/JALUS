@@ -12,10 +12,14 @@ void ObjectsManager::removePlayer(SystemAddress clientAddress)
 	ReplicaObject* player = getObjectBySystemAddress(clientAddress);
 
 	Server::getReplicaManager()->RemoveParticipant(clientAddress);
-	Server::getReplicaManager()->Destruct(player, UNASSIGNED_SYSTEM_ADDRESS, true);
-	Server::getReplicaManager()->DereferencePointer(player);
-	
-	delete player;
+
+	if (player != nullptr)
+	{
+		Server::getReplicaManager()->Destruct(player, UNASSIGNED_SYSTEM_ADDRESS, true);
+		Server::getReplicaManager()->DereferencePointer(player);
+
+		delete player;
+	}
 }
 
 void ObjectsManager::spawnObject(ReplicaObject* object, SystemAddress clientAddress)

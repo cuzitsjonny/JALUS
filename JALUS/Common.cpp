@@ -123,3 +123,26 @@ string toUpperCase(string str)
 
 	return r;
 }
+
+string toLowerCase(string str)
+{
+	string r = "";
+
+	for (int i = 0; i < str.length(); i++)
+	{
+		r += tolower(str[i]);
+	}
+
+	return r;
+}
+
+bool startsWith(string str, string start)
+{
+	if (start.length() <= str.length())
+	{
+		if (start == str.substr(0, start.length()))
+			return true;
+	}
+
+	return false;
+}

@@ -40,8 +40,8 @@ public:
 
 	static InventoryType getInventoryType(ItemType itemType);
 
-	static long long createInventoryItem(long long ownerID, long lot, short slot, long count, bool isBound, bool isEquipped);
-	static void createInventoryItem(long long objectID, long long ownerID, long lot, short slot, long count, bool isBound, bool isEquipped);
+	static long long createInventoryItem(long long ownerID, long lot, long count, bool isBound, bool isEquipped);
+	static void createInventoryItem(long long objectID, long long ownerID, long lot, long count, bool isBound, bool isEquipped);
 	static void deleteInventoryItem(long long objectID);
 	static void deleteInventoryItems(long long ownerID);
 

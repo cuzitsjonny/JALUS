@@ -10,6 +10,7 @@
 #include "PacketUtils.h"
 #include "Flags.h"
 #include "LVLCache.h"
+#include "Helpers.h"
 
 string Missions::name;
 
@@ -615,7 +616,7 @@ void Missions::rewardMission(long missionID, long long charID, SystemAddress cli
 	long long curCurrency = Characters::getCurrency(charID);
 	long long newCurrency = curCurrency + rewards.currency;
 	Characters::setCurrency(newCurrency, charID);
-	GameMessages::setCurrency(charID, (isMission ? newCurrency : curCurrency), pos, clientAddress);
+	if (isMission) GameMessages::setCurrency(charID, newCurrency, pos, clientAddress);
 
 	if (rewards.maxHealth > -1)
 	{
@@ -638,6 +639,30 @@ void Missions::rewardMission(long missionID, long long charID, SystemAddress cli
 		long newMaxInventory = Characters::getMaxInventory(charID) + rewards.maxInventory;
 		Characters::setMaxInventory(newMaxInventory, charID);
 		GameMessages::setInventorySize(charID, InventoryType::INVENTORY_TYPE_DEFAULT, newMaxInventory, clientAddress);
+	}
+
+	for (int i = 0; i < replica->currentMissions.size(); i++)
+	{
+		if (replica->currentMissions.at(i).missionID == missionID)
+		{
+			if (replica->currentMissions.at(i).rewardLOT > 0)
+			{
+				for (int k = 0; k < rewards.itemLOTs.size(); k++)
+				{
+					if (rewards.itemLOTs.at(k) == replica->currentMissions.at(i).rewardLOT)
+					{
+						Helpers::createSyncedItemStack(charID, replica->currentMissions.at(i).rewardLOT, rewards.itemCounts.at(k), false, false, clientAddress);
+					}
+				}
+			}
+			else
+			{
+				for (int k = 0; k < rewards.itemLOTs.size(); k++)
+				{
+					Helpers::createSyncedItemStack(charID, rewards.itemLOTs.at(k), rewards.itemCounts.at(k), false, false, clientAddress);
+				}
+			}
+		}
 	}
 
 	ObjectsManager::serializeObject(replica);

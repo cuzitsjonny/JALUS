@@ -117,22 +117,23 @@ InventoryType InventoryItems::getInventoryType(ItemType itemType)
 	}
 }
 
-long long InventoryItems::createInventoryItem(long long ownerID, long lot, short slot, long count, bool isBound, bool isEquipped)
+long long InventoryItems::createInventoryItem(long long ownerID, long lot, long count, bool isBound, bool isEquipped)
 {
 	long long id = Objects::createObject(lot);
 	
-	InventoryItems::createInventoryItem(id, ownerID, lot, slot, count, isBound, isEquipped);
+	InventoryItems::createInventoryItem(id, ownerID, lot, count, isBound, isEquipped);
 
 	return id;
 }
 
-void InventoryItems::createInventoryItem(long long objectID, long long ownerID, long lot, short slot, long count, bool isBound, bool isEquipped)
+void InventoryItems::createInventoryItem(long long objectID, long long ownerID, long lot, long count, bool isBound, bool isEquipped)
 {
 	SAConnection con;
 	SACommand cmd;
 
 	ItemType itemType = CDClient::getItemType(lot);
 	InventoryType invType = InventoryItems::getInventoryType(itemType);
+	short slot = InventoryItems::getNextFreeSlot(invType, ownerID);
 
 	try
 	{

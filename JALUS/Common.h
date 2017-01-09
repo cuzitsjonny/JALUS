@@ -42,3 +42,5 @@ long long randomInRange(long long min, long long max);
 void saveToFile(unsigned char* data, unsigned int size, const char* filePath);
 void saveToFile(BitStream* bitStream, const char* filePath);
 string toUpperCase(string str);
+string toLowerCase(string str);
+bool startsWith(string str, string start);

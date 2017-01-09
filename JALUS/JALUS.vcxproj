@@ -207,6 +207,7 @@
     <ClCompile Include="TemporaryItems.cpp" />
     <ClCompile Include="TimeUtils.cpp" />
     <ClCompile Include="TransitionInfos.cpp" />
+    <ClCompile Include="Validate.cpp" />
     <ClCompile Include="WorldInstance.cpp" />
     <ClCompile Include="ZoneIDs.cpp" />
   </ItemGroup>
@@ -264,6 +265,7 @@
     <ClInclude Include="TemporaryItems.h" />
     <ClInclude Include="TimeUtils.h" />
     <ClInclude Include="TransitionInfos.h" />
+    <ClInclude Include="Validate.h" />
     <ClInclude Include="WorldInstance.h" />
     <ClInclude Include="ZoneIDs.h" />
   </ItemGroup>

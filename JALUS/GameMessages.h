@@ -35,7 +35,9 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_START_SKILL = 119,
 	GAME_MESSAGE_ID_ECHO_START_SKILL = 118,
 	GAME_MESSAGE_ID_SYNC_SKILL = 1145,
-	GAME_MESSAGE_ID_ECHO_SYNC_SKILL = 1144
+	GAME_MESSAGE_ID_ECHO_SYNC_SKILL = 1144,
+	GAME_MESSAGE_ID_ADD_ITEM_TO_INVENTORY_CLIENT_SYNC = 227,
+	GAME_MESSAGE_ID_PARSE_CHAT_MESSAGE = 850
 };
 
 enum MultiInteractType : unsigned long
@@ -83,4 +85,5 @@ public:
 	static void setInventorySize(long long objectID, InventoryType type, long size, SystemAddress receiver);
 	static void playFXEffect(long long objectID, long effectID, wstring effectType, float scale, string name, float priority, long long secondary, SystemAddress receiver, bool serialize = true);
 	static void fireEventClientSide(long long objectID, wstring args, long long object, long long senderID, SystemAddress receiver, long long param1 = 0, long param2 = -1);
+	static void addItemToInventory(long long objectID, bool isBound, long lot, InventoryType invType, long count, long totalCount, long long stackObjectID, short slot, SystemAddress receiver, bool showFlyingLoot = true);
 };

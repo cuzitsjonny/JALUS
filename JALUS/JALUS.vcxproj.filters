@@ -186,6 +186,9 @@
     <ClCompile Include="Helpers.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Validate.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -351,6 +354,9 @@
       <Filter>Headerdateien\Datenbank</Filter>
     </ClInclude>
     <ClInclude Include="Helpers.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Validate.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
