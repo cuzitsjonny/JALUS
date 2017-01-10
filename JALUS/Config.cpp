@@ -27,10 +27,8 @@ void Config::init()
 			CIniFile::SetValue("IgnoreDomains", to_string(1), "Settings", Config::filePath);
 		}
 
-		if (Server::isCharactersInstance())
+		if (Server::isCharactersInstance() || Server::isWorldInstance())
 		{
-			CIniFile::SetValue("Slots", to_string(80), "Settings", Config::filePath);
-			CIniFile::SetValue("Port", to_string(1101), "Settings", Config::filePath);
 			CIniFile::SetValue("CDClientPath", ".\\cdclient.sqlite", "Settings", Config::filePath);
 
 			for (int i = 2, port = 1201; i < ServerRole::SERVER_ROLE_COUNT; i++, port++)
@@ -38,15 +36,19 @@ void Config::init()
 				CIniFile::SetValue(ServerRoles::toString((ServerRole)i) + "Address", "localhost", "Settings", Config::filePath);
 				CIniFile::SetValue(ServerRoles::toString((ServerRole)i) + "Port", to_string(port), "Settings", Config::filePath);
 			}
-		}
 
-		if (Server::isWorldInstance())
-		{
-			CIniFile::SetValue("Slots", to_string(40), "Settings", filePath);
-			CIniFile::SetValue("Port", to_string((1201 - 2) + Server::getServerRole()), "Settings", Config::filePath);
-			CIniFile::SetValue("CDClientPath", ".\\cdclient.sqlite", "Settings", Config::filePath);
-			CIniFile::SetValue("CharactersInstanceAddress", "localhost", "Settings", filePath);
-			CIniFile::SetValue("CharactersInstancePort", to_string(1101), "Settings", filePath);
+			if (Server::isWorldInstance())
+			{
+				CIniFile::SetValue("Slots", to_string(40), "Settings", filePath);
+				CIniFile::SetValue("Port", to_string((1201 - 2) + Server::getServerRole()), "Settings", Config::filePath);
+				CIniFile::SetValue("CharactersInstanceAddress", "localhost", "Settings", filePath);
+				CIniFile::SetValue("CharactersInstancePort", to_string(1101), "Settings", filePath);
+			}
+			else
+			{
+				CIniFile::SetValue("Slots", to_string(80), "Settings", Config::filePath);
+				CIniFile::SetValue("Port", to_string(1101), "Settings", Config::filePath);
+			}
 		}
 	}
 }

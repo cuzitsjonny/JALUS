@@ -176,7 +176,7 @@ void ServerLoop::start()
 					{
 						ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(clientAddress);
 
-						if (replica != nullptr)
+						if (replica != nullptr && !Sessions::getSession(clientAddress)->gotRedirected)
 						{
 							ControllablePhysicsIndex* index = replica->controllablePhysicsIndex;
 

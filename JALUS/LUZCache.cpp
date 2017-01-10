@@ -84,13 +84,19 @@ LUZFile::LUZFile(string path)
 	}
 }
 
-void LUZCache::init(vector<string> names)
+void LUZCache::init()
 {
-	for (int i = 0; i < names.size(); i++)
+	vector<string> d = getAllDirectoriesInDirectory(".\\maps");
+
+	for (int i = 0; i < d.size(); i++)
 	{
-		string name = names.at(i);
-		LUZFile file = LUZFile(".\\maps\\" + ServerRoles::toString(Server::getServerRole()) + "\\" + name);
-		files.push_back(file);
+		vector<string> f = getAllFilesInDirectory(".\\maps\\" + d.at(i), "*.luz");
+
+		for (int k = 0; k < f.size(); k++)
+		{
+			LUZFile file = LUZFile(".\\maps\\" + d.at(i) + "\\" + f.at(k));
+			files.push_back(file);
+		}
 	}
 }
 

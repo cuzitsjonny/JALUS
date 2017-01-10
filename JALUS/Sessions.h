@@ -8,6 +8,7 @@ public:
 	long long accountID = -1;
 	long long charID = -1;
 	string transitionKey = "";
+	bool gotRedirected = false;
 };
 
 class Sessions

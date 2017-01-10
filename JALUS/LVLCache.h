@@ -21,6 +21,6 @@ class LVLCache
 private:
 	static vector<ObjectPropertyContainer> containers;
 public:
-	static void loadObjects(string lvlFileName);
+	static void loadObjects();
 	static vector<ObjectProperty> getObjectProperties(long long objectID);
 };

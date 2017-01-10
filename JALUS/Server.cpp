@@ -44,11 +44,7 @@ void Server::init(ServerRole serverRole)
 	CurrentMissionTasks::init("CurrentMissionTasks", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, mission_id INT(11), character_id BIGINT(20), unique_id INT(11), value VARCHAR(255)");
 	Flags::init("Flags", "id BIGINT(20), value TINYINT(1), flag_id INT(11), unique_id BIGINT(20) AUTO_INCREMENT PRIMARY KEY");
 
-	vector<string> luzFiles = vector <string>();
-	luzFiles.push_back("nd_space_ship.luz");
-	luzFiles.push_back("nd_gnarled_forest.luz");
-	luzFiles.push_back("nd_avant_gardens.luz");
-	LUZCache::init(luzFiles);
+	LUZCache::init();
 }
 
 bool Server::start()
@@ -77,11 +73,7 @@ bool Server::start()
 
 			Server::networkIDManager.SetIsNetworkIDAuthority(true);
 
-			LUZFile* luzFile = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::serverRole));
-			for (int i = 0; i < luzFile->childFiles.size(); i++)
-			{
-				LVLCache::loadObjects(luzFile->childFiles.at(i));
-			}
+			LVLCache::loadObjects();
 		}
 	}
 

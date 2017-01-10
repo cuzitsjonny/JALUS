@@ -19,7 +19,7 @@ class LUZCache
 private:
 	static vector<LUZFile> files;
 public:
-	static void init(vector<string> names);
+	static void init();
 	static LUZFile* getByZoneID(ZoneID zoneID);
 	static vector<LUZFile> getAll();
 };

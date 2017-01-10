@@ -242,9 +242,22 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 
 		xml << "</mis>";
 
+		xml << "<mf";
+
+		CharacterStyle style = CharacterStyles::getCharacterStyle(session->charID);
+
+		xml << " hc=\"" << style.hairColor << "\"";
+		xml << " hs=\"" << style.hairStyle << "\"";
+		xml << " t=\"" << style.shirtColor << "\"";
+		xml << " l=\"" << style.pantsColor << "\"";
+		xml << " es=\"" << style.eyebrows << "\"";
+		xml << " ess=\"" << style.eyes << "\"";
+		xml << " ms=\"" << style.mouth << "\"";
+
+		xml << "/>";
+
 		xml << "<buff/>";
 		xml << "<skil/>";
-		xml << "<mf/>";
 		xml << "<flag/>";
 		xml << "<pet/>";
 		xml << "<mnt/>";

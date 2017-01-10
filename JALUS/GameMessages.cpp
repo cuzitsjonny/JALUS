@@ -31,7 +31,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		case GAME_MESSAGE_ID_TOOGLE_GHOST_REFERENCE_OVERRIDE:
 		case GAME_MESSAGE_ID_SET_GHOST_REFERENCE_POSITION:
 		{
-			// Don't worry about those. They're just NetDevil bullshit.
+			// Don't worry about those. They're just NetDevil bullshit. Actually those will be useful to fix achievements later.
 			break;
 		}
 
@@ -683,7 +683,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						curArgument += " ";
 				}
 
-				Commands::performCommand(CommandSender(session->charID), cmd, args);
+				Commands::performCommand(CommandSender(session->charID, clientAddress), cmd, args);
 
 				args.clear();
 				rawCMD.clear();

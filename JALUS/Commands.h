@@ -5,12 +5,14 @@ class CommandSender
 {
 private:
 	long long senderID;
+	SystemAddress clientAddress;
 public:
-	CommandSender(long long senderID);
+	CommandSender(long long senderID, SystemAddress clientAddress = UNASSIGNED_SYSTEM_ADDRESS);
 
 	void sendMessage(string msg);
 
 	long long getSenderID();
+	SystemAddress getClientAddress();
 };
 
 class Commands

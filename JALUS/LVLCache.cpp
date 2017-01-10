@@ -3,149 +3,155 @@
 #include "Locations.h"
 #include "ObjectsManager.h"
 #include "Logger.h"
+#include "LUZCache.h"
 
 vector<ObjectPropertyContainer> LVLCache::containers = vector<ObjectPropertyContainer>();
 
-void LVLCache::loadObjects(string lvlFileName)
+void LVLCache::loadObjects()
 {
-	vector<string> p = split(lvlFileName, '.');
+	LUZFile* luzFile = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()));
 
-	if (p.size() == 2)
+	for (int i = 0; i < luzFile->childFiles.size(); i++)
 	{
-		string path = ".\\maps\\" + ServerRoles::toString(Server::getServerRole()) + "\\" + lvlFileName;
+		vector<string> p = split(luzFile->childFiles.at(i), '.');
 
-		if (iequals(p[1], "lvl"))
+		if (p.size() == 2)
 		{
-			BitStream reader;
-
-			vector<unsigned char> v = readAllBytes(path.c_str());
-			for (int i = 0; i < v.size(); i++)
+			if (iequals(p[1], "lvl"))
 			{
-				reader.Write(v.at(i));
-			}
+				string path = ".\\maps\\" + to_string(luzFile->zoneID) + "\\" + luzFile->childFiles.at(i);
 
-			v.clear();
+				BitStream reader;
 
-			unsigned long version = 0;
-
-			while ((reader.GetNumberOfUnreadBits() / 8) > 0)
-			{
-				string cur = "";
-
-				for (int i = 0; i < 4; i++)
+				vector<unsigned char> v = readAllBytes(path.c_str());
+				for (int i = 0; i < v.size(); i++)
 				{
-					char c;
-					reader.Read(c);
-					cur += c;
+					reader.Write(v.at(i));
 				}
 
-				if (cur == "CHNK")
+				v.clear();
+
+				unsigned long version = 0;
+
+				while ((reader.GetNumberOfUnreadBits() / 8) > 0)
 				{
-					unsigned long type;
-					reader.Read(type);
+					string cur = "";
 
-					reader.IgnoreBytes(12);
-
-					while (((reader.GetReadOffset() / 8) % 16) != 0)
+					for (int i = 0; i < 4; i++)
 					{
-						reader.IgnoreBytes(1);
+						char c;
+						reader.Read(c);
+						cur += c;
 					}
 
-					if (type == 1000)
+					if (cur == "CHNK")
 					{
-						reader.Read(version);
+						unsigned long type;
+						reader.Read(type);
+
 						reader.IgnoreBytes(12);
-					}
-
-					if (type == 2001)
-					{
-						unsigned long countOfObjects;
-						reader.Read(countOfObjects);
-
-						for (int i = 0; i < countOfObjects; i++)
-						{
-							long long objectID;
-							reader.Read(objectID);
-
-							objectID = (objectID | 70368744177664);
-
-							long lot;
-							reader.Read(lot);
-
-							if (version >= 0x26)
-							{
-								reader.IgnoreBytes(4);
-							}
-
-							if (version >= 0x20)
-							{
-								reader.IgnoreBytes(4);
-							}
-
-							Position pos = Position();
-							reader.Read(pos.x);
-							reader.Read(pos.y);
-							reader.Read(pos.z);
-
-							Rotation rot = Rotation();
-							reader.Read(rot.w);
-							reader.Read(rot.x);
-							reader.Read(rot.y);
-							reader.Read(rot.z);
-
-							float scale;
-							reader.Read(scale);
-
-							wstring ldf = L"";
-							unsigned long len;
-							reader.Read(len);
-
-							for (int k = 0; k < len; k++)
-							{
-								wchar_t c;
-								reader.Read(c);
-								ldf += c;
-							}
-
-							if (version >= 0x07)
-							{
-								reader.IgnoreBytes(4);
-							}
-
-							Logger::info("Loading object with ID " + to_string(objectID) + "!");
-
-							ObjectPropertyContainer container = ObjectPropertyContainer();
-							istringstream stream(to_string(ldf));
-
-							string line;
-							while (getline(stream, line))
-							{
-								vector<string> p1 = split(line, '=');
-								vector<string> p2 = split(p1[1], ':');
-
-								ObjectProperty pro = ObjectProperty();
-								pro.key = p1[0];
-								pro.type = stoi(p2[0]);
-
-								if (p2.size() == 2)
-								{
-									pro.value = p2[1];
-								}
-
-								container.properties.push_back(pro);
-							}
-
-							container.objectID = objectID;
-							containers.push_back(container);
-
-							ReplicaObject* replica = new ReplicaObject(objectID, lot, L"", 0, pos, rot);
-							replica->scale = scale;
-							Server::getReplicaManager()->ReferencePointer(replica);
-						}
 
 						while (((reader.GetReadOffset() / 8) % 16) != 0)
 						{
 							reader.IgnoreBytes(1);
+						}
+
+						if (type == 1000)
+						{
+							reader.Read(version);
+							reader.IgnoreBytes(12);
+						}
+
+						if (type == 2001)
+						{
+							unsigned long countOfObjects;
+							reader.Read(countOfObjects);
+
+							for (int i = 0; i < countOfObjects; i++)
+							{
+								long long objectID;
+								reader.Read(objectID);
+
+								objectID = (objectID | 70368744177664);
+
+								long lot;
+								reader.Read(lot);
+
+								if (version >= 0x26)
+								{
+									reader.IgnoreBytes(4);
+								}
+
+								if (version >= 0x20)
+								{
+									reader.IgnoreBytes(4);
+								}
+
+								Position pos = Position();
+								reader.Read(pos.x);
+								reader.Read(pos.y);
+								reader.Read(pos.z);
+
+								Rotation rot = Rotation();
+								reader.Read(rot.w);
+								reader.Read(rot.x);
+								reader.Read(rot.y);
+								reader.Read(rot.z);
+
+								float scale;
+								reader.Read(scale);
+
+								wstring ldf = L"";
+								unsigned long len;
+								reader.Read(len);
+
+								for (int k = 0; k < len; k++)
+								{
+									wchar_t c;
+									reader.Read(c);
+									ldf += c;
+								}
+
+								if (version >= 0x07)
+								{
+									reader.IgnoreBytes(4);
+								}
+
+								Logger::info("Loading object with ID " + to_string(objectID) + "!");
+
+								ObjectPropertyContainer container = ObjectPropertyContainer();
+								istringstream stream(to_string(ldf));
+
+								string line;
+								while (getline(stream, line))
+								{
+									vector<string> p1 = split(line, '=');
+									vector<string> p2 = split(p1[1], ':');
+
+									ObjectProperty pro = ObjectProperty();
+									pro.key = p1[0];
+									pro.type = stoi(p2[0]);
+
+									if (p2.size() == 2)
+									{
+										pro.value = p2[1];
+									}
+
+									container.properties.push_back(pro);
+								}
+
+								container.objectID = objectID;
+								containers.push_back(container);
+
+								ReplicaObject* replica = new ReplicaObject(objectID, lot, L"", 0, pos, rot);
+								replica->scale = scale;
+								Server::getReplicaManager()->ReferencePointer(replica);
+							}
+
+							while (((reader.GetReadOffset() / 8) % 16) != 0)
+							{
+								reader.IgnoreBytes(1);
+							}
 						}
 					}
 				}

@@ -44,3 +44,5 @@ void saveToFile(BitStream* bitStream, const char* filePath);
 string toUpperCase(string str);
 string toLowerCase(string str);
 bool startsWith(string str, string start);
+vector<string> getAllFilesInDirectory(string path, string filter = "*.*");
+vector<string> getAllDirectoriesInDirectory(string path, string filter = "*");

@@ -12,6 +12,12 @@
 #include "Validate.h"
 #include "Objects.h"
 #include "GameMessages.h"
+#include "Config.h"
+#include "TransitionInfos.h"
+#include "Sessions.h"
+#include "General.h"
+#include "PingTool.h"
+#include "LUZCache.h"
 
 void Commands::performCommand(CommandSender sender, string cmd, vector<string> args)
 {
@@ -391,7 +397,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 							GameMessages::teleport(sender.getSenderID(), false, false, true, true, pos, participant, rot);
 						}
 
-						sender.sendMessage("You magically appeared at " + to_string(f->name) + "'s position!");
+						sender.sendMessage("You magically appeared at " + to_string(f->name) + "'s location!");
 					}
 					else
 					{
@@ -438,7 +444,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 								GameMessages::teleport(sender.getSenderID(), false, false, true, true, pos, participant, rot);
 							}
 
-							sender.sendMessage("You magically appeared at " + to_string(f->name) + "'s position!");
+							sender.sendMessage("You magically appeared at " + to_string(f->name) + "'s location!");
 						}
 						else
 						{
@@ -480,15 +486,80 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("You can't use this command here!");
 	}
 
-	else if (iequals(cmd, "loc")) {}
+	else if (iequals(cmd, "testmap") || iequals(cmd, "map"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1)
+			{
+				string strZoneID = args.at(0);
+
+				ZoneID zoneID = ZoneIDs::fromString(strZoneID);
+
+				if (zoneID != ZoneID::INVALID_ZONE_ID)
+				{
+					if (zoneID != ServerRoles::toZoneID(Server::getServerRole()))
+					{
+						string nextInstanceAddress = Config::getWorldInstanceAddress(zoneID);
+						unsigned short nextInstancePort = Config::getWorldInstancePort(zoneID);
+
+						bool isNextInstanceAvailable = PingTool::ping(nextInstanceAddress.c_str(), nextInstancePort, "3.25 ND1", 8);
+						if (isNextInstanceAvailable)
+						{
+							Session* session = Sessions::getSession(sender.getClientAddress());
+							if (session != nullptr)
+							{
+								sender.sendMessage("Alright! Let's go to " + ZoneIDs::toPrintString(zoneID) + "!");
+
+								Location loc;
+
+								loc.zoneID = zoneID;
+								loc.mapClone = 0;
+
+								Position spp = LUZCache::getByZoneID(loc.zoneID)->spawnPointPos;
+								Rotation spr = LUZCache::getByZoneID(loc.zoneID)->spawnPointRot;
+
+								loc.position.x = spp.x;
+								loc.position.y = spp.y;
+								loc.position.z = spp.z;
+								loc.rotation.x = spr.x;
+								loc.rotation.y = spr.y;
+								loc.rotation.z = spr.z;
+								loc.rotation.w = spr.w;
+
+								Locations::saveLocation(loc, session->charID);
+
+								TransitionInfos::insertTransitionInfo(session->clientAddress, session->accountID, session->charID, session->transitionKey);
+								General::redirectToServer(session->clientAddress, nextInstanceAddress, nextInstancePort, false);
+								session->gotRedirected = true;
+							}
+						}
+						else
+							sender.sendMessage("The instance you want to connect to is not available at the moment!\nPlease try again later.");
+					}
+					else
+						sender.sendMessage("You already are in/on " + ZoneIDs::toPrintString(zoneID) + "!");
+				}
+				else
+					sender.sendMessage("The input '" + strZoneID + "' is not a valid ZoneID or ZoneName!");
+			}
+			else
+				sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " (<ZoneID> | <ZoneName>)");
+		}
+		else
+			sender.sendMessage("You can't use this command here!");
+	}
+
+	else if (iequals(cmd, "loc")) { /* This is handled on the client side. */ }
 
 	else
 		sender.sendMessage("The input '" + cmd + "' is not a valid command!");
 }
 
-CommandSender::CommandSender(long long senderID)
+CommandSender::CommandSender(long long senderID, SystemAddress clientAddress)
 {
 	this->senderID = senderID;
+	this->clientAddress = clientAddress;
 }
 
 void CommandSender::sendMessage(string msg)
@@ -499,11 +570,16 @@ void CommandSender::sendMessage(string msg)
 	}
 	else
 	{
-		Chat::sendChatMessage(to_wstring(msg), ObjectsManager::getObjectByID(senderID)->clientAddress);
+		Chat::sendChatMessage(to_wstring(msg), clientAddress);
 	}
 }
 
 long long CommandSender::getSenderID()
 {
 	return senderID;
+}
+
+SystemAddress CommandSender::getClientAddress()
+{
+	return clientAddress;
 }

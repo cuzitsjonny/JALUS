@@ -146,3 +146,49 @@ bool startsWith(string str, string start)
 
 	return false;
 }
+
+vector<string> getAllFilesInDirectory(string path, string filter)
+{
+	vector<string> r = vector<string>();
+
+	string searchPath = path + "\\" + filter;
+	WIN32_FIND_DATA fd;
+	HANDLE h = FindFirstFile(searchPath.c_str(), &fd);
+
+	if (h != INVALID_HANDLE_VALUE)
+	{
+		do {
+			if (!((fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) || (fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN)))
+			{
+				r.push_back(fd.cFileName);
+			}
+		} while (FindNextFile(h, &fd));
+
+		FindClose(h);
+	}
+
+	return r;
+}
+
+vector<string> getAllDirectoriesInDirectory(string path, string filter)
+{
+	vector<string> r = vector<string>();
+
+	string searchPath = path + "\\" + filter;
+	WIN32_FIND_DATA fd;
+	HANDLE h = FindFirstFile(searchPath.c_str(), &fd);
+
+	if (h != INVALID_HANDLE_VALUE)
+	{
+		do {
+			if ((fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && !(fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN))
+			{
+				r.push_back(fd.cFileName);
+			}
+		} while (FindNextFile(h, &fd));
+
+		FindClose(h);
+	}
+
+	return r;
+}
