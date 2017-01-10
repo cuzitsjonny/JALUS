@@ -478,15 +478,15 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_NOTIFY_SERVER_LEVEL_PROCESSING_COMPLETE:
 		{
-			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+			ReplicaObject* replica = ObjectsManager::getObjectByID(objectID);
+
+			if (replica->clientAddress != UNASSIGNED_SYSTEM_ADDRESS)
 			{
-				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-
-				if (participant != clientAddress)
-					Server::sendPacket(PacketUtils::createGMBase(session->charID, GameMessageID::GAME_MESSAGE_ID_NOTIFY_SERVER_LEVEL_PROCESSING_COMPLETE), participant);
+				long level = CDClient::lookUpLevel(replica->characterIndex->lego_score);
+				replica->characterIndex->level = level;
+				Characters::setLevel(level, objectID);
+				ObjectsManager::serializeObject(replica);
 			}
-
-			Characters::setLevel(Characters::getLevel(session->charID) + 1, session->charID);
 			break;
 		}
 

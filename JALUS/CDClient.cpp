@@ -629,3 +629,50 @@ vector<long> CDClient::getAchievements(long prereqMissionID)
 
 	return r;
 }
+
+long CDClient::lookUpLevel(long long universeScore)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = 1;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT id, requiredUScore FROM";
+		ss << " LevelProgressionLookup ";
+		ss << "WHERE 1;";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			long long uScore = cmd.Field("requiredUScore").asNumeric();
+			long l = cmd.Field("id").asLong();
+
+			if (universeScore >= uScore)
+			{
+				if (l > r)
+					r = l;
+			}
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}

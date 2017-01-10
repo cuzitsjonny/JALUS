@@ -70,4 +70,5 @@ public:
 	static MissionRewards getMissionRewards(long missionID);
 	static bool isMission(long missionID);
 	static vector<long> getAchievements(long prereqMissionID = -1);
+	static long lookUpLevel(long long universeScore);
 };
