@@ -359,5 +359,8 @@
     <ClInclude Include="Validate.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Scheduler.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -252,6 +252,7 @@
     <ClInclude Include="RenderIndex.h" />
     <ClInclude Include="ReplicaComponent.h" />
     <ClInclude Include="ReplicaObject.h" />
+    <ClInclude Include="Scheduler.h" />
     <ClInclude Include="ScriptIndex.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="ServerLoop.h" />

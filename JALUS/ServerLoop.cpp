@@ -8,6 +8,7 @@
 #include "WorldInstance.h"
 #include "ReplicaObject.h"
 #include "ObjectsManager.h"
+#include "Scheduler.h"
 
 bool ServerLoop::run;
 vector<char> ServerLoop::input;
@@ -141,10 +142,12 @@ void ServerLoop::start()
 	BitStream* data;
 	SystemAddress clientAddress;
 
+	Scheduler::runTaskTimer(100, 100, parseUserInput);
+
 	ServerLoop::run = true;
 	while (ServerLoop::run)
 	{
-		ServerLoop::parseUserInput();
+		Scheduler::tick();
 
 		packet = Server::getPeerInterface()->Receive();
 		if (packet == NULL)

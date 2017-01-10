@@ -12,6 +12,7 @@
 #include <chrono>
 #include <regex>
 #include <random>
+#include <thread>
 
 #include <RakPeerInterface.h>
 #include <RakNetworkFactory.h>
