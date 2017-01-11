@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "Logger.h"
 #include "Objects.h"
+#include "Server.h"
 
 string InventoryItems::name;
 
@@ -36,7 +37,7 @@ void InventoryItems::init(string name, string structure)
 	catch (SAException &x)
 	{
 		Logger::error("Failed to init SQLTable! (Name: " + name + ") Error: '" + string(x.ErrMessage()) + "'");
-		exit(-1);
+		Server::shutdown(-1);
 	}
 }
 

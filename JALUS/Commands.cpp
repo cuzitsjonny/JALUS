@@ -23,12 +23,12 @@
 
 void Commands::performCommand(CommandSender sender, string cmd, vector<string> args)
 {
-	if (iequals(cmd, "stop")) // /stop
+	if (iequals(cmd, "stop") || iequals(cmd, "off") || iequals(cmd, "quit")) // /stop
 	{
 		ServerLoop::stop();
 	}
 
-	else if (iequals(cmd, "ping"))
+	else if (iequals(cmd, "ping")) // /ping <string:address> <unsigned short:port>
 	{
 		if (sender.getSenderID() != -1)
 		{
@@ -185,7 +185,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <ip> <time> <reason>");
 	}
 
-	else if (iequals(cmd, "spawn"))
+	else if (iequals(cmd, "spawn")) // /spawn <long:LOT> [string:name]
 	{
 		if (sender.getSenderID() != -1)
 		{
@@ -237,7 +237,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("You can't use this command here!");
 	}
 
-	else if (iequals(cmd, "despawn"))
+	else if (iequals(cmd, "despawn")) // /despawn <long long:ObjectID>
 	{
 		if (sender.getSenderID() != -1)
 		{
@@ -280,7 +280,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("You can't use this command here!");
 	}
 
-	else if (iequals(cmd, "nearme") || iequals(cmd, "aroundme"))
+	else if (iequals(cmd, "nearme") || iequals(cmd, "aroundme")) // /nearme <float:radius>
 	{
 		if (sender.getSenderID() != -1)
 		{
@@ -389,7 +389,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("You can't use this command here!");
 	}
 
-	else if (iequals(cmd, "tp") || iequals(cmd, "tele") || iequals(cmd, "teleport"))
+	else if (iequals(cmd, "tp") || iequals(cmd, "tele") || iequals(cmd, "teleport")) // /tp (<string:player> | <float:x> <float:y> <float:z>)
 	{
 		if (sender.getSenderID() != -1)
 		{
@@ -521,7 +521,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("You can't use this command here!");
 	}
 
-	else if (iequals(cmd, "testmap") || iequals(cmd, "map"))
+	else if (iequals(cmd, "testmap") || iequals(cmd, "map")) // /testmap (<unsigned short:ZoneID> | <string:ZoneName>)
 	{
 		if (sender.getSenderID() != -1)
 		{

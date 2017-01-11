@@ -10,6 +10,7 @@
 #include "CurrentMissionTasks.h"
 #include "Flags.h"
 #include "Helpers.h"
+#include "Server.h"
 
 string Characters::name;
 
@@ -44,7 +45,7 @@ void Characters::init(string name, string structure)
 	catch (SAException &x)
 	{
 		Logger::error("Failed to init SQLTable! (Name: " + name + ") Error: '" + string(x.ErrMessage()) + "'");
-		exit(-1);
+		Server::shutdown(-1);
 	}
 }
 

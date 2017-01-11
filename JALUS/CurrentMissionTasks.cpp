@@ -1,6 +1,7 @@
 #include "CurrentMissionTasks.h"
 #include "Config.h"
 #include "Logger.h"
+#include "Server.h"
 
 string CurrentMissionTasks::name;
 
@@ -35,7 +36,7 @@ void CurrentMissionTasks::init(string name, string structure)
 	catch (SAException &x)
 	{
 		Logger::error("Failed to init SQLTable! (Name: " + name + ") Error: '" + string(x.ErrMessage()) + "'");
-		exit(-1);
+		Server::shutdown(-1);
 	}
 }
 

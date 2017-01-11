@@ -237,7 +237,7 @@ private:
 public:
 	static void init(ServerRole serverRole);
 	static bool start();
-	static void shutdown();
+	static void shutdown(int errorCode = 0);
 
 	static ServerRole getServerRole();
 	static RakPeerInterface* getPeerInterface();

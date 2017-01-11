@@ -80,10 +80,11 @@ bool Server::start()
 	return r;
 }
 
-void Server::shutdown()
+void Server::shutdown(int errorCode)
 {
 	RakNetworkFactory::DestroyRakPeerInterface(Server::peerInterface);
 	Logger::shutdown();
+	exit(errorCode);
 }
 
 ServerRole Server::getServerRole()
