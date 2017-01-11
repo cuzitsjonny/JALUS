@@ -18,12 +18,47 @@
 #include "General.h"
 #include "PingTool.h"
 #include "LUZCache.h"
+#include "Scheduler.h"
+#include "Helpers.h"
 
 void Commands::performCommand(CommandSender sender, string cmd, vector<string> args)
 {
 	if (iequals(cmd, "stop")) // /stop
 	{
 		ServerLoop::stop();
+	}
+
+	else if (iequals(cmd, "ping"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 2)
+			{
+				string address = args.at(0);
+				string strPort = args.at(1);
+				unsigned short port = 0;
+
+				if (Validate::isValidS32(strPort))
+				{
+					long p = stol(strPort);
+
+					if (p > 0 && p <= USHRT_MAX)
+					{
+						port = p;
+					}
+				}
+
+				if (port > 0)
+				{
+					sender.sendMessage("Trying to reach " + address + ":" + to_string(port) + "...");
+					Scheduler::runAsyncTaskLater(NULL, Helpers::pingAndPrintResult, address, port, sender.getClientAddress());
+				}
+				else
+					sender.sendMessage("The second argument has to be a valid unsigned short int!");
+			}
+			else
+				sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <address> <port>");
+		}
 	}
 
 	else if (iequals(cmd, "createAccount")) // /createAccount <string:username> <string:password>
@@ -503,39 +538,12 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 						string nextInstanceAddress = Config::getWorldInstanceAddress(zoneID);
 						unsigned short nextInstancePort = Config::getWorldInstancePort(zoneID);
 
-						bool isNextInstanceAvailable = PingTool::ping(nextInstanceAddress.c_str(), nextInstancePort, "3.25 ND1", 8);
-						if (isNextInstanceAvailable)
-						{
-							Session* session = Sessions::getSession(sender.getClientAddress());
-							if (session != nullptr)
-							{
-								sender.sendMessage("Alright! Let's go to " + ZoneIDs::toPrintString(zoneID) + "!");
+						sender.sendMessage("Trying to reach " + ServerRoles::toString(ServerRoles::fromZoneID(zoneID)) + "...");
 
-								Location loc;
-
-								loc.zoneID = zoneID;
-								loc.mapClone = 0;
-
-								Position spp = LUZCache::getByZoneID(loc.zoneID)->spawnPointPos;
-								Rotation spr = LUZCache::getByZoneID(loc.zoneID)->spawnPointRot;
-
-								loc.position.x = spp.x;
-								loc.position.y = spp.y;
-								loc.position.z = spp.z;
-								loc.rotation.x = spr.x;
-								loc.rotation.y = spr.y;
-								loc.rotation.z = spr.z;
-								loc.rotation.w = spr.w;
-
-								Locations::saveLocation(loc, session->charID);
-
-								TransitionInfos::insertTransitionInfo(session->clientAddress, session->accountID, session->charID, session->transitionKey);
-								General::redirectToServer(session->clientAddress, nextInstanceAddress, nextInstancePort, false);
-								session->gotRedirected = true;
-							}
-						}
-						else
-							sender.sendMessage("The instance you want to connect to is not available at the moment!\nPlease try again later.");
+						Scheduler::runAsyncTaskLater(NULL, Helpers::pingAndRedirect,
+							nextInstanceAddress, nextInstancePort, sender.getClientAddress(),
+							"Alright! Let's go to " + ZoneIDs::toPrintString(zoneID) + "!",
+							zoneID, true);
 					}
 					else
 						sender.sendMessage("You already are in/on " + ZoneIDs::toPrintString(zoneID) + "!");

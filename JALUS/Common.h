@@ -36,6 +36,7 @@ bool iequals(string a, string b);
 vector<string> split(string s, char delim);
 string to_string(bool b);
 string to_string(wstring wstr);
+wstring to_wstring(bool b);
 wstring to_wstring(string str);
 vector<unsigned char> readAllBytes(const char* filePath);
 bool isValidIPAddress(const char* str);

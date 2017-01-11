@@ -179,21 +179,24 @@ void ServerLoop::start()
 					{
 						ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(clientAddress);
 
-						if (replica != nullptr && !Sessions::getSession(clientAddress)->gotRedirected)
+						if (replica != nullptr)
 						{
-							ControllablePhysicsIndex* index = replica->controllablePhysicsIndex;
+							if (!Sessions::getSession(clientAddress)->gotRedirected)
+							{
+								ControllablePhysicsIndex* index = replica->controllablePhysicsIndex;
 
-							Location loc = Location();
-							loc.zoneID = ServerRoles::toZoneID(Server::getServerRole());
-							loc.mapClone = 0;
-							loc.position.x = index->pos_x;
-							loc.position.y = index->pos_y;
-							loc.position.z = index->pos_z;
-							loc.rotation.x = index->rot_x;
-							loc.rotation.y = index->rot_y;
-							loc.rotation.z = index->rot_z;
-							loc.rotation.w = index->rot_w;
-							Locations::saveLocation(loc, replica->objectID);
+								Location loc = Location();
+								loc.zoneID = ServerRoles::toZoneID(Server::getServerRole());
+								loc.mapClone = 0;
+								loc.position.x = index->pos_x;
+								loc.position.y = index->pos_y;
+								loc.position.z = index->pos_z;
+								loc.rotation.x = index->rot_x;
+								loc.rotation.y = index->rot_y;
+								loc.rotation.z = index->rot_z;
+								loc.rotation.w = index->rot_w;
+								Locations::saveLocation(loc, replica->objectID);
+							}
 						}
 
 						ObjectsManager::removePlayer(clientAddress);

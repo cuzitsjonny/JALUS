@@ -96,13 +96,7 @@ void Objects::init(string name, string structure)
 
 long long Objects::generateObjectID()
 {
-	/*long long min = 288300000000000000;
-	long long max = 288399999999999999;*/
-
-	long long min = 1000000000000000000;
-	long long max = 1999999999999999999;
-
-	long long rand = randomInRange(min, max);
+	long long rand = randomInRange(OBJECT_ID_MIN, OBJECT_ID_MAX);
 
 	if (Objects::validate(rand))
 		return rand;
@@ -112,10 +106,7 @@ long long Objects::generateObjectID()
 
 long long Objects::generateSpawnerID()
 {
-	long long min = 70000000000000;
-	long long max = 79999999999999;
-
-	long long rand = randomInRange(min, max);
+	long long rand = randomInRange(SPAWNER_ID_MIN, SPAWNER_ID_MAX);
 
 	if (Objects::validate(rand))
 		return rand;
@@ -125,10 +116,7 @@ long long Objects::generateSpawnerID()
 
 bool Objects::isInSpawnerIDRange(long long objectID)
 {
-	long long min = 70000000000000;
-	long long max = 79999999999999;
-
-	return (objectID < max && objectID >= min);
+	return (objectID <= SPAWNER_ID_MAX && objectID >= SPAWNER_ID_MIN);
 }
 
 long long Objects::createObject(long lot)

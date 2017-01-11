@@ -54,6 +54,11 @@ string to_string(wstring wstr)
 	return string(wstr.begin(), wstr.end());
 }
 
+wstring to_wstring(bool b)
+{
+	return (b ? L"true" : L"false");
+}
+
 wstring to_wstring(string str)
 {
 	return wstring(str.begin(), str.end());

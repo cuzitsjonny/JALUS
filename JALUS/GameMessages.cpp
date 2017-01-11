@@ -39,7 +39,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		{
 			long long ready;
 			data->Read(ready);
-			Logger::info("Object is ready for updates! (Object: " + to_string(ready) + ") (Address: " + string(clientAddress.ToString()) + ")");
 
 			long lot = Objects::getLOT(ready);
 			ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
@@ -436,6 +435,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		}
 
 		case GAME_MESSAGE_ID_REQUEST_DIE:
+		case GAME_MESSAGE_ID_SMASH_ME:
 		{
 			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 			{
