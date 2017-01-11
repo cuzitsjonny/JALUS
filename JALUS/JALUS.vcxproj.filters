@@ -362,5 +362,8 @@
     <ClInclude Include="Scheduler.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="BlockingQueue.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -83,6 +83,7 @@ bool Server::start()
 void Server::shutdown()
 {
 	RakNetworkFactory::DestroyRakPeerInterface(Server::peerInterface);
+	Logger::shutdown();
 }
 
 ServerRole Server::getServerRole()

@@ -215,6 +215,7 @@
     <ClInclude Include="Accounts.h" />
     <ClInclude Include="AuthenticationInstance.h" />
     <ClInclude Include="Bans.h" />
+    <ClInclude Include="BlockingQueue.h" />
     <ClInclude Include="CDClient.h" />
     <ClInclude Include="CharacterIndex.h" />
     <ClInclude Include="Characters.h" />

@@ -13,6 +13,7 @@
 #include <regex>
 #include <random>
 #include <thread>
+#include <future>
 
 #include <RakPeerInterface.h>
 #include <RakNetworkFactory.h>

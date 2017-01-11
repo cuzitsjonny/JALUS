@@ -1,8 +1,10 @@
 #include "Logger.h"
 #include "Server.h"
 
-string Logger::filePath;
 bool Logger::consoleOutputMuted;
+string Logger::filePath;
+BlockingQueue<string> Logger::queue;
+thread Logger::flusher;
 
 string Logger::getTime()
 {
@@ -24,35 +26,71 @@ void Logger::init()
 		remove(Logger::filePath.c_str());
 	else
 		CreateDirectory(".\\logs", NULL);
+
+	Logger::flusher = thread([]()
+	{
+		bool run = true;
+		bool muted = false;
+		while (run)
+		{
+			string msg = Logger::queue.poll();
+
+			if (msg == LOGGER_STOP_STRING)
+			{
+				run = false;
+			}
+
+			else if (msg == LOGGER_MUTE_STRING)
+			{
+				muted = true;
+			}
+
+			else if (msg == LOGGER_UNMUTE_STRING)
+			{
+				muted = false;
+			}
+
+			else
+			{
+				if (!muted)
+					cout << msg << endl;
+
+				ofstream f(Logger::filePath, fstream::binary | fstream::app);
+				f << msg << endl;
+				f.close();
+			}
+		}
+	});
+}
+
+void Logger::shutdown()
+{
+	Logger::queue.push(LOGGER_STOP_STRING);
+	Logger::flusher.join();
 }
 
 void Logger::info(string msg)
 {
-	string output = "[" + Logger::getTime() + "] [INFO] " + msg;
-
-	if (!Logger::consoleOutputMuted)
-		cout << output << endl;
-
-	ofstream f(Logger::filePath, fstream::binary | fstream::app);
-	f << output << "\n";
-	f.close();
+	Logger::queue.push("[" + Logger::getTime() + "] [INFO] " + msg);
 }
 
 void Logger::error(string msg)
 {
-	string output = "[" + Logger::getTime() + "] [ERROR] " + msg;
-
-	if (!Logger::consoleOutputMuted)
-		cout << output << endl;
-
-	ofstream f(Logger::filePath, fstream::binary | fstream::app);
-	f << output << "\n";
-	f.close();
+	Logger::queue.push("[" + Logger::getTime() + "] [ERROR] " + msg);
 }
 
 void Logger::setConsoleOutputMuted(bool muted)
 {
 	Logger::consoleOutputMuted = muted;
+
+	if (muted)
+	{
+		Logger::queue.push(LOGGER_MUTE_STRING);
+	}
+	else
+	{
+		Logger::queue.push(LOGGER_UNMUTE_STRING);
+	}
 }
 
 bool Logger::isConsoleOutputMuted()

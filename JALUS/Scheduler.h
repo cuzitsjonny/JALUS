@@ -1,8 +1,6 @@
 #pragma once
 #include "Common.h"
 
-#include <future>
-
 enum SchedulerTaskType
 {
 	TIMER_ASYNC,
@@ -61,20 +59,20 @@ public:
 						toDelete.push_back(i);
 					}
 
-					if (task->type == TIMER_ASYNC)
+					else if (task->type == TIMER_ASYNC)
 					{
 						async(task->function);
 						task->isAfterDelay = true;
 						task->startTimestamp = ms.count();
 					}
 
-					if (task->type == LATER_SYNC)
+					else if (task->type == LATER_SYNC)
 					{
 						task->function;
 						toDelete.push_back(i);
 					}
 
-					if (task->type == TIMER_SYNC)
+					else if (task->type == TIMER_SYNC)
 					{
 						task->function();
 						task->isAfterDelay = true;
@@ -88,11 +86,11 @@ public:
 				{
 					if (task->type == TIMER_ASYNC)
 					{
-						thread(task->function);
+						async(task->function);
 						task->startTimestamp = ms.count();
 					}
 
-					if (task->type == TIMER_SYNC)
+					else if (task->type == TIMER_SYNC)
 					{
 						task->function();
 						task->startTimestamp = ms.count();
