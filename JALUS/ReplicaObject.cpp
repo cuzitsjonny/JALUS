@@ -127,19 +127,14 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 
 				case ReplicaComponentID::REPLICA_COMPONENT_ID_COLLECTIBLE:
 				{
-					vector<ObjectProperty> properties = LVLCache::getObjectProperties(spawnerID);
-					string collectibleID = "";
-
-					for (int i = 0; i < properties.size(); i++)
-					{
-						ObjectProperty pro = properties.at(i);
-
-						if (iequals(pro.key, "collectible_id"))
-							collectibleID = pro.value;
-					}
-
 					collectibleIndex = new CollectibleIndex();
-					collectibleIndex->collectible_id = stoi(collectibleID);
+
+					string collectibleID = LVLCache::getObjectProperty("collectible_id", spawnerID).value;
+
+					if (collectibleID.length() > 0)
+					{
+						collectibleIndex->collectible_id = stoi(collectibleID);
+					}
 
 					if (statsIndexParent < 0)
 					{
@@ -248,16 +243,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 	}
 	else
 	{
-		vector<ObjectProperty> properties = LVLCache::getObjectProperties(objectID);
-		string spawntemplate = "";
-
-		for (int i = 0; i < properties.size(); i++)
-		{
-			ObjectProperty pro = properties.at(i);
-
-			if (iequals(pro.key, "spawntemplate"))
-				spawntemplate = pro.value;
-		}
+		string spawntemplate = LVLCache::getObjectProperty("spawntemplate", objectID).value;
 
 		if (spawntemplate.length() > 0)
 		{

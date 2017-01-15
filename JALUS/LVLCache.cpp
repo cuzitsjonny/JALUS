@@ -172,3 +172,20 @@ vector<ObjectProperty> LVLCache::getObjectProperties(long long objectID)
 
 	return vector<ObjectProperty>();
 }
+
+ObjectProperty LVLCache::getObjectProperty(string key, long long objectID)
+{
+	vector<ObjectProperty> v = getObjectProperties(objectID);
+
+	for (int i = 0; i < v.size(); i++)
+	{
+		if (v.at(i).key == key)
+			return v.at(i);
+	}
+
+	ObjectProperty pro;
+	pro.key = key;
+	pro.value = "";
+
+	return pro;
+}

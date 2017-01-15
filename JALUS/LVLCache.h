@@ -23,4 +23,5 @@ private:
 public:
 	static void loadObjects();
 	static vector<ObjectProperty> getObjectProperties(long long objectID);
+	static ObjectProperty getObjectProperty(string key, long long objectID);
 };

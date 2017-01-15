@@ -31,7 +31,7 @@ void Logger::init()
 	{
 		bool run = true;
 		bool muted = false;
-		while (run)
+		while (run || Logger::queue.size() > 0)
 		{
 			string msg = Logger::queue.poll();
 
@@ -53,7 +53,9 @@ void Logger::init()
 			else
 			{
 				if (!muted)
+				{
 					cout << msg << endl;
+				}
 
 				ofstream f(Logger::filePath, fstream::binary | fstream::app);
 				f << msg << endl;

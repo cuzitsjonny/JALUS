@@ -50,8 +50,19 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 				if (port > 0)
 				{
+					SystemAddress clientAddress = sender.getClientAddress();
+
 					sender.sendMessage("Trying to reach " + address + ":" + to_string(port) + "...");
-					Scheduler::runAsyncTaskLater(NULL, Helpers::pingAndPrintResult, address, port, sender.getClientAddress());
+
+					async([address, port, clientAddress]() {
+						bool b = PingTool::ping(address.c_str(), port, "3.25 ND1", 8);
+
+						Session* session = Sessions::getSession(clientAddress);
+						if (session != nullptr)
+						{
+							Chat::sendChatMessage(L"PingResult received!\n{\n   Address: " + to_wstring(address) + L",\n   Port: " + to_wstring(port) + L",\n   IsReachable: " + to_wstring(b) + L"\n}", clientAddress);
+						}
+					});
 				}
 				else
 					sender.sendMessage("The second argument has to be a valid unsigned short int!");
@@ -535,15 +546,54 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 				{
 					if (zoneID != ServerRoles::toZoneID(Server::getServerRole()))
 					{
-						string nextInstanceAddress = Config::getWorldInstanceAddress(zoneID);
-						unsigned short nextInstancePort = Config::getWorldInstancePort(zoneID);
+						SystemAddress clientAddress = sender.getClientAddress();
+						string address = Config::getWorldInstanceAddress(zoneID);
+						unsigned short port = Config::getWorldInstancePort(zoneID);
 
 						sender.sendMessage("Trying to reach " + ServerRoles::toString(ServerRoles::fromZoneID(zoneID)) + "...");
 
-						Scheduler::runAsyncTaskLater(NULL, Helpers::pingAndRedirect,
-							nextInstanceAddress, nextInstancePort, sender.getClientAddress(),
-							"Alright! Let's go to " + ZoneIDs::toPrintString(zoneID) + "!",
-							zoneID, true);
+						async([address, port, zoneID, clientAddress]()
+						{
+							bool b = PingTool::ping(address.c_str(), port, "3.25 ND1", 8);
+
+							if (b)
+							{
+								Session* session = Sessions::getSession(clientAddress);
+								if (session != nullptr)
+								{
+									Chat::sendChatMessage(L"Alright! Let's go to " + to_wstring(ZoneIDs::toPrintString(zoneID)) + L"!", clientAddress);
+
+									if (zoneID != ZoneID::INVALID_ZONE_ID)
+									{
+										Location loc;
+
+										loc.zoneID = zoneID;
+										loc.mapClone = 0;
+
+										Position spp = LUZCache::getByZoneID(loc.zoneID)->spawnPointPos;
+										Rotation spr = LUZCache::getByZoneID(loc.zoneID)->spawnPointRot;
+
+										loc.position.x = spp.x;
+										loc.position.y = spp.y;
+										loc.position.z = spp.z;
+										loc.rotation.x = spr.x;
+										loc.rotation.y = spr.y;
+										loc.rotation.z = spr.z;
+										loc.rotation.w = spr.w;
+
+										Locations::saveLocation(loc, session->charID);
+									}
+
+									TransitionInfos::insertTransitionInfo(session->clientAddress, session->accountID, session->charID, session->transitionKey);
+									General::redirectToServer(session->clientAddress, address, port, false);
+									session->gotRedirected = true;
+								}
+							}
+							else
+							{
+								Chat::sendChatMessage(L"The instance you want to connect to is not available at the moment!\nPlease try again later.", clientAddress);
+							}
+						});
 					}
 					else
 						sender.sendMessage("You already are in/on " + ZoneIDs::toPrintString(zoneID) + "!");

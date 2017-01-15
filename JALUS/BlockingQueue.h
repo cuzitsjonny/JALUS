@@ -19,7 +19,12 @@ public:
 
 	size_t size()
 	{
-		return q.size();
+		unique_lock<mutex> lock(m);
+
+		size_t size =  q.size();
+
+		lock.unlock();
+		return size;
 	}
 };
 
@@ -34,7 +39,7 @@ inline void BlockingQueue<T>::skip(size_t count)
 	}
 
 	lock.unlock();
-	c.notify_one();
+	c.notify_all();
 }
 
 template<class T>

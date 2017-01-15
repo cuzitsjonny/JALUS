@@ -159,16 +159,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					vector<ReplicaObject*> binocs = ObjectsManager::getObjectsByLOT(6842);
 					for (int i = 0; i < binocs.size(); i++)
 					{
-						vector<ObjectProperty> properties = LVLCache::getObjectProperties(binocs.at(i)->objectID);
-						string number = "";
-
-						for (int k = 0; k < properties.size(); k++)
-						{
-							ObjectProperty pro = properties.at(k);
-
-							if (iequals(pro.key, "number"))
-								number = pro.value;
-						}
+						string number = LVLCache::getObjectProperty("number", binocs.at(i)->objectID).value;
 
 						if (number.length() > 0)
 						{
@@ -178,22 +169,17 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 							{
 								GameMessages::playFXEffect(binocs.at(i)->objectID, 1564, L"cast", 1.0F, "binocular_alert", 1.0F, -1, clientAddress);
 							}
+							else
+							{
+								GameMessages::fireEventClientSide(binocs.at(i)->objectID, L"achieve", binocs.at(i)->objectID, session->charID, clientAddress);
+							}
 						}
 					}
 
 					vector<ReplicaObject*> plaques = ObjectsManager::getObjectsByLOT(8139);
 					for (int i = 0; i < plaques.size(); i++)
 					{
-						vector<ObjectProperty> properties = LVLCache::getObjectProperties(plaques.at(i)->objectID);
-						string storyText = "";
-
-						for (int k = 0; k < properties.size(); k++)
-						{
-							ObjectProperty pro = properties.at(k);
-
-							if (iequals(pro.key, "storyText"))
-								storyText = pro.value;
-						}
+						string storyText = LVLCache::getObjectProperty("storyText", plaques.at(i)->objectID).value;
 
 						if (storyText.length() > 0)
 						{
@@ -207,6 +193,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 							else
 							{
 								GameMessages::playFXEffect(plaques.at(i)->objectID, 2855, L"display", 1.0F, "plaquefx", 1.0F, -1, clientAddress);
+								GameMessages::fireEventClientSide(plaques.at(i)->objectID, L"achieve", plaques.at(i)->objectID, session->charID, clientAddress);
 							}
 						}
 					}
@@ -250,16 +237,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 				if (lot == 6842)
 				{
-					vector<ObjectProperty> properties = LVLCache::getObjectProperties(objectID);
-					string number = "";
-
-					for (int k = 0; k < properties.size(); k++)
-					{
-						ObjectProperty pro = properties.at(k);
-
-						if (iequals(pro.key, "number"))
-							number = pro.value;
-					}
+					string number = LVLCache::getObjectProperty("number", objectID).value;
 
 					if (number.length() > 0)
 					{
@@ -272,16 +250,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 				if (lot == 8139)
 				{
-					vector<ObjectProperty> properties = LVLCache::getObjectProperties(objectID);
-					string storyText = "";
-
-					for (int k = 0; k < properties.size(); k++)
-					{
-						ObjectProperty pro = properties.at(k);
-
-						if (iequals(pro.key, "storyText"))
-							storyText = pro.value;
-					}
+					string storyText = LVLCache::getObjectProperty("storyText", objectID).value;
 
 					if (storyText.length() > 0)
 					{
