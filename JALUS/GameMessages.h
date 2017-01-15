@@ -38,7 +38,10 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_ECHO_SYNC_SKILL = 1144,
 	GAME_MESSAGE_ID_ADD_ITEM_TO_INVENTORY_CLIENT_SYNC = 227,
 	GAME_MESSAGE_ID_PARSE_CHAT_MESSAGE = 850,
-	GAME_MESSAGE_ID_SMASH_ME = 1202
+	GAME_MESSAGE_ID_SMASH_ME = 1202,
+	GAME_MESSAGE_MOVE_ITEM_IN_INVENTORY = 224,
+	GAME_MESSAGE_EQUIP_INVENTORY = 231,
+	GAME_MESSAGE_UNEQUIP_INVENTORY = 233
 };
 
 enum MultiInteractType : unsigned long
@@ -85,6 +88,7 @@ public:
 	static void updateReputation(long long objectID, long long reputation, SystemAddress receiver);
 	static void setInventorySize(long long objectID, InventoryType type, long size, SystemAddress receiver);
 	static void playFXEffect(long long objectID, long effectID, wstring effectType, float scale, string name, float priority, long long secondary, SystemAddress receiver, bool serialize = true);
+	static void stopFXEffect(long long objectID, string name, bool killImmediately, SystemAddress receiver);
 	static void fireEventClientSide(long long objectID, wstring args, long long object, long long senderID, SystemAddress receiver, long long param1 = 0, long param2 = -1);
 	static void addItemToInventory(long long objectID, bool isBound, long lot, InventoryType invType, long count, long totalCount, long long stackObjectID, short slot, SystemAddress receiver, bool showFlyingLoot = true);
 };

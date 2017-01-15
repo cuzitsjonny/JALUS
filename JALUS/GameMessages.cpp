@@ -55,17 +55,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					flagChange->Write((unsigned long)0);
 					Server::sendPacket(flagChange, clientAddress);
 
-					for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-					{
-						SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-
-						GameMessages::playFXEffect(session->charID, 2599, L"create", 1.0F, "mythranBodyGlow", 1.0F, -1, participant);
-						GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, 2599, L"create", 1.0F, "mythranBodyGlow", 1.0F, -1, clientAddress);
-
-						GameMessages::playFXEffect(session->charID, 1564, L"cast", 1.0F, "binocular_alert", 1.0F, -1, participant);
-						GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, 1564, L"cast", 1.0F, "binocular_alert", 1.0F, -1, clientAddress);
-					}
-
 					//BitStream* enableJetpack = PacketUtils::createGMBase(ready, 561);
 					//enableJetpack->Write(true);
 					//enableJetpack->Write(false);
@@ -485,7 +474,12 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				MissionInfo* info = &replica->currentMissions.at(i);
 
 				if (info->missionID == missionID)
-					info->rewardLOT = rewardLOT;
+				{
+					if (rewardLOT != ObjectsManager::getObjectByID(receiver)->lot)
+					{
+						info->rewardLOT = rewardLOT;
+					}
+				}
 			}
 			break;
 		}
@@ -902,6 +896,21 @@ void GameMessages::playFXEffect(long long objectID, long effectID, wstring effec
 	}
 
 	packet->Write(serialize);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::stopFXEffect(long long objectID, string name, bool killImmediately, SystemAddress receiver)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_STOP_FX_EFFECT);
+
+	packet->Write(killImmediately);
+
+	packet->Write((unsigned long)name.length());
+	for (int i = 0; i < name.length(); i++)
+	{
+		packet->Write(name[i]);
+	}
 
 	Server::sendPacket(packet, receiver);
 }

@@ -9,6 +9,8 @@
 #include "ReplicaObject.h"
 #include "ObjectsManager.h"
 #include "Scheduler.h"
+#include "GameMessages.h"
+#include "Helpers.h"
 
 bool ServerLoop::run;
 vector<char> ServerLoop::input;
@@ -143,6 +145,11 @@ void ServerLoop::start()
 	SystemAddress clientAddress;
 
 	Scheduler::runTaskTimer(100, 100, parseUserInput);
+
+	if (Server::isWorldInstance())
+	{
+		Scheduler::runTaskTimer(1000, 1000, Helpers::broadcastJonnysDumbEffects);
+	}
 
 	ServerLoop::run = true;
 	while (ServerLoop::run)

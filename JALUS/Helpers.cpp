@@ -9,6 +9,8 @@
 #include "LUZCache.h"
 #include "TransitionInfos.h"
 #include "General.h"
+#include "Server.h"
+#include "ObjectsManager.h"
 
 void Helpers::addMissionWithTasks(long long missionID, long long charID)
 {
@@ -29,4 +31,33 @@ void Helpers::createSyncedItemStack(long long ownerID, long lot, long count, boo
 	InventoryItem item = InventoryItems::getInventoryItem(id);
 
 	GameMessages::addItemToInventory(item.ownerID, item.isBound, item.lot, item.invType, item.count, item.count, item.objectID, item.slot, clientAddress);
+}
+
+void Helpers::broadcastJonnysDumbEffects()
+{
+	for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+	{
+		SystemAddress clientAddress = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+		for (int k = 0; k < Server::getReplicaManager()->GetParticipantCount(); k++)
+		{
+			SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
+			ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(participant);
+
+			if (replica != nullptr)
+			{
+				GameMessages::stopFXEffect(replica->objectID, "wisp_hands", false, participant);
+				GameMessages::stopFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, "wisp_hands", false, clientAddress);
+
+				GameMessages::playFXEffect(replica->objectID, 1573, L"on-anim", 1.0F, "wisp_hands", 1.0F, -1, participant);
+				GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, 1573, L"on-anim", 1.0F, "wisp_hands", 1.0F, -1, clientAddress);
+
+				GameMessages::stopFXEffect(replica->objectID, "wisp_hands_left", false, participant);
+				GameMessages::stopFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, "wisp_hands_left", false, clientAddress);
+
+				GameMessages::playFXEffect(replica->objectID, 1579, L"on-anim", 1.0F, "wisp_hands_left", 1.0F, -1, participant);
+				GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, 1579, L"on-anim", 1.0F, "wisp_hands_left", 1.0F, -1, clientAddress);
+			}
+		}
+	}
 }
