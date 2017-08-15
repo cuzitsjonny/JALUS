@@ -30,10 +30,9 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 	else if (iequals(cmd, "test"))
 	{
-		if (sender.getSenderID() != -1)
+		if (args.size() == 1)
 		{
-			Helpers::createSyncedItemStack(sender.getSenderID(), 13309, 1, true, true, sender.getClientAddress());
-			Helpers::createSyncedItemStack(sender.getSenderID(), 13375, 1, true, true, sender.getClientAddress());
+			Scheduler::cancelTask(stoul(args.at(0)));
 		}
 	}
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Common.h"
+#include "Logger.h"
 
 enum SchedulerTaskType
 {
@@ -12,6 +13,7 @@ enum SchedulerTaskType
 class SchedulerTask
 {
 public:
+	unsigned long id;
 	SchedulerTaskType type;
 	function<void()> function;
 	long long startTimestamp;
@@ -27,18 +29,50 @@ private:
 
 	template<class _Function, class... _Arguments>
 	inline static function<void()> bindToObject(_Function && function, _Arguments &&... arguments);
+
+	static unsigned long generateID()
+	{
+		unsigned long id = 0;
+		bool foundFree = false;
+
+		do
+		{
+			bool occupied = false;
+
+			for (int i = 0; i < tasks()->size(); i++)
+			{
+				SchedulerTask task = tasks()->at(i);
+
+				if (task.id == id)
+				{
+					occupied = true;
+				}
+			}
+
+			if (occupied)
+			{
+				id++;
+			}
+			else
+			{
+				foundFree = true;
+			}
+		} while (!foundFree);
+
+		return id;
+	}
 public:
 	template<class _Delay, class _Function, class... _Arguments>
-	inline static void runTaskLater(_Delay delay, _Function && function, _Arguments &&... arguments);
+	inline static unsigned long runTaskLater(_Delay delay, _Function && function, _Arguments &&... arguments);
 
 	template<class _Delay, class _Function, class... _Arguments>
-	inline static void runTaskTimer(_Delay delay, _Delay timerDelay, _Function && function, _Arguments &&... arguments);
+	inline static unsigned long runTaskTimer(_Delay delay, _Delay timerDelay, _Function && function, _Arguments &&... arguments);
 
 	template<class _Delay, class _Function, class... _Arguments>
-	inline static void runAsyncTaskLater(_Delay delay, _Function && function, _Arguments &&... arguments);
+	inline static unsigned long runAsyncTaskLater(_Delay delay, _Function && function, _Arguments &&... arguments);
 
 	template<class _Delay, class _Function, class... _Arguments>
-	inline static void runAsyncTaskTimer(_Delay delay, _Delay timerDelay, _Function && function, _Arguments &&... arguments);
+	inline static unsigned long runAsyncTaskTimer(_Delay delay, _Delay timerDelay, _Function && function, _Arguments &&... arguments);
 
 	static void tick()
 	{
@@ -109,6 +143,19 @@ public:
 			}
 		}
 	}
+
+	static void cancelTask(unsigned long taskID)
+	{
+		for (int i = 0; i < tasks()->size(); i++)
+		{
+			SchedulerTask task = tasks()->at(i);
+
+			if (task.id == taskID)
+			{
+				tasks()->erase(tasks()->begin() + i);
+			}
+		}
+	}
 };
 
 template<class _Function, class... _Arguments>
@@ -118,23 +165,27 @@ inline function<void()> Scheduler::bindToObject(_Function && function, _Argument
 }
 
 template<class _Delay, class _Function, class... _Arguments>
-inline void Scheduler::runTaskLater(_Delay delay, _Function && function, _Arguments &&... arguments)
+inline unsigned long Scheduler::runTaskLater(_Delay delay, _Function && function, _Arguments &&... arguments)
 {
 	SchedulerTask task;
 
+	task.id = generateID();
 	task.type = LATER_SYNC;
 	task.function = bindToObject(function, arguments...);
 	task.startTimestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 	task.delay = delay;
 
 	tasks()->push_back(task);
+
+	return task.id;
 }
 
 template<class _Delay, class _Function, class... _Arguments>
-inline void Scheduler::runTaskTimer(_Delay delay, _Delay timerDelay, _Function && function, _Arguments &&... arguments)
+inline unsigned long Scheduler::runTaskTimer(_Delay delay, _Delay timerDelay, _Function && function, _Arguments &&... arguments)
 {
 	SchedulerTask task;
 
+	task.id = generateID();
 	task.type = TIMER_SYNC;
 	task.function = bindToObject(function, arguments...);
 	task.startTimestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
@@ -142,26 +193,32 @@ inline void Scheduler::runTaskTimer(_Delay delay, _Delay timerDelay, _Function &
 	task.timerDelay = timerDelay;
 
 	tasks()->push_back(task);
+
+	return task.id;
 }
 
 template<class _Delay, class _Function, class... _Arguments>
-inline void Scheduler::runAsyncTaskLater(_Delay delay, _Function && function, _Arguments &&... arguments)
+inline unsigned long Scheduler::runAsyncTaskLater(_Delay delay, _Function && function, _Arguments &&... arguments)
 {
 	SchedulerTask task;
 
+	task.id = generateID();
 	task.type = LATER_ASYNC;
 	task.function = bindToObject(function, arguments...);
 	task.startTimestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 	task.delay = delay;
 
 	tasks()->push_back(task);
+
+	return task.id;
 }
 
 template<class _Delay, class _Function, class... _Arguments>
-inline void Scheduler::runAsyncTaskTimer(_Delay delay, _Delay timerDelay, _Function && function, _Arguments &&... arguments)
+inline unsigned long Scheduler::runAsyncTaskTimer(_Delay delay, _Delay timerDelay, _Function && function, _Arguments &&... arguments)
 {
 	SchedulerTask task;
 
+	task.id = generateID();
 	task.type = TIMER_ASYNC;
 	task.function = bindToObject(function, arguments...);
 	task.startTimestamp = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
@@ -169,4 +226,6 @@ inline void Scheduler::runAsyncTaskTimer(_Delay delay, _Delay timerDelay, _Funct
 	task.timerDelay = timerDelay;
 
 	tasks->push_back(task);
+
+	return task.id;
 }
