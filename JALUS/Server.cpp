@@ -66,7 +66,7 @@ bool Server::start()
 			Server::peerInterface->AttachPlugin(&Server::replicaManager);
 			Server::peerInterface->SetNetworkIDManager(&Server::networkIDManager);
 
-			/*Server::replicaManager.SetAutoParticipateNewConnections(true);*/
+			//Server::replicaManager.SetAutoParticipateNewConnections(true);
 			Server::replicaManager.SetAutoConstructToNewParticipants(true);
 			Server::replicaManager.SetAutoSerializeInScope(true);
 			Server::replicaManager.SetDefaultScope(true);

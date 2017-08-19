@@ -9,6 +9,7 @@
 #include "LVLCache.h"
 #include "ObjectsManager.h"
 #include "CharacterStats.h"
+#include <fstream>
 
 ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot, long long spawnerID, long mapClone)
 {
@@ -104,6 +105,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 
 				case ReplicaComponentID::REPLICA_COMPONENT_ID_DESTRUCTIBLE:
 				{
+					//Logger::info("A destructible object was created.");
 					destructibleIndex = new DestructibleIndex();
 
 					if (statsIndexParent < 0)
@@ -237,6 +239,87 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 					break;
 				}
 
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_SCRIPTED_ACTIVITY:
+				{
+					scriptedActivityIndex = new ScriptedActivityIndex();
+					
+
+					scriptedActivityIndex->flag = true;
+					scriptedActivityIndex->count = 0;
+					scriptedActivityIndex->playerObjectID = objectID;
+
+					scriptedActivityIndex->float_0 = 0.0;
+					scriptedActivityIndex->float_1 = 0.0;
+					scriptedActivityIndex->float_2 = 0.0;
+					scriptedActivityIndex->float_3 = 0.0;
+					scriptedActivityIndex->float_4 = 0.0;
+					scriptedActivityIndex->float_5 = 0.0;
+					scriptedActivityIndex->float_6 = 0.0;
+					scriptedActivityIndex->float_7 = 0.0;
+					scriptedActivityIndex->float_8 = 0.0;
+					scriptedActivityIndex->float_9 = 0.0;
+
+
+					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_BOUNCER:
+				{
+					bouncerIndex = new BouncerIndex();
+
+					bouncerIndex->flag_0 = true;
+					bouncerIndex->flag_1 = true;				
+
+
+					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_REBUILD:
+				{
+					rebuildIndex = new RebuildIndex();
+
+					/*string name = "buildActivator";
+					
+					long long id = Objects::generateObjectID();
+					ReplicaObject* other = new ReplicaObject(id, 6604, to_wstring(name), 0, pos, rot);
+					ObjectsManager::spawnObject(other);
+
+					other->parentID = id;*/
+
+
+					//rebuildIndex->flagTemp = true;
+					//rebuildIndex->un32Temp = 0;
+
+
+					/*rebuildIndex->scriptedActivityIndex->flag = true;
+					rebuildIndex->scriptedActivityIndex->count = 0;*/
+
+					rebuildIndex->scriptedActivityIndex;
+
+
+					rebuildIndex->flag_1 = true;
+
+					rebuildIndex->rebuildState = 0;
+					rebuildIndex->success = false;
+					rebuildIndex->enabled = true;
+
+					rebuildIndex->rebuildTimePassed = 0.0;
+					rebuildIndex->rebuildTimePaused = 0.0;
+
+					rebuildIndex->flag_0 = false;
+
+					rebuildIndex->pos_x = pos.x;
+					rebuildIndex->pos_y = pos.y;
+					rebuildIndex->pos_z = pos.z;
+
+					rebuildIndex->flag_0_1 = true;
+
+
+					
+
+					break;
+				}
+
 				}
 			}
 		}
@@ -244,6 +327,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 	else
 	{
 		string spawntemplate = LVLCache::getObjectProperty("spawntemplate", objectID).value;
+		string rebuild_activators = LVLCache::getObjectProperty("rebuild_activators", objectID).value;
 
 		if (spawntemplate.length() > 0)
 		{
@@ -251,8 +335,53 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 			ReplicaObject* replica = new ReplicaObject(id, stol(spawntemplate), L"", 0, pos, rot, objectID);
 			replica->scale = scale;
 			Server::getReplicaManager()->ReferencePointer(replica);
+
+			//ReplicaObject* activatorReplica = nullptr;
+
+			if (rebuild_activators.length() > 0)
+			{
+				long long activatorID = Objects::generateObjectID();
+
+				Rotation activatorRot = Rotation();
+
+				activatorRot.x = 0.0;
+				activatorRot.y = 0.0;
+				activatorRot.z = 0.0;
+				activatorRot.w = 1.0;
+
+
+				//ReplicaObject* activatorReplica = new ReplicaObject(activatorID, 6604, L"", 0, pos, activatorRot, objectID);
+				ReplicaObject* activatorReplica = new ReplicaObject(activatorID, 6604, L"", 0, pos, activatorRot, -1);
+				//activatorReplica = new ReplicaObject(activatorID, 6604, L"", 0, pos, activatorRot, -1);
+				activatorReplica->scale = scale;
+
+				activatorReplica->parentID = id;
+
+				replica->childIDs.push_back(activatorID);
+
+				replica->spawnerNodeID = 0;
+
+				Server::getReplicaManager()->ReferencePointer(activatorReplica);
+			}
+			//Server::getReplicaManager()->ReferencePointer(replica);
+			/*Server::getReplicaManager()->ReferencePointer(replica);
+			if (activatorReplica != nullptr)
+			{
+				Server::getReplicaManager()->ReferencePointer(activatorReplica);
+			}*/
+
 		}
+
+		/*if (rebuild_activators.length() > 0)
+		{
+			long long id = Objects::generateObjectID();
+			ReplicaObject* replica = new ReplicaObject(id, stol(rebuild_activators), L"", 0, pos, rot, objectID);
+			replica->scale = scale;
+
+			Server::getReplicaManager()->ReferencePointer(replica);
+		}*/
 	}
+
 }
 
 ReplicaObject::~ReplicaObject()
@@ -298,6 +427,18 @@ ReplicaObject::~ReplicaObject()
 	{
 		delete skillIndex;
 	}
+	if (scriptedActivityIndex != nullptr)
+	{
+		delete scriptedActivityIndex;
+	}
+	if (rebuildIndex != nullptr)
+	{
+		delete rebuildIndex;
+	}
+	if (bouncerIndex != nullptr)
+	{
+		delete bouncerIndex;
+	}
 	if (renderIndex != nullptr)
 	{
 		delete renderIndex;
@@ -306,6 +447,7 @@ ReplicaObject::~ReplicaObject()
 	{
 		delete index107;
 	}
+
 }
 
 ReplicaReturnResult ReplicaObject::SendConstruction(RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags, RakNet::BitStream* outBitStream, bool* includeTimestamp)
@@ -437,8 +579,42 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 		scriptIndex->writeToBitStream(bitStream, isConstruction);
 	if (skillIndex != nullptr)
 		skillIndex->writeToBitStream(bitStream, isConstruction);
+	if (scriptedActivityIndex != nullptr)
+		scriptedActivityIndex->writeToBitStream(bitStream, isConstruction);
+	if (rebuildIndex != nullptr)
+		rebuildIndex->writeToBitStream(bitStream, isConstruction);
+	if (bouncerIndex != nullptr)
+		bouncerIndex->writeToBitStream(bitStream, isConstruction);
 	if (renderIndex != nullptr)
 		renderIndex->writeToBitStream(bitStream, isConstruction);
 	if (index107 != nullptr)
 		index107->writeToBitStream(bitStream, isConstruction);
+
+	
+
+	/*if (lot == 6316 && logged == false)
+	{
+		unsigned char* raw_data = bitStream->GetData();
+		char* data = (char*)&raw_data[0];
+		unsigned int size = bitStream->GetNumberOfBytesUsed();
+
+		std::ofstream outfile("log.bin", std::ofstream::binary);
+		outfile.write(data, size);
+		logged = true;
+	}*/
+	
+
+	
+	
+
+
+	/*if (lot == 6316)
+	{
+		char* streamDump;
+		bitStream->Read(streamDump, bitStream->GetNumberOfBytesUsed());
+
+		Logger::info("DATA FOR LOT 6316: " + string(streamDump));
+	}*/
+
+
 }

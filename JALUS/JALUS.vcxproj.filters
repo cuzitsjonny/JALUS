@@ -189,6 +189,15 @@
     <ClCompile Include="Validate.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="BouncerIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
+    <ClCompile Include="RebuildIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptedActivityIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -364,6 +373,15 @@
     </ClInclude>
     <ClInclude Include="BlockingQueue.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="BouncerIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="RebuildIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptedActivityIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

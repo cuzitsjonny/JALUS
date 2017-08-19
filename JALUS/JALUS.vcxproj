@@ -159,6 +159,7 @@
     <ClCompile Include="Accounts.cpp" />
     <ClCompile Include="AuthenticationInstance.cpp" />
     <ClCompile Include="Bans.cpp" />
+    <ClCompile Include="BouncerIndex.cpp" />
     <ClCompile Include="CDClient.cpp" />
     <ClCompile Include="CharacterIndex.cpp" />
     <ClCompile Include="Characters.cpp" />
@@ -193,8 +194,10 @@
     <ClCompile Include="PacketUtils.cpp" />
     <ClCompile Include="PhantomPhysicsIndex.cpp" />
     <ClCompile Include="PingTool.cpp" />
+    <ClCompile Include="RebuildIndex.cpp" />
     <ClCompile Include="RenderIndex.cpp" />
     <ClCompile Include="ReplicaObject.cpp" />
+    <ClCompile Include="ScriptedActivityIndex.cpp" />
     <ClCompile Include="ScriptIndex.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerLoop.cpp" />
@@ -216,6 +219,7 @@
     <ClInclude Include="AuthenticationInstance.h" />
     <ClInclude Include="Bans.h" />
     <ClInclude Include="BlockingQueue.h" />
+    <ClInclude Include="BouncerIndex.h" />
     <ClInclude Include="CDClient.h" />
     <ClInclude Include="CharacterIndex.h" />
     <ClInclude Include="Characters.h" />
@@ -250,10 +254,12 @@
     <ClInclude Include="PacketUtils.h" />
     <ClInclude Include="PhantomPhysicsIndex.h" />
     <ClInclude Include="PingTool.h" />
+    <ClInclude Include="RebuildIndex.h" />
     <ClInclude Include="RenderIndex.h" />
     <ClInclude Include="ReplicaComponent.h" />
     <ClInclude Include="ReplicaObject.h" />
     <ClInclude Include="Scheduler.h" />
+    <ClInclude Include="ScriptedActivityIndex.h" />
     <ClInclude Include="ScriptIndex.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="ServerLoop.h" />

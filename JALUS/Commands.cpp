@@ -20,6 +20,7 @@
 #include "LUZCache.h"
 #include "Scheduler.h"
 #include "Helpers.h"
+#include "Missions.h"
 
 void Commands::performCommand(CommandSender sender, string cmd, vector<string> args)
 {
@@ -30,11 +31,197 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 	else if (iequals(cmd, "test"))
 	{
-		if (args.size() == 1)
+		if (sender.getSenderID() != -1)
 		{
-			Scheduler::cancelTask(stoul(args.at(0)));
+			Helpers::createSyncedItemStack(sender.getSenderID(), 13309, 1, true, true, sender.getClientAddress());
+			Helpers::createSyncedItemStack(sender.getSenderID(), 13375, 1, true, true, sender.getClientAddress());
 		}
 	}
+
+	else if (iequals(cmd, "drop"))
+	{
+
+		BitStream* packet = PacketUtils::createGMBase(sender.getSenderID(), 30);
+		Location loc = Locations::getLocation(sender.getSenderID());
+
+		long lot = 10431;
+
+		long long lootid = Objects::createObject(lot);
+
+		packet->Write(true);
+
+		packet->Write(true);
+		packet->Write(loc.position.x);
+		packet->Write(loc.position.y);
+		packet->Write(loc.position.z);
+		packet->Write((int)0);
+		packet->Write(lot);
+		packet->Write(lootid);
+		packet->Write(sender.getSenderID());
+		packet->Write(sender.getSenderID());
+		packet->Write(true);
+		//packet->Write(0);
+		//packet->Write(L"NiPoint3::ZERO");
+		packet->Write(loc.position.x);
+		packet->Write(loc.position.y+3);
+		packet->Write(loc.position.z);
+
+
+		Server::sendPacket(packet, sender.getClientAddress());
+		
+
+	}
+	else if (iequals(cmd, "fly") || iequals(cmd, "flight") || iequals(cmd, "jetpack") || iequals(cmd, "hover"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			bool enabled = true;
+			//excessive, I know
+			bool bBypassChecks = true; //default: false
+			bool bDoHover = false;
+			bool bUse = true;
+			int effectID = -1; //I wanna know the ID
+			float fAirspeed = 10;
+			float fMaxAirspeed = 15;
+			float fVertVel = 1;
+			int iWarningEffectID = -1;
+
+			if (args.size() == 1)
+			{
+				if (args.at(0) == "off" || stoi(args.at(0)) == 0)
+				{
+					bUse = false;
+				}
+			}
+			else
+			{
+				if (iequals(cmd, "hover"))
+				{
+					bDoHover = true;
+				}
+				bUse = true;
+			}
+
+			
+
+			if (enabled == true)
+			{
+				Session* session = Sessions::getSession(sender.getClientAddress());
+
+				BitStream* enableJetpack = PacketUtils::createGMBase(session->charID, 561);
+				enableJetpack->Write((bool)bBypassChecks);
+				enableJetpack->Write((bool)bDoHover);
+				enableJetpack->Write((bool)bUse);
+				enableJetpack->Write((int)effectID); // effectID
+				enableJetpack->Write((float)fAirspeed); // fAirspeed
+				enableJetpack->Write((float)fMaxAirspeed); // fMaxAirspeed
+				enableJetpack->Write((float)fVertVel); // fVertVel
+				enableJetpack->Write((int)iWarningEffectID); // iWarningEffectID
+				Server::sendPacket(enableJetpack, sender.getClientAddress());
+			}
+			else
+			{
+				sender.sendMessage("This response should never appear so something might be wrong.");
+			}
+		}
+
+
+
+
+	}
+
+	else if (iequals(cmd, "gravity") || iequals(cmd, "grav")) //gravity <0, 1, 2>
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1)
+			{
+				Session* session = Sessions::getSession(sender.getClientAddress());
+				BitStream* updateGravity = PacketUtils::createGMBase(session->charID, 541);
+				sender.sendMessage("Gravity set to: " + args.at(0));
+
+				//15-47
+
+				//string grav = args.at(0);
+
+				float grav = stof(args.at(0));
+
+				//grav = stof(args);
+
+				updateGravity->Write((float)grav);
+				//updateGravity->Write(0f);
+
+				//sender.sendMessage("Gravity set to: " + grav);
+				Server::sendPacket(updateGravity, sender.getClientAddress());
+
+			}
+
+			
+
+
+
+
+		}
+
+	}
+
+	else if (iequals(cmd, "gmadditem") || iequals(cmd, "give")) // /gmadditem
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1 || args.size() == 2)
+			{
+				string strLOT = args.at(0);
+				long amount = 1;
+
+				if (args.size() == 2)
+					amount = stol(args.at(1));
+
+				if (amount = 1)
+				{
+					long lot = stol(strLOT);
+
+					Helpers::createSyncedItemStack(sender.getSenderID(), lot, amount, true, true, sender.getClientAddress());
+				}
+			}
+		}
+	}
+
+	else if (iequals(cmd, "addmission") || iequals(cmd, "gmaddmission")) // /addmission <MissionID>
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1)
+			{
+				long long missionID = stoll(args.at(0));
+
+
+				Helpers::addMissionWithTasks(missionID, sender.getSenderID());
+
+
+			}
+		}
+	}
+
+	else if (iequals(cmd, "completemission")) // /completemission <MissionID>
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1)
+			{
+				long missionID = stoll(args.at(0));
+
+				Missions::completeMission(missionID, sender.getSenderID(), sender.getClientAddress());
+				//Missions::setMissionDone(missionID, sender.getSenderID());
+				//Missions::incrementMissionDoneCount(missionID, sender.getSenderID());
+
+				//Helpers::addMissionWithTasks(missionID, sender.getSenderID());
+
+
+			}
+		}
+	}
+
 
 	else if (iequals(cmd, "ping")) // /ping <string:address> <unsigned short:port>
 	{
@@ -299,6 +486,94 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("You can't use this command here!");
 	}
 
+	else if (iequals(cmd, "pos"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1)
+			{
+				string strRadius = args.at(0);
+
+				if (Validate::isValidFloat(strRadius))
+				{
+					float radius = stof(strRadius);
+
+					ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+
+					float min_x = player->controllablePhysicsIndex->pos_x - radius;
+					float min_y = player->controllablePhysicsIndex->pos_y - radius;
+					float min_z = player->controllablePhysicsIndex->pos_z - radius;
+
+					float max_x = player->controllablePhysicsIndex->pos_x + radius;
+					float max_y = player->controllablePhysicsIndex->pos_y + radius;
+					float max_z = player->controllablePhysicsIndex->pos_z + radius;
+
+
+					float playPos_x = player->controllablePhysicsIndex->pos_x;
+					float playPos_y = player->controllablePhysicsIndex->pos_y;
+					float playPos_z = player->controllablePhysicsIndex->pos_z;
+
+					sender.sendMessage("Position: " + std::to_string(playPos_x) + ", " + std::to_string(playPos_y) + ", " + std::to_string(playPos_z));
+
+					vector<ReplicaObject*> match = vector<ReplicaObject*>();
+
+					for (int i = 0; i < Server::getReplicaManager()->GetReplicaCount(); i++)
+					{
+						ReplicaObject* other = (ReplicaObject*)Server::getReplicaManager()->GetReplicaAtIndex(i);
+
+						if (other->clientAddress == UNASSIGNED_SYSTEM_ADDRESS)
+						{
+							if (other->controllablePhysicsIndex != nullptr)
+							{
+								ControllablePhysicsIndex* index = other->controllablePhysicsIndex;
+
+								sender.sendMessage("Position: " + std::to_string(index->pos_x) + ", " + std::to_string(index->pos_y) + ", " + std::to_string(index->pos_z));
+
+								/*if (index->pos_x >= min_x && index->pos_x <= max_x)
+								{
+									//sender.sendMessage("x Coords: index" + std::to_string(index->pos_x) + ", min " + std::to_string(min_x) + ", and max " + std::to_string(max_x));
+									if (index->pos_y >= min_y && index->pos_y <= max_y)
+									{
+										//sender.sendMessage("y Coords: index" + std::to_string(index->pos_y) + ", min " + std::to_string(min_y) + ", and max " + std::to_string(max_y));
+										if (index->pos_z >= min_z && index->pos_z <= max_z)
+										{
+											//sender.sendMessage("z Coords: index" + std::to_string(index->pos_z) + ", min " + std::to_string(min_z) + ", and max " + std::to_string(max_z));
+											
+											sender.sendMessage("Position: " + std::to_string(index->pos_x) + ", " + std::to_string(index->pos_y) + ", " + std::to_string(index->pos_z));
+											
+											match.push_back(other);
+										}
+									}
+								}*/
+							}
+
+							if (other->simplePhysicsIndex != nullptr)
+							{
+								SimplePhysicsIndex* index = other->simplePhysicsIndex;
+
+								sender.sendMessage("Position: " + std::to_string(index->pos_x) + ", " + std::to_string(index->pos_y) + ", " + std::to_string(index->pos_z));
+
+								/*if (index->pos_x >= min_x && index->pos_x <= max_x)
+								{
+									sender.sendMessage("x Coords: index" + std::to_string(index->pos_x) + ", min " + std::to_string(min_x) + ", and max " + std::to_string(max_x));
+									if (index->pos_y >= min_y && index->pos_y <= max_y)
+									{
+										sender.sendMessage("y Coords: index" + std::to_string(index->pos_y) + ", min " + std::to_string(min_y) + ", and max " + std::to_string(max_y));
+										if (index->pos_z >= min_z && index->pos_z <= max_z)
+										{
+											sender.sendMessage("z Coords: index" + std::to_string(index->pos_z) + ", min " + std::to_string(min_z) + ", and max " + std::to_string(max_z));
+											match.push_back(other);
+										}
+									}
+								}*/
+							}
+
+						}
+					}
+				}
+			}
+		}
+	}
 	else if (iequals(cmd, "nearme") || iequals(cmd, "aroundme")) // /nearme <float:radius>
 	{
 		if (sender.getSenderID() != -1)
@@ -335,10 +610,13 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 								if (index->pos_x >= min_x && index->pos_x <= max_x)
 								{
+									//sender.sendMessage("x Coords: index" + std::to_string(index->pos_x) + ", min " + std::to_string(min_x) + ", and max " + std::to_string(max_x));
 									if (index->pos_y >= min_y && index->pos_y <= max_y)
 									{
+										//sender.sendMessage("y Coords: index" + std::to_string(index->pos_y) + ", min " + std::to_string(min_y) + ", and max " + std::to_string(max_y));
 										if (index->pos_z >= min_z && index->pos_z <= max_z)
 										{
+											//sender.sendMessage("z Coords: index" + std::to_string(index->pos_z) + ", min " + std::to_string(min_z) + ", and max " + std::to_string(max_z));
 											match.push_back(other);
 										}
 									}
@@ -351,10 +629,13 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 								if (index->pos_x >= min_x && index->pos_x <= max_x)
 								{
+									sender.sendMessage("x Coords: index" + std::to_string(index->pos_x) + ", min " + std::to_string(min_x) + ", and max " + std::to_string(max_x));
 									if (index->pos_y >= min_y && index->pos_y <= max_y)
 									{
+										sender.sendMessage("y Coords: index" + std::to_string(index->pos_y) + ", min " + std::to_string(min_y) + ", and max " + std::to_string(max_y));
 										if (index->pos_z >= min_z && index->pos_z <= max_z)
 										{
+											sender.sendMessage("z Coords: index" + std::to_string(index->pos_z) + ", min " + std::to_string(min_z) + ", and max " + std::to_string(max_z));
 											match.push_back(other);
 										}
 									}
@@ -367,10 +648,13 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 								if (index->pos_x >= min_x && index->pos_x <= max_x)
 								{
+									//sender.sendMessage("x Coords: index" + std::to_string(index->pos_x) + ", min " + std::to_string(min_x) + ", and max " + std::to_string(max_x));
 									if (index->pos_y >= min_y && index->pos_y <= max_y)
 									{
+										//sender.sendMessage("y Coords: index" + std::to_string(index->pos_y) + ", min " + std::to_string(min_y) + ", and max " + std::to_string(max_y));
 										if (index->pos_z >= min_z && index->pos_z <= max_z)
 										{
+											//sender.sendMessage("z Coords: index" + std::to_string(index->pos_z) + ", min " + std::to_string(min_z) + ", and max " + std::to_string(max_z));
 											match.push_back(other);
 										}
 									}

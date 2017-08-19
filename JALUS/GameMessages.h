@@ -12,6 +12,7 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_MISSION_DIALOGUE_OK = 520,
 	GAME_MESSAGE_ID_NOTIFY_MISSION_TASK = 255,
 	GAME_MESSAGE_ID_HAS_BEEN_COLLECTED = 486,
+	GAME_MESSAGE_ID_DROP_CLIENT_LOOT = 30,
 	GAME_MESSAGE_ID_DIE = 37,
 	GAME_MESSAGE_ID_REQUEST_DIE = 38,
 	GAME_MESSAGE_ID_RESURRECT = 160,
@@ -41,7 +42,12 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_SMASH_ME = 1202,
 	GAME_MESSAGE_MOVE_ITEM_IN_INVENTORY = 224,
 	GAME_MESSAGE_EQUIP_INVENTORY = 231,
-	GAME_MESSAGE_UNEQUIP_INVENTORY = 233
+	GAME_MESSAGE_UNEQUIP_INVENTORY = 233,
+	GAME_MESSAGE_ENABLE_REBUILD = 213,
+	GAME_MESSAGE_REBUILD_CANCEL = 209,
+	GAME_MESSAGE_PLAY_CINEMATIC = 762,
+	GAME_MESSAGE_END_CINEMATIC = 763,
+	GAME_MESSAGE_CINEMATIC_UPDATE = 764
 };
 
 enum MultiInteractType : unsigned long
@@ -91,4 +97,5 @@ public:
 	static void stopFXEffect(long long objectID, string name, bool killImmediately, SystemAddress receiver);
 	static void fireEventClientSide(long long objectID, wstring args, long long object, long long senderID, SystemAddress receiver, long long param1 = 0, long param2 = -1);
 	static void addItemToInventory(long long objectID, bool isBound, long lot, InventoryType invType, long count, long totalCount, long long stackObjectID, short slot, SystemAddress receiver, bool showFlyingLoot = true);
+	static void clientDropLoot(long long objectID, int iCurrency, long lot, long long lootid, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver);
 };

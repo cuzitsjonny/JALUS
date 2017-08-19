@@ -15,10 +15,17 @@
 #include "Missions.h"
 #include "CollectibleIndex.h"
 #include "PhantomPhysicsIndex.h"
+#include "BouncerIndex.h"
+#include "RebuildIndex.h"
+#include "ScriptedActivityIndex.h"
 
 class ReplicaObject : public Replica
 {
 public:
+
+	bool logged = false;
+
+
 	long long objectID;
 	long lot;
 	wstring name;
@@ -44,8 +51,12 @@ public:
 	InventoryIndex* inventoryIndex = nullptr;
 	ScriptIndex* scriptIndex = nullptr;
 	SkillIndex* skillIndex = nullptr;
+	ScriptedActivityIndex* scriptedActivityIndex = nullptr;
+	RebuildIndex* rebuildIndex = nullptr;
+	BouncerIndex* bouncerIndex = nullptr;
 	RenderIndex* renderIndex = nullptr;
 	Index107* index107 = nullptr;
+	
 
 	ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot, long long spawnerID = -1, long mapClone = 0);
 	~ReplicaObject();
