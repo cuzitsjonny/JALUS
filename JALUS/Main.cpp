@@ -4,6 +4,7 @@
 #include "Logger.h"
 #include "Config.h"
 #include "ServerLoop.h"
+#include "TimeUtils.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {

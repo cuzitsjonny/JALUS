@@ -31,10 +31,9 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 	else if (iequals(cmd, "test"))
 	{
-		if (sender.getSenderID() != -1)
+		if (args.size() == 1)
 		{
-			Helpers::createSyncedItemStack(sender.getSenderID(), 13309, 1, true, true, sender.getClientAddress());
-			Helpers::createSyncedItemStack(sender.getSenderID(), 13375, 1, true, true, sender.getClientAddress());
+			Scheduler::cancelTask(stoul(args.at(0)));
 		}
 	}
 
@@ -629,13 +628,13 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 								if (index->pos_x >= min_x && index->pos_x <= max_x)
 								{
-									sender.sendMessage("x Coords: index" + std::to_string(index->pos_x) + ", min " + std::to_string(min_x) + ", and max " + std::to_string(max_x));
+									//sender.sendMessage("x Coords: index" + std::to_string(index->pos_x) + ", min " + std::to_string(min_x) + ", and max " + std::to_string(max_x));
 									if (index->pos_y >= min_y && index->pos_y <= max_y)
 									{
-										sender.sendMessage("y Coords: index" + std::to_string(index->pos_y) + ", min " + std::to_string(min_y) + ", and max " + std::to_string(max_y));
+										//sender.sendMessage("y Coords: index" + std::to_string(index->pos_y) + ", min " + std::to_string(min_y) + ", and max " + std::to_string(max_y));
 										if (index->pos_z >= min_z && index->pos_z <= max_z)
 										{
-											sender.sendMessage("z Coords: index" + std::to_string(index->pos_z) + ", min " + std::to_string(min_z) + ", and max " + std::to_string(max_z));
+											//sender.sendMessage("z Coords: index" + std::to_string(index->pos_z) + ", min " + std::to_string(min_z) + ", and max " + std::to_string(max_z));
 											match.push_back(other);
 										}
 									}

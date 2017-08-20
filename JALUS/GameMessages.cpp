@@ -29,80 +29,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		{
 
 
-
-
-		case GAME_MESSAGE_ID_DROP_CLIENT_LOOT:
-		{
-
-			BitStream* packet = PacketUtils::createGMBase(session->charID, 30);
-			Location loc = Locations::getLocation(session->charID);
-
-			long lot = 10431;
-
-			long long lootid = Objects::createObject(lot);
-
-			packet->Write(true);
-
-			packet->Write(true);
-			packet->Write(loc.position.x);
-			packet->Write(loc.position.y);
-			packet->Write(loc.position.z);
-			packet->Write((int)0);
-			packet->Write(lot);
-			packet->Write(lootid);
-			packet->Write(session->charID);
-			packet->Write(session->charID);
-			packet->Write(true);
-			//packet->Write(0);
-			//packet->Write(L"NiPoint3::ZERO");
-			packet->Write(loc.position.x);
-			packet->Write(loc.position.y + 3);
-			packet->Write(loc.position.z);
-
-
-
-			/*BitStream* packet = PacketUtils::createGMBase(session->charID, 30);
-
-			long lot = 10431;
-
-			long long lootid = Objects::createObject(lot);
-
-			packet->Write((bool)false);
-			packet->Write(L"NiPoint3::ZERO");
-			packet->Write((int)0);
-			packet->Write(10431);
-			packet->Write(lootid);
-			packet->Write(session->charID);
-			packet->Write(0);
-			packet->Write(L"NiPoint3::ZERO");
-			
-
-			Server::sendPacket(packet, clientAddress);*/
-
-
-			/*ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
-
-			Position pos = Position();
-			pos.x = player->controllablePhysicsIndex->pos_x;
-			pos.y = player->controllablePhysicsIndex->pos_y;
-			pos.z = player->controllablePhysicsIndex->pos_z;
-
-			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-			{
-				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-
-				GameMessages::clientDropLoot(session->charID, true, pos, 0, 0, 10431, session->charID, 0, pos, participant);
-			}*/
-
-
-
-
-
-
-
-		}
-
-
 		case GAME_MESSAGE_ID_SYNC_SKILL:
 		{
 			bool done;
@@ -144,9 +70,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			{
 				if (replica->simplePhysicsIndex != nullptr)
 				{
-					/*float objPos_x = replica->simplePhysicsIndex->pos_x;
-					float objPos_y = replica->simplePhysicsIndex->pos_y;
-					float objPos_z = replica->simplePhysicsIndex->pos_z;*/
+
+					// Starting implementation of item drops. This still can crash the server, but I am working on it.
 
 					Position finalPosition;
 					finalPosition.x = replica->simplePhysicsIndex->pos_x;
@@ -158,30 +83,35 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					spawnPosition.y = replica->simplePhysicsIndex->pos_y;
 					spawnPosition.z = replica->simplePhysicsIndex->pos_z;
 
+										
+					vector<long> items = CDClient::getItemDrops(replica->lot);
 
-					/*finalPosition.x = objPos_x;
-					finalPosition.y = objPos_y;
-					finalPosition.z = objPos_z;*/
+					Logger::info(std::to_string(items.size()));
 
-					/*spawnPosition.x = objPos_x;
-					spawnPosition.y = objPos_y;
-					spawnPosition.z = objPos_z;*/
 
-					//Logger::info("Position: " + std::to_string(objPos_x) + ", " + std::to_string(objPos_y) + ", " + std::to_string(objPos_z));
+					
+					for (int k = 0; k < items.size(); k++)
+					{
+						Logger::info("Possible Drops: " + std::to_string(items.at(k)));
+						//Logger::info("We want an item");
+						//Logger::info(std::to_string(items.size()));
+						
+						
+					}
 
-					long lot = 10431;
+					long randNum = (rand() % items.size() + 1);
 
-					long long lootid = Objects::createObject(lot);
-
-					//ReplicaObject* replica = ObjectsManager::getObjectByID(objectID);
-
+					Logger::info("Random Number: " + std::to_string(randNum));
 
 					for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 					{
 						SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
 
-						GameMessages::clientDropLoot(session->charID, 0, lot, lootid, session->charID, itemId, spawnPosition, finalPosition, participant);
+						GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
 					}
+
+
+					
 				}
 
 			}
@@ -1515,19 +1445,17 @@ void GameMessages::addItemToInventory(long long objectID, bool isBound, long lot
 }
 
 
-void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, long long lootid, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver)
+void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_DROP_CLIENT_LOOT);
 	//ReplicaObject* replica = ObjectsManager::getObjectByID(objectID);
 	//ReplicaObject* testing = ObjectsManager::getObjectByID(sourceObj);
 
-	
 
-	//spawnPosition.x = spawnPosition.x + ((rand() % 20) - 10);
-	//spawnPosition.y = pos_y;
-	//spawnPosition.z = pos_z;
 
-	//long long lootid = Objects::createObject(lot);
+
+
+	long long lootid = Objects::createObject(lot);
 
 	packet->Write(true);
 	

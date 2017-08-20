@@ -170,7 +170,7 @@ void WorldInstance::sendWorldInfo(SystemAddress clientAddress)
 		packet->Write(loc.position.z);
 
 
-		Logger::info("This is a test log. Player location coords:" + to_string((float)loc.position.x) + ", " + to_string((float)loc.position.y) + ", " + to_string((float)loc.position.z) + " (Address: " + string(clientAddress.ToString()) + ")");
+		//Logger::info("This is a test log. Player location coords:" + to_string((float)loc.position.x) + ", " + to_string((float)loc.position.y) + ", " + to_string((float)loc.position.z) + " (Address: " + string(clientAddress.ToString()) + ")");
 
 		if (CDClient::isActivityZone(loc.zoneID))
 			packet->Write((unsigned long)4);

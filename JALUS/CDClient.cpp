@@ -676,3 +676,57 @@ long CDClient::lookUpLevel(long long universeScore)
 
 	return r;
 }
+
+vector<long> CDClient::getItemDrops(long lot)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<long> r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT itemid FROM LootTable WHERE LootTableIndex = ";
+		ss << "(SELECT LootTableIndex FROM LootMatrix WHERE LootMatrixIndex = ";
+		ss << "(SELECT LootMatrixIndex FROM DestructibleComponent WHERE id = ";
+		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '7')));";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			long items = cmd.Field("itemid").asLong();
+			
+			r.push_back(cmd.Field("itemid").asLong());
+
+
+
+		}
+
+		
+
+
+
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+
+
