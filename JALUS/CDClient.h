@@ -72,4 +72,5 @@ public:
 	static vector<long> getAchievements(long prereqMissionID = -1);
 	static long lookUpLevel(long long universeScore);
 	static vector<long> getItemDrops(long lot);
+	static vector<long> getDropProbs(long lot);
 };

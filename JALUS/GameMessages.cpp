@@ -13,6 +13,7 @@
 #include "Characters.h"
 #include "LVLCache.h"
 #include "Commands.h"
+#include "Helpers.h"
 
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
@@ -28,9 +29,50 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		switch (gameMessageID)
 		{
 
+		case GAME_MESSAGE_ID_PICKUP_CURRENCY:
+		{
+
+			unsigned long currency;
+			Position position;
+
+			data->Read(currency);
+			data->Read(position);
+			
+			long long curCurrency = Characters::getCurrency(session->charID);
+			long long newCurrency = curCurrency + currency;
+			Characters::setCurrency(newCurrency, session->charID);
+			GameMessages::setCurrency(session->charID, newCurrency, position, clientAddress);
+
+
+		}
+
+		case GAME_MESSAGE_ID_PICKUP_ITEM:
+		{
+			//BitStream* pickupItem = PacketUtils::createGMBase(session->charID, 139);
+
+			long long lootObj;
+			long long playerID;
+
+			data->Read(lootObj);
+			data->Read(playerID);
+
+			Logger::info(std::to_string(lootObj));
+			Logger::info(std::to_string(playerID));
+
+
+			long getObjLOT = Objects::getLOT(lootObj);
+			Objects::deleteObject(lootObj);
+						
+
+			Logger::info("LOT: " + std::to_string(getObjLOT));
+
+			Helpers::createSyncedItemStack(playerID, getObjLOT, 1, false, false, session->clientAddress);
+
+		}
 
 		case GAME_MESSAGE_ID_SYNC_SKILL:
 		{
+			Logger::info("SyncSkill was called");
 			bool done;
 			int bitstreamSize;
 			RakNet::BitStream bitstream;
@@ -58,10 +100,10 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			bitstream.Read(itemId);
 
 
-			Logger::info(std::to_string(waste1));
-			Logger::info(std::to_string(waste2));
-			Logger::info(std::to_string(waste3));
-			Logger::info(std::to_string(itemId));
+			//Logger::info(std::to_string(waste1));
+			//Logger::info(std::to_string(waste2));
+			//Logger::info(std::to_string(waste3));
+			//Logger::info(std::to_string(itemId));
 
 
 			ReplicaObject* replica = ObjectsManager::getObjectByID(itemId);
@@ -86,28 +128,32 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 										
 					vector<long> items = CDClient::getItemDrops(replica->lot);
 
-					Logger::info(std::to_string(items.size()));
+					//Logger::info(std::to_string(items.size()));
 
 
 					
-					for (int k = 0; k < items.size(); k++)
+					/*for (int k = 0; k < items.size(); k++)
 					{
-						Logger::info("Possible Drops: " + std::to_string(items.at(k)));
+						//Logger::info("Possible Drops: " + std::to_string(items.at(k)));
 						//Logger::info("We want an item");
 						//Logger::info(std::to_string(items.size()));
 						
 						
-					}
+					}*/
 
-					long randNum = (rand() % items.size() + 1);
+					long randNum = (rand() % (items.size()-1));
 
-					Logger::info("Random Number: " + std::to_string(randNum));
+					int randCoin = (rand() % 10);
+					//int randCoin = 0;
+
+					//Logger::info("Random Number: " + std::to_string(randNum));
 
 					for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 					{
 						SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
 
 						GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
+						GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, participant);
 					}
 
 
