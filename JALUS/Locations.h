@@ -25,6 +25,7 @@ public:
 	Position position;
 	Rotation rotation;
 	ZoneID zoneID = ZoneID::INVALID_ZONE_ID;
+	long lastZoneID = 0;
 	long mapClone = 0;
 };
 
@@ -36,6 +37,7 @@ public:
 	static void init(string name, string structure);
 
 	static void saveLocation(Location loc, long long objectID);
+	static void firstTimeLocation(Location loc, long long objectID);
 	static void deleteLocation(long long objectID);
 	static Location getLocation(long long objectID);
 };

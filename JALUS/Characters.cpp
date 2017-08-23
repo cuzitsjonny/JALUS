@@ -97,7 +97,9 @@ long long Characters::createCharacter(long long accountID, string name, string u
 
 	Location loc;
 
-	loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
+	loc.lastZoneID = 0;
+	loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER; 
+	//loc.zoneID = ZoneID::ZONE_ID_VE_MOVIE_SCENE;
 	loc.mapClone = 0;
 
 	Position spp = LUZCache::getByZoneID(loc.zoneID)->spawnPointPos;
@@ -111,7 +113,9 @@ long long Characters::createCharacter(long long accountID, string name, string u
 	loc.rotation.z = spr.z;
 	loc.rotation.w = spr.w;
 
-	Locations::saveLocation(loc, id);
+
+	Locations::firstTimeLocation(loc, id);
+	//Locations::saveLocation(loc, id);
 
 	Helpers::addMissionWithTasks(664, id);
 	Helpers::addMissionWithTasks(488, id);

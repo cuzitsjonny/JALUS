@@ -37,6 +37,8 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 		}
 	}
 
+
+
 	else if (iequals(cmd, "drop"))
 	{
 

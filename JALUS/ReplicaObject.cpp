@@ -592,7 +592,8 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 
 	
 
-	/*if (lot == 6316 && logged == false)
+	//if (lot == 6316 && logged == false)
+	/*if (logged == false)
 	{
 		unsigned char* raw_data = bitStream->GetData();
 		char* data = (char*)&raw_data[0];

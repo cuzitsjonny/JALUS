@@ -24,4 +24,5 @@ public:
 	static long long createObject(long lot);
 	static void deleteObject(long long objectID);
 	static long getLOT(long long objectID);
-};
+	static vector<long> countLOTs(long long lot);
+	};

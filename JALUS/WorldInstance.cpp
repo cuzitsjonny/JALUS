@@ -153,7 +153,25 @@ void WorldInstance::sendWorldInfo(SystemAddress clientAddress)
 		BitStream* packet = PacketUtils::createPacketBase(RCT_WORLD_TO_CLIENT, WORLD_CLIENT_LOAD_STATIC_ZONE);
 
 		Location loc = Locations::getLocation(session->charID);
-		packet->Write(loc.zoneID);
+
+		//long zoneTest = 0;
+		
+		if (loc.lastZoneID == ZoneID::ZONE_ID_VE_MOVIE_SCENE)
+		{ 
+			//Logger::info("Playing VE Movie for");
+			packet->Write(ZoneID::ZONE_ID_VENTURE_EXPLORER);
+			loc.lastZoneID = 1000;
+			loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
+			Locations::saveLocation(loc, session->charID);
+			//loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
+		}
+		else
+		{
+			//Logger::info("ZoneID 0 thing didn't work");
+			packet->Write(loc.zoneID);
+		}
+
+		//packet->Write(loc.zoneID);
 		packet->Write((unsigned short)0);
 		packet->Write(loc.mapClone);
 

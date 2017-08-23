@@ -238,3 +238,53 @@ long Objects::getLOT(long long objectID)
 
 	return r;
 }
+
+vector<long> Objects::countLOTs(long long objectID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<long> r;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT lot FROM";
+		ss << " " << Objects::name << " ";
+		ss << "WHERE id = '" << objectID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			long items = cmd.Field("lot").asLong();
+
+			r.push_back(cmd.Field("lot").asLong());
+
+
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+

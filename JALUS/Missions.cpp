@@ -11,6 +11,7 @@
 #include "Flags.h"
 #include "LVLCache.h"
 #include "Helpers.h"
+#include "Objects.h"
 
 string Missions::name;
 
@@ -533,6 +534,39 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 									Missions::completeMission(info->missionID, charID, clientAddress);
 								}
 							}
+						}
+					}
+				}
+				break;
+			}
+
+			case MISSION_TASK_TYPE_COLLECT_ITEM:
+			{
+				if (other != nullptr)
+				{
+					for (int l = 0; l < task->targets.size(); l++)
+					{
+						if (other->lot == task->targets.at(l))
+						{
+							Logger::info("COLLECT_ITEM");
+							/*long collectibleID = other->inventoryIndex->items;
+							if (!Vectors::contains(task->value, (float)collectibleID))
+								task->value.push_back((float)collectibleID);
+
+							CurrentMissionTasks::setValue(task->uid, task->value, charID);
+							GameMessages::notifyMissionTask(charID, info->missionID, k, task->value.at(task->value.size() - 1), clientAddress);
+
+							if (task->value.size() >= task->targetValue)
+							{
+								if (!CDClient::isMission(info->missionID))
+									/*{
+									GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
+									}
+									else*/
+								//{
+								//	Missions::completeMission(info->missionID, charID, clientAddress);
+								//}
+							//}
 						}
 					}
 				}

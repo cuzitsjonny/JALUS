@@ -43,7 +43,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Characters::setCurrency(newCurrency, session->charID);
 			GameMessages::setCurrency(session->charID, newCurrency, position, clientAddress);
 
-
+			break;
 		}
 
 		case GAME_MESSAGE_ID_PICKUP_ITEM:
@@ -56,23 +56,23 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			data->Read(lootObj);
 			data->Read(playerID);
 
-			Logger::info(std::to_string(lootObj));
-			Logger::info(std::to_string(playerID));
+			//Logger::info(std::to_string(lootObj));
+			//Logger::info(std::to_string(playerID));
 
 
 			long getObjLOT = Objects::getLOT(lootObj);
 			Objects::deleteObject(lootObj);
-						
 
 			Logger::info("LOT: " + std::to_string(getObjLOT));
-
+			//Logger::info("Creating synced item stack");
 			Helpers::createSyncedItemStack(playerID, getObjLOT, 1, false, false, session->clientAddress);
-
+			
+			break;
 		}
 
 		case GAME_MESSAGE_ID_SYNC_SKILL:
 		{
-			Logger::info("SyncSkill was called");
+			//Logger::info("SyncSkill was called");
 			bool done;
 			int bitstreamSize;
 			RakNet::BitStream bitstream;
@@ -88,6 +88,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			}
 			data->Read(behaviorHandle);
 			data->Read(uiSkillHandle);
+
 			//response
 
 			long waste1;
@@ -100,11 +101,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			bitstream.Read(itemId);
 
 
+			Logger::info("BitstreamSize: " + std::to_string(bitstreamSize));
+
 			//Logger::info(std::to_string(waste1));
 			//Logger::info(std::to_string(waste2));
 			//Logger::info(std::to_string(waste3));
 			//Logger::info(std::to_string(itemId));
 
+			
 
 			ReplicaObject* replica = ObjectsManager::getObjectByID(itemId);
 
@@ -112,8 +116,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			{
 				if (replica->simplePhysicsIndex != nullptr)
 				{
-
-					// Starting implementation of item drops. This still can crash the server, but I am working on it.
 
 					Position finalPosition;
 					finalPosition.x = replica->simplePhysicsIndex->pos_x;
@@ -130,7 +132,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 					//Logger::info(std::to_string(items.size()));
 
-
+					
 					
 					/*for (int k = 0; k < items.size(); k++)
 					{
@@ -141,6 +143,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						
 					}*/
 
+					/*long randNum = (rand() % 1);
+
+					long probability = CDClient::getDropProbs(replica->lot);
+					Logger::info(std::to_string(probability));*/
+
+
+
+
 					long randNum = (rand() % (items.size()-1));
 
 					int randCoin = (rand() % 10);
@@ -148,356 +158,36 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 					//Logger::info("Random Number: " + std::to_string(randNum));
 
-					for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+					if (items.at(randNum) > 0)
 					{
-						SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+						for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+						{
+							SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
 
-						GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
-						GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, participant);
+							GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
+							GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, participant);
+
+							/*Location loc;
+							loc.position.x = replica->simplePhysicsIndex->pos_x;
+							loc.position.y = replica->simplePhysicsIndex->pos_y;
+							loc.position.z = replica->simplePhysicsIndex->pos_z;
+
+							Locations::saveLocation();*/
+
+
+						}
 					}
+
 
 
 					
 				}
 
 			}
+			break;
+		}
 
 		
-			//for (int i = 0; i < Server::getReplicaManager()->GetReplicaCount(); i++)
-			//{
-
-				/*ReplicaObject* replica = ObjectsManager::getObjectByID(itemId);
-
-				float objPos_x = replica->simplePhysicsIndex->pos_x;
-				float objPos_y = replica->simplePhysicsIndex->pos_y;
-				float objPos_z = replica->simplePhysicsIndex->pos_z;
-
-
-				//Position finalPosition;
-				//Position spawnPosition;
-
-				//SimplePhysicsIndex* index = other->simplePhysicsIndex;
-
-
-				//replica->simplePhysicsIndex->pos_x
-
-
-
-
-				//ReplicaObject* other = (ReplicaObject*)Server::getReplicaManager()->GetReplicaAtIndex(i);
-
-
-				//SimplePhysicsIndex* index = other->simplePhysicsIndex;
-
-				//sender.sendMessage("Position: " + std::to_string(index->pos_x) + ", " + std::to_string(index->pos_y) + ", " + std::to_string(index->pos_z));
-
-				//Logger::info("Position: " + std::to_string(index->pos_x) + ", " + std::to_string(index->pos_y) + ", " + std::to_string(index->pos_z));
-				Logger::info("Position: " + std::to_string(objPos_x) + ", " + std::to_string(objPos_y) + ", " + std::to_string(objPos_z));*/
-
-			//}
-
-			/*for (int i = 0; i < Server::getReplicaManager()->GetReplicaCount(); i++)
-			{
-				ReplicaObject* other = (ReplicaObject*)Server::getReplicaManager()->GetReplicaAtIndex(i);
-
-				if (other->clientAddress == UNASSIGNED_SYSTEM_ADDRESS)
-				{
-					if (other->simplePhysicsIndex != nullptr)
-					{
-						SimplePhysicsIndex* index = other->simplePhysicsIndex;
-
-						if (index->pos_x >= min_x && index->pos_x <= max_x)
-						{
-							sender.sendMessage("x Coords: index" + std::to_string(index->pos_x) + ", min " + std::to_string(min_x) + ", and max " + std::to_string(max_x));
-							if (index->pos_y >= min_y && index->pos_y <= max_y)
-							{
-								sender.sendMessage("y Coords: index" + std::to_string(index->pos_y) + ", min " + std::to_string(min_y) + ", and max " + std::to_string(max_y));
-								if (index->pos_z >= min_z && index->pos_z <= max_z)
-								{
-									sender.sendMessage("z Coords: index" + std::to_string(index->pos_z) + ", min " + std::to_string(min_z) + ", and max " + std::to_string(max_z));
-									match.push_back(other);
-								}
-							}
-						}
-					}
-				}
-			}*/
-
-			/*if (itemId > 1)
-			{
-				long lot = 10431;
-
-				long long lootid = Objects::createObject(lot);
-
-				ReplicaObject* replica = ObjectsManager::getObjectByID(itemId);
-
-				ReplicaObject* other = (ReplicaObject*)Server::getReplicaManager()->GetReplicaAtIndex(i);
-				
-				Position finalPosition;
-				Position spawnPosition;
-
-				//SimplePhysicsIndex* index = other->simplePhysicsIndex;
-
-				
-				replica->simplePhysicsIndex->pos_x = finalPosition.x;
-				replica->simplePhysicsIndex->pos_y = finalPosition.y;
-				replica->simplePhysicsIndex->pos_z = finalPosition.z;
-
-				replica->simplePhysicsIndex->pos_x = spawnPosition.x;
-				replica->simplePhysicsIndex->pos_y = spawnPosition.y;
-				replica->simplePhysicsIndex->pos_z = spawnPosition.z;
-
-
-
-				/*replica->controllablePhysicsIndex->pos_x = finalPosition.x;
-				replica->controllablePhysicsIndex->pos_y = finalPosition.y;
-				replica->controllablePhysicsIndex->pos_z = finalPosition.z;
-
-				replica->controllablePhysicsIndex->pos_x = spawnPosition.x;
-				replica->controllablePhysicsIndex->pos_y = spawnPosition.y;
-				replica->controllablePhysicsIndex->pos_z = spawnPosition.z;*/
-
-				/*Logger::info(std::to_string(session->charID));
-				Logger::info(std::to_string(lot));
-				Logger::info(std::to_string(lootid));
-				//Logger::info(std::to_string(itemId));
-
-				Logger::info(std::to_string(spawnPosition.x));
-				Logger::info(std::to_string(spawnPosition.y+2));
-				Logger::info(std::to_string(spawnPosition.z));
-
-				Logger::info(std::to_string(finalPosition.x));
-				Logger::info(std::to_string(finalPosition.y));
-				Logger::info(std::to_string(finalPosition.z));
-
-
-				
-				for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-				{
-					SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-
-
-
-					//GameMessages::clientDropLoot(session->charID, 0, lot, lootid, session->charID, itemId, spawnPosition, finalPosition, session->clientAddress);
-					GameMessages::clientDropLoot(session->charID, 1, lot, lootid, session->charID, itemId, spawnPosition, finalPosition, participant);
-				}
-			}*/
-
-			/*
-			
-			Method 1
-
-			What I can tell, I need to read the entry for a smashable from the LUZ files to get the smashable_loot_matrix. 
-			So for example, Smashable 4804 has a smashable_loot_matrix of 1:153. So 153 is the LootMatrixIndex. 
-			I search the LootMatrix table in CDClient for 153, and I can get the LootTableIndex which is 85. 
-			I then cycle though every entry that has a LootTableIndex of 85 and get what items it can drop.
-			
-			*/
-			/*ControllablePhysicsIndex* smashed = (ControllablePhysicsIndex*)ObjectsManager::getObjectByID(itemId);
-			if (smashed != NULL)
-			{
-				unsigned long smashedLot = itemId;
-				std::vector<unsigned long> itemsToDrop;
-
-				//we need to check for special cases in VE
-				//check to see if they have the rocket part
-				//if they dont, give it to them, if they do, pick a new one
-
-				//classic rocket parts
-				//blue rocket parts
-				//yellow rocket parts
-				//pink rocket parts
-
-
-				if (true=true)
-				{
-
-					long lot = 10431;
-
-					long long lootid = Objects::createObject(lot);
-
-					//ReplicaObject* replica = ObjectsManager::getObjectByID(objectID);
-
-
-
-					for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-					{
-						SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-
-						GameMessages::clientDropLoot(session->charID, 0, lot, lootid, session->charID, itemId, participant);
-					}
-
-
-
-				}*/
-
-
-
-				
-				/*switch (smashedLot) {
-				case 4803: {
-					//this is the all nose cones case
-					for (int i = 0; (rand() % 2) + 3 > i; i++)
-					{
-						itemsToDrop.push_back(163);
-					}
-
-					int possibleItems[4] = { 4713, 14444, 14451, 14454 };
-					int temp = possibleItems[rand() % 3];
-					//if (InventoryItems::getInventoryItem(session->charID)) {
-						
-					//if (InventoryTable::getItem(s.activeCharId, temp) < 0) {
-						itemsToDrop.push_back(temp);
-					//}
-					break;
-				}
-				case 4804: {
-					//common engines case
-					for (int i = 0; (rand() % 2) + 3 > i; i++)
-					{
-						itemsToDrop.push_back(163);
-					}
-					int possibleItems[4] = { 4715, 14446, 14453, 14456 };
-					int temp = possibleItems[rand() % 3];
-					//if (InventoryTable::getItem(s.activeCharId, temp) < 0) {
-						itemsToDrop.push_back(temp);
-					//}
-				}
-				case 4805: {
-					//this is the all cockpits case
-					for (int i = 0; (rand() % 2) + 3 > i; i++)
-					{
-						itemsToDrop.push_back(163);
-					}
-					int possibleItems[4] = { 4714, 14445, 14452, 14455 };
-					int temp = possibleItems[rand() % 3];
-					//if (InventoryTable::getItem(s.activeCharId, temp) < 0) {
-						itemsToDrop.push_back(temp);
-					//}
-					break;
-				}
-				case 6377: {
-					//this is the all engines case
-					for (int i = 0; (rand() % 2) + 3 > i; i++)
-					{
-						itemsToDrop.push_back(163);
-					}
-
-					int possibleItems[4] = { 4715, 14446, 14453, 14456 };
-					int temp = possibleItems[rand() % 3];
-					//if (InventoryTable::getItem(s.activeCharId, temp) < 0) {
-						itemsToDrop.push_back(temp);
-					//}
-					break;
-				}
-
-				default: {
-					itemsToDrop.push_back(7749);
-					break;
-				}
-				}
-
-				for (int i = 0; i < itemsToDrop.size(); i++)
-				{
-					long long lootid = Objects::createObject(itemsToDrop.at(i));
-
-					switch (itemsToDrop.at(i)) {
-					case 150: //old coin
-						break;
-					case 163: //1
-						SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-						//Position pos = Locations::getLocation(itemId);
-						//GameMessages::dropClientLoot(session->charID, smashed->getPosition().add(COMPONENT1_POSITION((rand() % 20) - 10, 5, (rand() % 20) - 10)), 1, 0, lootid, s.activeCharId, itemId, smashed->getPosition());
-						GameMessages::clientDropLoot(session->charID, 1, lootid, session->charID, itemId, e lsession->charID, smashed, participant);
-						break;
-					case 164: //bronze 5
-						break;
-					case 165: //10
-						break;
-					case 166: //bronze 25
-						break;
-					case 1635: //100
-						break;
-					case 1636: //silver 1
-						break;
-					case 1657: //1000
-						break;
-					case 1658: //silver 25
-						break;
-					case 1659: //gold 1
-						break;
-					case 1660: //gold 10
-						break;
-					case 1661: //gold 25
-						break;
-					default:
-						GameMSG::dropClientLoot(s.activeCharId, smashed->getPosition().add(COMPONENT1_POSITION((rand() % 20) - 10, 5, (rand() % 20) - 10)), 0, itemsToDrop.at(i), lootid, 0, itemId, smashed->getPosition());
-						break;
-					}
-				}
-			}*/
-
-		}
-
-		case GAME_MESSAGE_PLAY_CINEMATIC:
-		{
-			
-			//BitStream* enableJetpack = PacketUtils::createGMBase(session->charID, 561);
-			BitStream* playCinematic = PacketUtils::createGMBase(session->charID, 762);
-			//BitStream* playCinematic = PacketUtils::createGMBase(objectID, 0xd5); // We'll actually add the GM ID to the like this others struct later
-			playCinematic->Write((bool)true); // allowGhostUpdates
-			playCinematic->Write((bool)false); // bCloseMultiInteract
-			playCinematic->Write((bool)true); // bSendServerNotify
-			playCinematic->Write((bool)false); // bUseControlledObjectForAudioListener
-			playCinematic->Write(L"RETURN"); // EndBehavior
-			playCinematic->Write((bool)false); // hidePlayerDuringCine
-			playCinematic->Write((float)-1.0f); // leadIn
-			playCinematic->Write((bool)false); // leavePlaterLockedWhenFinished
-			playCinematic->Write((bool)true); // lockPlayer
-			playCinematic->Write((std::wstring)L"introcinematiccrash.bik"); // pathName
-			playCinematic->Write((bool)false); // result
-			playCinematic->Write((bool)false); // skipIfSamePath
-			playCinematic->Write((float)0.0f); // startTimeAdvance
-
-			Server::sendPacket(playCinematic, clientAddress);
-
-		}
-
-
-		case GAME_MESSAGE_END_CINEMATIC:
-		{
-
-			//BitStream* enableJetpack = PacketUtils::createGMBase(session->charID, 561);
-			BitStream* endCinematic = PacketUtils::createGMBase(session->charID, 763);
-			//BitStream* playCinematic = PacketUtils::createGMBase(objectID, 0xd5); // We'll actually add the GM ID to the like this others struct later
-			endCinematic->Write((float)-1.0f); // leadOut
-			endCinematic->Write((bool)false); // leavePlayerLocked
-			endCinematic->Write((std::wstring)L"introcinematiccrash.bik"); // pathName
-
-
-			Server::sendPacket(endCinematic, clientAddress);
-
-		}
-
-		case GAME_MESSAGE_CINEMATIC_UPDATE:
-		{
-
-			//BitStream* enableJetpack = PacketUtils::createGMBase(session->charID, 561);
-			BitStream* cinematicUpdate = PacketUtils::createGMBase(session->charID, 763);
-			//BitStream* playCinematic = PacketUtils::createGMBase(objectID, 0xd5); // We'll actually add the GM ID to the like this others struct later
-			cinematicUpdate->Write(L"STARTED"); // event
-			cinematicUpdate->Write((float)-1.0f); // overallTime
-			cinematicUpdate->Write((std::wstring)L"introcinematiccrash.bik"); // pathName
-			cinematicUpdate->Write((float)-1.0f); // pathTime
-			cinematicUpdate->Write((int)-1); // waypoint
-
-
-			Server::sendPacket(cinematicUpdate, clientAddress);
-
-		}
-
-
-
 		case GAME_MESSAGE_ENABLE_REBUILD:
 		{
 			
@@ -527,7 +217,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Server::sendPacket(packet, clientAddress);
 
 
-
+			break;
 
 		}
 
@@ -1494,14 +1184,29 @@ void GameMessages::addItemToInventory(long long objectID, bool isBound, long lot
 void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_DROP_CLIENT_LOOT);
-	//ReplicaObject* replica = ObjectsManager::getObjectByID(objectID);
-	//ReplicaObject* testing = ObjectsManager::getObjectByID(sourceObj);
+	
 
+	
+	/*vector<long> itemLOTs = Objects::countLOTs(objectID);
+	long long lootid;
+	if (itemLOTs.size() == 0)
+	{
+		lootid = Objects::createObject(lot);
+	}
+	else 
+	{
+		lootid = Objects::generateObjectID();
+	}*/
 
 
 
 
 	long long lootid = Objects::createObject(lot);
+
+
+
+
+
 
 	packet->Write(true);
 	
@@ -1533,3 +1238,9 @@ void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, l
 
 	Server::sendPacket(packet, receiver);
 }
+
+
+
+
+
+

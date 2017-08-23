@@ -9,6 +9,7 @@
 #include "InventoryItems.h"
 #include "Config.h"
 #include "TransitionInfos.h"
+#include "Objects.h"
 
 void CharactersInstance::processPacket(BitStream* data, SystemAddress clientAddress, ClientToWorldPacketID packetID)
 {
@@ -118,8 +119,12 @@ void CharactersInstance::sendCharacterList(SystemAddress clientAddress)
 			response->Write((unsigned long)0);
 
 			Location loc = Locations::getLocation(id);
+			
+			//Logger::info("ZoneID: " + std::to_string(loc.zoneID) + " for " + std::to_string(id));
+						
 
-			response->Write(loc.zoneID);
+			response->Write(loc.zoneID); // ZONE ID; 0 FOR VE MOVIE
+
 			response->Write((unsigned short)0);
 			response->Write(loc.mapClone);
 
@@ -135,6 +140,7 @@ void CharactersInstance::sendCharacterList(SystemAddress clientAddress)
 		}
 
 		Server::sendPacket(response, clientAddress);
+
 	}
 }
 
@@ -281,3 +287,4 @@ long long CharactersInstance::redirectToWorldInstance(BitStream* data, SystemAdd
 
 	return -1;
 }
+
