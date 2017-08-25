@@ -175,7 +175,7 @@ long CharacterStyles::getLOTFromStyle(long shirtColor, long shirtStyle)
 			break;
 
 		case 16:
-			lot = 4491;
+			lot = 4525;
 			break;
 
 		case 84:

@@ -37,7 +37,7 @@ private:
 		
 			do
 			{
-			bool occupied = false;
+				bool occupied = false;
 			
 				for (int i = 0; i < tasks()->size(); i++)
 				{

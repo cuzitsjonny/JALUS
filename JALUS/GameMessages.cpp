@@ -115,6 +115,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			//Logger::info(std::to_string(waste3));
 			//Logger::info(std::to_string(itemId));
 
+			Logger::info("ItemID: " + std::to_string(itemId));
+
 			
 
 			ReplicaObject* replica = ObjectsManager::getObjectByID(itemId);
@@ -138,14 +140,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					vector<long> items = CDClient::getItemDrops(replica->lot);
 
 					//Logger::info(std::to_string(items.size()));
-
+					Logger::info("Vector Size: " + std::to_string(items.size()));
 					
 					
 					/*for (int k = 0; k < items.size(); k++)
 					{
-						//Logger::info("Possible Drops: " + std::to_string(items.at(k)));
-						//Logger::info("We want an item");
-						//Logger::info(std::to_string(items.size()));
+						Logger::info("Possible Drops: " + std::to_string(items.at(k)));
+						Logger::info("We want an item");
+						Logger::info(std::to_string(items.size()));
 						
 						
 					}*/
@@ -158,12 +160,13 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 
 
-					long randNum = (rand() % (items.size()-1) + 0);
+					long randNum = (rand() % (items.size()-1));
 
 					int randCoin = (rand() % 10);
 					//int randCoin = 0;
 
-					//Logger::info("Random Number: " + std::to_string(randNum));
+					Logger::info("Vector Size: " + std::to_string(items.size()));
+					Logger::info("Random Number: " + std::to_string(randNum));
 
 					if (items.at(randNum) > 0)
 					{
@@ -172,14 +175,12 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 							SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
 
 							GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
-							GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, participant);
-
-							/*Location loc;
-							loc.position.x = replica->simplePhysicsIndex->pos_x;
-							loc.position.y = replica->simplePhysicsIndex->pos_y;
-							loc.position.z = replica->simplePhysicsIndex->pos_z;
-
-							Locations::saveLocation();*/
+							
+							if (randNum > 0) // If this isn't here and the random number is 0, it will spawn LOT 0, which is just a question mark.
+							{
+								GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, participant);
+							}
+							
 
 
 						}
