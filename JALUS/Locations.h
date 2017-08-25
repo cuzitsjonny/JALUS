@@ -25,7 +25,6 @@ public:
 	Position position;
 	Rotation rotation;
 	ZoneID zoneID = ZoneID::INVALID_ZONE_ID;
-	long lastZoneID = 0;
 	long mapClone = 0;
 };
 

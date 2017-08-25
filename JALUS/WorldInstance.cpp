@@ -155,19 +155,19 @@ void WorldInstance::sendWorldInfo(SystemAddress clientAddress)
 		Location loc = Locations::getLocation(session->charID);
 
 		//long zoneTest = 0;
-		
-		if (loc.lastZoneID == ZoneID::ZONE_ID_VE_MOVIE_SCENE)
+
+		if (loc.zoneID == ZoneID::ZONE_ID_VE_MOVIE_SCENE)
 		{ 
-			//Logger::info("Playing VE Movie for");
-			packet->Write(ZoneID::ZONE_ID_VENTURE_EXPLORER);
-			loc.lastZoneID = 1000;
+			Logger::info("Playing VE Movie");
+			//loc.lastZoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
 			loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
 			Locations::saveLocation(loc, session->charID);
 			//loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
+			packet->Write(ZoneID::ZONE_ID_VENTURE_EXPLORER);
 		}
 		else
 		{
-			//Logger::info("ZoneID 0 thing didn't work");
+			Logger::info("Loading world: " + std::to_string(loc.zoneID));
 			packet->Write(loc.zoneID);
 		}
 

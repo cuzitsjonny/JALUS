@@ -55,9 +55,9 @@ void Locations::saveLocation(Location loc, long long objectID)
 		stringstream ss;
 		ss << "REPLACE INTO";
 		ss << " " << Locations::name << " ";
-		ss << "(id, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z, rot_w, zone_id, map_clone, last_zone_id)";
+		ss << "(id, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z, rot_w, zone_id, map_clone)";
 		ss << " VALUES ";
-		ss << "('" << objectID << "', '" << loc.position.x << "', '" << loc.position.y << "', '" << loc.position.z << "', '" << loc.rotation.x << "', '" << loc.rotation.y << "', '" << loc.rotation.z << "', '" << loc.rotation.w << "', '" << loc.zoneID << "', '" << loc.mapClone << "', '" << 0 << "');";
+		ss << "('" << objectID << "', '" << loc.position.x << "', '" << loc.position.y << "', '" << loc.position.z << "', '" << loc.rotation.x << "', '" << loc.rotation.y << "', '" << loc.rotation.z << "', '" << loc.rotation.w << "', '" << loc.zoneID << "', '" << loc.mapClone << "');";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
@@ -91,9 +91,9 @@ void Locations::firstTimeLocation(Location loc, long long objectID)
 		stringstream ss;
 		ss << "REPLACE INTO";
 		ss << " " << Locations::name << " ";
-		ss << "(id, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z, rot_w, zone_id, map_clone, last_zone_id)";
+		ss << "(id, pos_x, pos_y, pos_z, rot_x, rot_y, rot_z, rot_w, zone_id, map_clone)";
 		ss << " VALUES ";
-		ss << "('" << objectID << "', '" << loc.position.x << "', '" << loc.position.y << "', '" << loc.position.z << "', '" << loc.rotation.x << "', '" << loc.rotation.y << "', '" << loc.rotation.z << "', '" << loc.rotation.w << "', '" << 0 << "', '" << loc.mapClone << "', '" << 0 << "');";
+		ss << "('" << objectID << "', '" << loc.position.x << "', '" << loc.position.y << "', '" << loc.position.z << "', '" << loc.rotation.x << "', '" << loc.rotation.y << "', '" << loc.rotation.z << "', '" << loc.rotation.w << "', '" << 0 << "', '" << loc.mapClone << "');";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
@@ -181,7 +181,6 @@ Location Locations::getLocation(long long objectID)
 			r.rotation.w = cmd.Field("rot_w").asDouble();
 			r.zoneID = (ZoneID)cmd.Field("zone_id").asLong();
 			r.mapClone = cmd.Field("map_clone").asLong();
-			r.lastZoneID = cmd.Field("last_zone_id").asLong();
 		}
 
 		con.Commit();

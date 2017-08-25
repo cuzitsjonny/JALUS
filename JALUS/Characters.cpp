@@ -97,7 +97,6 @@ long long Characters::createCharacter(long long accountID, string name, string u
 
 	Location loc;
 
-	loc.lastZoneID = 0;
 	loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER; 
 	//loc.zoneID = ZoneID::ZONE_ID_VE_MOVIE_SCENE;
 	loc.mapClone = 0;

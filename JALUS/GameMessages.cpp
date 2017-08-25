@@ -72,6 +72,13 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_SYNC_SKILL:
 		{
+
+			//Get couins DestructibleComponent, CurrencyIndex, and then look at currency table
+			// Example:
+			/*SELECT minvalue, maxvalue FROM CurrencyTable WHERE CurrencyIndex = 
+			(SELECT CurrencyIndex FROM DestructibleComponent WHERE id = 
+			(SELECT component_id FROM ComponentsRegistry WHERE id = 4804 AND component_type = '7'));*/
+
 			//Logger::info("SyncSkill was called");
 			bool done;
 			int bitstreamSize;
@@ -151,7 +158,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 
 
-					long randNum = (rand() % (items.size()-1));
+					long randNum = (rand() % (items.size()-1) + 0);
 
 					int randCoin = (rand() % 10);
 					//int randCoin = 0;
