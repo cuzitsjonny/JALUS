@@ -75,4 +75,5 @@ public:
 	static vector<long double> getDropProbs(long lot, long row);
 	static vector<long> getCoinDrops(long lot);
 	static vector<long> getLootTableIndexCount(long lot);
+	static long getIsPowerup(long lot);
 };

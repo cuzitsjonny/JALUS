@@ -887,6 +887,48 @@ vector<long> CDClient::getLootTableIndexCount(long lot)
 	return r;
 }
 
+long CDClient::getIsPowerup(long lot)
+{
+	SAConnection con;
+	SACommand cmd;
 
+	long r = 0;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		//ss << "SELECT * FROM Objects WHERE type = 'Powerup';";
+		//ss << "SELECT type FROM Objects WHERE id = '" << lot << "';";
+		//ss << "SELECT type FROM Objects WHERE id = '" << lot << "';";
+		ss << "SELECT COUNT(*) As isPowerup FROM Objects WHERE type = 'Powerup' AND id = '" << lot << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			long isPowerup = cmd.Field("isPowerup").asLong();
+
+			r = cmd.Field("isPowerup").asLong();
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
 
 

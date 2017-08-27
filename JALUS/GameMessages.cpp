@@ -66,10 +66,18 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			long getObjLOT = Objects::getLOT(lootObj);
 			Objects::deleteObject(lootObj);
 
-			Logger::info("LOT: " + std::to_string(getObjLOT));
-			//Logger::info("Creating synced item stack");
-			Helpers::createSyncedItemStack(playerID, getObjLOT, 1, false, false, session->clientAddress);
-			
+			long isPowerup = CDClient::getIsPowerup(getObjLOT);
+			if (isPowerup == 1)
+			{
+				//Logger::info("Todo: make this add to stats");
+			}
+			else 
+			{
+				Logger::info("LOT: " + std::to_string(getObjLOT));
+				//Logger::info("Creating synced item stack");
+				Helpers::createSyncedItemStack(playerID, getObjLOT, 1, false, false, session->clientAddress);
+
+			}
 			break;
 		}
 
