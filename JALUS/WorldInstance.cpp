@@ -292,8 +292,8 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 
 		long inventorySize = Characters::getMaxInventory(session->charID);
 		xml << "<b t=\"0\" m=\"" << inventorySize << "\"/>";
-		xml << "<b t=\"2\" m=\"" << inventorySize << "\"/>";
-		xml << "<b t=\"5\" m=\"" << inventorySize << "\"/>";
+		//xml << "<b t=\"2\" m=\"" << "10000" << "\"/>";
+		xml << "<b t=\"5\" m=\"" << "200" << "\"/>";
 		xml << "<b t=\"7\" m=\"" << inventorySize << "\"/>";
 
 		xml << "</bag>";

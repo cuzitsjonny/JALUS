@@ -117,6 +117,7 @@ string ServerRoles::toString(ServerRole serverRole)
 
 	default:
 		return "WorldInstance" + to_string(ServerRoles::toZoneID(serverRole));
+		//return "WorldInstance" + to_string(ServerRoles::toZoneID(SERVER_ROLE_AVANT_GARDENS));
 
 	}
 }

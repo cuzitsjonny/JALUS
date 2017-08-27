@@ -677,7 +677,7 @@ long CDClient::lookUpLevel(long long universeScore)
 	return r;
 }
 
-vector<long> CDClient::getItemDrops(long lot)
+vector<long> CDClient::getItemDrops(long lot, long LootTableIndex)
 {
 	SAConnection con;
 	SACommand cmd;
@@ -689,10 +689,11 @@ vector<long> CDClient::getItemDrops(long lot)
 		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
 
 		stringstream ss;
-		ss << "SELECT itemid FROM LootTable WHERE LootTableIndex = ";
+		ss << "SELECT itemid FROM LootTable WHERE LootTableIndex = " << LootTableIndex << ";";
+		/*ss << "SELECT itemid FROM LootTable WHERE LootTableIndex = ";
 		ss << "(SELECT LootTableIndex FROM LootMatrix WHERE LootMatrixIndex = ";
 		ss << "(SELECT LootMatrixIndex FROM DestructibleComponent WHERE id = ";
-		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '7')));";
+		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '7')));";*/
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
@@ -728,21 +729,21 @@ vector<long> CDClient::getItemDrops(long lot)
 	return r;
 }
 
-vector<long> CDClient::getDropProbs(long lot)
+vector<long double> CDClient::getDropProbs(long lot, long row)
 {
 	SAConnection con;
 	SACommand cmd;
 
-	vector<long> r;
+	vector<long double> r;
 
 	try
 	{
 		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
 
 		stringstream ss;
-		ss << "SELECT percent, minToDrop, maxToDrop FROM LootMatrix WHERE LootMatrixIndex = ";
+		ss << "SELECT percent, minToDrop, maxToDrop, LootTableIndex FROM LootMatrix WHERE LootMatrixIndex =";
 		ss << "(SELECT LootMatrixIndex FROM DestructibleComponent WHERE id = ";
-		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '7'));";
+		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '7')) LIMIT 1 OFFSET " << row << ";";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
@@ -750,9 +751,15 @@ vector<long> CDClient::getDropProbs(long lot)
 
 		while (cmd.FetchNext())
 		{
-			long items = cmd.Field("itemid").asLong();
+			long double percent = cmd.Field("percent").asDouble();
+			long minToDrop = cmd.Field("minToDrop").asLong();
+			long maxToDrop = cmd.Field("maxToDrop").asLong();
+			long lootTableIndex = cmd.Field("LootTableIndex").asLong();
 
-			r.push_back(cmd.Field("itemid").asLong());
+			r.push_back(cmd.Field("percent").asDouble());
+			r.push_back(cmd.Field("minToDrop").asLong());
+			r.push_back(cmd.Field("maxToDrop").asLong());
+			r.push_back(cmd.Field("LootTableIndex").asLong());
 
 
 
@@ -777,5 +784,109 @@ vector<long> CDClient::getDropProbs(long lot)
 
 	return r;
 }
+
+vector<long> CDClient::getCoinDrops(long lot)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<long> r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT minvalue, maxvalue FROM CurrencyTable WHERE CurrencyIndex = ";
+		ss << "(SELECT CurrencyIndex FROM DestructibleComponent WHERE id = ";
+		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '7'));";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			long minvalue = cmd.Field("minvalue").asLong();
+			long maxvalue = cmd.Field("maxvalue").asLong();
+			
+			r.push_back(cmd.Field("minvalue").asLong());
+			r.push_back(cmd.Field("maxvalue").asLong());
+
+
+
+		}
+
+
+
+
+
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+vector<long> CDClient::getLootTableIndexCount(long lot)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<long> r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT COUNT(*) As RowCount FROM LootMatrix WHERE LootMatrixIndex = ";
+		ss << "(SELECT LootMatrixIndex FROM DestructibleComponent WHERE id = ";
+		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '7'));";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			long lootTableIndexCount = cmd.Field("RowCount").asLong();
+
+			r.push_back(cmd.Field("RowCount").asLong());
+
+
+
+		}
+
+
+
+
+
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+
 
 

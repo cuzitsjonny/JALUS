@@ -48,6 +48,9 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_PICKUP_ITEM:
 		{
+			//todo: blacklist powerups from being added to the player inventory
+			//todo: make items stack
+
 			//BitStream* pickupItem = PacketUtils::createGMBase(session->charID, 139);
 
 			long long lootObj;
@@ -108,7 +111,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			bitstream.Read(itemId);
 
 
-			Logger::info("BitstreamSize: " + std::to_string(bitstreamSize));
+			//Logger::info("BitstreamSize: " + std::to_string(bitstreamSize));
 
 			//Logger::info(std::to_string(waste1));
 			//Logger::info(std::to_string(waste2));
@@ -135,58 +138,68 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					spawnPosition.x = replica->simplePhysicsIndex->pos_x;
 					spawnPosition.y = replica->simplePhysicsIndex->pos_y;
 					spawnPosition.z = replica->simplePhysicsIndex->pos_z;
-
-										
-					vector<long> items = CDClient::getItemDrops(replica->lot);
-
-					//Logger::info(std::to_string(items.size()));
-					Logger::info("Vector Size: " + std::to_string(items.size()));
 					
-					
-					/*for (int k = 0; k < items.size(); k++)
+					vector<long> lootTableIndexCount = CDClient::getLootTableIndexCount(replica->lot);
+
+					for (int k = 0; k < lootTableIndexCount.at(0); k++)
 					{
-						Logger::info("Possible Drops: " + std::to_string(items.at(k)));
-						Logger::info("We want an item");
-						Logger::info(std::to_string(items.size()));
+						vector<long double> probabilities = CDClient::getDropProbs(replica->lot, k);
+
+						vector<long> items = CDClient::getItemDrops(replica->lot, probabilities.at(3));
 						
+						long double r3 = 0 + static_cast <long double> (rand()) / (static_cast <long double> (RAND_MAX / (1 - 0)));
 						
-					}*/
-
-					/*long randNum = (rand() % 1);
-
-					long probability = CDClient::getDropProbs(replica->lot);
-					Logger::info(std::to_string(probability));*/
-
-
-
-
-					long randNum = (rand() % (items.size()-1));
-
-					int randCoin = (rand() % 10);
-					//int randCoin = 0;
-
-					Logger::info("Vector Size: " + std::to_string(items.size()));
-					Logger::info("Random Number: " + std::to_string(randNum));
-
-					if (items.at(randNum) > 0)
-					{
+						long randMinMax = probabilities.at(1) + static_cast <long> (rand()) / (static_cast <long> (RAND_MAX / (probabilities.at(2) - probabilities.at(1))));
+												
 						for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 						{
 							SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
 
-							GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
-							
-							if (randNum > 0) // If this isn't here and the random number is 0, it will spawn LOT 0, which is just a question mark.
+							if (r3 < probabilities.at(0))
 							{
-								GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, participant);
+								for (int k = 0; k < randMinMax; k++)
+								{
+									long randNum = 0 + static_cast <long> (rand()) / (static_cast <long> (RAND_MAX / (items.size() - 0)));
+									GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
+
+								}
 							}
-							
-
-
 						}
 					}
 
 
+					vector<long> coinsMinMax = CDClient::getCoinDrops(replica->lot);
+
+					long randCoin = coinsMinMax.at(0) + static_cast <long> (rand()) / (static_cast <long> (RAND_MAX / (coinsMinMax.at(1) - coinsMinMax.at(0))));
+
+					for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+					{
+						SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+												
+						if (randCoin > 0) // If this isn't here and the random number is 0, it will spawn LOT 0, which is just a question mark.
+						{
+						GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, participant);
+						}
+					}
+									
+					//Comment by lcdr on how he does item drops
+					/*well this seems like one of the things where having one project would avoid having to reinvent all of this for every project
+						but oh well
+						i've always said info should be shared openly, no matter the project
+						so here goes
+						this is what i do
+						get yourself a random value between 0 and 1
+						now, the loot matrix has entries with the loot table, the probability, min and max to drop
+						so for each of these
+						you check whether your random value is below the probability
+						if yes:
+						get yourself a random integer between min and max
+						and that's how many times you choose a random entry from the loot table
+						and each time add that entry to the list of your loot
+						when you're done, that's your loot to drop
+						a possible variation is to get the random value for each loot table instead for all
+						that would make higher rolls less dramatic
+						but so far it works well enough*/
 
 					
 				}

@@ -71,6 +71,8 @@ public:
 	static bool isMission(long missionID);
 	static vector<long> getAchievements(long prereqMissionID = -1);
 	static long lookUpLevel(long long universeScore);
-	static vector<long> getItemDrops(long lot);
-	static vector<long> getDropProbs(long lot);
+	static vector<long> getItemDrops(long lot, long LootTableIndex);
+	static vector<long double> getDropProbs(long lot, long row);
+	static vector<long> getCoinDrops(long lot);
+	static vector<long> getLootTableIndexCount(long lot);
 };
