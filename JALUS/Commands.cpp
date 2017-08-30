@@ -39,37 +39,33 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 
 
-	else if (iequals(cmd, "drop"))
+	else if (iequals(cmd, "drop")) // drop [lot]
 	{
-
-		BitStream* packet = PacketUtils::createGMBase(sender.getSenderID(), 30);
-		Location loc = Locations::getLocation(sender.getSenderID());
-
-		long lot = 10431;
-
-		long long lootid = Objects::createObject(lot);
-
-		packet->Write(true);
-
-		packet->Write(true);
-		packet->Write(loc.position.x);
-		packet->Write(loc.position.y);
-		packet->Write(loc.position.z);
-		packet->Write((int)0);
-		packet->Write(lot);
-		packet->Write(lootid);
-		packet->Write(sender.getSenderID());
-		packet->Write(sender.getSenderID());
-		packet->Write(true);
-		//packet->Write(0);
-		//packet->Write(L"NiPoint3::ZERO");
-		packet->Write(loc.position.x);
-		packet->Write(loc.position.y+3);
-		packet->Write(loc.position.z);
-
-
-		Server::sendPacket(packet, sender.getClientAddress());
+		Session* session = Sessions::getSession(sender.getClientAddress());
 		
+		//GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1)
+			{
+				Position finalPosition;
+				Position spawnPosition;
+				ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
+				finalPosition.x = charObj->controllablePhysicsIndex->pos_x;
+				finalPosition.y = charObj->controllablePhysicsIndex->pos_y;
+				finalPosition.z = charObj->controllablePhysicsIndex->pos_z;
+
+				spawnPosition.x = charObj->controllablePhysicsIndex->pos_x;
+				spawnPosition.y = charObj->controllablePhysicsIndex->pos_y;
+				spawnPosition.z = charObj->controllablePhysicsIndex->pos_z;
+
+				GameMessages::clientDropLoot(session->charID, 0, 1, session->charID, session->charID, spawnPosition, finalPosition, session->clientAddress);
+			}
+			else
+			{
+				sender.sendMessage("You need to specify a LOT!");
+			}
+		}
 
 	}
 	else if (iequals(cmd, "fly") || iequals(cmd, "flight") || iequals(cmd, "jetpack") || iequals(cmd, "hover"))
@@ -487,92 +483,19 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("You can't use this command here!");
 	}
 
-	else if (iequals(cmd, "pos"))
+	else if (iequals(cmd, "pos")) // Displays the player's position.
 	{
 		if (sender.getSenderID() != -1)
 		{
-			if (args.size() == 1)
-			{
-				string strRadius = args.at(0);
 
-				if (Validate::isValidFloat(strRadius))
-				{
-					float radius = stof(strRadius);
+			ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
 
-					ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+			float playPos_x = player->controllablePhysicsIndex->pos_x;
+			float playPos_y = player->controllablePhysicsIndex->pos_y;
+			float playPos_z = player->controllablePhysicsIndex->pos_z;
 
-					float min_x = player->controllablePhysicsIndex->pos_x - radius;
-					float min_y = player->controllablePhysicsIndex->pos_y - radius;
-					float min_z = player->controllablePhysicsIndex->pos_z - radius;
+			sender.sendMessage("Position: " + std::to_string(playPos_x) + ", " + std::to_string(playPos_y) + ", " + std::to_string(playPos_z));
 
-					float max_x = player->controllablePhysicsIndex->pos_x + radius;
-					float max_y = player->controllablePhysicsIndex->pos_y + radius;
-					float max_z = player->controllablePhysicsIndex->pos_z + radius;
-
-
-					float playPos_x = player->controllablePhysicsIndex->pos_x;
-					float playPos_y = player->controllablePhysicsIndex->pos_y;
-					float playPos_z = player->controllablePhysicsIndex->pos_z;
-
-					sender.sendMessage("Position: " + std::to_string(playPos_x) + ", " + std::to_string(playPos_y) + ", " + std::to_string(playPos_z));
-
-					vector<ReplicaObject*> match = vector<ReplicaObject*>();
-
-					for (int i = 0; i < Server::getReplicaManager()->GetReplicaCount(); i++)
-					{
-						ReplicaObject* other = (ReplicaObject*)Server::getReplicaManager()->GetReplicaAtIndex(i);
-
-						if (other->clientAddress == UNASSIGNED_SYSTEM_ADDRESS)
-						{
-							if (other->controllablePhysicsIndex != nullptr)
-							{
-								ControllablePhysicsIndex* index = other->controllablePhysicsIndex;
-
-								sender.sendMessage("Position: " + std::to_string(index->pos_x) + ", " + std::to_string(index->pos_y) + ", " + std::to_string(index->pos_z));
-
-								/*if (index->pos_x >= min_x && index->pos_x <= max_x)
-								{
-									//sender.sendMessage("x Coords: index" + std::to_string(index->pos_x) + ", min " + std::to_string(min_x) + ", and max " + std::to_string(max_x));
-									if (index->pos_y >= min_y && index->pos_y <= max_y)
-									{
-										//sender.sendMessage("y Coords: index" + std::to_string(index->pos_y) + ", min " + std::to_string(min_y) + ", and max " + std::to_string(max_y));
-										if (index->pos_z >= min_z && index->pos_z <= max_z)
-										{
-											//sender.sendMessage("z Coords: index" + std::to_string(index->pos_z) + ", min " + std::to_string(min_z) + ", and max " + std::to_string(max_z));
-											
-											sender.sendMessage("Position: " + std::to_string(index->pos_x) + ", " + std::to_string(index->pos_y) + ", " + std::to_string(index->pos_z));
-											
-											match.push_back(other);
-										}
-									}
-								}*/
-							}
-
-							if (other->simplePhysicsIndex != nullptr)
-							{
-								SimplePhysicsIndex* index = other->simplePhysicsIndex;
-
-								sender.sendMessage("Position: " + std::to_string(index->pos_x) + ", " + std::to_string(index->pos_y) + ", " + std::to_string(index->pos_z));
-
-								/*if (index->pos_x >= min_x && index->pos_x <= max_x)
-								{
-									sender.sendMessage("x Coords: index" + std::to_string(index->pos_x) + ", min " + std::to_string(min_x) + ", and max " + std::to_string(max_x));
-									if (index->pos_y >= min_y && index->pos_y <= max_y)
-									{
-										sender.sendMessage("y Coords: index" + std::to_string(index->pos_y) + ", min " + std::to_string(min_y) + ", and max " + std::to_string(max_y));
-										if (index->pos_z >= min_z && index->pos_z <= max_z)
-										{
-											sender.sendMessage("z Coords: index" + std::to_string(index->pos_z) + ", min " + std::to_string(min_z) + ", and max " + std::to_string(max_z));
-											match.push_back(other);
-										}
-									}
-								}*/
-							}
-
-						}
-					}
-				}
-			}
 		}
 	}
 	else if (iequals(cmd, "nearme") || iequals(cmd, "aroundme")) // /nearme <float:radius>

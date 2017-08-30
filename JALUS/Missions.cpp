@@ -549,24 +549,10 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 						if (other->lot == task->targets.at(l))
 						{
 							Logger::info("COLLECT_ITEM");
-							/*long collectibleID = other->inventoryIndex->items;
-							if (!Vectors::contains(task->value, (float)collectibleID))
-								task->value.push_back((float)collectibleID);
+							
+							// Jonny, get on this.
 
-							CurrentMissionTasks::setValue(task->uid, task->value, charID);
-							GameMessages::notifyMissionTask(charID, info->missionID, k, task->value.at(task->value.size() - 1), clientAddress);
 
-							if (task->value.size() >= task->targetValue)
-							{
-								if (!CDClient::isMission(info->missionID))
-									/*{
-									GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
-									}
-									else*/
-								//{
-								//	Missions::completeMission(info->missionID, charID, clientAddress);
-								//}
-							//}
 						}
 					}
 				}
