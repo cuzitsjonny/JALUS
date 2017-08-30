@@ -15,4 +15,6 @@ public:
 	static wstring readWStringFromBitStream(BitStream* bitStream, size_t length);
 
 	static CharacterStyle readCharacterStyleFromBitStream(BitStream* bitStream);
+
+	static void saveBitstreamToDisk(RakNet::BitStream* bs, std::string desiredName);
 };

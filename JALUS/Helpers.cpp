@@ -11,6 +11,8 @@
 #include "General.h"
 #include "Server.h"
 #include "ObjectsManager.h"
+#include "Objects.h"
+#include "Logger.h"
 
 void Helpers::addMissionWithTasks(long long missionID, long long charID)
 {
@@ -27,10 +29,64 @@ void Helpers::addMissionWithTasks(long long missionID, long long charID)
 
 void Helpers::createSyncedItemStack(long long ownerID, long lot, long count, bool isBound, bool isEquipped, SystemAddress clientAddress)
 {
-	long long id = InventoryItems::createInventoryItem(ownerID, lot, count, isBound, isEquipped);
+
+	ItemType itemType = CDClient::getItemType(lot);
+	InventoryType invType = InventoryItems::getInventoryType(itemType);
+
+	vector<InventoryItem> getItems = InventoryItems::getInventoryItems(ownerID);
+
+	long stackSize = CDClient::getStackSize(lot);
+	//ItemType itemType = CDClient::getItemType(lot);
+	//InventoryType invType = InventoryItems::getInventoryType(itemType);
+	bool fail = false;
+	for (int i = 0; i < getItems.size(); i++)
+	{
+		if (getItems.at(i).lot == lot)
+		{
+			//Logger::info("StackSize: " + std::to_string(stackSize));
+			//Logger::info("getCount: " + std::to_string(getItems.at(i).count));
+			if (getItems.at(i).count < stackSize || stackSize == 0)
+			{
+				//Logger::info("Add to stack");
+				InventoryItem item = InventoryItems::getInventoryItem(getItems.at(i).objectID);
+				InventoryItems::setCount(getItems.at(i).count+1, getItems.at(i).objectID);
+				GameMessages::addItemToInventory(item.ownerID, item.isBound, lot, invType, 1, stackSize, item.objectID, getItems.at(i).slot, clientAddress);
+				fail = false;
+				break;
+				//fucc u;
+			}
+			//break;
+		}
+		else
+		{
+			fail = true;
+		}
+	}
+
+	if (fail == true)
+	{
+		//Logger::info("New stack");
+		long long id = InventoryItems::createInventoryItem(ownerID, lot, count, isBound, isEquipped);
+		InventoryItem item = InventoryItems::getInventoryItem(id);
+
+		GameMessages::addItemToInventory(item.ownerID, item.isBound, item.lot, item.invType, item.count, stackSize, item.objectID, item.slot, clientAddress);
+	}
+
+
+
+
+	
+
+
+	/*long long id = InventoryItems::createInventoryItem(ownerID, lot, count, isBound, isEquipped);
 	InventoryItem item = InventoryItems::getInventoryItem(id);
 
-	GameMessages::addItemToInventory(item.ownerID, item.isBound, item.lot, item.invType, item.count, item.count, item.objectID, item.slot, clientAddress);
+	//long stackSize = CDClient::getStackSize(lot);
+	
+
+
+	GameMessages::addItemToInventory(item.ownerID, item.isBound, item.lot, item.invType, item.count, stackSize, item.objectID, item.slot, clientAddress);
+	*/
 }
 
 void Helpers::broadcastJonnysDumbEffects()

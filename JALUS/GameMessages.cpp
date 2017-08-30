@@ -131,25 +131,39 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			
 
 			ReplicaObject* replica = ObjectsManager::getObjectByID(itemId);
-
+			
 			if (replica != nullptr)
 			{
 				if (replica->simplePhysicsIndex != nullptr)
 				{
 
 					Position finalPosition;
-					finalPosition.x = replica->simplePhysicsIndex->pos_x;
-					finalPosition.y = replica->simplePhysicsIndex->pos_y;
-					finalPosition.z = replica->simplePhysicsIndex->pos_z;
-
 					Position spawnPosition;
-					spawnPosition.x = replica->simplePhysicsIndex->pos_x;
-					spawnPosition.y = replica->simplePhysicsIndex->pos_y;
-					spawnPosition.z = replica->simplePhysicsIndex->pos_z;
-					
-					vector<long> lootTableIndexCount = CDClient::getLootTableIndexCount(replica->lot);
+					if (replica->simplePhysicsIndex != nullptr)
+					{
+						finalPosition.x = replica->simplePhysicsIndex->pos_x;
+						finalPosition.y = replica->simplePhysicsIndex->pos_y;
+						finalPosition.z = replica->simplePhysicsIndex->pos_z;
 
-					for (int k = 0; k < lootTableIndexCount.at(0); k++)
+						spawnPosition.x = replica->simplePhysicsIndex->pos_x;
+						spawnPosition.y = replica->simplePhysicsIndex->pos_y;
+						spawnPosition.z = replica->simplePhysicsIndex->pos_z;
+					}
+					/*else if (replica->controllablePhysicsIndex != nullptr)
+					{
+
+						finalPosition.x = replica->controllablePhysicsIndex->pos_x;
+						finalPosition.y = replica->controllablePhysicsIndex->pos_y;
+						finalPosition.z = replica->controllablePhysicsIndex->pos_z;
+
+						spawnPosition.x = replica->controllablePhysicsIndex->pos_x;
+						spawnPosition.y = replica->controllablePhysicsIndex->pos_y;
+						spawnPosition.z = replica->controllablePhysicsIndex->pos_z;
+					}*/
+
+					long lootTableIndexCount = CDClient::getLootTableIndexCount(replica->lot);
+
+					for (int k = 0; k < lootTableIndexCount; k++)
 					{
 						vector<long double> probabilities = CDClient::getDropProbs(replica->lot, k);
 
@@ -158,7 +172,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						long double r3 = 0 + static_cast <long double> (rand()) / (static_cast <long double> (RAND_MAX / (1 - 0)));
 						
 						long randMinMax = probabilities.at(1) + static_cast <long> (rand()) / (static_cast <long> (RAND_MAX / (probabilities.at(2) - probabilities.at(1))));
-												
+						
 						for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 						{
 							SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
@@ -168,7 +182,12 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 								for (int k = 0; k < randMinMax; k++)
 								{
 									long randNum = 0 + static_cast <long> (rand()) / (static_cast <long> (RAND_MAX / (items.size() - 0)));
-									GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
+									
+									if (items.at(randNum) != 13763) // 13763 is the lot of faction tokens. 
+									{ // It will change to your specific faction (if you're in one) once dropped.
+									// Blacklisting it for now since we aren't in Nimbus Station yet.
+										GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
+									}
 
 								}
 							}
@@ -213,6 +232,12 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				}
 
 			}
+			/*ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
+			if (replica != charObj)
+			{
+				ObjectsManager::despawnObject(replica);
+			}*/
+			
 			break;
 		}
 
@@ -1213,8 +1238,6 @@ void GameMessages::addItemToInventory(long long objectID, bool isBound, long lot
 void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_DROP_CLIENT_LOOT);
-	
-
 	
 	/*vector<long> itemLOTs = Objects::countLOTs(objectID);
 	long long lootid;

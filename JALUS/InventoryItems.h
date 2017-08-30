@@ -49,7 +49,7 @@ public:
 	static vector<long> getEquippedLOTs(long long ownerID);
 	static vector<InventoryItem> getEquippedInventoryItems(long long ownerID);
 	static vector<InventoryItem> getInventoryItems(long long ownerID);
-
+	
 	static short getNextFreeSlot(InventoryType invType, long long ownerID);
 
 	static void setOwnerID(long long ownerID, long long objectID);

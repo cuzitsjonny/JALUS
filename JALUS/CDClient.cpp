@@ -30,7 +30,7 @@ ItemType CDClient::getItemType(long lot)
 
 			ss.str("");
 
-			ss << "SELECT itemType FROM";
+			ss << "SELECT itemType, stackSize FROM";
 			ss << " ItemComponent ";
 			ss << "WHERE id = '" << componentID << "';";
 
@@ -837,19 +837,19 @@ vector<long> CDClient::getCoinDrops(long lot)
 	return r;
 }
 
-vector<long> CDClient::getLootTableIndexCount(long lot)
+long CDClient::getLootTableIndexCount(long lot)
 {
 	SAConnection con;
 	SACommand cmd;
 
-	vector<long> r;
+	long r = 0;
 
 	try
 	{
 		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
 
 		stringstream ss;
-		ss << "SELECT COUNT(*) As RowCount FROM LootMatrix WHERE LootMatrixIndex = ";
+		ss << "SELECT COUNT(*) As rowCount FROM LootMatrix WHERE LootMatrixIndex = ";
 		ss << "(SELECT LootMatrixIndex FROM DestructibleComponent WHERE id = ";
 		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '7'));";
 
@@ -859,10 +859,10 @@ vector<long> CDClient::getLootTableIndexCount(long lot)
 
 		while (cmd.FetchNext())
 		{
-			long lootTableIndexCount = cmd.Field("RowCount").asLong();
+			long lootTableIndexCount = cmd.Field("rowCount").asLong();
 
-			r.push_back(cmd.Field("RowCount").asLong());
-
+			//r.push_back(cmd.Field("RowCount").asLong());
+			r = cmd.Field("rowCount").asLong();
 
 
 		}
@@ -931,4 +931,45 @@ long CDClient::getIsPowerup(long lot)
 	return r;
 }
 
+long CDClient::getStackSize(long lot)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = 0;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT stackSize FROM ItemComponent WHERE id = ";
+		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '11');";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			long stackSize = cmd.Field("stackSize").asLong();
+
+			r = cmd.Field("stackSize").asLong();
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
 

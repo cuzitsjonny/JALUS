@@ -111,3 +111,20 @@ CharacterStyle PacketUtils::readCharacterStyleFromBitStream(BitStream* bitStream
 
 	return style;
 }
+
+
+void PacketUtils::saveBitstreamToDisk(RakNet::BitStream* bs, std::string desiredName) {
+	std::ofstream fs(desiredName, std::ios::out | std::ios::binary);
+	if (fs.is_open())
+	{
+		for (int i = 0; i < bs->GetNumberOfBytesUsed(); i++)
+		{
+			char dummy; bs->Read(dummy);
+			fs.write(&dummy, 1);
+		}
+		fs.close();
+	}
+	else {
+		//Logger::info()
+	}
+}
