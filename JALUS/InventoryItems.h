@@ -51,6 +51,7 @@ public:
 	static vector<InventoryItem> getInventoryItems(long long ownerID);
 	
 	static short getNextFreeSlot(InventoryType invType, long long ownerID);
+	static short getSlotFromItem(long long objectID, long long ownerID);
 
 	static void setOwnerID(long long ownerID, long long objectID);
 	static void setItemType(ItemType itemType, long long objectID);

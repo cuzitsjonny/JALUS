@@ -592,6 +592,60 @@ short InventoryItems::getNextFreeSlot(InventoryType invType, long long ownerID)
 	return slot;
 }
 
+short InventoryItems::getSlotFromItem(long long objectID, long long ownerID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	short slot = 0;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		// SELECT slot, inventory_type FROM `inventoryitems` WHERE owner_id = 1338408125224744078 AND id = 1023823589281344817
+		stringstream ss;
+		ss << "SELECT slot FROM";
+		ss << " " << InventoryItems::name << " ";
+		ss << "WHERE owner_id = '" << ownerID << "' AND id = '" << objectID << "';";
+		//ss << "WHERE owner_id = '" << ownerID << "' AND inventory_type = '" << invType << "' AND slot = '" << slot << "';";
+		
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		
+		while (cmd.FetchNext())
+		{
+			short whichSlot = cmd.Field("slot").asShort();
+
+			//r.push_back(cmd.Field("RowCount").asLong());
+			slot = cmd.Field("slow").asShort();
+
+
+		}
+
+		
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return slot;
+}
+
+
 void InventoryItems::setOwnerID(long long ownerID, long long objectID)
 {
 	SAConnection con;
@@ -836,3 +890,4 @@ void InventoryItems::setIsEquipped(bool isEquipped, long long objectID)
 		catch (SAException &) {}
 	}
 }
+

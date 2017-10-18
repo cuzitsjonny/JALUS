@@ -198,6 +198,9 @@
     <ClCompile Include="ScriptedActivityIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
+    <ClCompile Include="ItemDrops.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -383,5 +386,11 @@
     <ClInclude Include="ScriptedActivityIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
+    <ClInclude Include="ItemDrops.h">
+      <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

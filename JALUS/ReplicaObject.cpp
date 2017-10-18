@@ -618,5 +618,18 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 	}*/
 
 
+	/*// make bitstream
+	RakNet::BitStream *stream = new RakNet::BitStream();
+	// write creation header
+	stream->Write(static_cast<unsigned char>(0x24));
+	stream->Write(static_cast<bool>(true));
+	stream->Write(static_cast<unsigned long>(1));
+	// write object-construction
+	object->writeToBitStream(stream, true);
+	// save to disk
+	stringstream ns; ns << "packets/" << "[24]_" << object->lot << "_" << object->objectID << ".bin";
+	PacketUtils::saveBitstreamToDisk(stream, ns.str());*/
+
+
 }
 

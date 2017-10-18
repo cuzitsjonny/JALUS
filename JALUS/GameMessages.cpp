@@ -14,6 +14,7 @@
 #include "LVLCache.h"
 #include "Commands.h"
 #include "Helpers.h"
+#include "ItemDrops.h"
 
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
@@ -29,6 +30,95 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		switch (gameMessageID)
 		{
 
+			// racing
+		case GAME_MESSAGE_ID_RACING_RESET_PLAYER_TO_LAST_RESET:
+		{
+
+			break;
+		}
+
+		case GAME_MESSAGE_ID_RACING_SET_PLAYER_RESET_INFO:
+		{
+
+			break;
+		}
+
+		case GAME_MESSAGE_ID_RACING_PLAYER_INFO_RESET_FINISHED:
+		{
+
+			break;
+		}
+
+		case GAME_MESSAGE_ID_LOCK_NODE_ROTATION:
+		{
+
+			break;
+		}
+
+		case GAME_MESSAGE_ID_VEHICLE_SET_WHEEL_LOCK_STATE:
+		{
+
+			break;
+		}
+
+		case GAME_MESSAGE_ID_NOTIFY_VEHICLE_OF_RACING_OBJECT:
+		{
+
+			break;
+		}
+
+		// vehicle actions
+
+
+		// racing loading
+		case GAME_MESSAGE_ID_NOTIFY_RACING_CLIENT:
+		{
+
+			break;
+		}
+
+		case GAME_MESSAGE_ID_RACING_PLAYER_LOADED:
+		{
+
+			break;
+		}
+
+		case GAME_MESSAGE_ID_RACING_CLIENT_READY:
+		{
+
+			break;
+		}
+
+		case GAME_MESSAGE_MOVE_ITEM_IN_INVENTORY:
+		{
+
+			InventoryType destInvType;
+			long long iObjID;
+			InventoryType inventoryType;
+			int responseCode;
+			int slot;
+
+			data->Read(destInvType);
+			data->Read(iObjID);
+			data->Read(inventoryType);
+			data->Read(responseCode);
+			data->Read(slot);
+
+			//InventoryItems::setSlot(slot, iObjID);
+			short slotNum = InventoryItems::getSlotFromItem(iObjID, session->charID);
+					
+
+
+
+
+			/*if (destInvType != inventoryType) {				
+				InventoryItems::setInventoryType(destInvType, iObjID);
+			}*/
+
+			break;
+		}
+
+		// item drops and inventory
 		case GAME_MESSAGE_ID_PICKUP_CURRENCY:
 		{
 
@@ -63,8 +153,10 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			//Logger::info(std::to_string(playerID));
 
 
-			long getObjLOT = Objects::getLOT(lootObj);
-			Objects::deleteObject(lootObj);
+			//long getObjLOT = Objects::getLOT(lootObj);
+			long getObjLOT = ItemDrops::getDroppedItem(lootObj);
+			//Objects::deleteObject(lootObj);
+			ItemDrops::removeDroppedItem(lootObj);
 
 			long isPowerup = CDClient::getIsPowerup(getObjLOT);
 			if (isPowerup == 1)
@@ -1250,10 +1342,13 @@ void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, l
 		lootid = Objects::generateObjectID();
 	}*/
 
+	
 
+	//long long lootid = Objects::createObject(lot);
 
+	//long long lootid = Objects::createObject(lot);
 
-	long long lootid = Objects::createObject(lot);
+	long long lootid = ItemDrops::createDroppedItem(lot);
 
 
 
@@ -1290,8 +1385,6 @@ void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, l
 
 	Server::sendPacket(packet, receiver);
 }
-
-
 
 
 
