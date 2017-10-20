@@ -52,6 +52,9 @@ public:
 	
 	static short getNextFreeSlot(InventoryType invType, long long ownerID);
 	static short getSlotFromItem(long long objectID, long long ownerID);
+	static short getInventoryTypeFromItem(long long objectID);
+	static long long InventoryItems::getItemFromSlot(long long ownerID, short inventory_type, short slot);
+	static long long InventoryItems::getOwnerID(long long objectID);
 
 	static void setOwnerID(long long ownerID, long long objectID);
 	static void setItemType(ItemType itemType, long long objectID);

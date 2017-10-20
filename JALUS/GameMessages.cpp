@@ -89,10 +89,13 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			break;
 		}
 
+
+		// item drops
+
 		case GAME_MESSAGE_MOVE_ITEM_IN_INVENTORY:
 		{
 
-			InventoryType destInvType;
+			/*InventoryType destInvType;
 			long long iObjID;
 			InventoryType inventoryType;
 			int responseCode;
@@ -102,13 +105,61 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			data->Read(iObjID);
 			data->Read(inventoryType);
 			data->Read(responseCode);
+			data->Read(slot);*/
+
+			bool flag;
+			data->Read(flag);
+			long long objid;
+			data->Read(objid);
+			long long unknown;
+			data->Read(unknown);
+			unsigned long slot;
 			data->Read(slot);
 
-			//InventoryItems::setSlot(slot, iObjID);
-			short slotNum = InventoryItems::getSlotFromItem(iObjID, session->charID);
-					
+			//InventoryItems::setSlot(slot, objid);
+			//short slotNum = InventoryItems::getSlotFromItem(objid, session->charID);
+
+			// get inventory type of object being moved
+			short inventoryType = InventoryItems::getInventoryTypeFromItem(objid);
+
+			// get owner id for the object being moved
+			long long owner_id = InventoryItems::getOwnerID(objid);
+
+			// get the slot of the item that is about to be moved
+			short getSlotFromItem = InventoryItems::getSlotFromItem(objid, owner_id);
+
+			// get the item in the slot that the item we are moving is going to
+			long long getItemFromSlot = InventoryItems::getItemFromSlot(owner_id, inventoryType, slot);
+
+			// get the slot of the item that we are replacing
+			//short getSlotFromOldItem = InventoryItems::getSlotFromItem(getItemFromSlot, owner_id);
+
+			//bool replacementSlotHasItem 
+
+			Logger::info("inventoryType: " + std::to_string(inventoryType));
+			Logger::info("owner_id: " + std::to_string(owner_id));
+			Logger::info("OldSlot: " + std::to_string(getSlotFromItem));
+			Logger::info("getItemFromSlot: " + std::to_string(getItemFromSlot));
+			Logger::info("NewSlot: " + std::to_string(slot));
+			
 
 
+
+			if (getItemFromSlot <= 1999999999999999999 && getItemFromSlot >= 1000000000000000000)
+			{
+				InventoryItems::setSlot(getSlotFromItem, getItemFromSlot);
+				InventoryItems::setSlot(slot, objid);
+				Logger::info("Swapped slots for ObjectID's [" + std::to_string(objid) + "] and [" + std::to_string(getItemFromSlot) + "] for player " + std::to_string(owner_id));
+			}
+			else
+			{
+				InventoryItems::setSlot(slot, objid);
+				Logger::info("Moved ObjectID [" + std::to_string(objid) + "] to slot " + std::to_string(slot) + " for player " + std::to_string(owner_id));
+			}
+
+
+			//InventoryItems::setSlot(slot, objid);
+			
 
 
 			/*if (destInvType != inventoryType) {				
