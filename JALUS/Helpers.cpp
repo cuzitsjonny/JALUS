@@ -13,6 +13,7 @@
 #include "ObjectsManager.h"
 #include "Objects.h"
 #include "Logger.h"
+#include "Chat.h"
 
 void Helpers::addMissionWithTasks(long long missionID, long long charID)
 {
@@ -27,7 +28,7 @@ void Helpers::addMissionWithTasks(long long missionID, long long charID)
 	}
 }
 
-void Helpers::createSyncedItemStack(long long ownerID, long lot, long count, bool isBound, bool isEquipped, SystemAddress clientAddress)
+void Helpers::createSyncedItemStack(long long ownerID, long lot, long count, bool isBound, bool isEquipped, bool drop, SystemAddress clientAddress)
 {
 
 	ItemType itemType = CDClient::getItemType(lot);
@@ -72,21 +73,44 @@ void Helpers::createSyncedItemStack(long long ownerID, long lot, long count, boo
 		GameMessages::addItemToInventory(item.ownerID, item.isBound, item.lot, item.invType, item.count, stackSize, item.objectID, item.slot, clientAddress);
 	}
 
+}
 
-
-
-	
-
-
-	/*long long id = InventoryItems::createInventoryItem(ownerID, lot, count, isBound, isEquipped);
+void Helpers::createSyncedItemStack(long long ownerID, long lot, long count, bool isBound, bool isEquipped, SystemAddress clientAddress)
+{
+	// old version for gmadditem command 
+	long long id = InventoryItems::createInventoryItem(ownerID, lot, count, isBound, isEquipped);
 	InventoryItem item = InventoryItems::getInventoryItem(id);
 
 	//long stackSize = CDClient::getStackSize(lot);
+
+	GameMessages::addItemToInventory(item.ownerID, item.isBound, item.lot, item.invType, item.count, count, item.objectID, item.slot, clientAddress);
 	
+}
 
+void Helpers::broadcastEffect(long long objectID, long effectID, wstring effectType, float scale, string name, float priority, long long secondary, SystemAddress receiver, bool serialize)
+{
+	GameMessages::playFXEffect(objectID, effectID, effectType, scale, name, priority, secondary, receiver);
+	
+	for (int k = 0; k < Server::getReplicaManager()->GetParticipantCount(); k++)
+	{
+		SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
+		ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(receiver);
 
-	GameMessages::addItemToInventory(item.ownerID, item.isBound, item.lot, item.invType, item.count, stackSize, item.objectID, item.slot, clientAddress);
-	*/
+		if (replica != nullptr)
+		{
+			GameMessages::playFXEffect(replica->objectID, effectID, effectType, scale, name, priority, secondary, ObjectsManager::getObjectBySystemAddress(participant)->clientAddress);
+		}
+	}
+}
+
+void Helpers::sendGlobalChat(wstring message)
+{
+	for (int k = 0; k < Server::getReplicaManager()->GetParticipantCount(); k++)
+	{
+		SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
+		//ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(receiver);
+		Chat::sendChatMessage(message, ObjectsManager::getObjectBySystemAddress(participant)->clientAddress);
+	}
 }
 
 void Helpers::broadcastJonnysDumbEffects()

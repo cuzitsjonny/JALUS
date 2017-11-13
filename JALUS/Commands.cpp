@@ -37,7 +37,17 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 		}
 	}
 
-
+	/*else if (iequals(cmd, "sendchat") || iequals(cmd, "chat") || iequals(cmd, "say"))
+	{
+		if (args.size() >= 1)
+		{
+			std::string say;
+			say.assign(args.begin(), args.end());
+			std::wstring globalChatMsg;
+			globalChatMsg.assign(say.begin(), say.end());
+			Helpers::sendGlobalChat(globalChatMsg);
+		}
+	}*/
 
 	else if (iequals(cmd, "drop")) // drop [lot]
 	{

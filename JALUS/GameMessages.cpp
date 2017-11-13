@@ -189,8 +189,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_PICKUP_ITEM:
 		{
-			//todo: blacklist powerups from being added to the player inventory
-			//todo: make items stack
 
 			//BitStream* pickupItem = PacketUtils::createGMBase(session->charID, 139);
 
@@ -200,14 +198,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			data->Read(lootObj);
 			data->Read(playerID);
 
-			//Logger::info(std::to_string(lootObj));
-			//Logger::info(std::to_string(playerID));
+			Logger::info("lootObj " + std::to_string(lootObj));
+			Logger::info("playerID " + std::to_string(playerID));
 
 
 			//long getObjLOT = Objects::getLOT(lootObj);
 			long getObjLOT = ItemDrops::getDroppedItem(lootObj);
 			//Objects::deleteObject(lootObj);
-			ItemDrops::removeDroppedItem(lootObj);
+			//ItemDrops::removeDroppedItem(lootObj);
 
 			long isPowerup = CDClient::getIsPowerup(getObjLOT);
 			if (isPowerup == 1)
@@ -218,9 +216,47 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			{
 				Logger::info("LOT: " + std::to_string(getObjLOT));
 				//Logger::info("Creating synced item stack");
-				Helpers::createSyncedItemStack(playerID, getObjLOT, 1, false, false, session->clientAddress);
+				Helpers::createSyncedItemStack(playerID, getObjLOT, 1, false, false, true, session->clientAddress);
 
+				if (playerID == session->charID)
+				{
+					Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_COLLECT_ITEM, session->charID, lootObj, clientAddress);
+
+
+
+				}
 			}
+
+			ItemDrops::removeDroppedItem(lootObj);
+
+			break;
+		}
+
+		case GAME_MESSAGE_EQUIP_INVENTORY:
+		{
+
+			//BitStream* pickupItem = PacketUtils::createGMBase(session->charID, 139);
+
+			bool ignoreCooldown;
+			bool outSuccess;
+			long long itemid;
+			data->Read(ignoreCooldown);
+			data->Read(outSuccess);
+			data->Read(itemid);
+			bool end;
+			for (int k = 0; k < 7; k++) {
+				data->Read(end);
+			}
+
+			InventoryItems::setIsEquipped(true, itemid);
+
+			ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+
+			ObjectsManager::serializeObject(replica);
+
+			Logger::info("Equipped item " + std::to_string(itemid));
+
+
 			break;
 		}
 
@@ -316,9 +352,9 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						
 						long randMinMax = probabilities.at(1) + static_cast <long> (rand()) / (static_cast <long> (RAND_MAX / (probabilities.at(2) - probabilities.at(1))));
 						
-						for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-						{
-							SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+						//for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+						//{
+						//	SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
 
 							if (r3 < probabilities.at(0))
 							{
@@ -329,12 +365,12 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 									if (items.at(randNum) != 13763) // 13763 is the lot of faction tokens. 
 									{ // It will change to your specific faction (if you're in one) once dropped.
 									// Blacklisting it for now since we aren't in Nimbus Station yet.
-										GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
+										GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, clientAddress);
 									}
 
 								}
 							}
-						}
+						//}
 					}
 
 
@@ -342,15 +378,15 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 					long randCoin = coinsMinMax.at(0) + static_cast <long> (rand()) / (static_cast <long> (RAND_MAX / (coinsMinMax.at(1) - coinsMinMax.at(0))));
 
-					for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-					{
-						SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+					//for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+					//{
+						//SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
 												
 						if (randCoin > 0) // If this isn't here and the random number is 0, it will spawn LOT 0, which is just a question mark.
 						{
-						GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, participant);
+						GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, clientAddress);
 						}
-					}
+					//}
 									
 					//Comment by lcdr on how he does item drops
 					/*well this seems like one of the things where having one project would avoid having to reinvent all of this for every project
@@ -845,7 +881,30 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				long level = CDClient::lookUpLevel(replica->characterIndex->lego_score);
 				replica->characterIndex->level = level;
 				Characters::setLevel(level, objectID);
+				//Logger::info("Is this right for the level up effect?");
+				//GameMessages::stopFXEffect(replica->objectID, "levelup_body_glow", false, clientAddress);
+				//GameMessages::stopFXEffect(ObjectsManager::getObjectBySystemAddress(clientAddress)->objectID, "levelup_body_glow", false, clientAddress);
 				ObjectsManager::serializeObject(replica);
+				//GameMessages::playFXEffect(replica->objectID, 7074, L"create", 1.0F, "levelup_body_glow", 1.0F, -1, clientAddress);
+				//GameMessages::playFXEffect(replica->objectID, 7074, L"create", 1.0F, "levelup_body_glow", 1.0F, -1, ObjectsManager::getObjectBySystemAddress(participant)->clientAddress);
+				//GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(clientAddress)->objectID, 7074, L"create", 1.0F, "levelup_body_glow", 1.0F, -1, clientAddress);
+								
+				std::string s1(Characters::getName(replica->objectID));
+				std::wstring charName;
+				charName.assign(s1.begin(), s1.end());
+
+				std::string s2(" has reached Level ");
+				std::wstring reach;
+				reach.assign(s2.begin(), s2.end());
+
+				std::string s3("!");
+				std::wstring ending;
+				ending.assign(s3.begin(), s3.end());
+
+
+				Helpers::broadcastEffect(replica->objectID, 7074, L"create", 1.0F, "levelup_body_glow", 1.0F, -1, clientAddress);
+				Helpers::sendGlobalChat(charName + reach + to_wstring(level) + ending);
+
 			}
 			break;
 		}
@@ -880,6 +939,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					if (rewardLOT != ObjectsManager::getObjectByID(receiver)->lot)
 					{
 						info->rewardLOT = rewardLOT;
+						//Missions::rewardMission(missionID, receiver, clientAddress);
 					}
 				}
 			}
@@ -1432,6 +1492,27 @@ void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, l
 	//packet->Write(spawnPosition.x + ((rand() % 20) - 10));
 	//packet->Write(spawnPosition.y + 5);
 	//packet->Write(spawnPosition.z + ((rand() % 20) - 10));
+
+
+	Server::sendPacket(packet, receiver);
+}
+
+//void GameMessages::addSkill(int AICombatWeight, bool bFromSkillSet, int castType, long long objectID, unsigned long skillid, unsigned long slot, SystemAddress receiver)
+void addSkill(long long objectID, unsigned long skillid, unsigned long slot, SystemAddress receiver)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_ADD_SKILL);
+
+	for (int i = 0; i < 5; i++) {
+		packet->Write((bool)false);
+	}
+
+	//code from Pluto for now
+
+	packet->Write(skillid);
+	packet->Write((bool)true);
+	packet->Write(slot);
+	packet->Write((bool)true);
+
 
 
 	Server::sendPacket(packet, receiver);

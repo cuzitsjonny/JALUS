@@ -18,6 +18,7 @@ bool General::performHandshake(BitStream* data, SystemAddress clientAddress)
 		response->Write((unsigned long)GetCurrentProcessId());
 		response->Write((unsigned short)255);
 		PacketUtils::writeStringToBitStream("127.0.0.1", response, 33);
+		//PacketUtils::writeStringToBitStream("10.128.246.3", response, 33);
 
 		Server::sendPacket(response, clientAddress);
 

@@ -47,6 +47,8 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_UNEQUIP_INVENTORY = 233,
 	GAME_MESSAGE_ENABLE_REBUILD = 213,
 	GAME_MESSAGE_REBUILD_CANCEL = 209,
+	//skills
+	GAME_MESSAGE_ID_ADD_SKILL = 127,
 	//racing
 	GAME_MESSAGE_ID_VEHICLE_LOCK_INPUT = 1230,
 	GAME_MESSAGE_ID_VEHICLE_UNLOCK_INPUT = 1231,
@@ -116,4 +118,5 @@ public:
 	static void fireEventClientSide(long long objectID, wstring args, long long object, long long senderID, SystemAddress receiver, long long param1 = 0, long param2 = -1);
 	static void addItemToInventory(long long objectID, bool isBound, long lot, InventoryType invType, long count, long totalCount, long long stackObjectID, short slot, SystemAddress receiver, bool showFlyingLoot = true);
 	static void clientDropLoot(long long objectID, int iCurrency, long lot, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver);
+	static void addSkill(long long objectID, unsigned long skillid, unsigned long slot, SystemAddress receiver);
 };

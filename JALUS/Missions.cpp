@@ -12,6 +12,7 @@
 #include "LVLCache.h"
 #include "Helpers.h"
 #include "Objects.h"
+#include "ItemDrops.h"
 
 string Missions::name;
 
@@ -542,13 +543,39 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 
 			case MISSION_TASK_TYPE_COLLECT_ITEM:
 			{
-				if (other != nullptr)
+				long getObjLOT = ItemDrops::getDroppedItem(objectID);
+				//Logger::info("COLLECT_ITEM");
+				if (getObjLOT != 0)
 				{
+					//Logger::info("is valid");
 					for (int l = 0; l < task->targets.size(); l++)
 					{
-						if (other->lot == task->targets.at(l))
+						//Logger::info(std::to_string(l) + "? Amount of tasks to update");
+						//Logger::info(std::to_string(getObjLOT) + " = " + std::to_string(task->targets.at(l)));
+						if (getObjLOT == task->targets.at(l))
 						{
-							Logger::info("COLLECT_ITEM");
+							//Logger::info(std::to_string(other->lot) + " = " + std::to_string(task->targets.at(l)));
+							
+							if (!Vectors::contains(task->value, (float)getObjLOT))
+								task->value.push_back((float)getObjLOT);
+
+
+							CurrentMissionTasks::setValue(task->uid, task->value, charID);
+							GameMessages::notifyMissionTask(charID, info->missionID, k, task->value.at(task->value.size() - 1), clientAddress);
+
+							if (task->value.size() >= task->targetValue)
+							{
+								//Logger::info("Task Value Size: " + std::to_string(task->value.size()));
+								//Logger::info("Target Value: " + std::to_string(task->targetValue));
+								if (!CDClient::isMission(info->missionID))
+									/*{
+									GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
+									}
+									else*/
+								{
+									Missions::completeMission(info->missionID, charID, clientAddress);
+								}
+							}
 							
 							// Jonny, get on this.
 
