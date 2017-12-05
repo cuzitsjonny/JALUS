@@ -544,29 +544,20 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 			case MISSION_TASK_TYPE_COLLECT_ITEM:
 			{
 				long getObjLOT = ItemDrops::getDroppedItem(objectID);
-				//Logger::info("COLLECT_ITEM");
 				if (getObjLOT != 0)
 				{
-					//Logger::info("is valid");
 					for (int l = 0; l < task->targets.size(); l++)
 					{
-						//Logger::info(std::to_string(l) + "? Amount of tasks to update");
-						//Logger::info(std::to_string(getObjLOT) + " = " + std::to_string(task->targets.at(l)));
 						if (getObjLOT == task->targets.at(l))
 						{
-							//Logger::info(std::to_string(other->lot) + " = " + std::to_string(task->targets.at(l)));
-							
 							if (!Vectors::contains(task->value, (float)getObjLOT))
 								task->value.push_back((float)getObjLOT);
-
 
 							CurrentMissionTasks::setValue(task->uid, task->value, charID);
 							GameMessages::notifyMissionTask(charID, info->missionID, k, task->value.at(task->value.size() - 1), clientAddress);
 
 							if (task->value.size() >= task->targetValue)
 							{
-								//Logger::info("Task Value Size: " + std::to_string(task->value.size()));
-								//Logger::info("Target Value: " + std::to_string(task->targetValue));
 								if (!CDClient::isMission(info->missionID))
 									/*{
 									GameMessages::notifyMission(charID, info->missionID, MissionState::MISSION_STATE_READY_TO_COMPLETE, true, clientAddress);
@@ -576,10 +567,6 @@ void Missions::callOnMissionTaskUpdate(MissionTaskType taskType, long long charI
 									Missions::completeMission(info->missionID, charID, clientAddress);
 								}
 							}
-							
-							// Jonny, get on this.
-
-
 						}
 					}
 				}
@@ -688,28 +675,17 @@ void Missions::rewardMission(long missionID, long long charID, SystemAddress cli
 		GameMessages::setInventorySize(charID, InventoryType::INVENTORY_TYPE_DEFAULT, newMaxInventory, clientAddress);
 	}
 
-	for (int i = 0; i < replica->currentMissions.size(); i++)
+	if (rewards.itemLOTs.size() > 0)
 	{
-		if (replica->currentMissions.at(i).missionID == missionID)
+		for (int k = 0; k < rewards.itemLOTs.size(); k++)
 		{
-			if (replica->currentMissions.at(i).rewardLOT > 0)
+			if (rewards.itemLOTs.at(k) > 0)
 			{
-				for (int k = 0; k < rewards.itemLOTs.size(); k++)
-				{
-					if (rewards.itemLOTs.at(k) == replica->currentMissions.at(i).rewardLOT)
-					{
-						Helpers::createSyncedItemStack(charID, replica->currentMissions.at(i).rewardLOT, rewards.itemCounts.at(k), false, false, clientAddress);
-					}
-				}
-			}
-			else
-			{
-				for (int k = 0; k < rewards.itemLOTs.size(); k++)
-				{
-					Helpers::createSyncedItemStack(charID, rewards.itemLOTs.at(k), rewards.itemCounts.at(k), false, false, clientAddress);
-				}
+				Logger::info("CharacterID " + std::to_string(charID) + " was given " + std::to_string(rewards.itemCounts.at(k)) + " of LOT " + std::to_string(rewards.itemLOTs.at(k)));
+				Helpers::createSyncedItemStack(charID, rewards.itemLOTs.at(k), rewards.itemCounts.at(k), false, false, clientAddress);
 			}
 		}
+
 	}
 
 	ObjectsManager::serializeObject(replica);

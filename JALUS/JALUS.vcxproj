@@ -190,6 +190,7 @@
     <ClCompile Include="LVLCache.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Missions.cpp" />
+    <ClCompile Include="ModuleAssemblyIndex.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="ObjectsManager.cpp" />
     <ClCompile Include="PacketUtils.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="LUZCache.h" />
     <ClInclude Include="LVLCache.h" />
     <ClInclude Include="Missions.h" />
+    <ClInclude Include="ModuleAssemblyIndex.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="ObjectsManager.h" />
     <ClInclude Include="PacketUtils.h" />

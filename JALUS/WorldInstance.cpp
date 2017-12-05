@@ -18,6 +18,7 @@
 #include "Config.h"
 #include "TransitionInfos.h"
 #include "CharactersInstance.h"
+#include "Helpers.h"
 
 void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddress, ClientToWorldPacketID packetID)
 {
@@ -158,16 +159,13 @@ void WorldInstance::sendWorldInfo(SystemAddress clientAddress)
 
 		if (loc.zoneID == ZoneID::ZONE_ID_VE_MOVIE_SCENE)
 		{ 
-			Logger::info("Playing VE Movie");
-			//loc.lastZoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
 			loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
 			Locations::saveLocation(loc, session->charID);
-			//loc.zoneID = ZoneID::ZONE_ID_VENTURE_EXPLORER;
 			packet->Write(ZoneID::ZONE_ID_VENTURE_EXPLORER);
 		}
 		else
 		{
-			Logger::info("Loading world: " + std::to_string(loc.zoneID));
+			//Logger::info("Loading world: " + std::to_string(loc.zoneID));
 			packet->Write(loc.zoneID);
 		}
 
@@ -480,8 +478,23 @@ void WorldInstance::broadcastPositionUpdate(BitStream* data, SystemAddress clien
 		{
 			if (index->pos_y < 562)
 			{
+				Helpers::dropCoinsOnDeath(clientAddress);
+				Position pos;
+				pos.x = index->pos_x;
+				pos.y = 562.1;
+				pos.z = index->pos_z;
+				/*Rotation rot;
+				rot.w = index->rot_w;
+				rot.x = index->rot_x;
+				rot.y = index->rot_y;
+				rot.z = index->rot_z;*/
+
+				GameMessages::teleport(session->charID, false, false, false, true, pos, clientAddress);
 				for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 				{
+					//Helpers::dropCoinsOnDeath(clientAddress);
+					//index->pos_y = 563;
+
 					SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
 
 					GameMessages::die(session->charID, L"electro-shock-death", false, participant);

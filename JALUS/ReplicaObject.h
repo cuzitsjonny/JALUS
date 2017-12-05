@@ -18,6 +18,7 @@
 #include "BouncerIndex.h"
 #include "RebuildIndex.h"
 #include "ScriptedActivityIndex.h"
+#include "ModuleAssemblyIndex.h"
 
 class ReplicaObject : public Replica
 {
@@ -41,6 +42,7 @@ public:
 	vector<MissionInfo> currentMissions = vector<MissionInfo>();
 
 	int statsIndexParent = -1;
+	ModuleAssemblyIndex* moduleAssemblyIndex = nullptr;
 	ControllablePhysicsIndex* controllablePhysicsIndex = nullptr;
 	SimplePhysicsIndex* simplePhysicsIndex = nullptr;
 	PhantomPhysicsIndex* phantomPhysicsIndex = nullptr;

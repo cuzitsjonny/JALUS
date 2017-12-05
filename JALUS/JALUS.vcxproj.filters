@@ -201,6 +201,9 @@
     <ClCompile Include="ItemDrops.cpp">
       <Filter>Quelldateien\Datenbank</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleAssemblyIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -388,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="ItemDrops.h">
       <Filter>Headerdateien\Datenbank</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleAssemblyIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

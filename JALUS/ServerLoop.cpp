@@ -11,6 +11,7 @@
 #include "Scheduler.h"
 #include "GameMessages.h"
 #include "Helpers.h"
+#include <RakSleep.h>
 
 bool ServerLoop::run;
 vector<char> ServerLoop::input;
@@ -154,6 +155,7 @@ void ServerLoop::start()
 	ServerLoop::run = true;
 	while (ServerLoop::run)
 	{
+		RakSleep(30);
 		Scheduler::tick();
 
 		packet = Server::getPeerInterface()->Receive();

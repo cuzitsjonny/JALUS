@@ -39,7 +39,6 @@ void Server::init(ServerRole serverRole)
 	CharacterStyles::init("CharacterStyles", "id BIGINT(20) PRIMARY KEY, shirt_color INT(11), shirt_style INT(11), pants_color INT(11), hair_style INT(11), hair_color INT(11), lh INT(11), rh INT(11), eyebrows INT(11), eyes INT(11), mouth INT(11)");
 	InventoryItems::init("InventoryItems", "id BIGINT(20) PRIMARY KEY, owner_id BIGINT(20), item_type TINYINT(2), inventory_type TINYINT(2), slot SMALLINT(6), count INT(11), is_bound TINYINT(1), is_equipped TINYINT(1)");
 	Locations::init("Locations", "id BIGINT(20) PRIMARY KEY, pos_x FLOAT, pos_y FLOAT, pos_z FLOAT, rot_x FLOAT, rot_y FLOAT, rot_z FLOAT, rot_w FLOAT, zone_id SMALLINT(6), map_clone INT(11)");
-	//Locations::init("Locations", "id BIGINT(20) PRIMARY KEY, pos_x FLOAT, pos_y FLOAT, pos_z FLOAT, rot_x FLOAT, rot_y FLOAT, rot_z FLOAT, rot_w FLOAT, zone_id SMALLINT(6), map_clone INT(11), last_zone_id SMALLINT(6)");
 	CharacterStats::init("CharacterStats", "id BIGINT(20) PRIMARY KEY, total_amount_of_currency_collected BIGINT(20) UNSIGNED, number_of_bricks_collected BIGINT(20) UNSIGNED, number_of_smashables_smashed BIGINT(20) UNSIGNED, number_of_quick_builds_completed BIGINT(20) UNSIGNED, number_of_enemies_smashed BIGINT(20) UNSIGNED, number_of_rockets_used BIGINT(20) UNSIGNED, number_of_missions_completed BIGINT(20) UNSIGNED, number_of_pets_tamed BIGINT(20) UNSIGNED, number_of_imagination_powerups_collected BIGINT(20) UNSIGNED, number_of_life_powerups_collected BIGINT(20) UNSIGNED, number_of_armor_powerups_collected BIGINT(20) UNSIGNED, total_distance_traveled BIGINT(20) UNSIGNED, number_of_times_smashed BIGINT(20) UNSIGNED, total_damage_taken BIGINT(20) UNSIGNED, total_damage_healed BIGINT(20) UNSIGNED, total_armor_repaired BIGINT(20) UNSIGNED, total_imagination_restored BIGINT(20) UNSIGNED, total_imagination_used BIGINT(20) UNSIGNED, total_distance_driven BIGINT(20) UNSIGNED, total_time_airborne_in_a_race_car BIGINT(20) UNSIGNED, number_of_racing_imagination_powerups_collected BIGINT(20) UNSIGNED, number_of_racing_imagination_crates_smashed BIGINT(20) UNSIGNED, number_of_times_race_car_boost_activated BIGINT(20) UNSIGNED, number_of_wrecks_in_a_race_car BIGINT(20) UNSIGNED, number_of_racing_smashables_smashed BIGINT(20) UNSIGNED, number_of_races_finished BIGINT(20) UNSIGNED, number_of_first_place_races_finished BIGINT(20) UNSIGNED");
 	Missions::init("Missions", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, mission_id INT(11), character_id BIGINT(20), is_done TINYINT(1), done_timestamp BIGINT(20), done_count INT(11)");
 	CurrentMissionTasks::init("CurrentMissionTasks", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, mission_id INT(11), character_id BIGINT(20), unique_id INT(11), value VARCHAR(255)");
@@ -51,7 +50,7 @@ void Server::init(ServerRole serverRole)
 bool Server::start()
 {
 	bool r;
-
+	srand;
 	Server::peerInterface = RakNetworkFactory::GetRakPeerInterface();
 	Server::socketDescriptor = SocketDescriptor(Config::getPort(), 0);
 

@@ -15,6 +15,7 @@
 #include "Commands.h"
 #include "Helpers.h"
 #include "ItemDrops.h"
+#include "Common.h"
 
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
@@ -33,37 +34,37 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			// racing
 		case GAME_MESSAGE_ID_RACING_RESET_PLAYER_TO_LAST_RESET:
 		{
-
+			Logger::info("GAME_MESSAGE_ID_RACING_RESET_PLAYER_TO_LAST_RESET");
 			break;
 		}
 
 		case GAME_MESSAGE_ID_RACING_SET_PLAYER_RESET_INFO:
 		{
-
+			Logger::info("GAME_MESSAGE_ID_RACING_SET_PLAYER_RESET_INFO");
 			break;
 		}
 
 		case GAME_MESSAGE_ID_RACING_PLAYER_INFO_RESET_FINISHED:
 		{
-
+			Logger::info("GAME_MESSAGE_ID_RACING_PLAYER_INFO_RESET_FINISHED");
 			break;
 		}
 
 		case GAME_MESSAGE_ID_LOCK_NODE_ROTATION:
 		{
-
+			Logger::info("GAME_MESSAGE_ID_LOCK_NODE_ROTATION");
 			break;
 		}
 
 		case GAME_MESSAGE_ID_VEHICLE_SET_WHEEL_LOCK_STATE:
 		{
-
+			Logger::info("GAME_MESSAGE_ID_VEHICLE_SET_WHEEL_LOCK_STATE");
 			break;
 		}
 
 		case GAME_MESSAGE_ID_NOTIFY_VEHICLE_OF_RACING_OBJECT:
 		{
-
+			Logger::info("GAME_MESSAGE_ID_NOTIFY_VEHICLE_OF_RACING_OBJECT");
 			break;
 		}
 
@@ -73,102 +74,24 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		// racing loading
 		case GAME_MESSAGE_ID_NOTIFY_RACING_CLIENT:
 		{
-
+			Logger::info("GAME_MESSAGE_ID_NOTIFY_RACING_CLIENT");
 			break;
 		}
 
 		case GAME_MESSAGE_ID_RACING_PLAYER_LOADED:
 		{
-
+			Logger::info("GAME_MESSAGE_ID_RACING_PLAYER_LOADED");
 			break;
 		}
 
 		case GAME_MESSAGE_ID_RACING_CLIENT_READY:
 		{
-
+			Logger::info("GAME_MESSAGE_ID_RACING_CLIENT_READY");
 			break;
 		}
 
 
 		// item drops
-
-		case GAME_MESSAGE_MOVE_ITEM_IN_INVENTORY:
-		{
-
-			/*InventoryType destInvType;
-			long long iObjID;
-			InventoryType inventoryType;
-			int responseCode;
-			int slot;
-
-			data->Read(destInvType);
-			data->Read(iObjID);
-			data->Read(inventoryType);
-			data->Read(responseCode);
-			data->Read(slot);*/
-
-			bool flag;
-			data->Read(flag);
-			long long objid;
-			data->Read(objid);
-			long long unknown;
-			data->Read(unknown);
-			unsigned long slot;
-			data->Read(slot);
-
-			//InventoryItems::setSlot(slot, objid);
-			//short slotNum = InventoryItems::getSlotFromItem(objid, session->charID);
-
-			// get inventory type of object being moved
-			short inventoryType = InventoryItems::getInventoryTypeFromItem(objid);
-
-			// get owner id for the object being moved
-			long long owner_id = InventoryItems::getOwnerID(objid);
-
-			// get the slot of the item that is about to be moved
-			short getSlotFromItem = InventoryItems::getSlotFromItem(objid, owner_id);
-
-			// get the item in the slot that the item we are moving is going to
-			long long getItemFromSlot = InventoryItems::getItemFromSlot(owner_id, inventoryType, slot);
-
-			// get the slot of the item that we are replacing
-			//short getSlotFromOldItem = InventoryItems::getSlotFromItem(getItemFromSlot, owner_id);
-
-			//bool replacementSlotHasItem 
-
-			Logger::info("inventoryType: " + std::to_string(inventoryType));
-			Logger::info("owner_id: " + std::to_string(owner_id));
-			Logger::info("OldSlot: " + std::to_string(getSlotFromItem));
-			Logger::info("getItemFromSlot: " + std::to_string(getItemFromSlot));
-			Logger::info("NewSlot: " + std::to_string(slot));
-			
-
-
-
-			if (getItemFromSlot <= 1999999999999999999 && getItemFromSlot >= 1000000000000000000)
-			{
-				InventoryItems::setSlot(getSlotFromItem, getItemFromSlot);
-				InventoryItems::setSlot(slot, objid);
-				Logger::info("Swapped slots for ObjectID's [" + std::to_string(objid) + "] and [" + std::to_string(getItemFromSlot) + "] for player " + std::to_string(owner_id));
-			}
-			else
-			{
-				InventoryItems::setSlot(slot, objid);
-				Logger::info("Moved ObjectID [" + std::to_string(objid) + "] to slot " + std::to_string(slot) + " for player " + std::to_string(owner_id));
-			}
-
-
-			//InventoryItems::setSlot(slot, objid);
-			
-
-
-			/*if (destInvType != inventoryType) {				
-				InventoryItems::setInventoryType(destInvType, iObjID);
-			}*/
-
-			break;
-		}
-
 		// item drops and inventory
 		case GAME_MESSAGE_ID_PICKUP_CURRENCY:
 		{
@@ -222,7 +145,15 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				{
 					Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_COLLECT_ITEM, session->charID, lootObj, clientAddress);
 
+					string number = LVLCache::getObjectProperty("number", objectID).value;
 
+					if (number.length() > 0)
+					{
+						long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(number);
+						Flags::setFlagValue(true, flagID, session->charID);
+						Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, session->charID, flagID, clientAddress);
+						GameMessages::fireEventClientSide(objectID, L"achieve", objectID, session->charID, clientAddress);
+					}
 
 				}
 			}
@@ -243,26 +174,122 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			data->Read(ignoreCooldown);
 			data->Read(outSuccess);
 			data->Read(itemid);
-			bool end;
-			for (int k = 0; k < 7; k++) {
-				data->Read(end);
-			}
-
+			
 			InventoryItems::setIsEquipped(true, itemid);
 
-			ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
 
-			ObjectsManager::serializeObject(replica);
+			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
+			Logger::info("Items equipped: " + std::to_string(items.size()));
+			for (int k = 0; k < items.size(); k++)
+			{
+				player->inventoryIndex->items.push_back(items.at(k));
+			}
+						
+			ObjectsManager::serializeObject(player);
 
-			Logger::info("Equipped item " + std::to_string(itemid));
+			Logger::info("Equipped item " + std::to_string(itemid) + " for player " + std::to_string(session->charID));
 
+
+			break;
+		}
+		
+		case GAME_MESSAGE_UNEQUIP_INVENTORY:
+		{
+			bool evenIfDead;
+			bool ignoreCooldown;
+			bool outSuccess;
+			long long itemToUnequip;
+			long long replacementObjectID;
+			data->Read(evenIfDead);
+			data->Read(ignoreCooldown);
+			data->Read(outSuccess);
+			data->Read(itemToUnequip);
+			data->Read(replacementObjectID);
+
+			/*Logger::info("evenIfDead: " + std::to_string(evenIfDead));
+			Logger::info("ignoreCooldown: " + std::to_string(ignoreCooldown));
+			Logger::info("outSuccess: " + std::to_string(outSuccess));
+			Logger::info("itemToUnequip: " + std::to_string(itemToUnequip));
+			Logger::info("replacementObjectID: " + std::to_string(replacementObjectID));*/
+
+			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+
+			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
+			Logger::info("Items equipped: " + std::to_string(items.size()));
+			for (int k = 0; k < items.size(); k++)
+			{
+				//if (items.at(k).objectID == itemToUnequip)
+				//{
+					if (items.at(k).isEquipped == true)
+					{
+						player->inventoryIndex->items.pop_back();
+						InventoryItems::setIsEquipped(false, itemToUnequip);
+
+						ObjectsManager::serializeObject(player);
+
+						Logger::info("Unequipped item " + std::to_string(itemToUnequip) + " for player " + std::to_string(session->charID));
+					}
+					else
+					{
+						Logger::info("Failed to unequip item " + std::to_string(itemToUnequip) + " for player " + std::to_string(session->charID));
+					}
+				//}
+			}
+
+			/*InventoryItems::setIsEquipped(false, itemToUnequip);
+
+			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
+			Logger::info("Items equipped: " + std::to_string(items.size()));
+
+			ObjectsManager::serializeObject(player);
+
+			Logger::info("Unequipped item " + std::to_string(itemToUnequip) + " for player " + std::to_string(session->charID));*/
+
+
+			break;
+		}
+
+		case GAME_MESSAGE_MOVE_ITEM_IN_INVENTORY:
+		{
+			bool flag;
+			data->Read(flag);
+			long long objid;
+			data->Read(objid);
+			long long unknown;
+			data->Read(unknown);
+			unsigned long slot;
+			data->Read(slot);
+
+			// get inventory type of object being moved
+			short inventoryType = InventoryItems::getInventoryTypeFromItem(objid);
+
+			// get owner id for the object being moved
+			long long owner_id = InventoryItems::getOwnerID(objid);
+
+			// get the slot of the item that is about to be moved
+			short getSlotFromItem = InventoryItems::getSlotFromItem(objid, owner_id);
+
+			// get the item in the slot that the item we are moving is going to
+			long long getItemFromSlot = InventoryItems::getItemFromSlot(owner_id, inventoryType, slot);
+
+			if (getItemFromSlot <= OBJECT_ID_MAX && getItemFromSlot >= OBJECT_ID_MIN)
+			{
+				InventoryItems::setSlot(getSlotFromItem, getItemFromSlot);
+				InventoryItems::setSlot(slot, objid);
+				Logger::info("Swapped slots for ObjectID's [" + std::to_string(objid) + "] and [" + std::to_string(getItemFromSlot) + "] for player " + std::to_string(owner_id));
+			}
+			else
+			{
+				InventoryItems::setSlot(slot, objid);
+				Logger::info("Moved ObjectID [" + std::to_string(objid) + "] to slot " + std::to_string(slot) + " for player " + std::to_string(owner_id));
+			}
 
 			break;
 		}
 
 		case GAME_MESSAGE_ID_SYNC_SKILL:
 		{
-
 			//Get couins DestructibleComponent, CurrencyIndex, and then look at currency table
 			// Example:
 			/*SELECT minvalue, maxvalue FROM CurrencyTable WHERE CurrencyIndex = 
@@ -320,12 +347,13 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					Position spawnPosition;
 					if (replica->simplePhysicsIndex != nullptr)
 					{
-						finalPosition.x = replica->simplePhysicsIndex->pos_x;
+						// rand
+						finalPosition.x = replica->simplePhysicsIndex->pos_x + ((rand() % 20) - 10);
 						finalPosition.y = replica->simplePhysicsIndex->pos_y;
-						finalPosition.z = replica->simplePhysicsIndex->pos_z;
+						finalPosition.z = replica->simplePhysicsIndex->pos_z + ((rand() % 20) - 10);
 
 						spawnPosition.x = replica->simplePhysicsIndex->pos_x;
-						spawnPosition.y = replica->simplePhysicsIndex->pos_y;
+						spawnPosition.y = replica->simplePhysicsIndex->pos_y + 1;
 						spawnPosition.z = replica->simplePhysicsIndex->pos_z;
 					}
 					/*else if (replica->controllablePhysicsIndex != nullptr)
@@ -463,6 +491,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_READY_FOR_UPDATES:
 		{
+			Logger::info("GAME_MESSAGE_ID_READY_FOR_UPDATES");
 			long long ready;
 			data->Read(ready);
 
@@ -833,6 +862,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		case GAME_MESSAGE_ID_REQUEST_DIE:
 		case GAME_MESSAGE_ID_SMASH_ME:
 		{
+			Helpers::dropCoinsOnDeath(clientAddress);
 			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 			{
 				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
@@ -881,29 +911,11 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				long level = CDClient::lookUpLevel(replica->characterIndex->lego_score);
 				replica->characterIndex->level = level;
 				Characters::setLevel(level, objectID);
-				//Logger::info("Is this right for the level up effect?");
-				//GameMessages::stopFXEffect(replica->objectID, "levelup_body_glow", false, clientAddress);
-				//GameMessages::stopFXEffect(ObjectsManager::getObjectBySystemAddress(clientAddress)->objectID, "levelup_body_glow", false, clientAddress);
+				
 				ObjectsManager::serializeObject(replica);
-				//GameMessages::playFXEffect(replica->objectID, 7074, L"create", 1.0F, "levelup_body_glow", 1.0F, -1, clientAddress);
-				//GameMessages::playFXEffect(replica->objectID, 7074, L"create", 1.0F, "levelup_body_glow", 1.0F, -1, ObjectsManager::getObjectBySystemAddress(participant)->clientAddress);
-				//GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(clientAddress)->objectID, 7074, L"create", 1.0F, "levelup_body_glow", 1.0F, -1, clientAddress);
-								
-				std::string s1(Characters::getName(replica->objectID));
-				std::wstring charName;
-				charName.assign(s1.begin(), s1.end());
-
-				std::string s2(" has reached Level ");
-				std::wstring reach;
-				reach.assign(s2.begin(), s2.end());
-
-				std::string s3("!");
-				std::wstring ending;
-				ending.assign(s3.begin(), s3.end());
-
-
+				
 				Helpers::broadcastEffect(replica->objectID, 7074, L"create", 1.0F, "levelup_body_glow", 1.0F, -1, clientAddress);
-				Helpers::sendGlobalChat(charName + reach + to_wstring(level) + ending);
+				Helpers::sendGlobalChat(to_wstring(Characters::getName(replica->objectID) + " has reached Level " + std::to_string(level) + "!"));
 
 			}
 			break;
@@ -936,10 +948,13 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 				if (info->missionID == missionID)
 				{
-					if (rewardLOT != ObjectsManager::getObjectByID(receiver)->lot)
+					if (rewardLOT > 0)
 					{
-						info->rewardLOT = rewardLOT;
-						//Missions::rewardMission(missionID, receiver, clientAddress);
+						if (rewardLOT != ObjectsManager::getObjectByID(receiver)->lot)
+						{
+							info->rewardLOT = rewardLOT;
+							//Missions::rewardMission(missionID, receiver, clientAddress);
+						}
 					}
 				}
 			}
@@ -1441,39 +1456,17 @@ void GameMessages::addItemToInventory(long long objectID, bool isBound, long lot
 void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_DROP_CLIENT_LOOT);
-	
-	/*vector<long> itemLOTs = Objects::countLOTs(objectID);
-	long long lootid;
-	if (itemLOTs.size() == 0)
-	{
-		lootid = Objects::createObject(lot);
-	}
-	else 
-	{
-		lootid = Objects::generateObjectID();
-	}*/
-
-	
-
-	//long long lootid = Objects::createObject(lot);
-
-	//long long lootid = Objects::createObject(lot);
 
 	long long lootid = ItemDrops::createDroppedItem(lot);
 
-
-
-
-
-
 	packet->Write(true);
-	
 	packet->Write(true);
 
-
-	packet->Write(finalPosition.x + ((rand() % 20) - 10)); // finalPosition X
+	//packet->Write(finalPosition.x + ((rand() % 20) - 10)); // finalPosition X
+	packet->Write(finalPosition.x); // finalPosition X
 	packet->Write(finalPosition.y); // finalPosition Y
-	packet->Write(finalPosition.z + ((rand() % 20) - 10)); // finalPosition Z
+	//packet->Write(finalPosition.z + ((rand() % 20) - 10)); // finalPosition Z
+	packet->Write(finalPosition.z); // finalPosition Z
 
 	packet->Write(iCurrency);
 	packet->Write(lot);
@@ -1485,14 +1478,13 @@ void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, l
 	packet->Write(true);
 
 	packet->Write(spawnPosition.x);
-	packet->Write(spawnPosition.y+1);
+	//packet->Write(spawnPosition.y+1);
+	packet->Write(spawnPosition.y);
 	packet->Write(spawnPosition.z);
-
 
 	//packet->Write(spawnPosition.x + ((rand() % 20) - 10));
 	//packet->Write(spawnPosition.y + 5);
 	//packet->Write(spawnPosition.z + ((rand() % 20) - 10));
-
 
 	Server::sendPacket(packet, receiver);
 }

@@ -14,6 +14,8 @@
 #include "Objects.h"
 #include "Logger.h"
 #include "Chat.h"
+#include "Characters.h"
+#include "Common.h"
 
 void Helpers::addMissionWithTasks(long long missionID, long long charID)
 {
@@ -89,7 +91,7 @@ void Helpers::createSyncedItemStack(long long ownerID, long lot, long count, boo
 
 void Helpers::broadcastEffect(long long objectID, long effectID, wstring effectType, float scale, string name, float priority, long long secondary, SystemAddress receiver, bool serialize)
 {
-	GameMessages::playFXEffect(objectID, effectID, effectType, scale, name, priority, secondary, receiver);
+	//GameMessages::playFXEffect(objectID, effectID, effectType, scale, name, priority, secondary, receiver);
 	
 	for (int k = 0; k < Server::getReplicaManager()->GetParticipantCount(); k++)
 	{
@@ -98,7 +100,7 @@ void Helpers::broadcastEffect(long long objectID, long effectID, wstring effectT
 
 		if (replica != nullptr)
 		{
-			GameMessages::playFXEffect(replica->objectID, effectID, effectType, scale, name, priority, secondary, ObjectsManager::getObjectBySystemAddress(participant)->clientAddress);
+			GameMessages::playFXEffect(replica->objectID, effectID, effectType, scale, name, priority, secondary, ObjectsManager::getObjectBySystemAddress(participant)->clientAddress, serialize);
 		}
 	}
 }
@@ -110,6 +112,44 @@ void Helpers::sendGlobalChat(wstring message)
 		SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
 		//ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(receiver);
 		Chat::sendChatMessage(message, ObjectsManager::getObjectBySystemAddress(participant)->clientAddress);
+	}
+	Logger::info("Server sent chat message! (Message: '" + to_string(message) + "')");
+}
+
+void Helpers::dropCoinsOnDeath(SystemAddress clientAddress)
+{
+	Session* session = Sessions::getSession(clientAddress);
+	ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+	
+	Position position;
+	// pos
+	position.x = replica->controllablePhysicsIndex->pos_x;
+	position.y = replica->controllablePhysicsIndex->pos_y;
+	position.z = replica->controllablePhysicsIndex->pos_z;
+
+
+	long long curCurrency = Characters::getCurrency(session->charID);
+	if (curCurrency > 0)
+	{
+		long long dropCurrency = curCurrency * 0.01;
+		long long newCurrency;
+
+		if (dropCurrency >= 10000)
+		{
+			newCurrency = curCurrency - 10000;
+			Characters::setCurrency(newCurrency, session->charID);
+			GameMessages::setCurrency(session->charID, newCurrency, position, clientAddress);
+
+			GameMessages::clientDropLoot(session->charID, 10000, 0, session->charID, session->charID, position, position, clientAddress);
+		}
+		else if (curCurrency >= 100)
+		{
+			newCurrency = curCurrency - dropCurrency;
+			Characters::setCurrency(newCurrency, session->charID);
+			GameMessages::setCurrency(session->charID, newCurrency, position, clientAddress);
+
+			GameMessages::clientDropLoot(session->charID, dropCurrency, 0, session->charID, session->charID, position, position, clientAddress);
+		}
 	}
 }
 

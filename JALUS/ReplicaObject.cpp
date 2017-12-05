@@ -263,6 +263,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 					break;
 				}
 
+
 				case ReplicaComponentID::REPLICA_COMPONENT_ID_BOUNCER:
 				{
 					bouncerIndex = new BouncerIndex();
@@ -283,16 +284,15 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 					long long id = Objects::generateObjectID();
 					ReplicaObject* other = new ReplicaObject(id, 6604, to_wstring(name), 0, pos, rot);
 					ObjectsManager::spawnObject(other);
-
 					other->parentID = id;*/
 
 
 					//rebuildIndex->flagTemp = true;
 					//rebuildIndex->un32Temp = 0;
 
-
 					/*rebuildIndex->scriptedActivityIndex->flag = true;
 					rebuildIndex->scriptedActivityIndex->count = 0;*/
+
 
 					rebuildIndex->scriptedActivityIndex;
 
@@ -318,6 +318,27 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 					
 
 					break;
+				}
+
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_MODULE_ASSEMBLY:
+				{
+					moduleAssemblyIndex = new ModuleAssemblyIndex();
+
+					bool flag_0;
+					bool flag_0_1;
+					long long data_0;
+					bool flag_0_2;
+					long wstringLength;
+					wstring data_1;
+
+					moduleAssemblyIndex->flag_0 = true;
+					moduleAssemblyIndex->flag_0_1 = true;
+					moduleAssemblyIndex->data_0;
+					moduleAssemblyIndex->flag_0_2 = true;
+					moduleAssemblyIndex->wstringLength = 1;
+					moduleAssemblyIndex->data_1;
+
+
 				}
 
 				}
@@ -386,6 +407,10 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 
 ReplicaObject::~ReplicaObject()
 {
+	if (moduleAssemblyIndex != nullptr)
+	{
+		delete moduleAssemblyIndex;
+	}
 	if (controllablePhysicsIndex != nullptr)
 	{
 		delete controllablePhysicsIndex;
@@ -558,6 +583,8 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 		}
 	}
 
+	if (moduleAssemblyIndex != nullptr)
+		moduleAssemblyIndex->writeToBitStream(bitStream, isConstruction);
 	if (controllablePhysicsIndex != nullptr)
 		controllablePhysicsIndex->writeToBitStream(bitStream, isConstruction);
 	if (simplePhysicsIndex != nullptr)

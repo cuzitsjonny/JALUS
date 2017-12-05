@@ -142,7 +142,7 @@ void LVLCache::loadObjects()
 
 								container.objectID = objectID;
 								containers.push_back(container);
-
+								// THIS SPAWNS THE OBJECTS INTO THE WORLD
 								ReplicaObject* replica = new ReplicaObject(objectID, lot, L"", 0, pos, rot);
 								replica->scale = scale;
 								Server::getReplicaManager()->ReferencePointer(replica);

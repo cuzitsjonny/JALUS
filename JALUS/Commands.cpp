@@ -37,17 +37,66 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 		}
 	}
 
-	/*else if (iequals(cmd, "sendchat") || iequals(cmd, "chat") || iequals(cmd, "say"))
+	else if (iequals(cmd, "sendchat") || iequals(cmd, "chat") || iequals(cmd, "say"))
 	{
 		if (args.size() >= 1)
 		{
 			std::string say;
-			say.assign(args.begin(), args.end());
+			//std::string msg;
+			for (int k = 0; k < args.size(); k++)
+			{
+				say.append(args.at(k) + " ");
+			}
+
+			//std::string say();
+			
 			std::wstring globalChatMsg;
 			globalChatMsg.assign(say.begin(), say.end());
 			Helpers::sendGlobalChat(globalChatMsg);
+
+			/*if (sender.getSenderID() != -1)
+			{
+				//Logger::info();
+			}
+			else
+			{
+				
+			}*/
+
 		}
-	}*/
+		else if (sender.getSenderID() != -1)
+		{
+			sender.sendMessage("You need to say something!");
+		}
+		else
+		{
+			Logger::info("You need to say something!");
+		}
+	}
+
+	else if (iequals(cmd, "setcoins"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1)
+			{
+				Session* session = Sessions::getSession(sender.getClientAddress());
+				ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+				long long newCurrency = stoll(args.at(0));
+				Characters::setCurrency(newCurrency, session->charID);
+				Position position;
+				position.x = replica->controllablePhysicsIndex->pos_x;
+				position.y = replica->controllablePhysicsIndex->pos_y;
+				position.z = replica->controllablePhysicsIndex->pos_z;
+
+				GameMessages::setCurrency(session->charID, newCurrency, position, session->clientAddress);
+			}
+			else
+			{
+				sender.sendMessage("You need to specify an amount!");
+			}
+		}
+	}
 
 	else if (iequals(cmd, "drop")) // drop [lot]
 	{
@@ -65,11 +114,8 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 				finalPosition.y = charObj->controllablePhysicsIndex->pos_y;
 				finalPosition.z = charObj->controllablePhysicsIndex->pos_z;
 
-				spawnPosition.x = charObj->controllablePhysicsIndex->pos_x;
-				spawnPosition.y = charObj->controllablePhysicsIndex->pos_y;
-				spawnPosition.z = charObj->controllablePhysicsIndex->pos_z;
 
-				GameMessages::clientDropLoot(session->charID, 0, 1, session->charID, session->charID, spawnPosition, finalPosition, session->clientAddress);
+				GameMessages::clientDropLoot(session->charID, 0, stol(args.at(0)), session->charID, session->charID, spawnPosition, finalPosition, session->clientAddress);
 			}
 			else
 			{
@@ -78,6 +124,32 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 		}
 
 	}
+
+	else if (iequals(cmd, "dropcoin"))
+	{
+		Session* session = Sessions::getSession(sender.getClientAddress());
+
+		//GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1)
+			{
+				Position position;
+				ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
+				position.x = charObj->controllablePhysicsIndex->pos_x;
+				position.y = charObj->controllablePhysicsIndex->pos_y;
+				position.z = charObj->controllablePhysicsIndex->pos_z;
+
+
+				GameMessages::clientDropLoot(session->charID, stoi(args.at(0)), 0, session->charID, session->charID, position, position, session->clientAddress);
+			}
+			else
+			{
+				sender.sendMessage("You need to specify a LOT!");
+			}
+		}
+	}
+
 	else if (iequals(cmd, "fly") || iequals(cmd, "flight") || iequals(cmd, "jetpack") || iequals(cmd, "hover"))
 	{
 		if (sender.getSenderID() != -1)
