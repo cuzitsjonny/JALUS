@@ -126,8 +126,9 @@ void Helpers::dropCoinsOnDeath(SystemAddress clientAddress)
 	position.x = replica->controllablePhysicsIndex->pos_x;
 	position.y = replica->controllablePhysicsIndex->pos_y;
 	position.z = replica->controllablePhysicsIndex->pos_z;
-
-
+	// Updated coin values to reflect comments by Darwin.
+	// 100th (1%) of the user's coins if you had more than 200 (if you had less, you lose 1 coin).
+	// Max coin drop is 10000 coins.
 	long long curCurrency = Characters::getCurrency(session->charID);
 	if (curCurrency > 0)
 	{
@@ -142,13 +143,21 @@ void Helpers::dropCoinsOnDeath(SystemAddress clientAddress)
 
 			GameMessages::clientDropLoot(session->charID, 10000, 0, session->charID, session->charID, position, position, clientAddress);
 		}
-		else if (curCurrency >= 100)
+		else if (curCurrency >= 200)
 		{
 			newCurrency = curCurrency - dropCurrency;
 			Characters::setCurrency(newCurrency, session->charID);
 			GameMessages::setCurrency(session->charID, newCurrency, position, clientAddress);
 
 			GameMessages::clientDropLoot(session->charID, dropCurrency, 0, session->charID, session->charID, position, position, clientAddress);
+		}
+		else if (curCurrency >= 100)
+		{
+			newCurrency = curCurrency - 1;
+			Characters::setCurrency(newCurrency, session->charID);
+			GameMessages::setCurrency(session->charID, newCurrency, position, clientAddress);
+
+			GameMessages::clientDropLoot(session->charID, 1, 0, session->charID, session->charID, position, position, clientAddress);
 		}
 	}
 }

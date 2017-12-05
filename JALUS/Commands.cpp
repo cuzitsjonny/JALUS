@@ -21,6 +21,7 @@
 #include "Scheduler.h"
 #include "Helpers.h"
 #include "Missions.h"
+#include "Common.h"
 
 void Commands::performCommand(CommandSender sender, string cmd, vector<string> args)
 {
@@ -41,29 +42,15 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 	{
 		if (args.size() >= 1)
 		{
-			std::string say;
-			//std::string msg;
+			std::string globalChatMsg;
 			for (int k = 0; k < args.size(); k++)
 			{
-				say.append(args.at(k) + " ");
+				globalChatMsg.append(args.at(k) + " ");
 			}
 
-			//std::string say();
-			
-			std::wstring globalChatMsg;
-			globalChatMsg.assign(say.begin(), say.end());
-			Helpers::sendGlobalChat(globalChatMsg);
-
-			/*if (sender.getSenderID() != -1)
-			{
-				//Logger::info();
-			}
-			else
-			{
-				
-			}*/
-
+			Helpers::sendGlobalChat(to_wstring(globalChatMsg));
 		}
+
 		else if (sender.getSenderID() != -1)
 		{
 			sender.sendMessage("You need to say something!");

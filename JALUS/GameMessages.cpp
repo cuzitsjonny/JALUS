@@ -1462,15 +1462,12 @@ void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, l
 	packet->Write(true);
 	packet->Write(true);
 
-	//packet->Write(finalPosition.x + ((rand() % 20) - 10)); // finalPosition X
-	packet->Write(finalPosition.x); // finalPosition X
-	packet->Write(finalPosition.y); // finalPosition Y
-	//packet->Write(finalPosition.z + ((rand() % 20) - 10)); // finalPosition Z
-	packet->Write(finalPosition.z); // finalPosition Z
+	packet->Write(finalPosition.x);
+	packet->Write(finalPosition.y);
+	packet->Write(finalPosition.z);
 
 	packet->Write(iCurrency);
 	packet->Write(lot);
-	//packet->Write((int)0);
 	packet->Write(lootid);
 	packet->Write(owner);
 	packet->Write(sourceObj);
@@ -1478,13 +1475,8 @@ void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, l
 	packet->Write(true);
 
 	packet->Write(spawnPosition.x);
-	//packet->Write(spawnPosition.y+1);
 	packet->Write(spawnPosition.y);
 	packet->Write(spawnPosition.z);
-
-	//packet->Write(spawnPosition.x + ((rand() % 20) - 10));
-	//packet->Write(spawnPosition.y + 5);
-	//packet->Write(spawnPosition.z + ((rand() % 20) - 10));
 
 	Server::sendPacket(packet, receiver);
 }
