@@ -11,5 +11,6 @@ public:
 	static void broadcastEffect(long long objectID, long effectID, wstring effectType, float scale, string name, float priority, long long secondary, SystemAddress receiver, bool serialize = true);
 	static void sendGlobalChat(wstring message);
 	static void dropCoinsOnDeath(SystemAddress clientAddress);
+	static void deathCheck(long long charid, wstring deathType, SystemAddress clientAddress);
 	static void broadcastJonnysDumbEffects();
 };

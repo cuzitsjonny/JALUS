@@ -740,6 +740,18 @@ vector<long double> CDClient::getDropProbs(long lot, long row)
 	{
 		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
 
+		// SQL code
+		/*SELECT percent, minToDrop, maxToDrop, LootTableIndex FROM LootMatrix WHERE LootMatrixIndex =
+		(SELECT LootMatrixIndex FROM DestructibleComponent WHERE id =
+		(SELECT component_id FROM ComponentsRegistry WHERE id = '6415' AND component_type = '7'))*/
+
+		// SQL code to get specific item drop possible.
+		/*SELECT * FROM Objects WHERE id =
+		(SELECT itemid FROM LootTable WHERE LootTableIndex =
+		(SELECT LootTableIndex FROM LootMatrix WHERE LootMatrixIndex = 
+		(SELECT LootMatrixIndex FROM DestructibleComponent WHERE id = 
+		(SELECT component_id FROM ComponentsRegistry WHERE id = '11989' AND component_type = '7')) LIMIT 1 OFFSET 0))*/
+
 		stringstream ss;
 		ss << "SELECT percent, minToDrop, maxToDrop, LootTableIndex FROM LootMatrix WHERE LootMatrixIndex =";
 		ss << "(SELECT LootMatrixIndex FROM DestructibleComponent WHERE id = ";

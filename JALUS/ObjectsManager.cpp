@@ -1,11 +1,14 @@
 #include "ObjectsManager.h"
 #include "Server.h"
 #include "PacketUtils.h"
+#include "Logger.h"
 
 void ObjectsManager::addPlayer(ReplicaObject* player, SystemAddress clientAddress)
 {
 	Server::getReplicaManager()->Construct(player, false, UNASSIGNED_SYSTEM_ADDRESS, true);
 	Server::getReplicaManager()->AddParticipant(clientAddress);
+	//int testing = Server::getReplicaManager()->GetReplicaCount();
+	//Logger::info("GetReplicaCount = " + std::to_string(testing));
 }
 
 void ObjectsManager::removePlayer(SystemAddress clientAddress)
@@ -32,19 +35,6 @@ void ObjectsManager::spawnObject(ReplicaObject* object, SystemAddress clientAddr
 	{
 		Server::getReplicaManager()->Construct(object, false, clientAddress, false);
 	}
-
-	/*// make bitstream
-	RakNet::BitStream *stream = new RakNet::BitStream();
-	// write creation header
-	stream->Write(static_cast<unsigned char>(0x24));
-	stream->Write(static_cast<bool>(true));
-	stream->Write(static_cast<unsigned long>(1));
-	// write object-construction
-	object->writeToBitStream(stream, true);
-	// save to disk
-	stringstream ns; ns << "packets/" << "[24]_" << object->lot << "_" << object->objectID << ".bin";
-	PacketUtils::saveBitstreamToDisk(stream, ns.str());*/
-
 }
 
 void ObjectsManager::despawnObject(ReplicaObject* object, SystemAddress clientAddress)

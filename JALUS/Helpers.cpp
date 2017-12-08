@@ -16,6 +16,7 @@
 #include "Chat.h"
 #include "Characters.h"
 #include "Common.h"
+#include "ValueStorage.h"
 
 void Helpers::addMissionWithTasks(long long missionID, long long charID)
 {
@@ -158,6 +159,23 @@ void Helpers::dropCoinsOnDeath(SystemAddress clientAddress)
 			GameMessages::setCurrency(session->charID, newCurrency, position, clientAddress);
 
 			GameMessages::clientDropLoot(session->charID, 1, 0, session->charID, session->charID, position, position, clientAddress);
+		}
+	}
+}
+
+void Helpers::deathCheck(long long charid, wstring deathType, SystemAddress clientAddress)
+{
+	if (ValueStorage::getValueInMemory(charid, "health") > 0)
+	{
+		ValueStorage::updateValueInMemory(charid, "health", 0);
+		ValueStorage::updateValueInMemory(charid, "armor", 0);
+		ValueStorage::updateValueInMemory(charid, "imagination", 0);
+		Helpers::dropCoinsOnDeath(clientAddress);
+		for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+		{
+			SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+			GameMessages::die(charid, deathType, false, participant);
 		}
 	}
 }

@@ -16,6 +16,7 @@
 #include "Helpers.h"
 #include "ItemDrops.h"
 #include "Common.h"
+#include "ValueStorage.h"
 
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
@@ -491,7 +492,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_READY_FOR_UPDATES:
 		{
-			Logger::info("GAME_MESSAGE_ID_READY_FOR_UPDATES");
+			//Logger::info("GAME_MESSAGE_ID_READY_FOR_UPDATES");
 			long long ready;
 			data->Read(ready);
 
@@ -862,20 +863,28 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		case GAME_MESSAGE_ID_REQUEST_DIE:
 		case GAME_MESSAGE_ID_SMASH_ME:
 		{
-			Helpers::dropCoinsOnDeath(clientAddress);
-			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+			switch (ServerRoles::toZoneID(Server::getServerRole()))
 			{
-				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
 
-				GameMessages::die(session->charID, L"electro-shock-death", false, participant);
+			case ZONE_ID_VENTURE_EXPLORER:
+			{
+				Helpers::deathCheck(session->charID, L"electro-shock-death", clientAddress);
+				break;
 			}
-			break;
+
+			default:
+				break;
+			}
 		}
 
 		case GAME_MESSAGE_ID_REQUEST_RESURRECT:
 		{
 			Position spawnPos = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()))->spawnPointPos;
 			Rotation spawnRot = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()))->spawnPointRot;
+
+			ValueStorage::updateValueInMemory(session->charID, "health", 4);
+			ValueStorage::updateValueInMemory(session->charID, "armor", 0);
+			ValueStorage::updateValueInMemory(session->charID, "imagination", 6);
 
 			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 			{
@@ -1187,6 +1196,9 @@ void GameMessages::notifyMissionTask(long long objectID, long missionID, long ta
 void GameMessages::die(long long objectID, wstring deathType, bool spawnLoot, SystemAddress receiver, long long killerID, long long lootOwnerID)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_DIE);
+
+	//ReplicaObject* player = ObjectsManager::getObjectByID(receiver);
+	//player->statsIndex->cur_health = "";
 
 	packet->Write(true);
 	packet->Write(spawnLoot);

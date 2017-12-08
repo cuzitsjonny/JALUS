@@ -117,7 +117,7 @@ void LVLCache::loadObjects()
 									reader.IgnoreBytes(4);
 								}
 
-								Logger::info("Loading object with ID " + to_string(objectID) + "!");
+								//Logger::info("Loading object with ID " + to_string(objectID) + "!");
 
 								ObjectPropertyContainer container = ObjectPropertyContainer();
 								istringstream stream(to_string(ldf));
@@ -143,9 +143,13 @@ void LVLCache::loadObjects()
 								container.objectID = objectID;
 								containers.push_back(container);
 								// THIS SPAWNS THE OBJECTS INTO THE WORLD
-								ReplicaObject* replica = new ReplicaObject(objectID, lot, L"", 0, pos, rot);
-								replica->scale = scale;
-								Server::getReplicaManager()->ReferencePointer(replica);
+								if (lot == 176)
+								{
+									Logger::info("Loading object with ID " + to_string(objectID) + "!");
+									ReplicaObject* replica = new ReplicaObject(objectID, lot, L"", 0, pos, rot);
+									replica->scale = scale;
+									Server::getReplicaManager()->ReferencePointer(replica);
+								}
 							}
 
 							while (((reader.GetReadOffset() / 8) % 16) != 0)

@@ -11,6 +11,8 @@
 #include "Scheduler.h"
 #include "GameMessages.h"
 #include "Helpers.h"
+#include "ValueStorage.h"
+#include "Characters.h"
 #include <RakSleep.h>
 
 bool ServerLoop::run;
@@ -190,6 +192,7 @@ void ServerLoop::start()
 
 						if (replica != nullptr)
 						{
+							Session* session = Sessions::getSession(clientAddress);
 							if (!Sessions::getSession(clientAddress)->gotRedirected)
 							{
 								ControllablePhysicsIndex* index = replica->controllablePhysicsIndex;
@@ -205,6 +208,15 @@ void ServerLoop::start()
 								loc.rotation.z = index->rot_z;
 								loc.rotation.w = index->rot_w;
 								Locations::saveLocation(loc, replica->objectID);
+
+								Characters::setHealth(ValueStorage::getValueInMemory(session->charID, "health"), session->charID);
+								Characters::setArmor(ValueStorage::getValueInMemory(session->charID, "armor"), session->charID);
+								Characters::setImagination(ValueStorage::getValueInMemory(session->charID, "imagination"), session->charID);
+
+								ValueStorage::removeValueFromMemory(session->charID, "health");
+								ValueStorage::removeValueFromMemory(session->charID, "armor");
+								ValueStorage::removeValueFromMemory(session->charID, "imagination");
+
 							}
 						}
 

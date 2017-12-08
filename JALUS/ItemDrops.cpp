@@ -1,5 +1,4 @@
 #include "ItemDrops.h"
-#include "Logger.h"
 #include "Objects.h"
 
 vector<ItemDrop> ItemDrops::itemDrops;
@@ -42,12 +41,6 @@ long ItemDrops::getDroppedItem(long long id)
 	{
 		if (itemDrops.at(i).id == id) {
 			return itemDrops.at(i).lot;
-			Logger::info("Location in vector: " + i);
-			Logger::info("          ObjectID: " + id);
-			Logger::info("               LOT: " + itemDrops.at(i).lot);
-			Logger::info("This should return all the necessary information for the given ID");
 		}
 	}
-
-	//return nullptr;
 }

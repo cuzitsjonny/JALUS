@@ -204,6 +204,9 @@
     <ClCompile Include="ModuleAssemblyIndex.cpp">
       <Filter>Quelldateien\Indexe</Filter>
     </ClCompile>
+    <ClCompile Include="ValueStorage.cpp">
+      <Filter>Quelldateien\Datenbank</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -394,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="ModuleAssemblyIndex.h">
       <Filter>Headerdateien\Indexe</Filter>
+    </ClInclude>
+    <ClInclude Include="ValueStorage.h">
+      <Filter>Headerdateien\Datenbank</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

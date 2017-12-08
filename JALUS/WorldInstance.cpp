@@ -19,6 +19,7 @@
 #include "TransitionInfos.h"
 #include "CharactersInstance.h"
 #include "Helpers.h"
+#include "ValueStorage.h"
 
 void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddress, ClientToWorldPacketID packetID)
 {
@@ -400,10 +401,26 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 		replica->clientAddress = clientAddress;
 
 		replica->statsIndex->max_health = Characters::getMaxHealth(session->charID);
-		replica->statsIndex->cur_health = replica->statsIndex->max_health;
+		replica->statsIndex->cur_health = Characters::getHealth(session->charID);
 
 		replica->statsIndex->max_imagination = Characters::getMaxImagination(session->charID);
-		replica->statsIndex->cur_imagination = replica->statsIndex->max_imagination;
+		replica->statsIndex->cur_imagination = Characters::getImagination(session->charID);
+
+		replica->statsIndex->cur_armor = Characters::getArmor(session->charID);
+
+		ValueStorage::createValueInMemory(session->charID, "health", replica->statsIndex->cur_health);
+		ValueStorage::createValueInMemory(session->charID, "imagination", replica->statsIndex->cur_imagination);
+		ValueStorage::createValueInMemory(session->charID, "armor", replica->statsIndex->cur_armor);
+
+		if (replica->statsIndex->cur_health == 0)
+		{ 
+			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+			{
+				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+				GameMessages::die(session->charID, L"electro-shock-death", false, participant);
+			}
+		}
 
 		ObjectsManager::addPlayer(replica, clientAddress);
 	}
@@ -478,27 +495,7 @@ void WorldInstance::broadcastPositionUpdate(BitStream* data, SystemAddress clien
 		{
 			if (index->pos_y < 562)
 			{
-				Helpers::dropCoinsOnDeath(clientAddress);
-				Position pos;
-				pos.x = index->pos_x;
-				pos.y = 562.1;
-				pos.z = index->pos_z;
-				/*Rotation rot;
-				rot.w = index->rot_w;
-				rot.x = index->rot_x;
-				rot.y = index->rot_y;
-				rot.z = index->rot_z;*/
-
-				GameMessages::teleport(session->charID, false, false, false, true, pos, clientAddress);
-				for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-				{
-					//Helpers::dropCoinsOnDeath(clientAddress);
-					//index->pos_y = 563;
-
-					SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-
-					GameMessages::die(session->charID, L"electro-shock-death", false, participant);
-				}
+				Helpers::deathCheck(session->charID, L"electro-shock-death", clientAddress);
 			}
 			break;
 		}
