@@ -367,25 +367,11 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			
 
 			ReplicaObject* replica = ObjectsManager::getObjectByID(itemId);
-			/*Position pos;
-			Rotation rot;
-			pos.x = replica->simplePhysicsIndex->pos_x;
-			pos.y = replica->simplePhysicsIndex->pos_y;
-			pos.z = replica->simplePhysicsIndex->pos_z;
-			// Rotation
-			rot.w = replica->simplePhysicsIndex->rot_w;
-			rot.x = replica->simplePhysicsIndex->rot_x;
-			rot.y = replica->simplePhysicsIndex->rot_y;
-			rot.z = replica->simplePhysicsIndex->rot_z;
 
-			ReplicaObject* newReplica = new ReplicaObject(replica->objectID, replica->lot, replica->name, replica->gmLevel, pos, rot);
-			newReplica->scale = replica->scale;*/
-			
 			if (replica != nullptr)
 			{
 				if (replica->simplePhysicsIndex != nullptr)
 				{
-
 					Position finalPosition;
 					Position spawnPosition;
 					if (replica->simplePhysicsIndex != nullptr)
@@ -481,12 +467,37 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					
 				}
 
+
+				Position pos;
+				Rotation rot;
+				pos.x = replica->simplePhysicsIndex->pos_x;
+				pos.y = replica->simplePhysicsIndex->pos_y;
+				pos.z = replica->simplePhysicsIndex->pos_z;
+				// Rotation
+				rot.w = replica->simplePhysicsIndex->rot_w;
+				rot.x = replica->simplePhysicsIndex->rot_x;
+				rot.y = replica->simplePhysicsIndex->rot_y;
+				rot.z = replica->simplePhysicsIndex->rot_z;
+
+				ReplicaObject* newReplica = new ReplicaObject(replica->objectID, replica->lot, replica->name, replica->gmLevel, pos, rot);
+				newReplica->scale = replica->scale;
+
+				ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
+				if (replica != charObj)
+				{
+					ObjectsManager::despawnObject(replica);
+					// 7 seconds
+					Scheduler::runTaskLater(7000, [newReplica]() {
+						Server::getReplicaManager()->ReferencePointer(newReplica);
+					});
+				}
+
 			}
-			ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
+			/*ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
 			if (replica != charObj)
 			{
 
-				/*ObjectsManager::despawnObject(replica);
+				ObjectsManager::despawnObject(replica);
 				//Scheduler::runTaskTimer(7000, 7000, Helpers::syncStatValues);
 				
 				// 7 seconds
@@ -494,8 +505,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					Server::getReplicaManager()->ReferencePointer(newReplica); 
 					ObjectsManager::spawnObject(newReplica);
 				});
-				//Server::getReplicaManager()->ReferencePointer(replica);*/
-			}
+				//Server::getReplicaManager()->ReferencePointer(replica);
+			}*/
 			
 			break;
 		}
@@ -1112,10 +1123,39 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Logger::info("   bitStream Size: " + to_string(bitStream->GetNumberOfBytesUsed()));
 			Logger::info("}");
 
+
+			{ // code to detect behavior
+				string type = CDClient::getTemplateIDName(skillID);
+			}
+
+
 			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 			{
 				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-				GameMessages::echoStartSkill(session->charID, usedMouse, consumableItemID, casterLatency, castType, lcp_x, lcp_y, lcp_z, optionalOriginatorID, optionalTargetID, orr_x, orr_y, orr_z, orr_w, bitStream, skillID, uiSkillHandle, participant);
+				//GameMessages::echoStartSkill(session->charID, usedMouse, consumableItemID, casterLatency, castType, lcp_x, lcp_y, lcp_z, optionalOriginatorID, optionalTargetID, orr_x, orr_y, orr_z, orr_w, bitStream, skillID, uiSkillHandle, participant);
+				BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_ECHO_START_SKILL);
+
+				packet->Write(usedMouse);
+				packet->Write(consumableItemID);
+				packet->Write(casterLatency);
+				packet->Write(castType);
+				packet->Write(lcp_x);
+				packet->Write(lcp_y);
+				packet->Write(lcp_z);
+				packet->Write(optionalOriginatorID);
+				packet->Write(optionalTargetID);
+				packet->Write(orr_x);
+				packet->Write(orr_y);
+				packet->Write(orr_z);
+				packet->Write(orr_w);
+				packet->Write(bitStream);
+				packet->Write(skillID);
+				packet->Write(uiSkillHandle);
+
+				ReplicaObject* player = ObjectsManager::getObjectByID(objectID);
+				ObjectsManager::serializeObject(player);
+
+				Server::sendPacket(packet, participant);
 			}
 
 			break;

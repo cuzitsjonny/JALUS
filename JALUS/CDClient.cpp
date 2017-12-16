@@ -1025,6 +1025,107 @@ long CDClient::getSkillID(long lot, long castOnType)
 	return r;
 }
 
+long CDClient::getTemplateID(long skillID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = 0;
+
+	/*SELECT name FROM BehaviorTemplateName WHERE templateID =
+	(SELECT templateID FROM BehaviorTemplate WHERE behaviorID =
+	(SELECT behaviorID FROM SkillBehavior WHERE skillID =
+	(SELECT skillID FROM ObjectSkills WHERE objectTemplate = '4880' AND castOnType = '0')))*/
+
+	/*SELECT name FROM BehaviorTemplateName WHERE templateID =
+	(SELECT templateID FROM BehaviorTemplate WHERE behaviorID =
+	(SELECT behaviorID FROM SkillBehavior WHERE skillID = '148'))*/
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT templateID FROM BehaviorTemplate WHERE behaviorID =";
+		ss << "(SELECT behaviorID FROM SkillBehavior WHERE skillID = '" << skillID << "');";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			long templateID = cmd.Field("templateID").asLong();
+
+			r = cmd.Field("templateID").asLong();
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+string CDClient::getTemplateIDName(long skillID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	string r ;
+
+	/*SELECT name FROM BehaviorTemplateName WHERE templateID =
+	(SELECT templateID FROM BehaviorTemplate WHERE behaviorID =
+	(SELECT behaviorID FROM SkillBehavior WHERE skillID = 
+	(SELECT skillID FROM ObjectSkills WHERE objectTemplate = '4880' AND castOnType = '0')))*/
+
+	/*SELECT name FROM BehaviorTemplateName WHERE templateID =
+	(SELECT templateID FROM BehaviorTemplate WHERE behaviorID =
+	(SELECT behaviorID FROM SkillBehavior WHERE skillID = '148'))*/
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT name FROM BehaviorTemplateName WHERE templateID = ";
+		ss << "(SELECT templateID FROM BehaviorTemplate WHERE behaviorID =";
+		ss << "(SELECT behaviorID FROM SkillBehavior WHERE skillID = '" << skillID << "'));";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			string name = cmd.Field("name").asString();
+
+			r = cmd.Field("name").asString();
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
 bool CDClient::getIsEquippable(long lot)
 {
 	SAConnection con;

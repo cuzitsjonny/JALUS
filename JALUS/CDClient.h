@@ -78,5 +78,7 @@ public:
 	static long getIsPowerup(long lot);
 	static long getStackSize(long lot);
 	static long getSkillID(long lot, long castOnType);
+	static long getTemplateID(long skillID);
+	static string getTemplateIDName(long skillID);
 	static bool getIsEquippable(long lot);
 };
