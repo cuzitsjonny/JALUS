@@ -49,6 +49,7 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_REBUILD_CANCEL = 209,
 	//skills
 	GAME_MESSAGE_ID_ADD_SKILL = 127,
+	GAME_MESSAGE_ID_REMOVE_SKILL = 128,
 	//racing
 	GAME_MESSAGE_ID_VEHICLE_LOCK_INPUT = 1230,
 	GAME_MESSAGE_ID_VEHICLE_UNLOCK_INPUT = 1231,
@@ -121,5 +122,7 @@ public:
 	static void fireEventClientSide(long long objectID, wstring args, long long object, long long senderID, SystemAddress receiver, long long param1 = 0, long param2 = -1);
 	static void addItemToInventory(long long objectID, bool isBound, long lot, InventoryType invType, long count, long totalCount, long long stackObjectID, short slot, SystemAddress receiver, bool showFlyingLoot = true);
 	static void clientDropLoot(long long objectID, int iCurrency, long lot, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver);
-	static void addSkill(long long objectID, unsigned long skillid, unsigned long slot, SystemAddress receiver);
+	static void addSkill(long long objectID, long skillid, long slot, SystemAddress receiver);
+	static void removeSkill(long long objectID, long skillid, bool fromSkillSet, SystemAddress receiver);
+	static void echoStartSkill(long long objectID, bool usedMouse, long long consumableItemID, float casterLatency, long castType, float lcp_x, float lcp_y, float lcp_z, long long optionalOriginatorID, long long optionalTargetID, float orr_x, float orr_y, float orr_z, float orr_w, BitStream* bitstream, unsigned long skillID, unsigned long uiSkillHandle, SystemAddress receiver);
 };

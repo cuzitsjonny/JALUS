@@ -12,5 +12,6 @@ public:
 	static void sendGlobalChat(wstring message);
 	static void dropCoinsOnDeath(SystemAddress clientAddress);
 	static void deathCheck(long long charid, wstring deathType, SystemAddress clientAddress);
+	static void syncStatValues();
 	static void broadcastJonnysDumbEffects();
 };

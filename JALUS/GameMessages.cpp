@@ -17,6 +17,7 @@
 #include "ItemDrops.h"
 #include "Common.h"
 #include "ValueStorage.h"
+#include "Scheduler.h"
 
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
@@ -122,8 +123,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			data->Read(lootObj);
 			data->Read(playerID);
 
-			Logger::info("lootObj " + std::to_string(lootObj));
-			Logger::info("playerID " + std::to_string(playerID));
+			//Logger::info("lootObj " + std::to_string(lootObj));
+			//Logger::info("playerID " + std::to_string(playerID));
 
 
 			//long getObjLOT = Objects::getLOT(lootObj);
@@ -176,9 +177,10 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			data->Read(outSuccess);
 			data->Read(itemid);
 			
-			InventoryItems::setIsEquipped(true, itemid);
-
+			//ReplicaObject* replica = ObjectsManager::getObjectByID(itemid);
 			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+
+			InventoryItems::setIsEquipped(true, itemid);
 
 			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
 			Logger::info("Items equipped: " + std::to_string(items.size()));
@@ -186,12 +188,37 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			{
 				player->inventoryIndex->items.push_back(items.at(k));
 			}
-						
+			long lot = Objects::getLOT(itemid);
+			// add skills
+			long itemType = CDClient::getItemType(lot);
+
+			long hotbarslot = 4;
+			if (itemType == ItemType::ITEM_TYPE_HAIR || ItemType::ITEM_TYPE_HAT)
+				hotbarslot = 3;
+			if (itemType == ItemType::ITEM_TYPE_NECK)
+				hotbarslot = 2;
+			if (itemType == ItemType::ITEM_TYPE_RIGHT_HAND)
+				hotbarslot = 0;
+			if (itemType == ItemType::ITEM_TYPE_LEFT_HAND)
+				hotbarslot = 1;
+
+			// SlitherStriker = 13276
+			// Nightlasher = 13275
+			// Energy Spork = 13277
+			// Zapzapper = 13278
+
+			long skillid = CDClient::getSkillID(lot, 0);
+			if (lot == 13276 ||
+				lot == 13275 ||
+				lot == 13277 ||
+				lot == 13278)
+				skillid = 148;
+			if (skillid != -1)
+				GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
+
 			ObjectsManager::serializeObject(player);
 
 			Logger::info("Equipped item " + std::to_string(itemid) + " for player " + std::to_string(session->charID));
-
-
 			break;
 		}
 		
@@ -215,38 +242,40 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Logger::info("replacementObjectID: " + std::to_string(replacementObjectID));*/
 
 			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+			long lot = Objects::getLOT(itemToUnequip);
+			
+			vector<InventoryItem> items = InventoryItems::getInventoryItems(session->charID);
+			//vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
+			//Logger::info("Items equipped: " + std::to_string(items.size()));
 
-			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
-			Logger::info("Items equipped: " + std::to_string(items.size()));
 			for (int k = 0; k < items.size(); k++)
 			{
-				//if (items.at(k).objectID == itemToUnequip)
-				//{
+				if (items.at(k).objectID == itemToUnequip)
+				{
 					if (items.at(k).isEquipped == true)
 					{
 						player->inventoryIndex->items.pop_back();
 						InventoryItems::setIsEquipped(false, itemToUnequip);
 
-						ObjectsManager::serializeObject(player);
-
 						Logger::info("Unequipped item " + std::to_string(itemToUnequip) + " for player " + std::to_string(session->charID));
+
+						// SlitherStriker = 13276
+						// Nightlasher = 13275
+						// Energy Spork = 13277
+						// Zapzapper = 13278
+						long skillid = CDClient::getSkillID(lot, 0);
+						if (lot == 13276 ||
+							lot == 13275 ||
+							lot == 13277 ||
+							lot == 13278)
+							skillid = 148;
+						if (skillid != -1)
+							GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
 					}
-					else
-					{
-						Logger::info("Failed to unequip item " + std::to_string(itemToUnequip) + " for player " + std::to_string(session->charID));
-					}
-				//}
+				}
 			}
-
-			/*InventoryItems::setIsEquipped(false, itemToUnequip);
-
-			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
-			Logger::info("Items equipped: " + std::to_string(items.size()));
-
+			
 			ObjectsManager::serializeObject(player);
-
-			Logger::info("Unequipped item " + std::to_string(itemToUnequip) + " for player " + std::to_string(session->charID));*/
-
 
 			break;
 		}
@@ -338,6 +367,19 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			
 
 			ReplicaObject* replica = ObjectsManager::getObjectByID(itemId);
+			/*Position pos;
+			Rotation rot;
+			pos.x = replica->simplePhysicsIndex->pos_x;
+			pos.y = replica->simplePhysicsIndex->pos_y;
+			pos.z = replica->simplePhysicsIndex->pos_z;
+			// Rotation
+			rot.w = replica->simplePhysicsIndex->rot_w;
+			rot.x = replica->simplePhysicsIndex->rot_x;
+			rot.y = replica->simplePhysicsIndex->rot_y;
+			rot.z = replica->simplePhysicsIndex->rot_z;
+
+			ReplicaObject* newReplica = new ReplicaObject(replica->objectID, replica->lot, replica->name, replica->gmLevel, pos, rot);
+			newReplica->scale = replica->scale;*/
 			
 			if (replica != nullptr)
 			{
@@ -440,11 +482,20 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				}
 
 			}
-			/*ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
+			ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
 			if (replica != charObj)
 			{
-				ObjectsManager::despawnObject(replica);
-			}*/
+
+				/*ObjectsManager::despawnObject(replica);
+				//Scheduler::runTaskTimer(7000, 7000, Helpers::syncStatValues);
+				
+				// 7 seconds
+				Scheduler::runTaskLater(7000, [newReplica]() {
+					Server::getReplicaManager()->ReferencePointer(newReplica); 
+					ObjectsManager::spawnObject(newReplica);
+				});
+				//Server::getReplicaManager()->ReferencePointer(replica);*/
+			}
 			
 			break;
 		}
@@ -492,7 +543,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_READY_FOR_UPDATES:
 		{
-			//Logger::info("GAME_MESSAGE_ID_READY_FOR_UPDATES");
 			long long ready;
 			data->Read(ready);
 
@@ -501,18 +551,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 			if (lot > -1)
 			{
-				/*if (lot == 6604)
-				{
-					BitStream* packet = PacketUtils::createGMBase(objectID, 0xd5); // We'll actually add the GM ID to the like this others struct later
-					packet->Write(true);
-					packet->Write(false);
-					packet->Write(false);
-					packet->Write(L"REASON_NOT_GIVEN");
-					packet->Write(0.0f);
-					packet->Write(session->charID);
-				}*/
-
-
 				if (lot == 1)
 				{
 					Server::sendPacket(PacketUtils::createGMBase(ready, 1642), clientAddress);
@@ -540,6 +578,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					if (misCur.size() > 0)
 					{
 						for (int i = 0; i < misCur.size(); i++)
+						//for (int i = misCur.size(); i > 0; i--)
 						{
 							MissionInfo info = misCur.at(i);
 
@@ -613,7 +652,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						GameMessages::notifyClientFlagChange(session->charID, f.flagID, f.value, clientAddress);
 					}
 
-					vector<ReplicaObject*> binocs = ObjectsManager::getObjectsByLOT(6842);
+					/*vector<ReplicaObject*> binocs = ObjectsManager::getObjectsByLOT(6842);
 					for (int i = 0; i < binocs.size(); i++)
 					{
 						string number = LVLCache::getObjectProperty("number", binocs.at(i)->objectID).value;
@@ -653,12 +692,11 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 								GameMessages::fireEventClientSide(plaques.at(i)->objectID, L"achieve", plaques.at(i)->objectID, session->charID, clientAddress);
 							}
 						}
-					}
+					}*/
 				}
 			}
 			break;
 		}
-
 		case GAME_MESSAGE_ID_REQUEST_USE:
 		{
 			bool isMultiInteractUse;
@@ -690,69 +728,73 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			}
 			else
 			{
-				long lot = ObjectsManager::getObjectByID(objectID)->lot;
-
-				if (lot == 6842)
+				ReplicaObject* replica = ObjectsManager::getObjectByID(objectID);
+				if (replica != nullptr)
 				{
-					string number = LVLCache::getObjectProperty("number", objectID).value;
+					long lot = ObjectsManager::getObjectByID(objectID)->lot;
 
-					if (number.length() > 0)
+					if (lot == 6842)
 					{
-						long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(number);
-						Flags::setFlagValue(true, flagID, session->charID);
-						Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, session->charID, flagID, clientAddress);
-						GameMessages::fireEventClientSide(objectID, L"achieve", objectID, session->charID, clientAddress);
-					}
-				}
+						string number = LVLCache::getObjectProperty("number", objectID).value;
 
-				if (lot == 8139)
-				{
-					string storyText = LVLCache::getObjectProperty("storyText", objectID).value;
-
-					if (storyText.length() > 0)
-					{
-						vector<string> p = split(storyText, '_');
-						long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(p.at(p.size() - 1)) + 10000;
-						Flags::setFlagValue(true, flagID, session->charID);
-						Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, session->charID, flagID, clientAddress);
-						GameMessages::fireEventClientSide(objectID, L"achieve", objectID, session->charID, clientAddress);
-					}
-				}
-
-				vector<MissionNPCInfo> mnpc = CDClient::getMissionNPCIndexInfo(lot);
-
-				for (int i = 0; i < mnpc.size(); i++)
-				{
-					MissionNPCInfo info = mnpc.at(i);
-
-					if (info.acceptsMission)
-					{
-						if (Missions::isDoingMission(info.missionID, session->charID))
+						if (number.length() > 0)
 						{
-							GameMessages::offerMission(session->charID, info.missionID, objectID, clientAddress, false);
+							long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(number);
+							Flags::setFlagValue(true, flagID, session->charID);
+							Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, session->charID, flagID, clientAddress);
+							GameMessages::fireEventClientSide(objectID, L"achieve", objectID, session->charID, clientAddress);
 						}
 					}
-				}
 
-				for (int i = 0; i < mnpc.size(); i++)
-				{
-					MissionNPCInfo info = mnpc.at(i);
-
-					if (info.offersMission)
+					if (lot == 8139)
 					{
-						if (!Missions::hasDoneMission(info.missionID, session->charID))
+						string storyText = LVLCache::getObjectProperty("storyText", objectID).value;
+
+						if (storyText.length() > 0)
 						{
-							vector<long> prereq = CDClient::getPrereqMissionIDs(info.missionID);
-							bool ready = true;
+							vector<string> p = split(storyText, '_');
+							long flagID = ServerRoles::toZoneID(Server::getServerRole()) + stol(p.at(p.size() - 1)) + 10000;
+							Flags::setFlagValue(true, flagID, session->charID);
+							Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_FLAG_CHANGE, session->charID, flagID, clientAddress);
+							GameMessages::fireEventClientSide(objectID, L"achieve", objectID, session->charID, clientAddress);
+						}
+					}
 
-							for (int k = 0; k < prereq.size(); k++)
+					vector<MissionNPCInfo> mnpc = CDClient::getMissionNPCIndexInfo(lot);
+
+					for (int i = 0; i < mnpc.size(); i++)
+					{
+						MissionNPCInfo info = mnpc.at(i);
+
+						if (info.acceptsMission)
+						{
+							if (Missions::isDoingMission(info.missionID, session->charID))
 							{
-								if (ready)
-									ready = Missions::hasDoneMission(prereq.at(k), session->charID);
+								GameMessages::offerMission(session->charID, info.missionID, objectID, clientAddress, false);
 							}
+						}
+					}
 
-							if (ready)
-								GameMessages::offerMission(session->charID, info.missionID, objectID, clientAddress);
+					for (int i = 0; i < mnpc.size(); i++)
+					{
+						MissionNPCInfo info = mnpc.at(i);
+
+						if (info.offersMission)
+						{
+							if (!Missions::hasDoneMission(info.missionID, session->charID))
+							{
+								vector<long> prereq = CDClient::getPrereqMissionIDs(info.missionID);
+								bool ready = true;
+
+								for (int k = 0; k < prereq.size(); k++)
+								{
+									if (ready)
+										ready = Missions::hasDoneMission(prereq.at(k), session->charID);
+								}
+
+								if (ready)
+									GameMessages::offerMission(session->charID, info.missionID, objectID, clientAddress);
+							}
 						}
 					}
 				}
@@ -873,8 +915,13 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			}
 
 			default:
+			{
+				Helpers::deathCheck(session->charID, L"electro-shock-death", clientAddress);
 				break;
 			}
+
+			}
+			break;
 		}
 
 		case GAME_MESSAGE_ID_REQUEST_RESURRECT:
@@ -1064,6 +1111,13 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Logger::info("   skillID: " + to_string(skillID));
 			Logger::info("   bitStream Size: " + to_string(bitStream->GetNumberOfBytesUsed()));
 			Logger::info("}");
+
+			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+			{
+				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+				GameMessages::echoStartSkill(session->charID, usedMouse, consumableItemID, casterLatency, castType, lcp_x, lcp_y, lcp_z, optionalOriginatorID, optionalTargetID, orr_x, orr_y, orr_z, orr_w, bitStream, skillID, uiSkillHandle, participant);
+			}
+
 			break;
 		}
 
@@ -1494,7 +1548,7 @@ void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, l
 }
 
 //void GameMessages::addSkill(int AICombatWeight, bool bFromSkillSet, int castType, long long objectID, unsigned long skillid, unsigned long slot, SystemAddress receiver)
-void addSkill(long long objectID, unsigned long skillid, unsigned long slot, SystemAddress receiver)
+void GameMessages::addSkill(long long objectID, long skillid, long slot, SystemAddress receiver)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_ADD_SKILL);
 
@@ -1514,6 +1568,42 @@ void addSkill(long long objectID, unsigned long skillid, unsigned long slot, Sys
 	Server::sendPacket(packet, receiver);
 }
 
+void GameMessages::removeSkill(long long objectID, long skillid, bool fromSkillSet, SystemAddress receiver)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_REMOVE_SKILL);
+
+	packet->Write(fromSkillSet);
+	packet->Write(skillid);
+
+	Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::echoStartSkill(long long objectID, bool usedMouse, long long consumableItemID, float casterLatency, long castType, float lcp_x, float lcp_y, float lcp_z, long long optionalOriginatorID, long long optionalTargetID, float orr_x, float orr_y, float orr_z, float orr_w, BitStream* bitstream, unsigned long skillID, unsigned long uiSkillHandle, SystemAddress receiver)
+{
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_ECHO_START_SKILL);
+
+	packet->Write(usedMouse);
+	packet->Write(consumableItemID);
+	packet->Write(casterLatency);
+	packet->Write(castType);
+	packet->Write(lcp_x);
+	packet->Write(lcp_y);
+	packet->Write(lcp_z);
+	packet->Write(optionalOriginatorID);
+	packet->Write(optionalTargetID);
+	packet->Write(orr_x);
+	packet->Write(orr_y);
+	packet->Write(orr_z);
+	packet->Write(orr_w);
+	packet->Write(bitstream);
+	packet->Write(skillID);
+	packet->Write(uiSkillHandle);
+
+	ReplicaObject* player = ObjectsManager::getObjectByID(objectID);
+	ObjectsManager::serializeObject(player);
+
+	Server::sendPacket(packet, receiver);
+}
 
 
 

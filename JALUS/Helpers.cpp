@@ -180,6 +180,21 @@ void Helpers::deathCheck(long long charid, wstring deathType, SystemAddress clie
 	}
 }
 
+void Helpers::syncStatValues()
+{
+	Logger::info("Synced stats to database.");
+	for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+	{
+		SystemAddress clientAddress = Server::getReplicaManager()->GetParticipantAtIndex(i);
+		Session* session = Sessions::getSession(clientAddress);
+
+		Characters::setHealth(ValueStorage::getValueInMemory(session->charID, "health"), session->charID);
+		Characters::setArmor(ValueStorage::getValueInMemory(session->charID, "armor"), session->charID);
+		Characters::setImagination(ValueStorage::getValueInMemory(session->charID, "imagination"), session->charID);
+		//Logger::info("Synced stats to database.");
+	}
+}
+
 void Helpers::broadcastJonnysDumbEffects()
 {
 	for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)

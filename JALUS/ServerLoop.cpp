@@ -152,6 +152,7 @@ void ServerLoop::start()
 	if (Server::isWorldInstance())
 	{
 		Scheduler::runTaskTimer(1000, 1000, Helpers::broadcastJonnysDumbEffects);
+		Scheduler::runTaskTimer(60000, 60000, Helpers::syncStatValues);
 	}
 
 	ServerLoop::run = true;

@@ -38,6 +38,79 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 		}
 	}
 
+	else if (iequals(cmd, "setlevel"))
+	{
+
+		if (args.size() == 1)
+		{
+			ReplicaObject* replica = ObjectsManager::getObjectByID(sender.getSenderID());
+			replica->characterIndex->level = stoul(args.at(0));
+			Characters::setLevel(stoul(args.at(0)), sender.getSenderID());
+		}
+
+	}
+
+	else if (iequals(cmd, "setname"))
+	{
+
+		if (args.size() == 1)
+		{
+			ReplicaObject* replica = ObjectsManager::getObjectByID(sender.getSenderID());
+			Characters::setName(args.at(0), sender.getSenderID());
+			ObjectsManager::serializeObject(replica);
+		}
+
+	}
+
+	else if (iequals(cmd, "addSkillFromLOT"))
+	{
+		if (args.size() == 1)
+		{
+			long itemType = CDClient::getItemType(stol(args.at(0)));
+
+			long hotbarslot = 4;
+			if (itemType == ItemType::ITEM_TYPE_HAIR || ItemType::ITEM_TYPE_HAT)
+				hotbarslot = 3;
+			if (itemType == ItemType::ITEM_TYPE_NECK)
+				hotbarslot = 2;
+			if (itemType == ItemType::ITEM_TYPE_RIGHT_HAND)
+				hotbarslot = 0;
+			if (itemType == ItemType::ITEM_TYPE_LEFT_HAND)
+				hotbarslot = 1;
+
+			// SlitherStriker = 13276
+			// Nightlasher = 13275
+			// Energy Spork = 13277
+			// Zapzapper = 13278
+
+			long skillid = CDClient::getSkillID(stol(args.at(0)), 0);
+			if (stol(args.at(0)) == 13276 ||
+				stol(args.at(0)) == 13275 ||
+				stol(args.at(0)) == 13277 ||
+				stol(args.at(0)) == 13278)
+				skillid = 148;
+			if (skillid != -1)
+				GameMessages::addSkill(sender.getSenderID(), skillid, hotbarslot, sender.getClientAddress());
+
+		}
+	}
+
+	else if (iequals(cmd, "removeSkillFromLOT"))
+	{
+		if (args.size() == 1)
+		{
+			long skillid = CDClient::getSkillID(stol(args.at(0)), 0);
+			if (stol(args.at(0)) == 13276 ||
+				stol(args.at(0)) == 13275 ||
+				stol(args.at(0)) == 13277 ||
+				stol(args.at(0)) == 13278)
+				skillid = 148;
+			if (skillid != -1)
+				GameMessages::removeSkill(sender.getSenderID(), skillid, false, sender.getClientAddress());
+
+		}
+	}
+
 	else if (iequals(cmd, "sendchat") || iequals(cmd, "chat") || iequals(cmd, "say"))
 	{
 		if (args.size() >= 1)

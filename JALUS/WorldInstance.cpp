@@ -412,6 +412,47 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 		ValueStorage::createValueInMemory(session->charID, "imagination", replica->statsIndex->cur_imagination);
 		ValueStorage::createValueInMemory(session->charID, "armor", replica->statsIndex->cur_armor);
 
+		// add skills for equipped items
+		{
+			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
+			//Logger::info("Items equipped: " + std::to_string(items.size()));
+			for (int k = 0; k < items.size(); k++)
+			{
+				//player->inventoryIndex->items.push_back(items.at(k));
+
+				//long lot = Objects::getLOT(items.at(k).objectID);
+				long lot = items.at(k).lot;
+				// add skills
+				long itemType = CDClient::getItemType(lot);
+
+				long hotbarslot = 4;
+				if (itemType == ItemType::ITEM_TYPE_HAIR || ItemType::ITEM_TYPE_HAT)
+					hotbarslot = 3;
+				if (itemType == ItemType::ITEM_TYPE_NECK)
+					hotbarslot = 2;
+				if (itemType == ItemType::ITEM_TYPE_RIGHT_HAND)
+					hotbarslot = 0;
+				if (itemType == ItemType::ITEM_TYPE_LEFT_HAND)
+					hotbarslot = 1;
+
+				// SlitherStriker = 13276
+				// Nightlasher = 13275
+				// Energy Spork = 13277
+				// Zapzapper = 13278
+
+				long skillid = CDClient::getSkillID(lot, 0);
+				if (lot == 13276 ||
+					lot == 13275 ||
+					lot == 13277 ||
+					lot == 13278)
+					skillid = 148;
+				if (skillid != -1)
+					GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
+
+			}
+		}
+
 		if (replica->statsIndex->cur_health == 0)
 		{ 
 			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
@@ -496,6 +537,27 @@ void WorldInstance::broadcastPositionUpdate(BitStream* data, SystemAddress clien
 			if (index->pos_y < 562)
 			{
 				Helpers::deathCheck(session->charID, L"electro-shock-death", clientAddress);
+			}
+			break;
+		}
+		
+		case ZONE_ID_PORTABELLO:
+		{
+			//if (index->pos_y < 300 || (index->pos_z < 165 && index->pos_z > 300))
+			//if (index->pos_z > 165)
+			if (index->pos_z < -165 || index->pos_y < 300)
+			{
+				//Logger::info("Criteria was met to reset characters position.");
+				Position spawnPos = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()))->spawnPointPos;
+				Rotation spawnRot = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()))->spawnPointRot;
+				for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+				{
+					SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+					GameMessages::teleport(session->charID, false, false, true, true, spawnPos, participant, spawnRot);
+					//GameMessages::resurrect(session->charID, false, participant);
+				} 
+				//Helpers::deathCheck(session->charID, L"electro-shock-death", clientAddress);
 			}
 			break;
 		}

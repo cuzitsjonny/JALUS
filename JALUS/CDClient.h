@@ -77,4 +77,6 @@ public:
 	static long getLootTableIndexCount(long lot);
 	static long getIsPowerup(long lot);
 	static long getStackSize(long lot);
+	static long getSkillID(long lot, long castOnType);
+	static bool getIsEquippable(long lot);
 };

@@ -480,7 +480,7 @@ ReplicaReturnResult ReplicaObject::SendConstruction(RakNetTime currentTime, Syst
 	if (!Objects::isInSpawnerIDRange(objectID))
 	{
 		writeToBitStream(outBitStream, true);
-		Logger::info("Constructing object.");
+		//Logger::info("Constructing object.");
 	}
 	return REPLICA_PROCESSING_DONE;
 }
@@ -510,7 +510,7 @@ ReplicaReturnResult ReplicaObject::ReceiveScopeChange(RakNet::BitStream* inBitSt
 }
 ReplicaReturnResult ReplicaObject::Serialize(bool* sendTimestamp, RakNet::BitStream* outBitStream, RakNetTime lastSendTime, PacketPriority* priority, PacketReliability* reliability, RakNetTime currentTime, SystemAddress systemAddress, unsigned int &flags)
 {
-	Logger::info("Serializing");
+	//Logger::info("Serializing");
 	writeToBitStream(outBitStream, false);
 	return REPLICA_PROCESSING_DONE;
 }
@@ -523,7 +523,7 @@ ReplicaReturnResult ReplicaObject::Deserialize(RakNet::BitStream* inBitStream, R
 
 void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 {
-	Logger::info("Writing to bitstream");
+	//Logger::info("Writing to bitstream");
 	if (isConstruction)
 	{
 		bitStream->Write(objectID);

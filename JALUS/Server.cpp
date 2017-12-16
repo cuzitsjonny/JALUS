@@ -43,7 +43,7 @@ void Server::init(ServerRole serverRole)
 	Missions::init("Missions", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, mission_id INT(11), character_id BIGINT(20), is_done TINYINT(1), done_timestamp BIGINT(20), done_count INT(11)");
 	CurrentMissionTasks::init("CurrentMissionTasks", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, mission_id INT(11), character_id BIGINT(20), unique_id INT(11), value VARCHAR(255)");
 	Flags::init("Flags", "id BIGINT(20), value TINYINT(1), flag_id INT(11), unique_id BIGINT(20) AUTO_INCREMENT PRIMARY KEY");
-	
+		
 	LUZCache::init();
 }
 

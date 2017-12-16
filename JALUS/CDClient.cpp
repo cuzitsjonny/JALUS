@@ -985,3 +985,91 @@ long CDClient::getStackSize(long lot)
 	return r;
 }
 
+long CDClient::getSkillID(long lot, long castOnType)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = 0;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT skillID FROM ObjectSkills WHERE objectTemplate = '" << lot << "' AND castOnType = '" << castOnType << "';";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			long skillID = cmd.Field("skillID").asLong();
+
+			r = cmd.Field("skillID").asLong();
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+bool CDClient::getIsEquippable(long lot)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	bool r = false;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT equipLocation FROM ItemComponent WHERE id = '" << lot << "';";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			string equipLocation = cmd.Field("equipLocation").asString();
+			string test;
+			if (equipLocation == "")
+			{
+				Logger::info("This is a test:" + equipLocation + ". This concludes the test");
+				r = false;
+			}
+			else {
+				r = true;
+			}
+
+			//r = cmd.Field("equipLocation").asBool();
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
