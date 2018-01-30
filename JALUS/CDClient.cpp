@@ -677,6 +677,50 @@ long CDClient::lookUpLevel(long long universeScore)
 	return r;
 }
 
+long long CDClient::lookUpUniverseScore(long level)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long long r = 1;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT requiredUScore FROM";
+		ss << " LevelProgressionLookup ";
+		ss << "WHERE id = '" << level << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			long long uScore = cmd.Field("requiredUScore").asNumeric();
+			//long l = cmd.Field("id").asLong();
+
+			r = uScore;
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
 vector<long> CDClient::getItemDrops(long lot, long LootTableIndex)
 {
 	SAConnection con;

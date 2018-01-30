@@ -28,10 +28,6 @@ public:
 	static long getMaxHealth(long long charID);
 	static long getMaxImagination(long long charID);
 
-	static long getHealth(long long charID);
-	static long getArmor(long long charID);
-	static long getImagination(long long charID);
-
 	static void setName(string name, long long charID);
 	static void setUnapprovedName(string unapprovedName, long long charID);
 	static void setIsUnapprovedNameRejected(bool isUnapprovedNameRejected, long long charID);
@@ -43,10 +39,6 @@ public:
 	static void setMaxInventory(long maxInventory, long long charID);
 	static void setMaxHealth(long maxHealth, long long charID);
 	static void setMaxImagination(long maxImagination, long long charID);
-
-	static void setHealth(long health, long long charID);
-	static void setArmor(long armor, long long charID);
-	static void setImagination(long imagination, long long charID);
 
 };
 

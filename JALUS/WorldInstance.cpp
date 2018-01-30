@@ -400,29 +400,35 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel, loc.position, loc.rotation);
 		replica->clientAddress = clientAddress;
 
+		Logger::info(to_string(session->charID) + " just spawned it with " + to_string(ValueStorage::getValueFromDatabase(session->charID, "health")) + " health, " + to_string(ValueStorage::getValueFromDatabase(session->charID, "armor")) + " armor, and " + to_string(ValueStorage::getValueFromDatabase(session->charID, "imagination")) + " imagination.");
+
+
 		replica->statsIndex->max_health = Characters::getMaxHealth(session->charID);
-		replica->statsIndex->cur_health = Characters::getHealth(session->charID);
+		replica->statsIndex->cur_health = ValueStorage::getValueFromDatabase(session->charID, "health");
+		//replica->statsIndex->cur_health = 4;
 
 		replica->statsIndex->max_imagination = Characters::getMaxImagination(session->charID);
-		replica->statsIndex->cur_imagination = Characters::getImagination(session->charID);
+		replica->statsIndex->cur_imagination = ValueStorage::getValueFromDatabase(session->charID, "imagination");
+		//replica->statsIndex->cur_imagination = 0;
 
-		replica->statsIndex->cur_armor = Characters::getArmor(session->charID);
+		replica->statsIndex->cur_armor = ValueStorage::getValueFromDatabase(session->charID, "armor");
+		//replica->statsIndex->cur_armor = 0;
 
-		ValueStorage::createValueInMemory(session->charID, "health", replica->statsIndex->cur_health);
+		/*ValueStorage::createValueInMemory(session->charID, "health", replica->statsIndex->cur_health);
 		ValueStorage::createValueInMemory(session->charID, "imagination", replica->statsIndex->cur_imagination);
-		ValueStorage::createValueInMemory(session->charID, "armor", replica->statsIndex->cur_armor);
+		ValueStorage::createValueInMemory(session->charID, "armor", replica->statsIndex->cur_armor);*/
 
 		// add skills for equipped items
 		{
 			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
 			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
 			//Logger::info("Items equipped: " + std::to_string(items.size()));
-			for (int k = 0; k < items.size(); k++)
+			/*for (int k = 0; k < items.size(); k++)
 			{
 				//player->inventoryIndex->items.push_back(items.at(k));
 
-				//long lot = Objects::getLOT(items.at(k).objectID);
-				long lot = items.at(k).lot;
+				long lot = Objects::getLOT(items.at(k).objectID);
+				//long lot = items.at(k).lot;
 				// add skills
 				long itemType = CDClient::getItemType(lot);
 
@@ -450,7 +456,7 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 				if (skillid != -1)
 					GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
 
-			}
+			}*/
 		}
 
 		if (replica->statsIndex->cur_health == 0)

@@ -17,6 +17,8 @@
 #include "Characters.h"
 #include "Common.h"
 #include "ValueStorage.h"
+#include "Scheduler.h"
+#include "ReplicaObject.h"
 
 void Helpers::addMissionWithTasks(long long missionID, long long charID)
 {
@@ -165,11 +167,13 @@ void Helpers::dropCoinsOnDeath(SystemAddress clientAddress)
 
 void Helpers::deathCheck(long long charid, wstring deathType, SystemAddress clientAddress)
 {
-	if (ValueStorage::getValueInMemory(charid, "health") > 0)
+	ReplicaObject* player = ObjectsManager::getObjectByID(charid);
+
+	if (player->statsIndex->cur_health > 0)
 	{
-		ValueStorage::updateValueInMemory(charid, "health", 0);
-		ValueStorage::updateValueInMemory(charid, "armor", 0);
-		ValueStorage::updateValueInMemory(charid, "imagination", 0);
+		player->statsIndex->cur_health = 0;
+		player->statsIndex->cur_armor = 0;
+		player->statsIndex->cur_imagination = 0;
 		Helpers::dropCoinsOnDeath(clientAddress);
 		for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 		{
@@ -187,12 +191,44 @@ void Helpers::syncStatValues()
 	{
 		SystemAddress clientAddress = Server::getReplicaManager()->GetParticipantAtIndex(i);
 		Session* session = Sessions::getSession(clientAddress);
+		ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+		/*ValueStorage::updateValueInDatabase(session->charID, "health", (long)ValueStorage::getValueInMemory(session->charID, "health"));
+		ValueStorage::updateValueInDatabase(session->charID, "armor", (long)ValueStorage::getValueInMemory(session->charID, "armor"));
+		ValueStorage::updateValueInDatabase(session->charID, "imagination", (long)ValueStorage::getValueInMemory(session->charID, "imagination"));*/
 
-		Characters::setHealth(ValueStorage::getValueInMemory(session->charID, "health"), session->charID);
-		Characters::setArmor(ValueStorage::getValueInMemory(session->charID, "armor"), session->charID);
-		Characters::setImagination(ValueStorage::getValueInMemory(session->charID, "imagination"), session->charID);
+		ValueStorage::updateValueInDatabase(session->charID, "health", player->statsIndex->cur_health);
+		ValueStorage::updateValueInDatabase(session->charID, "armor", player->statsIndex->cur_armor);
+		ValueStorage::updateValueInDatabase(session->charID, "imagination", player->statsIndex->cur_imagination);
+
 		//Logger::info("Synced stats to database.");
 	}
+}
+
+long Helpers::doMaxedStatMath(long currentStat, long additionalStat, long maxStat)
+{
+	long newStat = currentStat + additionalStat;
+	if (newStat <= maxStat)
+	{
+		return newStat;
+	}
+	else
+	{
+		return maxStat;
+	}
+}
+
+long Helpers::respawnObject(ReplicaObject* replica, long timer)
+{
+	/*Scheduler::runTaskLater(timer, [replica]() {
+		Server::getReplicaManager()->ReferencePointer(replica);
+		//Logger::info(message);
+	});*/
+
+	/*Scheduler::runTaskTimer(timer, timer, [replica]() {
+		Server::getReplicaManager()->ReferencePointer(replica);
+		//Logger::info(message);
+	});*/
+	return 1;
 }
 
 void Helpers::broadcastJonnysDumbEffects()

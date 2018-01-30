@@ -1,6 +1,7 @@
 #pragma once
 #include "Common.h"
 #include "ZoneIDs.h"
+#include "ReplicaObject.h"
 
 class Helpers
 {
@@ -13,5 +14,7 @@ public:
 	static void dropCoinsOnDeath(SystemAddress clientAddress);
 	static void deathCheck(long long charid, wstring deathType, SystemAddress clientAddress);
 	static void syncStatValues();
+	static long doMaxedStatMath(long currentStat, long additionalStat, long maxStat);
+	static long respawnObject(ReplicaObject* replica, long timer);
 	static void broadcastJonnysDumbEffects();
 };

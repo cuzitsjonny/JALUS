@@ -143,7 +143,8 @@ void LVLCache::loadObjects()
 								container.objectID = objectID;
 								containers.push_back(container);
 								// THIS SPAWNS THE OBJECTS INTO THE WORLD
-								if (lot == 176)
+								
+								if (lot == 176 || lot == 6842 || lot == 8139)
 								{
 									Logger::info("Loading object with ID " + to_string(objectID) + "!");
 									ReplicaObject* replica = new ReplicaObject(objectID, lot, L"", 0, pos, rot);

@@ -16,6 +16,7 @@
 #include "Missions.h"
 #include "CurrentMissionTasks.h"
 #include "Flags.h"
+#include "ValueStorage.h"
 
 ServerRole Server::serverRole;
 SocketDescriptor Server::socketDescriptor;
@@ -35,7 +36,7 @@ void Server::init(ServerRole serverRole)
 	Bans::init("Bans", "got_banned CHAR(20) UNIQUE, banned BIGINT(20), is_ip_ban TINYINT(1), reason TINYTEXT, banned_timestamp BIGINT(20), how_long BIGINT(20)");
 	TransitionInfos::init("TransitionInfos", "client_address CHAR(30) UNIQUE, account_id BIGINT(20), char_id BIGINT(20), transition_key CHAR(32)");
 	Objects::init("Objects", "id BIGINT(20) PRIMARY KEY, lot INT(11)");
-	Characters::init("Characters", "id BIGINT(20) PRIMARY KEY, account_id BIGINT(20), name CHAR(32), unapproved_name CHAR(32), is_unapproved_name_rejected TINYINT(1), level INT(11) NOT NULL DEFAULT 1, max_inventory INT(11) NOT NULL DEFAULT 20, max_health INT(11) NOT NULL DEFAULT 4, max_imagination INT(11) NOT NULL DEFAULT 0, universe_score BIGINT(20) NOT NULL DEFAULT 0, currency BIGINT(20) NOT NULL DEFAULT 0, reputation BIGINT(20) NOT NULL DEFAULT 0, gm_level INT(11), health INT(11) NOT NULL DEFAULT 4, armor INT(11) NOT NULL DEFAULT 0, imagination INT(11) NOT NULL DEFAULT 0");
+	Characters::init("Characters", "id BIGINT(20) PRIMARY KEY, account_id BIGINT(20), name CHAR(32), unapproved_name CHAR(32), is_unapproved_name_rejected TINYINT(1), level INT(11) NOT NULL DEFAULT 1, max_inventory INT(11) NOT NULL DEFAULT 20, max_health INT(11) NOT NULL DEFAULT 4, max_imagination INT(11) NOT NULL DEFAULT 0, universe_score BIGINT(20) NOT NULL DEFAULT 0, currency BIGINT(20) NOT NULL DEFAULT 0, reputation BIGINT(20) NOT NULL DEFAULT 0, gm_level INT(11)");
 	CharacterStyles::init("CharacterStyles", "id BIGINT(20) PRIMARY KEY, shirt_color INT(11), shirt_style INT(11), pants_color INT(11), hair_style INT(11), hair_color INT(11), lh INT(11), rh INT(11), eyebrows INT(11), eyes INT(11), mouth INT(11)");
 	InventoryItems::init("InventoryItems", "id BIGINT(20) PRIMARY KEY, owner_id BIGINT(20), item_type TINYINT(2), inventory_type TINYINT(2), slot SMALLINT(6), count INT(11), is_bound TINYINT(1), is_equipped TINYINT(1)");
 	Locations::init("Locations", "id BIGINT(20) PRIMARY KEY, pos_x FLOAT, pos_y FLOAT, pos_z FLOAT, rot_x FLOAT, rot_y FLOAT, rot_z FLOAT, rot_w FLOAT, zone_id SMALLINT(6), map_clone INT(11)");
@@ -43,6 +44,7 @@ void Server::init(ServerRole serverRole)
 	Missions::init("Missions", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, mission_id INT(11), character_id BIGINT(20), is_done TINYINT(1), done_timestamp BIGINT(20), done_count INT(11)");
 	CurrentMissionTasks::init("CurrentMissionTasks", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, mission_id INT(11), character_id BIGINT(20), unique_id INT(11), value VARCHAR(255)");
 	Flags::init("Flags", "id BIGINT(20), value TINYINT(1), flag_id INT(11), unique_id BIGINT(20) AUTO_INCREMENT PRIMARY KEY");
+	ValueStorage::init("ValueStorage", "id BIGINT(20), type CHAR(32), value INT(11)");
 		
 	LUZCache::init();
 }
@@ -158,5 +160,11 @@ bool Server::isWorldInstance()
 void Server::sendPacket(BitStream* bitStream, SystemAddress address)
 {
 	Server::peerInterface->Send(bitStream, SYSTEM_PRIORITY, RELIABLE_ORDERED, 0, address, false);
+	delete bitStream;
+}
+
+void Server::broadcastPacket(BitStream* bitStream, SystemAddress address)
+{
+	Server::peerInterface->Send(bitStream, SYSTEM_PRIORITY, RELIABLE_ORDERED, 0, address, true);
 	delete bitStream;
 }

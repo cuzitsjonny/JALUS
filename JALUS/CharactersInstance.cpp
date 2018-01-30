@@ -10,6 +10,7 @@
 #include "Config.h"
 #include "TransitionInfos.h"
 #include "Objects.h"
+#include "ValueStorage.h"
 
 void CharactersInstance::processPacket(BitStream* data, SystemAddress clientAddress, ClientToWorldPacketID packetID)
 {
@@ -179,6 +180,10 @@ long long CharactersInstance::performCharacterCreation(BitStream* data, SystemAd
 			long long id = Characters::createCharacter(session->accountID, name, customName, rejectCustomName, 0, style);
 			Accounts::setFrontCharacter(id, session->accountID);
 
+			ValueStorage::createValueInDatabase(id, "health", (long)4);
+			ValueStorage::createValueInDatabase(id, "armor", (long)0);
+			ValueStorage::createValueInDatabase(id, "imagination", (long)0);
+
 			BitStream* response = PacketUtils::createPacketBase(RCT_WORLD_TO_CLIENT, WORLD_CLIENT_ADD_FRIEND_REQUEST);
 			response->Write((unsigned char)0);
 
@@ -204,6 +209,9 @@ long long CharactersInstance::performCharacterDeletion(BitStream* data, SystemAd
 			data->Read(id);
 
 			Characters::deleteCharacter(id);
+			ValueStorage::removeValueFromDatabase(id, "health");
+			ValueStorage::removeValueFromDatabase(id, "armor");
+			ValueStorage::removeValueFromDatabase(id, "imagination");
 			if (id == Accounts::getFrontCharacter(session->accountID))
 				Accounts::setFrontCharacter(-1, session->accountID);
 

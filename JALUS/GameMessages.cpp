@@ -131,15 +131,90 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			long getObjLOT = ItemDrops::getDroppedItem(lootObj);
 			//Objects::deleteObject(lootObj);
 			//ItemDrops::removeDroppedItem(lootObj);
-
+			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
 			long isPowerup = CDClient::getIsPowerup(getObjLOT);
 			if (isPowerup == 1)
 			{
-				//Logger::info("Todo: make this add to stats");
+				//Logger::info("Todo: make this add to stats"); //health line below
+				//if (getObjLOT == 177 || getObjLOT == 11915 || getObjLOT == 11916 || getObjLOT == 11917 || getObjLOT == 11920)
+				long maxHealth = player->statsIndex->max_health;
+				long curHealth = player->statsIndex->cur_health;
+				long maxArmor = player->statsIndex->max_armor;
+				long curArmor = player->statsIndex->cur_armor;
+				long maxImagination = player->statsIndex->max_imagination;
+				long curImagination = player->statsIndex->max_imagination;
+
+				if (getObjLOT == 177) // 1
+				{
+					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 1, maxHealth);
+				}
+				else if (getObjLOT = 11915) // 2
+				{
+					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 2, maxHealth);
+				}
+				else if (getObjLOT = 11916) // 3
+				{
+					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 3, maxHealth);
+				}
+				else if (getObjLOT = 11917) // 5
+				{
+					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 5, maxHealth);
+				}
+				else if (getObjLOT = 11920) // 10
+				{
+					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 10, maxHealth);
+				}
+
+				// armor stats
+
+				else if (getObjLOT == 6431) // 1
+				{
+					player->statsIndex->cur_armor = Helpers::doMaxedStatMath(curArmor, 1, maxArmor);
+				}
+				else if (getObjLOT = 11912) // 2
+				{
+					player->statsIndex->cur_armor = Helpers::doMaxedStatMath(curArmor, 2, maxArmor);
+				}
+				else if (getObjLOT = 11913) // 3
+				{
+					player->statsIndex->cur_armor = Helpers::doMaxedStatMath(curArmor, 3, maxArmor);
+				}
+				else if (getObjLOT = 11914) // 5
+				{
+					player->statsIndex->cur_armor = Helpers::doMaxedStatMath(curArmor, 5, maxArmor);
+				}
+				else if (getObjLOT = 11919) // 10
+				{
+					player->statsIndex->cur_armor = Helpers::doMaxedStatMath(curArmor, 10, maxArmor);
+				}
+
+				// imagination stats
+
+				else if (getObjLOT == 935) // 1
+				{
+					player->statsIndex->cur_imagination = Helpers::doMaxedStatMath(curImagination, 1, maxImagination);
+				}
+				else if (getObjLOT = 4035) // 2
+				{
+					player->statsIndex->cur_imagination = Helpers::doMaxedStatMath(curImagination, 2, maxImagination);
+				}
+				else if (getObjLOT = 11910) // 3
+				{
+					player->statsIndex->cur_imagination = Helpers::doMaxedStatMath(curImagination, 3, maxImagination);
+				}
+				else if (getObjLOT = 11911) // 5
+				{
+					player->statsIndex->cur_imagination = Helpers::doMaxedStatMath(curImagination, 5, maxImagination);
+				}
+				else if (getObjLOT = 11918) // 10
+				{
+					player->statsIndex->cur_imagination = Helpers::doMaxedStatMath(curImagination, 10, maxImagination);
+				}
+
 			}
 			else 
 			{
-				Logger::info("LOT: " + std::to_string(getObjLOT));
+				//Logger::info("LOT: " + std::to_string(getObjLOT));
 				//Logger::info("Creating synced item stack");
 				Helpers::createSyncedItemStack(playerID, getObjLOT, 1, false, false, true, session->clientAddress);
 
@@ -441,7 +516,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 												
 						if (randCoin > 0) // If this isn't here and the random number is 0, it will spawn LOT 0, which is just a question mark.
 						{
-						GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, clientAddress);
+							GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, clientAddress);
 						}
 					//}
 									
@@ -468,28 +543,30 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				}
 
 
-				Position pos;
-				Rotation rot;
-				pos.x = replica->simplePhysicsIndex->pos_x;
-				pos.y = replica->simplePhysicsIndex->pos_y;
-				pos.z = replica->simplePhysicsIndex->pos_z;
-				// Rotation
-				rot.w = replica->simplePhysicsIndex->rot_w;
-				rot.x = replica->simplePhysicsIndex->rot_x;
-				rot.y = replica->simplePhysicsIndex->rot_y;
-				rot.z = replica->simplePhysicsIndex->rot_z;
-
-				ReplicaObject* newReplica = new ReplicaObject(replica->objectID, replica->lot, replica->name, replica->gmLevel, pos, rot);
-				newReplica->scale = replica->scale;
-
 				ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
 				if (replica != charObj)
 				{
+					/*Position pos;
+					Rotation rot;
+					pos.x = replica->simplePhysicsIndex->pos_x;
+					pos.y = replica->simplePhysicsIndex->pos_y;
+					pos.z = replica->simplePhysicsIndex->pos_z;
+					// Rotation
+					rot.w = replica->simplePhysicsIndex->rot_w;
+					rot.x = replica->simplePhysicsIndex->rot_x;
+					rot.y = replica->simplePhysicsIndex->rot_y;
+					rot.z = replica->simplePhysicsIndex->rot_z;
+
+					ReplicaObject* newReplica = new ReplicaObject(replica->objectID, replica->lot, replica->name, replica->gmLevel, pos, rot);
+					newReplica->scale = replica->scale;
+
+					string respawn = LVLCache::getObjectProperty("respawn", replica->objectID).value;
+					//string message = "Object respawned";
 					ObjectsManager::despawnObject(replica);
 					// 7 seconds
-					Scheduler::runTaskLater(7000, [newReplica]() {
-						Server::getReplicaManager()->ReferencePointer(newReplica);
-					});
+					//Scheduler::runTaskLater(stoi(respawn), Helpers::
+					Helpers::respawnObject(newReplica, 7000);*/
+
 				}
 
 			}
@@ -663,7 +740,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						GameMessages::notifyClientFlagChange(session->charID, f.flagID, f.value, clientAddress);
 					}
 
-					/*vector<ReplicaObject*> binocs = ObjectsManager::getObjectsByLOT(6842);
+					vector<ReplicaObject*> binocs = ObjectsManager::getObjectsByLOT(6842);
 					for (int i = 0; i < binocs.size(); i++)
 					{
 						string number = LVLCache::getObjectProperty("number", binocs.at(i)->objectID).value;
@@ -703,7 +780,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 								GameMessages::fireEventClientSide(plaques.at(i)->objectID, L"achieve", plaques.at(i)->objectID, session->charID, clientAddress);
 							}
 						}
-					}*/
+					}
 				}
 			}
 			break;
@@ -1128,36 +1205,154 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				string type = CDClient::getTemplateIDName(skillID);
 			}
 
+			//GameMessages::echoStartSkill(session->charID, usedMouse, consumableItemID, casterLatency, castType, lcp_x, lcp_y, lcp_z, optionalOriginatorID, optionalTargetID, orr_x, orr_y, orr_z, orr_w, bitStream, skillID, uiSkillHandle, participant);
+			BitStream* packet = PacketUtils::createGMBase(session->charID, GameMessageID::GAME_MESSAGE_ID_ECHO_START_SKILL);
 
-			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+			packet->Write(usedMouse);
+			
+			if (casterLatency == 0.0F)
 			{
-				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-				//GameMessages::echoStartSkill(session->charID, usedMouse, consumableItemID, casterLatency, castType, lcp_x, lcp_y, lcp_z, optionalOriginatorID, optionalTargetID, orr_x, orr_y, orr_z, orr_w, bitStream, skillID, uiSkillHandle, participant);
-				BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_ECHO_START_SKILL);
-
-				packet->Write(usedMouse);
-				packet->Write(consumableItemID);
+				packet->Write((bool)false);
+			}
+			else
+			{
+				packet->Write((bool)true);
 				packet->Write(casterLatency);
+			}
+
+			if (castType == 0)
+			{
+				packet->Write((bool)false);
+			}
+			else
+			{
+				packet->Write((bool)true);
 				packet->Write(castType);
+			}
+
+			if (lcp_x == 0.0F && lcp_y == 0.0F && lcp_z == 0.0F)
+			{
+				packet->Write((bool)false);
+			}
+			else
+			{
+				packet->Write((bool)true);
 				packet->Write(lcp_x);
 				packet->Write(lcp_y);
 				packet->Write(lcp_z);
-				packet->Write(optionalOriginatorID);
+			}
+
+			packet->Write(optionalOriginatorID);
+
+			if (optionalTargetID == 0)
+			{
+				packet->Write((bool)false);
+			}
+			else
+			{
+				packet->Write((bool)true);
 				packet->Write(optionalTargetID);
+			}
+
+			if (orr_x == 0.0F && orr_y == 0.0F && orr_z == 0.0F && orr_w == 0.0F)
+			{
+				packet->Write((bool)false);
+			}
+			else
+			{
+				packet->Write((bool)true);
 				packet->Write(orr_x);
 				packet->Write(orr_y);
 				packet->Write(orr_z);
 				packet->Write(orr_w);
-				packet->Write(bitStream);
-				packet->Write(skillID);
-				packet->Write(uiSkillHandle);
-
-				ReplicaObject* player = ObjectsManager::getObjectByID(objectID);
-				ObjectsManager::serializeObject(player);
-
-				Server::sendPacket(packet, participant);
 			}
 
+			packet->Write(bitStream->GetNumberOfBytesUsed()); //bitStream->GetNumberOfBytesUsed()
+			//for (int i = 0; i < bitStream->GetNumberOfBytesUsed(); i++)
+			//{
+				packet->Write(bitStream);
+			//}
+
+			packet->Write(skillID);
+
+			if (uiSkillHandle == 0)
+			{
+				packet->Write((bool)false);
+			}
+			else
+			{
+				packet->Write((bool)true);
+				packet->Write(uiSkillHandle);
+			}
+
+			Server::broadcastPacket(packet, clientAddress);
+
+
+			break;
+		}
+
+		case GAME_MESSAGE_ID_REQUEST_SERVER_PROJECTILE_IMPACT:
+		{
+			long long i64LocalID = 0;
+			long long i64TargetID = 0;
+			BitStream* bitStream = new BitStream();
+
+			bool f;
+			data->Read(f);
+			if (f)
+			{
+				data->Read(i64LocalID);
+			}
+
+			if (f)
+			{
+				data->Read(i64TargetID);
+			}
+
+			unsigned long len;
+			data->Read(len);
+
+			for (int i = 0; i < len; i++)
+			{
+				char c;
+				data->Read(c);
+				bitStream->Write(c);
+			}
+
+
+			BitStream* packet = PacketUtils::createGMBase(session->charID, GameMessageID::GAME_MESSAGE_ID_DO_CLIENT_PROJECTILE_IMPACT);
+
+			if (i64LocalID == 0)
+			{
+				packet->Write((bool)false);
+			}
+			else {
+				packet->Write((bool)true);
+				packet->Write(i64LocalID);
+			}
+
+			if (session->charID == 0)
+			{
+				packet->Write((bool)false);
+			}
+			else {
+				packet->Write((bool)true);
+				packet->Write(session->charID);
+			}
+
+			if (i64TargetID == 0)
+			{
+				packet->Write((bool)false);
+			}
+			else {
+				packet->Write((bool)true);
+				packet->Write(i64TargetID);
+			}
+
+			packet->Write(bitStream->GetNumberOfBytesUsed()); 
+			packet->Write(bitStream);
+
+			Server::broadcastPacket(packet, clientAddress);
 			break;
 		}
 
@@ -1562,8 +1757,14 @@ void GameMessages::addItemToInventory(long long objectID, bool isBound, long lot
 void GameMessages::clientDropLoot(long long objectID, int iCurrency, long lot, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver)
 {
 	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_DROP_CLIENT_LOOT);
-
-	long long lootid = ItemDrops::createDroppedItem(lot);
+	long long lootid; 
+	if (lot > 0) // if the LOT is 0, it is either a coin or powerup
+	{
+		lootid = ItemDrops::createDroppedItem(lot, false);
+	}
+	else {
+		lootid = ItemDrops::createDroppedItem(lot, true);
+	}
 
 	packet->Write(true);
 	packet->Write(true);
@@ -1614,33 +1815,6 @@ void GameMessages::removeSkill(long long objectID, long skillid, bool fromSkillS
 
 	packet->Write(fromSkillSet);
 	packet->Write(skillid);
-
-	Server::sendPacket(packet, receiver);
-}
-
-void GameMessages::echoStartSkill(long long objectID, bool usedMouse, long long consumableItemID, float casterLatency, long castType, float lcp_x, float lcp_y, float lcp_z, long long optionalOriginatorID, long long optionalTargetID, float orr_x, float orr_y, float orr_z, float orr_w, BitStream* bitstream, unsigned long skillID, unsigned long uiSkillHandle, SystemAddress receiver)
-{
-	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_ECHO_START_SKILL);
-
-	packet->Write(usedMouse);
-	packet->Write(consumableItemID);
-	packet->Write(casterLatency);
-	packet->Write(castType);
-	packet->Write(lcp_x);
-	packet->Write(lcp_y);
-	packet->Write(lcp_z);
-	packet->Write(optionalOriginatorID);
-	packet->Write(optionalTargetID);
-	packet->Write(orr_x);
-	packet->Write(orr_y);
-	packet->Write(orr_z);
-	packet->Write(orr_w);
-	packet->Write(bitstream);
-	packet->Write(skillID);
-	packet->Write(uiSkillHandle);
-
-	ReplicaObject* player = ObjectsManager::getObjectByID(objectID);
-	ObjectsManager::serializeObject(player);
 
 	Server::sendPacket(packet, receiver);
 }

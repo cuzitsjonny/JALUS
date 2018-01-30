@@ -22,6 +22,7 @@
 #include "Helpers.h"
 #include "Missions.h"
 #include "Common.h"
+#include "ValueStorage.h"
 
 void Commands::performCommand(CommandSender sender, string cmd, vector<string> args)
 {
@@ -38,14 +39,92 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 		}
 	}
 
+	else if (iequals(cmd, "admin"))
+	{
+		if (sender.getSenderID() == -1)
+		{
+			if (args.size == 2) {
+				string username = args.at(0);
+				long value = stol(args.at(1));
+				string valueStr = args.at(1);
+				long long id = Accounts::getAccountID(username);
+				if (value == 1 || value == 0) {
+					if (id > 0)
+					{
+						ValueStorage::createValueInDatabase(id, "accountAdmin", value);
+						sender.sendMessage("Set " + username + "'s admin level to " + valueStr + ".");
+					}
+					else
+					{
+						sender.sendMessage("Could not find user " + username + ".");
+					}
+				}
+				else
+				{
+					sender.sendMessage(valueStr + " is not a valid level.");
+				}
+			}
+		}
+	}
+
+	else if (iequals(cmd, "setattr"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+			if (args.size() == 2)
+			{
+				if (args.at(0) == "health")
+				{ 
+					player->statsIndex->cur_health = stoul(args.at(1));
+				}
+				else if (args.at(0) == "maxHealth")
+				{
+					player->statsIndex->max_health = stoul(args.at(1));
+				}
+				else if (args.at(0) == "armor")
+				{
+					player->statsIndex->cur_armor = stoul(args.at(1));
+				}
+				else if (args.at(0) == "maxArmor")
+				{
+					player->statsIndex->max_armor = stoul(args.at(1));
+				}
+				else if (args.at(0) == "imagi" || args.at(0) == "imagination")
+				{
+					player->statsIndex->cur_imagination = stoul(args.at(1));
+				}
+				else if (args.at(0) == "maxImagi" || args.at(0) == "maxImagination")
+				{
+					player->statsIndex->max_imagination = stoul(args.at(1));
+				}
+				ObjectsManager::serializeObject(player);
+			}
+			else if (args.size() == 0)
+			{
+				sender.sendMessage("/setattr [health, armor, imagi] [value]");
+				sender.sendMessage("Sets the specified stat to a temporary value.");
+			}
+			else if (args.size() == 1)
+			{
+				sender.sendMessage("You need to specify a value!");
+			}
+		}
+
+	}
+
 	else if (iequals(cmd, "setlevel"))
 	{
 
 		if (args.size() == 1)
 		{
+			long long uScore = CDClient::lookUpUniverseScore(stoul(args.at(0)));
 			ReplicaObject* replica = ObjectsManager::getObjectByID(sender.getSenderID());
+			replica->characterIndex->lego_score = uScore;
 			replica->characterIndex->level = stoul(args.at(0));
+			GameMessages::modifyLegoScore(sender.getSenderID(), uScore, false, sender.getClientAddress());
 			Characters::setLevel(stoul(args.at(0)), sender.getSenderID());
+			ObjectsManager::serializeObject(replica);
 		}
 
 	}

@@ -3,7 +3,7 @@
 
 vector<ItemDrop> ItemDrops::itemDrops;
 
-long long ItemDrops::createDroppedItem(long lot)
+long long ItemDrops::createDroppedItem(long lot, bool isPowerup)
 {
 	long long objid;
 	if (lot == 176)
@@ -11,12 +11,14 @@ long long ItemDrops::createDroppedItem(long lot)
 	else
 		objid = Objects::generateObjectID();
 
+	if (isPowerup == false)
+	{
+		ItemDrop drop;
+		drop.id = objid;
+		drop.lot = lot;
 
-	ItemDrop drop;
-	drop.id = objid;
-	drop.lot = lot;
-
-	itemDrops.push_back(drop);
+		itemDrops.push_back(drop);
+	}
 
 	return objid;
 

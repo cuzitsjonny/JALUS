@@ -209,10 +209,10 @@ void ServerLoop::start()
 								loc.rotation.z = index->rot_z;
 								loc.rotation.w = index->rot_w;
 								Locations::saveLocation(loc, replica->objectID);
-
-								Characters::setHealth(ValueStorage::getValueInMemory(session->charID, "health"), session->charID);
-								Characters::setArmor(ValueStorage::getValueInMemory(session->charID, "armor"), session->charID);
-								Characters::setImagination(ValueStorage::getValueInMemory(session->charID, "imagination"), session->charID);
+								ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+								ValueStorage::updateValueInDatabase(session->charID, "health", player->statsIndex->cur_health);
+								ValueStorage::updateValueInDatabase(session->charID, "armor", player->statsIndex->cur_armor);
+								ValueStorage::updateValueInDatabase(session->charID, "imagination", player->statsIndex->cur_imagination);
 
 								ValueStorage::removeValueFromMemory(session->charID, "health");
 								ValueStorage::removeValueFromMemory(session->charID, "armor");

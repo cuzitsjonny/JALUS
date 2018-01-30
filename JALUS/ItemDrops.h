@@ -13,7 +13,7 @@ class ItemDrops
 private:
 	static vector<ItemDrop> itemDrops;
 public:
-	static long long createDroppedItem(long lot);
+	static long long createDroppedItem(long lot, bool isPowerup);
 	static void removeDroppedItem(long long id);
 	static long getDroppedItem(long long id);
 };

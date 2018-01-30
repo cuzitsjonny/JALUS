@@ -37,6 +37,8 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_ECHO_START_SKILL = 118,
 	GAME_MESSAGE_ID_SYNC_SKILL = 1145,
 	GAME_MESSAGE_ID_ECHO_SYNC_SKILL = 1144,
+	GAME_MESSAGE_ID_REQUEST_SERVER_PROJECTILE_IMPACT = 1148,
+	GAME_MESSAGE_ID_DO_CLIENT_PROJECTILE_IMPACT = 1151,
 	GAME_MESSAGE_ID_ADD_ITEM_TO_INVENTORY_CLIENT_SYNC = 227,
 	GAME_MESSAGE_ID_PARSE_CHAT_MESSAGE = 850,
 	GAME_MESSAGE_ID_SMASH_ME = 1202,
@@ -124,5 +126,4 @@ public:
 	static void clientDropLoot(long long objectID, int iCurrency, long lot, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver);
 	static void addSkill(long long objectID, long skillid, long slot, SystemAddress receiver);
 	static void removeSkill(long long objectID, long skillid, bool fromSkillSet, SystemAddress receiver);
-	static void echoStartSkill(long long objectID, bool usedMouse, long long consumableItemID, float casterLatency, long castType, float lcp_x, float lcp_y, float lcp_z, long long optionalOriginatorID, long long optionalTargetID, float orr_x, float orr_y, float orr_z, float orr_w, BitStream* bitstream, unsigned long skillID, unsigned long uiSkillHandle, SystemAddress receiver);
 };

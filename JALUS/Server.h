@@ -248,4 +248,5 @@ public:
 	static bool isWorldInstance();
 
 	static void sendPacket(BitStream* bitStream, SystemAddress address);
+	static void broadcastPacket(BitStream* bitStream, SystemAddress address);
 };
