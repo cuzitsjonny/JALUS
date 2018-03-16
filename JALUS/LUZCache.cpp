@@ -221,8 +221,8 @@ LUZFile::LUZFile(string path)
 
 		}
 
-	}
-}
+	//}
+//}
 
 void LUZCache::init()
 {
