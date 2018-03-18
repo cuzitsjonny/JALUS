@@ -17,6 +17,7 @@
 #include "CurrentMissionTasks.h"
 #include "Flags.h"
 #include "ValueStorage.h"
+#include <ctime>
 
 ServerRole Server::serverRole;
 SocketDescriptor Server::socketDescriptor;

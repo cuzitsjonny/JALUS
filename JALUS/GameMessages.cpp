@@ -240,6 +240,50 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			break;
 		}
 
+		case GAME_MESSAGE_REMOVE_ITEM_FROM_INVENTORY:
+		{
+			bool confirmed;
+			bool deleteItem;
+			bool outSuccess;
+			int invType;
+			int lootTypeSource;
+			wstring extraInfo;
+			bool forceDeletion;
+			long long lootTypeSourceID;
+			long long objectID;
+			long objectTemplate;
+			long long requestingObjectID;
+			long stackCount;
+			long stackRemaining;
+			long long subkey;
+			long long tradeID;
+
+			data->Read(confirmed);
+			data->Read(deleteItem);
+			data->Read(outSuccess);
+			data->Read(invType);
+			data->Read(lootTypeSource);
+			data->Read(extraInfo);
+			data->Read(forceDeletion);
+			data->Read(lootTypeSource);
+			data->Read(objectID);
+			data->Read(objectTemplate);
+			data->Read(requestingObjectID);
+			data->Read(stackCount);
+			data->Read(stackRemaining);
+			data->Read(subkey);
+			data->Read(tradeID);
+
+			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+
+			InventoryItems::deleteInventoryItem(objectID);
+
+			ObjectsManager::serializeObject(player);
+
+			Logger::info("Equipped item " + std::to_string(objectID) + " for player " + std::to_string(session->charID));
+			break;
+		}
+
 		case GAME_MESSAGE_EQUIP_INVENTORY:
 		{
 
@@ -1356,6 +1400,31 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			break;
 		}
 
+		case GAME_MESSAGE_MODIFY_GHOSTING_DISTANCE:
+		{
+			//Added reading in this message in an attempt to solve the game hanging up when loading in
+			float fDistanceScalar;
+			data->Read(fDistanceScalar);
+			Logger::info("Modify Ghosting Distance");
+			break;
+		}
+		case GAME_MESSAGE_FIRE_EVENT_SERVER_SIDE:
+		{
+			wstring str;
+			int p1;
+			int p2;
+			int p3;
+			long long senderID;
+
+			data->Read(str);
+			data->Read(p1);
+			data->Read(p2);
+			data->Read(p3);
+			data->Read(senderID);
+
+			Logger::info("Fire Event Server Side");
+			break;
+		}
 		case GAME_MESSAGE_ID_PARSE_CHAT_MESSAGE:
 		{
 			unsigned long clientState;

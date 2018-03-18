@@ -39,7 +39,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 		}
 	}
 
-	else if (iequals(cmd, "admin"))
+	/*else if (iequals(cmd, "admin"))
 	{
 		if (sender.getSenderID() == -1)
 		{
@@ -65,7 +65,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 				}
 			}
 		}
-	}
+	}*/
 
 	else if (iequals(cmd, "setattr"))
 	{
