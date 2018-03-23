@@ -298,6 +298,10 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			
 			//ReplicaObject* replica = ObjectsManager::getObjectByID(itemid);
 			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+			int s = player->inventoryIndex->items.size();
+			for (int i = 0; i < s; i++) {
+				Logger::info("Item: " + std::to_string(player->inventoryIndex->items[i].objectID));
+			}
 			Logger::info("Number of items in replica player object" + to_string(player->inventoryIndex->items.size()));
 
 			InventoryItems::setIsEquipped(true, itemid);
@@ -305,17 +309,30 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
 			long lot = Objects::getLOT(itemid);
 			long itemType = CDClient::getItemType(lot);
-
+			long long unEquipID = NULL;
 			//Logger::info("Items equipped: " + std::to_string(items.size()));
 			for (int k = 0; k < items.size(); k++)
 			{
-				Logger::info("Objects that are equipped" + to_string(items[k].objectID));
-				if (itemType == items[k].objectID) {
+				if (itemType == items[k].itemType  && itemid != items[k].objectID) {	
 					InventoryItems::setIsEquipped(false, items[k].objectID);
+					unEquipID = items[k].objectID;
+					Logger::info("Found matching item type to unequip, New type: " + to_string(itemType) + " Old item: " + to_string(items[k].itemType));
 				}
-				Logger::info("Items before: " + to_string(player->inventoryIndex->items.size()));
-				player->inventoryIndex->items.push_back(items.at(k));
-				Logger::info("Items after: " + to_string(player->inventoryIndex->items.size()));
+				if (itemid == items[k].objectID) {
+					player->inventoryIndex->items.push_back(items.at(k));
+				}
+			}
+			if (unEquipID != NULL) {
+				for (int i = 0; i < s; i++) {
+					if (player->inventoryIndex->items[i].objectID == unEquipID) {
+						player->inventoryIndex->items.erase(player->inventoryIndex->items.begin() + i);
+						break;
+					}
+				}
+			}
+			s = player->inventoryIndex->items.size();
+			for (int i = 0; i < s; i++) {
+				Logger::info("Updated Items: " + std::to_string(player->inventoryIndex->items[i].objectID));
 			}
 			// add skills
 			long hotbarslot = 4;
@@ -368,20 +385,22 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Logger::info("replacementObjectID: " + std::to_string(replacementObjectID));*/
 
 			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+			int s = player->inventoryIndex->items.size();
 			long lot = Objects::getLOT(itemToUnequip);
 			
-			vector<InventoryItem> items = InventoryItems::getInventoryItems(session->charID);
+			//vector<InventoryItem> items = InventoryItems::getInventoryItems(session->charID);
 			//vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
 			//Logger::info("Items equipped: " + std::to_string(items.size()));
 
-			for (int k = 0; k < items.size(); k++)
+			for (int k = 0; k < s; k++)
 			{
-				if (items.at(k).objectID == itemToUnequip)
+				if (player->inventoryIndex->items[k].objectID == itemToUnequip)
 				{
-					if (items.at(k).isEquipped == true)
+					if (player->inventoryIndex->items[k].isEquipped == true)
 					{
-						player->inventoryIndex->items.pop_back();
+						//player->inventoryIndex->items.pop_back();
 						InventoryItems::setIsEquipped(false, itemToUnequip);
+						player->inventoryIndex->items.erase(player->inventoryIndex->items.begin() + k);
 
 						Logger::info("Unequipped item " + std::to_string(itemToUnequip) + " for player " + std::to_string(session->charID));
 
@@ -399,7 +418,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 							GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
 					}
 				}
-				//player->inventoryIndex->items.push_back(items[k]);
 			}
 			
 			ObjectsManager::serializeObject(player);
