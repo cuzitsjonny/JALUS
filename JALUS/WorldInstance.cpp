@@ -147,6 +147,7 @@ void WorldInstance::processChatPacket(BitStream* data, SystemAddress clientAddre
 
 void WorldInstance::sendWorldInfo(SystemAddress clientAddress)
 {
+	//Logger::info("sendWorldInfo");
 	//[53-05-00-02] (world info?)
 	Session* session = Sessions::getSession(clientAddress);
 
@@ -200,6 +201,7 @@ void WorldInstance::sendWorldInfo(SystemAddress clientAddress)
 
 void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 {
+	//Logger::info("sendCharacterData");
 	Session* session = Sessions::getSession(clientAddress);
 
 	if (session != nullptr)
@@ -385,6 +387,7 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 
 void WorldInstance::sendServerState(SystemAddress clientAddress)
 {
+	//Logger::info("sendServerState");
 	Session* session = Sessions::getSession(clientAddress);
 
 	if (session != nullptr)
