@@ -1451,6 +1451,57 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Logger::info("Fire Event Server Side");
 			break;
 		}
+		case GAME_MESSAGE_START_BUILDING_WITH_ITEM:
+		{
+			Logger::info("Start Buiding With Item");
+			bool firstTime;
+			bool success;
+			int sourceBag;
+			long long sourceID;
+			long sourceLot;
+			int sourceType;
+			long long targetID;
+			long targetLot;
+			float x;
+			float y;
+			float z;
+			int targetType;
+
+			data->Read(firstTime);
+			data->Read(success);
+			data->Read(sourceBag);
+			data->Read(sourceID);
+			data->Read(sourceLot);
+			data->Read(sourceType);
+			data->Read(targetID);
+			data->Read(targetLot);
+			data->Read(x);
+			data->Read(y);
+			data->Read(z);
+			data->Read(targetType);
+
+			BitStream* packet = PacketUtils::createGMBase(session->charID, GameMessageID::GAME_MESSAGE_START_ARRANGING_WITH_ITEM);
+
+			packet->Write(firstTime);
+			long long buildAreaID = 0;
+			packet->Write(buildAreaID);
+			packet->Write(x);
+			packet->Write(y);
+			packet->Write(z);
+			packet->Write(sourceBag);
+			packet->Write(sourceID);
+			packet->Write(sourceLot);
+			packet->Write(sourceType);
+			packet->Write(targetID);
+			packet->Write(targetLot);
+			packet->Write(x);
+			packet->Write(y);
+			packet->Write(z);
+			packet->Write(targetType);
+
+			Server::sendPacket(packet, clientAddress);
+			break;
+		}
 		case GAME_MESSAGE_ID_PARSE_CHAT_MESSAGE:
 		{
 			unsigned long clientState;
