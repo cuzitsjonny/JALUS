@@ -209,26 +209,23 @@ long Helpers::doMaxedStatMath(long currentStat, long additionalStat, long maxSta
 	long newStat = currentStat + additionalStat;
 	if (newStat <= maxStat)
 	{
+		Logger::info(to_string(newStat));
 		return newStat;
 	}
 	else
 	{
+		Logger::info(to_string(newStat));
 		return maxStat;
 	}
 }
 
-long Helpers::respawnObject(ReplicaObject* replica, long timer)
+void Helpers::respawnObject(ReplicaObject* replica, SystemAddress clientAddress)
 {
-	/*Scheduler::runTaskLater(timer, [replica]() {
-		Server::getReplicaManager()->ReferencePointer(replica);
-		//Logger::info(message);
-	});*/
-
-	/*Scheduler::runTaskTimer(timer, timer, [replica]() {
-		Server::getReplicaManager()->ReferencePointer(replica);
-		//Logger::info(message);
-	});*/
-	return 1;
+	//Logger::info("Attempted respawn");
+	ObjectsManager::spawnObject(replica);
+	Server::getReplicaManager()->ReferencePointer(replica);
+	GameMessages::playFXEffect(replica->objectID, 729, L"create", 1.0F, "regenerationflash", 1.0F, -1, clientAddress);
+	//GameMessages::stopFXEffect(replica->objectID, "regenerationflash", false, clientAddress);
 }
 
 void Helpers::broadcastJonnysDumbEffects()

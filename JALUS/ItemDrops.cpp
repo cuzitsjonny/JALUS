@@ -11,14 +11,20 @@ long long ItemDrops::createDroppedItem(long lot, bool isPowerup)
 	else
 		objid = Objects::generateObjectID();
 
-	if (isPowerup == false)
+	/*if (isPowerup == false)
 	{
 		ItemDrop drop;
 		drop.id = objid;
 		drop.lot = lot;
 
 		itemDrops.push_back(drop);
-	}
+	}*/
+
+	ItemDrop drop;
+	drop.id = objid;
+	drop.lot = lot;
+
+	itemDrops.push_back(drop);
 
 	return objid;
 

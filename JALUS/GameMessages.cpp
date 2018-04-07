@@ -139,78 +139,74 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				//if (getObjLOT == 177 || getObjLOT == 11915 || getObjLOT == 11916 || getObjLOT == 11917 || getObjLOT == 11920)
 				long maxHealth = player->statsIndex->max_health;
 				long curHealth = player->statsIndex->cur_health;
+
 				long maxArmor = player->statsIndex->max_armor;
 				long curArmor = player->statsIndex->cur_armor;
-				long maxImagination = player->statsIndex->max_imagination;
-				long curImagination = player->statsIndex->max_imagination;
 
-				if (getObjLOT == 177) // 1
+				long maxImagination = player->statsIndex->max_imagination;
+				long curImagination = player->statsIndex->cur_imagination;
+
+				Logger::info("POWERUP LOT " + to_string(getObjLOT));
+				if (getObjLOT == 177) // 1 #			HEALTH
 				{
 					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 1, maxHealth);
 				}
-				else if (getObjLOT = 11915) // 2
+				else if (getObjLOT == 11915) // 2
 				{
 					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 2, maxHealth);
 				}
-				else if (getObjLOT = 11916) // 3
+				else if (getObjLOT == 11916) // 3
 				{
 					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 3, maxHealth);
 				}
-				else if (getObjLOT = 11917) // 5
+				else if (getObjLOT == 11917) // 5
 				{
 					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 5, maxHealth);
 				}
-				else if (getObjLOT = 11920) // 10
+				else if (getObjLOT == 11920) // 10
 				{
 					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 10, maxHealth);
 				}
-
-				// armor stats
-
-				else if (getObjLOT == 6431) // 1
+				else if (getObjLOT == 6431) // 1 #		ARMOR
 				{
 					player->statsIndex->cur_armor = Helpers::doMaxedStatMath(curArmor, 1, maxArmor);
 				}
-				else if (getObjLOT = 11912) // 2
+				else if (getObjLOT == 11912) // 2
 				{
 					player->statsIndex->cur_armor = Helpers::doMaxedStatMath(curArmor, 2, maxArmor);
 				}
-				else if (getObjLOT = 11913) // 3
+				else if (getObjLOT == 11913) // 3
 				{
 					player->statsIndex->cur_armor = Helpers::doMaxedStatMath(curArmor, 3, maxArmor);
 				}
-				else if (getObjLOT = 11914) // 5
+				else if (getObjLOT == 11914) // 5
 				{
 					player->statsIndex->cur_armor = Helpers::doMaxedStatMath(curArmor, 5, maxArmor);
 				}
-				else if (getObjLOT = 11919) // 10
+				else if (getObjLOT == 11919) // 10
 				{
 					player->statsIndex->cur_armor = Helpers::doMaxedStatMath(curArmor, 10, maxArmor);
 				}
-
-				// imagination stats
-
-				else if (getObjLOT == 935) // 1
+				else if (getObjLOT == 935) // 1			IMAGINATION
 				{
 					player->statsIndex->cur_imagination = Helpers::doMaxedStatMath(curImagination, 1, maxImagination);
 				}
-				else if (getObjLOT = 4035) // 2
+				else if (getObjLOT == 4035) // 2
 				{
 					player->statsIndex->cur_imagination = Helpers::doMaxedStatMath(curImagination, 2, maxImagination);
 				}
-				else if (getObjLOT = 11910) // 3
+				else if (getObjLOT == 11910) // 3
 				{
 					player->statsIndex->cur_imagination = Helpers::doMaxedStatMath(curImagination, 3, maxImagination);
 				}
-				else if (getObjLOT = 11911) // 5
+				else if (getObjLOT == 11911) // 5
 				{
 					player->statsIndex->cur_imagination = Helpers::doMaxedStatMath(curImagination, 5, maxImagination);
 				}
-				else if (getObjLOT = 11918) // 10
+				else if (getObjLOT == 11918) // 10
 				{
 					player->statsIndex->cur_imagination = Helpers::doMaxedStatMath(curImagination, 10, maxImagination);
 				}
-
 			}
 			else 
 			{
@@ -236,12 +232,65 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			}
 
 			ItemDrops::removeDroppedItem(lootObj);
+			ObjectsManager::serializeObject(player);
 
 			break;
 		}
 
-		case GAME_MESSAGE_REMOVE_ITEM_FROM_INVENTORY:
+		/*case GAME_MESSAGE_ID_PLAYER_LOADED: 
 		{
+			long long object;
+			data->Read(object);
+			
+			//Logger::info("Player has finished loading into the world.");
+
+		}*/
+
+		case GAME_MESSAGE_REMOVE_ITEM_FROM_INVENTORY:
+		{ // FROM JLUNI 2 (aka ION which is JLUNI)
+			/*bool mode;
+			data->Read(mode);
+			unsigned long uk1;
+			data->Read(uk1);
+			unsigned long long uk2;
+			data->Read(uk2);
+			bool a1, a2, a3, a4, a5, a6, a7;
+			data->Read(a1);
+			data->Read(a2);
+			data->Read(a3);
+			data->Read(a4);
+			data->Read(a5);
+			data->Read(a6);
+			data->Read(a7);
+			long long itemid;
+			data->Read(itemid);
+			unsigned char uk4;
+			data->Read(uk4);
+			unsigned long uk5;
+			data->Read(uk5);
+
+			Logger::info("Start listing data");
+
+			Logger::info(to_string(mode));
+			Logger::info(to_string(uk1));
+			Logger::info(to_string(uk2));
+			Logger::info(to_string(a1));
+			Logger::info(to_string(a2));
+			Logger::info(to_string(a3));
+			Logger::info(to_string(a4));
+			Logger::info(to_string(a5));
+			Logger::info(to_string(a6));
+			Logger::info(to_string(a7));
+			Logger::info(to_string(itemid));
+			Logger::info(to_string(uk4));
+			Logger::info(to_string(uk5));
+
+			if (mode == true) {
+
+				Logger::info("Deleted item from users inventory");
+				InventoryItems::deleteInventoryItem(itemid);
+				Objects::deleteObject(itemid);
+			}*/
 			bool confirmed;
 			bool deleteItem;
 			bool outSuccess;
@@ -250,11 +299,11 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			wstring extraInfo;
 			bool forceDeletion;
 			long long lootTypeSourceID;
-			long long objectID;
-			long objectTemplate;
+			long long objid;
+			long lot;
 			long long requestingObjectID;
-			long stackCount;
-			long stackRemaining;
+			unsigned long stackCount;
+			unsigned long stackRemaining;
 			long long subkey;
 			long long tradeID;
 
@@ -265,23 +314,42 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			data->Read(lootTypeSource);
 			data->Read(extraInfo);
 			data->Read(forceDeletion);
-			data->Read(lootTypeSource);
-			data->Read(objectID);
-			data->Read(objectTemplate);
+			data->Read(lootTypeSourceID);
+			data->Read(objid);
+			data->Read(lot);
 			data->Read(requestingObjectID);
 			data->Read(stackCount);
 			data->Read(stackRemaining);
 			data->Read(subkey);
 			data->Read(tradeID);
 
-			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+			Logger::info(to_string(confirmed));
+			Logger::info(to_string(deleteItem));
+			Logger::info(to_string(outSuccess));
+			Logger::info(to_string(invType));
+			Logger::info(to_string(lootTypeSource));
+			Logger::info(to_string(extraInfo));
+			Logger::info(to_string(forceDeletion));
+			Logger::info(to_string(lootTypeSourceID));
+			Logger::info(to_string(objid));
+			Logger::info(to_string(lot));
+			Logger::info(to_string(requestingObjectID));
+			Logger::info(to_string(stackCount));
+			Logger::info(to_string(stackRemaining));
+			Logger::info(to_string(subkey));
+			Logger::info(to_string(tradeID));
 
-			InventoryItems::deleteInventoryItem(objectID);
+			if (confirmed == true) {
 
-			ObjectsManager::serializeObject(player);
-
-			Logger::info("Equipped item " + std::to_string(objectID) + " for player " + std::to_string(session->charID));
-			break;
+				if (stackRemaining == 0) {
+					Logger::info("Deleted item from users inventory");
+					InventoryItems::deleteInventoryItem(objid);
+					Objects::deleteObject(objid);
+				}
+				else if (stackRemaining > 0) {
+					InventoryItems::setCount(stackRemaining, objid);
+				}
+			}
 		}
 
 		case GAME_MESSAGE_EQUIP_INVENTORY:
@@ -616,7 +684,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
 				if (replica != charObj)
 				{
-					/*Position pos;
+					//Logger::info("Starting respawn");
+					Position pos;
 					Rotation rot;
 					pos.x = replica->simplePhysicsIndex->pos_x;
 					pos.y = replica->simplePhysicsIndex->pos_y;
@@ -630,12 +699,18 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					ReplicaObject* newReplica = new ReplicaObject(replica->objectID, replica->lot, replica->name, replica->gmLevel, pos, rot);
 					newReplica->scale = replica->scale;
 
-					string respawn = LVLCache::getObjectProperty("respawn", replica->objectID).value;
+					//Logger::info("ObjectID: " + to_string(replica->objectID));
+					string respawn = LVLCache::getObjectProperty("respawn", newReplica->objectID).value;
+					Logger::info("Respawn: " + respawn);
+
 					//string message = "Object respawned";
+					//Scheduler::runAsyncTaskLater(5000, Logger::info, "Log test");
+
 					ObjectsManager::despawnObject(replica);
 					// 7 seconds
 					//Scheduler::runTaskLater(stoi(respawn), Helpers::
-					Helpers::respawnObject(newReplica, 7000);*/
+					Scheduler::runAsyncTaskLater(7000, Helpers::respawnObject, newReplica, clientAddress);
+					//Helpers::respawnObject(newReplica, 7000);
 
 				}
 
@@ -1087,9 +1162,10 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Position spawnPos = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()))->spawnPointPos;
 			Rotation spawnRot = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()))->spawnPointRot;
 
-			ValueStorage::updateValueInMemory(session->charID, "health", 4);
-			ValueStorage::updateValueInMemory(session->charID, "armor", 0);
-			ValueStorage::updateValueInMemory(session->charID, "imagination", 6);
+			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+			player->statsIndex->cur_health = 4;
+			player->statsIndex->cur_armor = 0;
+			player->statsIndex->cur_imagination = 6;
 
 			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 			{

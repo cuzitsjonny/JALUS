@@ -15,6 +15,6 @@ public:
 	static void deathCheck(long long charid, wstring deathType, SystemAddress clientAddress);
 	static void syncStatValues();
 	static long doMaxedStatMath(long currentStat, long additionalStat, long maxStat);
-	static long respawnObject(ReplicaObject* replica, long timer);
+	static void respawnObject(ReplicaObject* replica, SystemAddress clientAddress);
 	static void broadcastJonnysDumbEffects();
 };

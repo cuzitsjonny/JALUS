@@ -213,11 +213,6 @@ void ServerLoop::start()
 								ValueStorage::updateValueInDatabase(session->charID, "health", player->statsIndex->cur_health);
 								ValueStorage::updateValueInDatabase(session->charID, "armor", player->statsIndex->cur_armor);
 								ValueStorage::updateValueInDatabase(session->charID, "imagination", player->statsIndex->cur_imagination);
-
-								ValueStorage::removeValueFromMemory(session->charID, "health");
-								ValueStorage::removeValueFromMemory(session->charID, "armor");
-								ValueStorage::removeValueFromMemory(session->charID, "imagination");
-
 							}
 						}
 
