@@ -26,11 +26,14 @@
 
 void Commands::performCommand(CommandSender sender, string cmd, vector<string> args)
 {
+	long account_gm_level = Accounts::getGMLevel(Characters::getAccountID(sender.getSenderID()));
+
 	if (iequals(cmd, "stop") || iequals(cmd, "off") || iequals(cmd, "quit")) // /stop
 	{
-		ServerLoop::stop();
+		if (account_gm_level >= 5) {
+			ServerLoop::stop();
+		}
 	}
-
 	else if (iequals(cmd, "test"))
 	{
 		if (args.size() == 1)
@@ -205,7 +208,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 		else if (sender.getSenderID() != -1)
 		{
-			sender.sendMessage("You need to say something!");
+			sender.sendMessage("You need to say something!"); 
 		}
 		else
 		{
@@ -487,7 +490,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 	else if (iequals(cmd, "createAccount")) // /createAccount <string:username> <string:password>
 	{
-		if (args.size() == 2)
+		if (args.size() >= 2)
 		{
 			string username = args.at(0);
 			string password = args.at(1);
@@ -497,12 +500,15 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			{
 				Accounts::createAccount(username, sha512(password));
 				sender.sendMessage("Successfully created account! (Username: " + username + ")");
+				if (args.size() == 3) {
+
+				}
 			}
 			else
 				sender.sendMessage("The username '" + username + "' is already in use!");
 		}
 		else
-			sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <username> <password>");
+			sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <username> <password> <gmlevel>");
 	}
 
 	else if (iequals(cmd, "deleteAccount")) // /deleteAccount <string:username>

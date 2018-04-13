@@ -32,7 +32,7 @@ void Server::init(ServerRole serverRole)
 	Logger::init();
 	PingTool::init();
 
-	Accounts::init("Accounts", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, username CHAR(32), password_hash CHAR(128), login_tries TINYINT(1) NOT NULL DEFAULT 0, locked_timestamp BIGINT(20) NOT NULL DEFAULT -1, front_character BIGINT(20) NOT NULL DEFAULT -1");
+	Accounts::init("Accounts", "id BIGINT(20) AUTO_INCREMENT PRIMARY KEY, username CHAR(32), password_hash CHAR(128), login_tries TINYINT(1) NOT NULL DEFAULT 0, locked_timestamp BIGINT(20) NOT NULL DEFAULT -1, front_character BIGINT(20) NOT NULL DEFAULT -1, gm_level INT(11) NOT NULL DEFAULT 0");
 	Bans::init("Bans", "got_banned CHAR(20) UNIQUE, banned BIGINT(20), is_ip_ban TINYINT(1), reason TINYTEXT, banned_timestamp BIGINT(20), how_long BIGINT(20)");
 	TransitionInfos::init("TransitionInfos", "client_address CHAR(30) UNIQUE, account_id BIGINT(20), char_id BIGINT(20), transition_key CHAR(32)");
 	Objects::init("Objects", "id BIGINT(20) PRIMARY KEY, lot INT(11)");

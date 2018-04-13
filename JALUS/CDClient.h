@@ -73,7 +73,7 @@ public:
 	static long lookUpLevel(long long universeScore);
 	static long long lookUpUniverseScore(long level);
 	static vector<long> getItemDrops(long lot, long LootTableIndex);
-	static vector<long double> getDropProbs(long lot, long row);
+	static vector<double> getDropProbs(long lot, long row);
 	static vector<long> getCoinDrops(long lot);
 	static long getLootTableIndexCount(long lot);
 	static long getIsPowerup(long lot);

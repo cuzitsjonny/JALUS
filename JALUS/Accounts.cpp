@@ -507,3 +507,79 @@ void Accounts::updateLockedTimestamp(long long accountID)
 		catch (SAException &) {}
 	}
 }
+
+void Accounts::setGMLevel(long gmLevel, long long accountID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "UPDATE";
+		ss << " " << Accounts::name << " ";
+		ss << "SET gm_level = '" << gmLevel << "' ";
+		ss << "WHERE id = '" << accountID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+}
+
+long Accounts::getGMLevel(long long accountID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = -1;
+
+	try
+	{
+		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+			Config::getMySQLUsername().c_str(),
+			Config::getMySQLPassword().c_str(),
+			SA_MySQL_Client);
+
+		stringstream ss;
+		ss << "SELECT gm_level FROM";
+		ss << " " << Accounts::name << " ";
+		ss << "WHERE id = '" << accountID << "';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		if (cmd.FetchFirst())
+			r = cmd.Field("gm_level").asLong();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}

@@ -22,4 +22,7 @@ public:
 	static void setLoginTries(short loginTries, long long accountID);
 	static void setFrontCharacter(long long frontCharID, long long accountID);
 	static void updateLockedTimestamp(long long accountID);
+
+	static long getGMLevel(long long accountID);
+	static void setGMLevel(long gmLevel, long long accountID);
 };

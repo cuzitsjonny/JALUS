@@ -20,6 +20,8 @@
 #include "CharactersInstance.h"
 #include "Helpers.h"
 #include "ValueStorage.h"
+#include "Scheduler.h"
+#include <ctime>
 
 void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddress, ClientToWorldPacketID packetID)
 {
@@ -43,13 +45,18 @@ void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddr
 	{
 		WorldInstance::sendCharacterData(clientAddress);
 		Logger::info("Client received character data! (Address: " + string(clientAddress.ToString()) + ")");
+
 		WorldInstance::sendServerState(clientAddress);
 		Logger::info("Client received server state! (Address: " + string(clientAddress.ToString()) + ")");
+
+		//WorldInstance::sendServerState(clientAddress);
+		//Logger::info("Client received server state! (Address: " + string(clientAddress.ToString()) + ")");
 		break;
 	}
 
 	case CLIENT_WORLD_ROUTE_PACKET:
 	{
+
 		unsigned long length;
 		unsigned short remoteConnectionType = RemoteConnectionType::RCT_CLIENT_TO_WORLD;
 		unsigned long rPacketID = packetID;
@@ -196,6 +203,7 @@ void WorldInstance::sendWorldInfo(SystemAddress clientAddress)
 			packet->Write((unsigned long)0);
 
 		Server::sendPacket(packet, clientAddress);
+
 	}
 }
 
@@ -387,7 +395,6 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 
 void WorldInstance::sendServerState(SystemAddress clientAddress)
 {
-	//Logger::info("sendServerState");
 	Session* session = Sessions::getSession(clientAddress);
 
 	if (session != nullptr)
@@ -403,64 +410,15 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel, loc.position, loc.rotation);
 		replica->clientAddress = clientAddress;
 
-		Logger::info(to_string(session->charID) + " just spawned it with " + to_string(ValueStorage::getValueFromDatabase(session->charID, "health")) + " health, " + to_string(ValueStorage::getValueFromDatabase(session->charID, "armor")) + " armor, and " + to_string(ValueStorage::getValueFromDatabase(session->charID, "imagination")) + " imagination.");
-
+		//Logger::info(to_string(session->charID) + " just spawned it with " + to_string(ValueStorage::getValueFromDatabase(session->charID, "health")) + " health, " + to_string(ValueStorage::getValueFromDatabase(session->charID, "armor")) + " armor, and " + to_string(ValueStorage::getValueFromDatabase(session->charID, "imagination")) + " imagination.");
 
 		replica->statsIndex->max_health = Characters::getMaxHealth(session->charID);
 		replica->statsIndex->cur_health = ValueStorage::getValueFromDatabase(session->charID, "health");
-		//replica->statsIndex->cur_health = 4;
 
 		replica->statsIndex->max_imagination = Characters::getMaxImagination(session->charID);
 		replica->statsIndex->cur_imagination = ValueStorage::getValueFromDatabase(session->charID, "imagination");
-		//replica->statsIndex->cur_imagination = 0;
 
 		replica->statsIndex->cur_armor = ValueStorage::getValueFromDatabase(session->charID, "armor");
-		//replica->statsIndex->cur_armor = 0;
-
-		/*ValueStorage::createValueInMemory(session->charID, "health", replica->statsIndex->cur_health);
-		ValueStorage::createValueInMemory(session->charID, "imagination", replica->statsIndex->cur_imagination);
-		ValueStorage::createValueInMemory(session->charID, "armor", replica->statsIndex->cur_armor);*/
-
-		// add skills for equipped items
-		{
-			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
-			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
-			//Logger::info("Items equipped: " + std::to_string(items.size()));
-			/*for (int k = 0; k < items.size(); k++)
-			{
-				//player->inventoryIndex->items.push_back(items.at(k));
-
-				long lot = Objects::getLOT(items.at(k).objectID);
-				//long lot = items.at(k).lot;
-				// add skills
-				long itemType = CDClient::getItemType(lot);
-
-				long hotbarslot = 4;
-				if (itemType == ItemType::ITEM_TYPE_HAIR || ItemType::ITEM_TYPE_HAT)
-					hotbarslot = 3;
-				if (itemType == ItemType::ITEM_TYPE_NECK)
-					hotbarslot = 2;
-				if (itemType == ItemType::ITEM_TYPE_RIGHT_HAND)
-					hotbarslot = 0;
-				if (itemType == ItemType::ITEM_TYPE_LEFT_HAND)
-					hotbarslot = 1;
-
-				// SlitherStriker = 13276
-				// Nightlasher = 13275
-				// Energy Spork = 13277
-				// Zapzapper = 13278
-
-				long skillid = CDClient::getSkillID(lot, 0);
-				if (lot == 13276 ||
-					lot == 13275 ||
-					lot == 13277 ||
-					lot == 13278)
-					skillid = 148;
-				if (skillid != -1)
-					GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
-
-			}*/
-		}
 
 		if (replica->statsIndex->cur_health == 0)
 		{ 
@@ -471,8 +429,10 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 				GameMessages::die(session->charID, L"electro-shock-death", false, participant);
 			}
 		}
-
+		
+		//Scheduler::runAsyncTaskLater(7000, ObjectsManager::addPlayer, replica, clientAddress);
 		ObjectsManager::addPlayer(replica, clientAddress);
+
 	}
 }
 

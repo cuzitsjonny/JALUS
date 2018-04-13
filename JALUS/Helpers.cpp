@@ -219,6 +219,11 @@ long Helpers::doMaxedStatMath(long currentStat, long additionalStat, long maxSta
 	}
 }
 
+double Helpers::randomInRange(double min, double max)
+{
+	return min + (rand() / (RAND_MAX / (max - min)));
+}
+
 void Helpers::respawnObject(ReplicaObject* replica, SystemAddress clientAddress)
 {
 	//Logger::info("Attempted respawn");

@@ -773,12 +773,12 @@ vector<long> CDClient::getItemDrops(long lot, long LootTableIndex)
 	return r;
 }
 
-vector<long double> CDClient::getDropProbs(long lot, long row)
+vector<double> CDClient::getDropProbs(long lot, long row)
 {
 	SAConnection con;
 	SACommand cmd;
 
-	vector<long double> r;
+	vector<double> r;
 
 	try
 	{
@@ -807,7 +807,7 @@ vector<long double> CDClient::getDropProbs(long lot, long row)
 
 		while (cmd.FetchNext())
 		{
-			long double percent = cmd.Field("percent").asDouble();
+			double percent = cmd.Field("percent").asDouble();
 			long minToDrop = cmd.Field("minToDrop").asLong();
 			long maxToDrop = cmd.Field("maxToDrop").asLong();
 			long lootTableIndex = cmd.Field("LootTableIndex").asLong();

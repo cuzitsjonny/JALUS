@@ -18,6 +18,8 @@
 #include "Common.h"
 #include "ValueStorage.h"
 #include "Scheduler.h"
+#include "LDF.h"
+#include "WorldInstance.h"
 
 void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddress)
 {
@@ -91,6 +93,26 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Logger::info("GAME_MESSAGE_ID_RACING_CLIENT_READY");
 			break;
 		}
+
+
+		case GAME_MESSAGE_ID_START_BUILDING_WITH_ITEM:
+		{
+			BitStream* packet = PacketUtils::createGMBase(session->charID, GAME_MESSAGE_ID_SET_BUILD_MODE);
+			ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+			Position position;
+			position.x = replica->controllablePhysicsIndex->pos_x;
+			position.y = replica->controllablePhysicsIndex->pos_y;
+			position.z = replica->controllablePhysicsIndex->pos_z;
+			packet->Write(true);
+			packet->Write(-1);
+			packet->Write(false);
+			packet->Write(1);
+			packet->Write(session->charID);
+			packet->Write(position);
+
+			Server::sendPacket(packet, clientAddress);
+		}
+
 
 
 		// item drops
@@ -237,14 +259,62 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			break;
 		}
 
-		/*case GAME_MESSAGE_ID_PLAYER_LOADED: 
+
+		case GAME_MESSAGE_ID_PLAYER_LOADED: 
 		{
 			long long object;
 			data->Read(object);
-			
-			//Logger::info("Player has finished loading into the world.");
 
-		}*/
+			Session* session = Sessions::getSession(clientAddress);
+
+			if (session != nullptr)     
+			{
+				// add skills for equipped items
+				{
+					ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+					vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
+					//Logger::info("Items equipped: " + std::to_string(items.size()));
+					for (int k = 0; k < items.size(); k++)
+					{
+					//player->inventoryIndex->items.push_back(items.at(k));
+
+					long lot = Objects::getLOT(items.at(k).objectID);
+					//long lot = items.at(k).lot;
+					// add skills
+					long itemType = CDClient::getItemType(lot);
+
+					long hotbarslot = 4;
+					if (itemType == ItemType::ITEM_TYPE_HAIR || ItemType::ITEM_TYPE_HAT)
+					hotbarslot = 3;
+					if (itemType == ItemType::ITEM_TYPE_NECK)
+					hotbarslot = 2;
+					if (itemType == ItemType::ITEM_TYPE_RIGHT_HAND)
+					hotbarslot = 0;
+					if (itemType == ItemType::ITEM_TYPE_LEFT_HAND)
+					hotbarslot = 1;
+
+					// SlitherStriker = 13276
+					// Nightlasher = 13275
+					// Energy Spork = 13277
+					// Zapzapper = 13278
+
+					long skillid = CDClient::getSkillID(lot, 0);
+					if (lot == 13276 ||
+					lot == 13275 ||
+					lot == 13277 ||
+					lot == 13278)
+					skillid = 148;
+					if (skillid != -1)
+					GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
+
+					}
+				}
+			}
+						
+			//Logger::info("Player has finished loading into the world.");
+			break;
+
+		}
 
 		case GAME_MESSAGE_REMOVE_ITEM_FROM_INVENTORY:
 		{ // FROM JLUNI 2 (aka ION which is JLUNI)
@@ -589,51 +659,49 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					}*/
 
 					long lootTableIndexCount = CDClient::getLootTableIndexCount(replica->lot);
-
 					for (int k = 0; k < lootTableIndexCount; k++)
 					{
-						vector<long double> probabilities = CDClient::getDropProbs(replica->lot, k);
-
+						vector<double> probabilities = CDClient::getDropProbs(replica->lot, k);
 						vector<long> items = CDClient::getItemDrops(replica->lot, probabilities.at(3));
-						
-						long double r3 = 0 + static_cast <long double> (rand()) / (static_cast <long double> (RAND_MAX / (1 - 0)));
-						
-						long randMinMax = probabilities.at(1) + static_cast <long> (rand()) / (static_cast <long> (RAND_MAX / (probabilities.at(2) - probabilities.at(1))));
-						
-						//for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-						//{
-						//	SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
 
-							if (r3 < probabilities.at(0))
+						Logger::info(to_string(probabilities.size()));
+						Logger::info(to_string(items.size()));
+
+						double r3 = Helpers::randomInRange(0, 1);
+						//Logger::info(to_string(r3));
+						//Logger::info(to_string(probabilities.at(0)));
+
+						long randMinMax = Helpers::randomInRange(probabilities.at(1), probabilities.at(2));
+						//Logger::info(to_string(randMinMax));
+						if (r3 <= probabilities.at(0))
+						{
+							for (int k = 0; k < randMinMax; k++)
 							{
-								for (int k = 0; k < randMinMax; k++)
-								{
-									long randNum = 0 + static_cast <long> (rand()) / (static_cast <long> (RAND_MAX / (items.size() - 0)));
-									
-									if (items.at(randNum) != 13763) // 13763 is the lot of faction tokens. 
-									{ // It will change to your specific faction (if you're in one) once dropped.
+								long randNum = Helpers::randomInRange(0, items.size());
+								if (items.at(randNum) != 13763) // 13763 is the lot of faction tokens. 
+								{	// It will change to your specific faction (if you're in one) once dropped.
 									// Blacklisting it for now since we aren't in Nimbus Station yet.
-										GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, clientAddress);
-									}
-
+									GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, clientAddress);
 								}
+
 							}
-						//}
+						}
+
+						//probabilities.clear();
+						//items.clear();
+
 					}
 
-
 					vector<long> coinsMinMax = CDClient::getCoinDrops(replica->lot);
+					long randCoin = Helpers::randomInRange(coinsMinMax.at(0), coinsMinMax.at(1));
 
-					long randCoin = coinsMinMax.at(0) + static_cast <long> (rand()) / (static_cast <long> (RAND_MAX / (coinsMinMax.at(1) - coinsMinMax.at(0))));
+					if (randCoin > 0) // If this isn't here and the random number is 0, it will spawn LOT 0, which is just a question mark.
+					{
+						GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, clientAddress);
+					}
 
-					//for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-					//{
-						//SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-												
-						if (randCoin > 0) // If this isn't here and the random number is 0, it will spawn LOT 0, which is just a question mark.
-						{
-							GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, clientAddress);
-						}
+					//coinsMinMax.clear();
+
 					//}
 									
 					//Comment by lcdr on how he does item drops
@@ -677,8 +745,28 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					ReplicaObject* newReplica = new ReplicaObject(replica->objectID, replica->lot, replica->name, replica->gmLevel, pos, rot);
 					newReplica->scale = replica->scale;
 
-					//Logger::info("ObjectID: " + to_string(replica->objectID));
-					string respawn = LVLCache::getObjectProperty("respawn", newReplica->objectID).value;
+					Logger::info(to_string(newReplica->objectID));
+					Logger::info(to_string(newReplica->lot));
+					Logger::info(to_string(newReplica->name));
+					Logger::info(to_string(newReplica->gmLevel));
+					Logger::info(to_string(newReplica->scale));
+						//Logger::info("ObjectID: " + to_string(replica->objectID));
+					string respawn = LVLCache::getObjectProperty("respawn", replica->objectID).value;
+					//string spawntemplate = LVLCache::getObjectProperty("spawntemplate", objectID).value;
+
+					vector<ObjectProperty> stuff = LVLCache::getObjectProperties(replica->objectID);
+
+					Logger::info(to_string(stuff.size()));
+					for (int k = 0; k < stuff.size(); k++)
+					{
+						Logger::info(stuff.at(k).key);
+						Logger::info(stuff.at(k).value);
+						Logger::info(std::to_string(stuff.at(k).type));
+
+					}
+
+					//LDF ldf;
+					//ldf.writeLong(L"respawn", newReplica->objectID);
 					Logger::info("Respawn: " + respawn);
 
 					//string message = "Object respawned";
@@ -687,7 +775,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					ObjectsManager::despawnObject(replica);
 					// 7 seconds
 					//Scheduler::runTaskLater(stoi(respawn), Helpers::
-					Scheduler::runAsyncTaskLater(7000, Helpers::respawnObject, newReplica, clientAddress);
+					Scheduler::runAsyncTaskLater(6000, Helpers::respawnObject, newReplica, clientAddress);
 					//Helpers::respawnObject(newReplica, 7000);
 
 				}
