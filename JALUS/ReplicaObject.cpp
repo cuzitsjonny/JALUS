@@ -9,6 +9,7 @@
 #include "LVLCache.h"
 #include "ObjectsManager.h"
 #include "CharacterStats.h"
+#include "PacketUtils.h"
 #include <fstream>
 
 ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gmLevel, Position pos, Rotation rot, long long spawnerID, long mapClone)
@@ -378,11 +379,27 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 
 				activatorReplica->parentID = id;
 
+
+				//activatorReplica->rebuildIndex->enabled = true;
+				//activatorReplica->rebuildIndex->
+
 				replica->childIDs.push_back(activatorID);
 
 				replica->spawnerNodeID = 0;
 
 				Server::getReplicaManager()->ReferencePointer(activatorReplica);
+
+				//for testing
+				Logger::info(to_string(replica->objectID));
+				BitStream *stream = new BitStream();
+				stream->Write(static_cast<unsigned char>(0x24));
+				stream->Write(static_cast<bool>(true));
+				stream->Write(static_cast<unsigned long>(1));
+				replica->writeToBitStream(stream, true);
+				stringstream ns; ns << "packets\\[24]_" << replica->lot << "_" << replica->objectID << ".bin";
+				PacketUtils::saveBitstreamToDisk(stream, ns.str());
+
+
 			}
 			//Server::getReplicaManager()->ReferencePointer(replica);
 			/*Server::getReplicaManager()->ReferencePointer(replica);

@@ -97,6 +97,29 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_START_BUILDING_WITH_ITEM:
 		{
+			bool firstTime = false;
+			bool success;
+			int sourceBag;
+			long long sourceID;
+			long sourceLot;
+			int sourceType;
+			long long targetID;
+			long targetLot;
+			Position targetPos;
+			int targetType;
+
+
+			data->Read(firstTime);
+			data->Read(success);
+			data->Read(sourceID);
+			data->Read(sourceLot);
+			data->Read(sourceType);
+			data->Read(targetID);
+			data->Read(targetLot);
+			data->Read(targetPos);
+			data->Read(targetType);
+
+
 			BitStream* packet = PacketUtils::createGMBase(session->charID, GAME_MESSAGE_ID_SET_BUILD_MODE);
 			ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
 			Position position;
@@ -111,9 +134,11 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			packet->Write(position);
 
 			Server::sendPacket(packet, clientAddress);
+
+			break;
 		}
 
-
+		
 
 		// item drops
 		// item drops and inventory
@@ -168,7 +193,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				long maxImagination = player->statsIndex->max_imagination;
 				long curImagination = player->statsIndex->cur_imagination;
 
-				Logger::info("POWERUP LOT " + to_string(getObjLOT));
+				//Logger::info("POWERUP LOT " + to_string(getObjLOT));
 				if (getObjLOT == 177) // 1 #			HEALTH
 				{
 					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 1, maxHealth);
@@ -444,7 +469,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			InventoryItems::setIsEquipped(true, itemid);
 
 			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
-			Logger::info("Items equipped: " + std::to_string(items.size()));
+			//Logger::info("Items equipped: " + std::to_string(items.size()));
 			for (int k = 0; k < items.size(); k++)
 			{
 				player->inventoryIndex->items.push_back(items.at(k));
@@ -509,16 +534,21 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			//vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
 			//Logger::info("Items equipped: " + std::to_string(items.size()));
 
-			for (int k = 0; k < items.size(); k++)
+			for (int k = 0; k < player->inventoryIndex->items.size(); k++)
 			{
-				if (items.at(k).objectID == itemToUnequip)
+				//player->inventoryIndex->items.push_back(items.at(k));
+				if (player->inventoryIndex->items[k].objectID == itemToUnequip)
 				{
-					if (items.at(k).isEquipped == true)
+					if (player->inventoryIndex->items[k].isEquipped == true)
 					{
-						player->inventoryIndex->items.pop_back();
 						InventoryItems::setIsEquipped(false, itemToUnequip);
+						//player->inventoryIndex->items.pop_back();
+						//player->inventoryIndex->items.erase(player->inventoryIndex->items.begin() + k);
+						player->inventoryIndex->items.clear();
+						
 
-						Logger::info("Unequipped item " + std::to_string(itemToUnequip) + " for player " + std::to_string(session->charID));
+
+						Logger::info("Unequipped item " + std::to_string(itemToUnequip) + " with LOT " + std::to_string(lot) + " for player " + std::to_string(session->charID));
 
 						// SlitherStriker = 13276
 						// Nightlasher = 13275
@@ -532,11 +562,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 							skillid = 148;
 						if (skillid != -1)
 							GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
+
+						ObjectsManager::serializeObject(player);
+
 					}
 				}
 			}
 			
-			ObjectsManager::serializeObject(player);
+			//ObjectsManager::serializeObject(player);
 
 			break;
 		}
@@ -623,7 +656,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			//Logger::info(std::to_string(waste3));
 			//Logger::info(std::to_string(itemId));
 
-			Logger::info("ItemID: " + std::to_string(itemId));
+			//Logger::info("ItemID: " + std::to_string(itemId));
 
 			
 
@@ -646,17 +679,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						spawnPosition.y = replica->simplePhysicsIndex->pos_y + 1;
 						spawnPosition.z = replica->simplePhysicsIndex->pos_z;
 					}
-					/*else if (replica->controllablePhysicsIndex != nullptr)
-					{
 
-						finalPosition.x = replica->controllablePhysicsIndex->pos_x;
-						finalPosition.y = replica->controllablePhysicsIndex->pos_y;
-						finalPosition.z = replica->controllablePhysicsIndex->pos_z;
-
-						spawnPosition.x = replica->controllablePhysicsIndex->pos_x;
-						spawnPosition.y = replica->controllablePhysicsIndex->pos_y;
-						spawnPosition.z = replica->controllablePhysicsIndex->pos_z;
-					}*/
 
 					long lootTableIndexCount = CDClient::getLootTableIndexCount(replica->lot);
 					for (int k = 0; k < lootTableIndexCount; k++)
@@ -664,8 +687,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						vector<double> probabilities = CDClient::getDropProbs(replica->lot, k);
 						vector<long> items = CDClient::getItemDrops(replica->lot, probabilities.at(3));
 
-						Logger::info(to_string(probabilities.size()));
-						Logger::info(to_string(items.size()));
+						//Logger::info(to_string(probabilities.size()));
+						//Logger::info(to_string(items.size()));
 
 						double r3 = Helpers::randomInRange(0, 1);
 						//Logger::info(to_string(r3));
@@ -699,35 +722,11 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					{
 						GameMessages::clientDropLoot(session->charID, randCoin, 0, session->charID, itemId, spawnPosition, finalPosition, clientAddress);
 					}
-
-					//coinsMinMax.clear();
-
-					//}
-									
-					//Comment by lcdr on how he does item drops
-					/*well this seems like one of the things where having one project would avoid having to reinvent all of this for every project
-						but oh well
-						i've always said info should be shared openly, no matter the project
-						so here goes
-						this is what i do
-						get yourself a random value between 0 and 1
-						now, the loot matrix has entries with the loot table, the probability, min and max to drop
-						so for each of these
-						you check whether your random value is below the probability
-						if yes:
-						get yourself a random integer between min and max
-						and that's how many times you choose a random entry from the loot table
-						and each time add that entry to the list of your loot
-						when you're done, that's your loot to drop
-						a possible variation is to get the random value for each loot table instead for all
-						that would make higher rolls less dramatic
-						but so far it works well enough*/
-
 					
 				}
 
 
-				ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
+				/*ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
 				if (replica != charObj)
 				{
 					//Logger::info("Starting respawn");
@@ -745,57 +744,31 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					ReplicaObject* newReplica = new ReplicaObject(replica->objectID, replica->lot, replica->name, replica->gmLevel, pos, rot);
 					newReplica->scale = replica->scale;
 
-					Logger::info(to_string(newReplica->objectID));
-					Logger::info(to_string(newReplica->lot));
-					Logger::info(to_string(newReplica->name));
-					Logger::info(to_string(newReplica->gmLevel));
-					Logger::info(to_string(newReplica->scale));
-						//Logger::info("ObjectID: " + to_string(replica->objectID));
-					string respawn = LVLCache::getObjectProperty("respawn", replica->objectID).value;
+				
+					//Logger::info("ObjectID: " + to_string(replica->objectID));
+					//string respawn = LVLCache::getObjectProperty("respawn", replica->objectID).value;
 					//string spawntemplate = LVLCache::getObjectProperty("spawntemplate", objectID).value;
 
-					vector<ObjectProperty> stuff = LVLCache::getObjectProperties(replica->objectID);
+					//vector<ObjectProperty> stuff = LVLCache::getObjectProperties(replica->objectID);
 
-					Logger::info(to_string(stuff.size()));
-					for (int k = 0; k < stuff.size(); k++)
-					{
-						Logger::info(stuff.at(k).key);
-						Logger::info(stuff.at(k).value);
-						Logger::info(std::to_string(stuff.at(k).type));
+					//Logger::info(to_string(stuff.size()));
+					//for (int k = 0; k < stuff.size(); k++)
+					//{
+						//Logger::info(stuff.at(k).key);
+						//Logger::info(stuff.at(k).value);
+						//Logger::info(std::to_string(stuff.at(k).type));
 
-					}
+					//}
 
-					//LDF ldf;
-					//ldf.writeLong(L"respawn", newReplica->objectID);
-					Logger::info("Respawn: " + respawn);
-
-					//string message = "Object respawned";
-					//Scheduler::runAsyncTaskLater(5000, Logger::info, "Log test");
+					//Logger::info("Respawn: " + respawn);
 
 					ObjectsManager::despawnObject(replica);
-					// 7 seconds
-					//Scheduler::runTaskLater(stoi(respawn), Helpers::
 					Scheduler::runAsyncTaskLater(6000, Helpers::respawnObject, newReplica, clientAddress);
-					//Helpers::respawnObject(newReplica, 7000);
 
-				}
+				}*/
 
 			}
-			/*ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
-			if (replica != charObj)
-			{
 
-				ObjectsManager::despawnObject(replica);
-				//Scheduler::runTaskTimer(7000, 7000, Helpers::syncStatValues);
-				
-				// 7 seconds
-				Scheduler::runTaskLater(7000, [newReplica]() {
-					Server::getReplicaManager()->ReferencePointer(newReplica); 
-					ObjectsManager::spawnObject(newReplica);
-				});
-				//Server::getReplicaManager()->ReferencePointer(replica);
-			}*/
-			
 			break;
 		}
 
@@ -837,6 +810,18 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		case GAME_MESSAGE_ID_SET_GHOST_REFERENCE_POSITION:
 		{
 			// Don't worry about those. They're just NetDevil bullshit. Actually those will be useful to fix achievements later.
+			break;
+		}
+
+		case GAME_MESSAGE_ID_SELECT_SKILL:
+		{
+			// Not sure what this is for, but it gets called a lot, clogging up console.
+			break;
+		}
+
+		case GAME_MESSAGE_ID_MODIFY_PLAYER_ZONE_STATISTIC:
+		{
+			// I haven't implemented this yet. I'll get around to it. Just want the messages to go away.
 			break;
 		}
 
@@ -1401,7 +1386,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				data->Read(uiSkillHandle);
 			}
 			
-			Logger::info("StartSkill received! {");
+			/*Logger::info("StartSkill received! {");
 			Logger::info("   usedMouse: " + to_string(usedMouse));
 			Logger::info("   consumableItemID: " + to_string(consumableItemID));
 			Logger::info("   casterLatency: " + to_string(casterLatency));
@@ -1410,7 +1395,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			Logger::info("   optionalTargetID: " + to_string(optionalTargetID));
 			Logger::info("   skillID: " + to_string(skillID));
 			Logger::info("   bitStream Size: " + to_string(bitStream->GetNumberOfBytesUsed()));
-			Logger::info("}");
+			Logger::info("}");*/
 
 
 			{ // code to detect behavior

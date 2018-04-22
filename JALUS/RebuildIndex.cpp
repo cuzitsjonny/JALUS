@@ -6,9 +6,6 @@ void RebuildIndex::writeToBitStream(BitStream* bitStream, bool isConstruction)
 	//bitStream->Write(flagTemp);
 	//bitStream->Write(un32Temp);
 
-	bitStream->Write(scriptedActivityIndex);
-	
-
 	bitStream->Write(flag_1);
 	if (flag_1)
 	{
