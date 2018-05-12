@@ -542,6 +542,72 @@ MissionRewards CDClient::getMissionRewards(long missionID)
 	return r;
 }
 
+RebuildInfo CDClient::getRebuildInfo(long lot)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	RebuildInfo r = RebuildInfo();
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT component_id FROM";
+		ss << " ComponentsRegistry ";
+		ss << "WHERE id = '" << lot << "' AND component_type = '48';";
+
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		long componentID = -1;
+		if (cmd.FetchNext())
+		{
+			componentID = cmd.Field("component_id").asLong();
+		}
+
+		if (componentID > 0)
+		{
+			ss.str("");
+
+			ss << "SELECT reset_time, complete_time, take_imagination, interruptible, self_activator, custom_modules, activityID, post_imagination_cost, time_before_smash FROM";
+			ss << " RebuildComponent ";
+			ss << "WHERE id = '" << componentID << "';";
+
+			cmd.setCommandText(ss.str().c_str());
+			cmd.Execute();
+
+			while (cmd.FetchNext())
+			{
+				r.reset_time = (float)cmd.Field("reset_time").asDouble;
+				r.complete_time = (float)cmd.Field("complete_time").asDouble;
+				r.take_imagination = (int)cmd.Field("take_imagination").asLong;
+				r.interruptible = cmd.Field("interruptible").asBool;
+				
+				r.activityID = cmd.Field("activityID").asLong;
+				r.post_imagination_cost = (int)cmd.Field("post_imagination_cost").asLong;
+				r.time_before_smash = (float)cmd.Field("time_before_smash").asDouble;
+			}
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+
 bool CDClient::isMission(long missionID)
 {
 	SAConnection con;

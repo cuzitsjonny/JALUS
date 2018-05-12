@@ -420,7 +420,7 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 
 		replica->statsIndex->cur_armor = ValueStorage::getValueFromDatabase(session->charID, "armor");
 
-		if (replica->statsIndex->cur_health == 0)
+		/*if (replica->statsIndex->cur_health == 0)
 		{ 
 			for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 			{
@@ -428,7 +428,7 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 
 				GameMessages::die(session->charID, L"electro-shock-death", false, participant);
 			}
-		}
+		}*/
 		
 		//Scheduler::runAsyncTaskLater(7000, ObjectsManager::addPlayer, replica, clientAddress);
 		ObjectsManager::addPlayer(replica, clientAddress);

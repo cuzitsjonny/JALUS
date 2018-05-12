@@ -209,12 +209,12 @@ long Helpers::doMaxedStatMath(long currentStat, long additionalStat, long maxSta
 	long newStat = currentStat + additionalStat;
 	if (newStat <= maxStat)
 	{
-		Logger::info(to_string(newStat));
+		//Logger::info(to_string(newStat));
 		return newStat;
 	}
 	else
 	{
-		Logger::info(to_string(newStat));
+		//Logger::info(to_string(newStat));
 		return maxStat;
 	}
 }

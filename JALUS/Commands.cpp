@@ -30,9 +30,11 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 	if (iequals(cmd, "stop") || iequals(cmd, "off") || iequals(cmd, "quit")) // /stop
 	{
+		ServerLoop::stop();
+		/*
 		if (account_gm_level >= 5) {
 			ServerLoop::stop();
-		}
+		}*/
 	}
 	else if (iequals(cmd, "test"))
 	{

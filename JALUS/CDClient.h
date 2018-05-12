@@ -25,6 +25,20 @@ public:
 	long maxHealth = -1;
 	long maxInventory = -1;
 };
+
+class RebuildInfo
+{
+public:
+	float reset_time = 0.0;
+	float complete_time = 0.0;
+	int take_imagination = 0;
+	bool interruptible = false;
+	bool self_activator = false;
+	vector<long> custom_modules = vector<long>();
+	long activityID = 0;
+	int post_imagination_cost = 0;
+	float time_before_smash = 0.0;
+};
 	
 enum ItemType
 {
@@ -68,6 +82,7 @@ public:
 	static vector<long> getPrereqMissionIDs(long missionID);
 	static vector<MissionTask> getMissionTasks(long missionID);
 	static MissionRewards getMissionRewards(long missionID);
+	static RebuildInfo getRebuildInfo(long lot);
 	static bool isMission(long missionID);
 	static vector<long> getAchievements(long prereqMissionID = -1);
 	static long lookUpLevel(long long universeScore);

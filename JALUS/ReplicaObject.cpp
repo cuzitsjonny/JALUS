@@ -280,23 +280,22 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 				{
 					rebuildIndex = new RebuildIndex();
 
-					/*string name = "buildActivator";
-					
-					long long id = Objects::generateObjectID();
-					ReplicaObject* other = new ReplicaObject(id, 6604, to_wstring(name), 0, pos, rot);
-					ObjectsManager::spawnObject(other);
-					other->parentID = id;*/
+					if (statsIndexParent < 0)
+					{
+						statsIndex = new StatsIndex();
+						statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_REBUILD;
 
-
-					//rebuildIndex->flagTemp = true;
-					//rebuildIndex->un32Temp = 0;
-
-					/*rebuildIndex->scriptedActivityIndex->flag = true;
-					rebuildIndex->scriptedActivityIndex->count = 0;*/
-
-
-					rebuildIndex->scriptedActivityIndex;
-
+						StatsIndexInfo info = CDClient::getStatsIndexInfo(e.componentID);
+						statsIndex->flag_1 = true;
+						statsIndex->faction_id = info.factionID;
+						statsIndex->cur_health = info.health;
+						statsIndex->max_health = info.health;
+						statsIndex->cur_armor = info.armor;
+						statsIndex->max_armor = info.armor;
+						statsIndex->cur_imagination = info.imagination;
+						statsIndex->max_imagination = info.imagination;
+						statsIndex->is_smashable = info.isSmashable;
+					}
 
 					rebuildIndex->flag_1 = true;
 
@@ -395,8 +394,8 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 				stream->Write(static_cast<unsigned char>(0x24));
 				stream->Write(static_cast<bool>(true));
 				stream->Write(static_cast<unsigned long>(1));
-				replica->writeToBitStream(stream, true);
-				stringstream ns; ns << "packets\\[24]_" << replica->lot << "_" << replica->objectID << ".bin";
+				activatorReplica->writeToBitStream(stream, true);
+				stringstream ns; ns << "packets\\[24]_" << activatorReplica->lot << "_" << activatorReplica->objectID << ".bin";
 				PacketUtils::saveBitstreamToDisk(stream, ns.str());
 
 
