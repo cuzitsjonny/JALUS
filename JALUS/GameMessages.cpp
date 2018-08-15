@@ -549,33 +549,33 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				//player->inventoryIndex->items.push_back(items.at(k));
 				if (player->inventoryIndex->items[k].objectID == itemToUnequip)
 				{
-					if (player->inventoryIndex->items[k].isEquipped == true)
-					{
-						InventoryItems::setIsEquipped(false, itemToUnequip);
-						//player->inventoryIndex->items.pop_back();
-						//player->inventoryIndex->items.erase(player->inventoryIndex->items.begin() + k);
-						player->inventoryIndex->items.clear();
+					InventoryItems::setIsEquipped(false, itemToUnequip);
+					player->inventoryIndex->items[k].isEquipped = false;
+					//player->inventoryIndex->items.push_back(items[k]);
+					Logger::info("IsEquipped: " + std::to_string(player->inventoryIndex->items[k].isEquipped));
+					player->inventoryIndex->items.pop_back();
+					//player->inventoryIndex->items.erase(player->inventoryIndex->items.begin() + k);
+					//player->inventoryIndex->items.clear();
 						
 
 
-						Logger::info("Unequipped item " + std::to_string(itemToUnequip) + " with LOT " + std::to_string(lot) + " for player " + std::to_string(session->charID));
+					Logger::info("Unequipped item " + std::to_string(itemToUnequip) + " with LOT " + std::to_string(lot) + " for player " + std::to_string(session->charID));
 
-						// SlitherStriker = 13276
-						// Nightlasher = 13275
-						// Energy Spork = 13277
-						// Zapzapper = 13278
-						long skillid = CDClient::getSkillID(lot, 0);
-						if (lot == 13276 ||
-							lot == 13275 ||
-							lot == 13277 ||
-							lot == 13278)
-							skillid = 148;
-						if (skillid != -1)
-							GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
+					// SlitherStriker = 13276
+					// Nightlasher = 13275
+					// Energy Spork = 13277
+					// Zapzapper = 13278
+					long skillid = CDClient::getSkillID(lot, 0);
+					if (lot == 13276 ||
+						lot == 13275 ||
+						lot == 13277 ||
+						lot == 13278)
+						skillid = 148;
+					if (skillid != -1)
+						GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
 
-						ObjectsManager::serializeObject(player);
+					ObjectsManager::serializeObject(player);
 
-					}
 				}
 			}
 			

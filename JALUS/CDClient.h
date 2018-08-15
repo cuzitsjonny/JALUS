@@ -29,15 +29,15 @@ public:
 class RebuildInfo
 {
 public:
-	float reset_time = 0.0;
-	float complete_time = 0.0;
-	int take_imagination = 0;
+	double reset_time = 0.0;
+	double complete_time = 0.0;
+	long take_imagination = 0;
 	bool interruptible = false;
 	bool self_activator = false;
 	vector<long> custom_modules = vector<long>();
-	long activityID = 0;
-	int post_imagination_cost = 0;
-	float time_before_smash = 0.0;
+	long activityID = -1;
+	long post_imagination_cost = 0;
+	double time_before_smash = 0.0;
 };
 	
 enum ItemType

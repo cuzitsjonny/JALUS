@@ -542,7 +542,7 @@ MissionRewards CDClient::getMissionRewards(long missionID)
 	return r;
 }
 
-RebuildInfo CDClient::getRebuildInfo(long lot)
+/*RebuildInfo CDClient::getRebuildInfo(long lot)
 {
 	SAConnection con;
 	SACommand cmd;
@@ -581,14 +581,14 @@ RebuildInfo CDClient::getRebuildInfo(long lot)
 
 			while (cmd.FetchNext())
 			{
-				r.reset_time = (float)cmd.Field("reset_time").asDouble;
-				r.complete_time = (float)cmd.Field("complete_time").asDouble;
-				r.take_imagination = (int)cmd.Field("take_imagination").asLong;
+				r.reset_time = cmd.Field("reset_time").asDouble;
+				r.complete_time = cmd.Field("complete_time").asDouble;
+				r.take_imagination = cmd.Field("take_imagination").asLong;
 				r.interruptible = cmd.Field("interruptible").asBool;
 				
 				r.activityID = cmd.Field("activityID").asLong;
-				r.post_imagination_cost = (int)cmd.Field("post_imagination_cost").asLong;
-				r.time_before_smash = (float)cmd.Field("time_before_smash").asDouble;
+				r.post_imagination_cost = (cmd.Field("post_imagination_cost").asLong;
+				r.time_before_smash = cmd.Field("time_before_smash").asDouble;
 			}
 		}
 
@@ -606,7 +606,7 @@ RebuildInfo CDClient::getRebuildInfo(long lot)
 
 	return r;
 }
-
+*/
 
 bool CDClient::isMission(long missionID)
 {

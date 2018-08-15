@@ -211,6 +211,8 @@ LUZFile::LUZFile(string path)
 						reader.Read(activateSpawnerNetworkOnLoad);
 					}
 
+					unsigned long waypointCount;
+					
 
 
 				}*/
@@ -221,7 +223,7 @@ LUZFile::LUZFile(string path)
 
 		}
 
-	//}
+	//}		
 //}
 
 void LUZCache::init()
