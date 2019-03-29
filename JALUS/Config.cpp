@@ -15,7 +15,7 @@ void Config::init()
 
 		CIniFile::SetValue("MySQLUsername", "root", "Settings", Config::filePath);
 		CIniFile::SetValue("MySQLPassword", "", "Settings", Config::filePath);
-		CIniFile::SetValue("MySQLDatabase", "db", "Settings", Config::filePath);
+		CIniFile::SetValue("MySQLDatabase", "jalus", "Settings", Config::filePath);
 		CIniFile::SetValue("MySQLHost", "localhost", "Settings", Config::filePath);
 
 		if (Server::isAuthenticationInstance())

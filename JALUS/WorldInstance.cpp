@@ -250,12 +250,15 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 		}
 
 		vector<MissionInfo> misCur = Missions::getAllCurrentMissions(session->charID);
+		//std::reverse(misCur.begin(), misCur.end());
 		if (misCur.size() > 0)
 		{
 			xml << "<cur>";
 
-			for (int i = 0; i < misCur.size(); i++)
+			//for (int i = 0; i < misCur.size(); i++)
+			for (int i = misCur.size(); i-- > 0; )
 			{
+				Logger::info(to_string(i));
 				MissionInfo info = misCur.at(i);
 
 				xml << "<m id=\"" << info.missionID << "\">";

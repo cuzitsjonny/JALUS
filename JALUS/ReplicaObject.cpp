@@ -373,6 +373,8 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 
 				//ReplicaObject* activatorReplica = new ReplicaObject(activatorID, 6604, L"", 0, pos, activatorRot, objectID);
 				ReplicaObject* activatorReplica = new ReplicaObject(activatorID, 6604, L"", 0, pos, activatorRot, -1);
+
+				//activatorReplica->rebuildIndex->enabled = true;
 				//activatorReplica = new ReplicaObject(activatorID, 6604, L"", 0, pos, activatorRot, -1);
 				activatorReplica->scale = scale;
 
@@ -389,14 +391,14 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 				Server::getReplicaManager()->ReferencePointer(activatorReplica);
 
 				//for testing
-				Logger::info(to_string(replica->objectID));
+				/*Logger::info(to_string(replica->objectID));
 				BitStream *stream = new BitStream();
 				stream->Write(static_cast<unsigned char>(0x24));
 				stream->Write(static_cast<bool>(true));
 				stream->Write(static_cast<unsigned long>(1));
 				activatorReplica->writeToBitStream(stream, true);
 				stringstream ns; ns << "packets\\[24]_" << activatorReplica->lot << "_" << activatorReplica->objectID << ".bin";
-				PacketUtils::saveBitstreamToDisk(stream, ns.str());
+				PacketUtils::saveBitstreamToDisk(stream, ns.str());*/
 
 
 			}

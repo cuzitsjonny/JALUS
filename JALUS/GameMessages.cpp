@@ -482,6 +482,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			//Logger::info("Items equipped: " + std::to_string(items.size()));
 			for (int k = 0; k < items.size(); k++)
 			{
+				//player->inventoryIndex->items[k].isEquipped = true;
 				player->inventoryIndex->items.push_back(items.at(k));
 			}
 			long lot = Objects::getLOT(itemid);
@@ -509,6 +510,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				lot == 13277 ||
 				lot == 13278)
 				skillid = 148;
+			//else if (lot == 14834) skillid = ;
 			if (skillid != -1)
 				GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
 
@@ -539,12 +541,31 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
 			long lot = Objects::getLOT(itemToUnequip);
-			
-			vector<InventoryItem> items = InventoryItems::getInventoryItems(session->charID);
+			//InventoryItems::setIsEquipped(false, itemToUnequip);
+			//vector<InventoryItem> items = InventoryItems::getInventoryItems(session->charID);
+			//vector<InventoryItems> items = player->inventoryIndex->items;
 			//vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
 			//Logger::info("Items equipped: " + std::to_string(items.size()));
-
+			//InventoryItems::setIsEquipped(false, itemToUnequip);
 			for (int k = 0; k < player->inventoryIndex->items.size(); k++)
+			{
+				if (player->inventoryIndex->items[k].objectID == itemToUnequip) {
+					InventoryItems::setIsEquipped(false, itemToUnequip);
+					//player->inventoryIndex->items.at(k).
+					player->inventoryIndex->items[k].isEquipped = false;
+					//player->inventoryIndex->items[k].push_back(k);
+					//player->inventoryIndex->items.pop_back();
+					player->inventoryIndex->items.erase(player->inventoryIndex->items.begin() + (k));
+					long skillid = CDClient::getSkillID(lot, 0);
+					if (skillid != -1)
+						GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
+
+					//ObjectsManager::serializeObject(player);
+				}
+				//player->inventoryIndex->items.push_back(items.at(k));
+			}
+			ObjectsManager::serializeObject(player);
+			/*for (int k = 0; k < player->inventoryIndex->items.size(); k++)
 			{
 				//player->inventoryIndex->items.push_back(items.at(k));
 				if (player->inventoryIndex->items[k].objectID == itemToUnequip)
@@ -553,7 +574,13 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					player->inventoryIndex->items[k].isEquipped = false;
 					//player->inventoryIndex->items.push_back(items[k]);
 					Logger::info("IsEquipped: " + std::to_string(player->inventoryIndex->items[k].isEquipped));
-					player->inventoryIndex->items.pop_back();
+					try {
+						player->inventoryIndex->items.push_back(items[k]);
+					}
+					catch (...) {
+						player->inventoryIndex->items.pop_back();
+					}
+					//player->inventoryIndex->items.pop_back();
 					//player->inventoryIndex->items.erase(player->inventoryIndex->items.begin() + k);
 					//player->inventoryIndex->items.clear();
 						
@@ -577,7 +604,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					ObjectsManager::serializeObject(player);
 
 				}
-			}
+			}*/
 			
 			//ObjectsManager::serializeObject(player);
 

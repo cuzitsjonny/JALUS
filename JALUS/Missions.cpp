@@ -439,6 +439,8 @@ vector<MissionInfo> Missions::getAllCurrentMissions(long long charID)
 			mi.missionID = cmd.Field("mission_id").asLong();
 
 			r.push_back(mi);
+			//r.insert(r.end(), mi);
+			//std::reverse(r.begin(), r.end());
 		}
 
 		con.Commit();

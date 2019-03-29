@@ -27,6 +27,7 @@
 void Commands::performCommand(CommandSender sender, string cmd, vector<string> args)
 {
 	long account_gm_level = Accounts::getGMLevel(Characters::getAccountID(sender.getSenderID()));
+	//Logger::info(to_string(account_gm_level));
 
 	if (iequals(cmd, "stop") || iequals(cmd, "off") || iequals(cmd, "quit")) // /stop
 	{
@@ -71,7 +72,19 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			}
 		}
 	}*/
-
+	else if (iequals(cmd, "invsize"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1)
+			{
+				//ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+				long newMaxInventory = stol(args.at(0));
+				Characters::setMaxInventory(newMaxInventory, sender.getSenderID());
+				GameMessages::setInventorySize(sender.getSenderID(), InventoryType::INVENTORY_TYPE_DEFAULT, newMaxInventory, sender.getClientAddress());
+			}
+		}
+	}
 	else if (iequals(cmd, "setattr"))
 	{
 		if (sender.getSenderID() != -1)
@@ -289,7 +302,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			}
 			else
 			{
-				sender.sendMessage("You need to specify a LOT!");
+				sender.sendMessage("You need to specify an amount!");
 			}
 		}
 	}
@@ -314,6 +327,11 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 				if (args.at(0) == "off" || stoi(args.at(0)) == 0)
 				{
 					bUse = false;
+				}
+				else
+				{
+					fAirspeed = stof(args.at(0));
+					fMaxAirspeed = fAirspeed + 5;
 				}
 			}
 			else

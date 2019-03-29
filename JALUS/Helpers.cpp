@@ -186,7 +186,7 @@ void Helpers::deathCheck(long long charid, wstring deathType, SystemAddress clie
 
 void Helpers::syncStatValues()
 {
-	Logger::info("Synced stats to database.");
+	//Logger::info("Synced stats to database.");
 	for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 	{
 		SystemAddress clientAddress = Server::getReplicaManager()->GetParticipantAtIndex(i);

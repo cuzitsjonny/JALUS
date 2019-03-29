@@ -86,7 +86,7 @@ ZoneID ZoneIDs::fromString(string str)
 	else if (l == "lego_club" || l == "lego club" || l == "lc" || l == "1700")
 		return ZoneID::ZONE_ID_LEGO_CLUB;
 
-	else if (l == "crux_prime" || l == "crux prime" || l == "cp" || l == "1800")
+	else if (l == "crux_prime" || l == "crux prime" || l == "cp" || l == "am" || l == "1800")
 		return ZoneID::ZONE_ID_CRUX_PRIME;
 
 	else if (l == "nexus_tower" || l == "nexus tower" || l == "nt" || l == "1900")
