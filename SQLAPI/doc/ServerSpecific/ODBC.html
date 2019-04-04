@@ -366,6 +366,24 @@ to not use extra buffer for null character in the end when it tries to get the l
             <em>Valid values</em>: "False", "0". <em>Default value</em>:
 "true".</td>
 </tr>
+                                  <tr>
+  <td valign="top">
+    <p align="center"><strong> <strong>ODBCDisableLongLengthQuery<br>
+            </strong> </strong></p>
+
+            
+    <div align="center"><strong> </strong><strong> <strong></strong></strong>Command related. Should be specified
+before command execution.&nbsp; </div>
+
+            </td>
+  <td valign="top">Forces SQLAPI++ Library
+to not query the LONG field length. Some buggy ODBC drivers can truncate the field content with default processing.<br>
+
+            <br>
+
+            <em>Valid values</em>: "true", "1". <em>Default value</em>:
+"false".</td>
+</tr>
 <tr>
             <td><strong>
             <p align="center"><strong>PreFetchRows</strong></p>
@@ -438,6 +456,21 @@ uses SQL_DRIVER_NOPROMPT driver completion flag. </p>
           </tr>
           <tr>
             <td style="vertical-align: top;">
+            <p align="center"><strong>SQL_ATTR_CONNECTION_TIMEOUT
+            </strong></p>
+            <p align="center">Connection related. Should be specified
+before the connection is made.<br>
+            </p>
+            </td>
+            <td style="vertical-align: top;">
+            <p> Forces SQLAPI++ to set ODBC's SQL_ATTR_CONNECTION_TIMEOUT attribute just before the first connection is made. See ODBC documentation for more information on this attribute. </p>
+            <p> <em>Valid values</em>: string that represent an SQLUINTEGER value corresponding to the number of seconds to wait for any request on the connection to complete before returning to the application. <br>
+            <em>Default value</em>: not specified. By default SQLAPI++
+                doesn't use this option. </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
             <p align="center"><strong>DSN<br>
             </strong></p>
             <p align="center">Connection related return only parameter.
@@ -465,6 +498,26 @@ SQL_CONCUR_LOCK.<br>
             <br>
             <em>Valid values</em>: "True", "1". <em>Default value</em>:
 "false".<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"><strong>SetCursorName</strong></p>
+            Command related. Should be specified
+before describing parameters or command execution.</td>
+            <td style="vertical-align: top;">Allows to define the cursor name SQLAPI++ uses for the
+server side cursor.<br>  <br />          
+            <em>Valid values</em>:&nbsp; See SQLSetCursorName documentation.<br>
+            <em>Default value: </em>none.
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"><strong>ExecDirect</strong></p>
+            Command related. Should be specified
+before describing parameters or command execution.</td>
+            <td style="vertical-align: top;">Forces SQLAPI++ to use SQLExecDirect instead of SQLExecute API function.<br>  <br />          
+            <em>Valid values</em>: "True", "1". <em>Default value</em>: "false".<br>
             </td>
           </tr>
           <tr>

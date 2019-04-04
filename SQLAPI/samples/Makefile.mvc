@@ -7,7 +7,7 @@ OBJS = sqltest.obj
 
 CPPDEFS = /DWIN32 /D_WINDOWS
 CPPFLAGS = /nologo /W3 /EHsc
-INCLUDES = $(INCLUDES) -I../include
+INCLUDES = $(INCLUDES) -I../include -I../include/sybase
 LDFLAGS = /nologo /LIBPATH:../lib
 SA_LIBC =
 
@@ -66,7 +66,7 @@ SQLAPI_UNICODE_SUFFIX=
 
 LIBS = sqlapi$(SQLAPI_UNICODE_SUFFIX)$(SQLAPI_LINK_SUFFIX)$(SQLAPI_DEBUG_SUFFIX).lib
 !IF "$(CFG_LINK)" == "static"
-LIBS = $(LIBS) user32.lib version.lib oleaut32.lib ole32.lib
+LIBS = $(LIBS) user32.lib version.lib oleaut32.lib ole32.lib ws2_32.lib
 !ELSE
 LIBS = $(LIBS) user32.lib
 !ENDIF

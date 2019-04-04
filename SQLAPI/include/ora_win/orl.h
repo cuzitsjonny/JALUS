@@ -1,4 +1,5 @@
-/* Copyright (c) 1993, 2006, Oracle. All rights reserved.  */
+/* Copyright (c) 1993, 2014, Oracle and/or its affiliates. 
+All rights reserved.*/
 
 /*
   Author:             Srinath Krishnaswamy
@@ -212,6 +213,8 @@
   QUESTIONS
      
   MODIFIED
+    dpotpaov   04/24/14 - Fix oci ind string raw
+    dpotapov   03/06/14 - xtss merge
     bkhaladk   08/01/05 - add defn for OCIBinXmlReposCtx 
     dmukhin    06/29/05 - ANSI prototypes; miscellaneous cleanup 
     srseshad   03/12/03 - convert oci public api to ansi
@@ -343,6 +346,12 @@
 
 #ifndef ORL_ORACLE
 #define ORL_ORACLE
+
+#ifdef K3_ORACLE
+#ifndef KOL3_ORACLE
+#  include <kol3.h>
+#endif
+#endif
 
 /*---------------------------------------------------------------------------*/
 /*                         SHORT NAMES SUPPORT SECTION                       */
@@ -477,12 +486,16 @@
 /*                         NUMBER/FLOAT/DECIMAL TYPE                         */
 /*****************************************************************************/
 
+
 #define OCI_NUMBER_SIZE 22
+#ifndef KUTYXTT3_ORACLE
 struct OCINumber
 {
   ub1 OCINumberPart[OCI_NUMBER_SIZE];
 };
 typedef struct OCINumber OCINumber;
+#define ORL_OCINUMBER_DEFINED
+#endif
 
 /* 
  * OCINumber - OCI Number mapping in c
@@ -2275,7 +2288,10 @@ sword OCIDateSysDate(    OCIError *err, OCIDate *sys_date    );
  * For binding variables of type OCIString* in OCI calls (OCIBindByName(),
  * OCIBindByPos() and OCIDefineByPos()) use the external type code SQLT_VST.
  */
+#ifndef KUTYXTT3_ORACLE
 typedef struct OCIString OCIString;
+#define ORL_OCISTRING_DEFINED
+#endif
 
 /*-------------------------- OCIStringAssign --------------------------------*/
  
@@ -2435,7 +2451,10 @@ sword OCIStringAllocSize(    OCIEnv *env, OCIError *err, const OCIString *vs,
  * For binding variables of type OCIRaw* in OCI calls (OCIBindByName(),
  * OCIBindByPos() and OCIDefineByPos()) use the external type code SQLT_LVB.
  */
+#ifndef KUTYXTT3_ORACLE
 typedef struct OCIRaw OCIRaw;
+#define ORL_OCIRAW_DEFINED
+#endif
 
 /*-------------------------- OCIRawAssignRaw --------------------------------*/
  

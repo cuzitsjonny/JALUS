@@ -58,15 +58,15 @@ int main(int argc, char* argv[])
 
 		while (cmd.FetchNext())
 		{
-			sa_printf(_TSA("%d"), cmd[1].asLong());
-			sa_printf(_TSA("\n"));
+			sa_tprintf(_TSA("%d"), cmd[1].asLong());
+			sa_tprintf(_TSA("\n"));
 		}
 	}
 	catch (SAException &x)
 	{
-		sa_printf(_TSA("ERR: "));
-		sa_printf((const SAChar*)x.ErrText());
-		sa_printf(_TSA("\n"));
+		sa_tprintf(_TSA("ERR: "));
+		sa_tprintf((const SAChar*)x.ErrText());
+		sa_tprintf(_TSA("\n"));
 	}
 
 	return 0;

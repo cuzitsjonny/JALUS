@@ -6,10 +6,9 @@
 #define __SLAPI_H__
 
 #include <SQLAPI.h>
-#include <sqlite3.h>
+#include <samisc.h>
 
-extern void AddSQLite3Support(const SAConnection * pCon);
-extern void ReleaseSQLite3Support();
+#include <sqlite3.h>
 
 typedef int (*sqlite3_open_t)(const void *filename, sqlite3 **ppDb);
 typedef const char * (*sqlite3_libversion_t)(void);
@@ -53,11 +52,8 @@ typedef int (*sqlite3_clear_bindings_t)(sqlite3_stmt*);
 typedef int (*sqlite3_column_count_t)(sqlite3_stmt *pStmt);
 typedef const void *(*sqlite3_column_name_t)(sqlite3_stmt*, int N);
 typedef const char *(*sqlite3_column_database_name_t)(sqlite3_stmt*,int);
-typedef const void *(*sqlite3_column_database_name16_t)(sqlite3_stmt*,int);
 typedef const char *(*sqlite3_column_table_name_t)(sqlite3_stmt*,int);
-typedef const void *(*sqlite3_column_table_name16_t)(sqlite3_stmt*,int);
 typedef const char *(*sqlite3_column_origin_name_t)(sqlite3_stmt*,int);
-typedef const void *(*sqlite3_column_origin_name16_t)(sqlite3_stmt*,int);
 typedef const void *(*sqlite3_column_decltype_t)(sqlite3_stmt *, int);
 typedef int (*sqlite3_step_t)(sqlite3_stmt*);
 typedef int (*sqlite3_data_count_t)(sqlite3_stmt *pStmt);
@@ -115,6 +111,12 @@ typedef void *(*sqlite3_rollback_hook_t)(sqlite3*, void(*)(void *), void*);
 typedef int (*sqlite3_enable_shared_cache_t)(int);
 typedef int (*sqlite3_release_memory_t)(int);
 typedef void (*sqlite3_soft_heap_limit_t)(int);
+typedef int(*sqlite3_load_extension_t)(
+	sqlite3 *db,          /* Load the extension into this database connection */
+	const char *zFile,    /* Name of the shared library containing extension */
+	const char *zProc,    /* Entry point.  Derived from zFile if 0 */
+	char **pzErrMsg       /* Put error message here if not 0 */
+	);
 typedef int (*sqlite3_enable_load_extension_t)(sqlite3 *db, int onoff);
 typedef int (*sqlite3_auto_extension_t)(void *xEntryPoint);
 typedef void (*sqlite3_reset_auto_extension_t)(void);
@@ -190,6 +192,7 @@ class SQLAPI_API sl3API : public saAPI
 public:
 	sl3API();
 
+public:
 	sqlite3_open_t sqlite3_open;
 	sqlite3_libversion_t sqlite3_libversion;
 	sqlite3_libversion_number_t sqlite3_libversion_number;
@@ -237,16 +240,41 @@ public:
 	sqlite3_backup_pagecount_t sqlite3_backup_pagecount;
 
 	sqlite3_table_column_metadata_t sqlite3_table_column_metadata;
+	sqlite3_column_database_name_t sqlite3_column_database_name;
+	sqlite3_column_table_name_t sqlite3_column_table_name;
+	sqlite3_column_origin_name_t sqlite3_column_origin_name;
 
 	sqlite3_column_value_t sqlite3_column_value;
 	sqlite3_value_type_t sqlite3_value_type;
 
 	sqlite3_update_hook_t sqlite3_update_hook;
 
-    sqlite3_enable_load_extension_t sqlite3_enable_load_extension;
+	sqlite3_load_extension_t sqlite3_load_extension;
+	sqlite3_enable_load_extension_t sqlite3_enable_load_extension;
 
-    sqlite3_key_t sqlite3_key;
-    sqlite3_rekey_t sqlite3_rekey;
+	sqlite3_key_t sqlite3_key;
+	sqlite3_rekey_t sqlite3_rekey;
+
+	sqlite3_free_t sqlite3_free;
+
+	sqlite3_memory_used_t sqlite3_memory_used;
+	sqlite3_memory_highwater_t sqlite3_memory_highwater;
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+
+	void ResetAPI();
+	void LoadAPI();
+	void LoadStaticAPI();
 };
 
 class SQLAPI_API sl3ConnectionHandles : public saConnectionHandles
@@ -262,7 +290,5 @@ public:
 	sl3CommandHandles();
 	sqlite3_stmt *pStmt;
 };
-
-extern sl3API g_sl3API;
 
 #endif //__SLAPI_H__

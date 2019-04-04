@@ -4,9 +4,9 @@
     <meta http-equiv="content-type" content="text/html; charset=windows-1252">
     <meta name="KEYWORDS" content="library, C++, PostgreSQL, SQL, server, client, database, programming, development, software, Win32, Windows, Linux, Unix, Solaris,Microsoft, Borland, Centura, Gupta, IBM">
     <meta name="DESCRIPTION" content="SQLAPI++ is C++ library for accessing SQL databases (Oracle, SQLServer, Sybase, DB2, InterBase, SQLBase, Informix, MySQL, PostgreSQL, ODBC). It uses native APIs, provides low-level access to database-specific features.">
-    <title>SQLAPI++ Library - Server Specific Guide - PostgreSQL</title>
+    <title>SQLAPI++ Library - Server Specific Guide - Sybase SQL Anywhere</title>
 </head>
-<body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); background-image: url(../images/bg.gif);">
+<body background="../images/bg.gif" bgcolor="#ffffff" text="#000000">
     <!--class="GlbHdr"-->
     <table id="TABLE1" frame="hsides" align="right" border="2" bordercolor="#004fcd" cellpadding="0" cellspacing="2" height="40" width="600">
         <tbody>
@@ -92,8 +92,7 @@
                 </td>
                 <!--empty column-->
                 <td width="20">
-                    <p></p>
-                    <br>
+                    <p/>                    
                 </td>
                 <!--Content-->
                 <td align="left" valign="top">
@@ -147,15 +146,15 @@ parameter and field options</a>
                     </p>
                     <p>
                         <a href="#NativeAPI">Getting
-native SQLite API</a>
+native SQL Anywhere API</a>
                     </p>
                     <p>
                         <a href="#ConnectionHandles">Getting
-native SQLite connection related handles</a>
+native SQL Anywhere connection related handles</a>
                     </p>
                     <p>
                         <a href="#CommandHandles">Getting
-native SQLite command related handles</a>
+native SQL Anywhere command related handles</a>
                     </p>
                     <p><a href="#Error%20handling">Error handling</a></p>
                     <p>
@@ -186,9 +185,9 @@ SAClient_t</b> eSAClient<b> = SA_Client_NotSpecified );</b><b>
                         <em>sDBString.</em>&nbsp;&nbsp; A string containing a valid
 SQL Anywhere database connection string.<br>
                         <em>sUserID.</em>&nbsp;&nbsp;&nbsp; This parameter isn't used
-SQLAPI++ with SQLite.<br>
+SQLAPI++ with SQL Anywhere.<br>
                         <em>sPassword.</em>&nbsp;&nbsp; This parameter isn't used
-SQLAPI++ with SQLite.<br>
+SQLAPI++ with SQL Anywhere.<br>
                         <em>eSAClient.</em>&nbsp;&nbsp;&nbsp; Optional. One of the
 following values from <strong>SAClient_t</strong> enum:
                     </p>
@@ -235,7 +234,7 @@ with Long or Lob(CLob, BLob) data</a> </h3>
 Lob(CLob, BLob) data:
                     </p>
                     <p>
-                        <table style="width: 100%;" border="1" cellpadding="1" cellspacing="1" width="100%">
+                        <table border="1" cellpadding="1" cellspacing="1" width="100%">
                             <tbody>
                                 <tr bgcolor="navy">
                                     <td><font style="background-color: rgb(0, 0, 128);" color="white">Name</font></td>
@@ -265,7 +264,7 @@ Lob(CLob, BLob) data:
 servers original data types:
                     </p>
                     <p>
-                        <em>SA_dtLongBinary</em> &lt; = &gt; IMAGE, LONG BINARY<br>
+                        <em>SA_dtLongBinary</em> &lt; = &gt; LONG BINARY<br>
                         <em>SA_dtLongChar</em> &lt; = &gt; LONG VARCHAR, LONG NVARCHAR<br>
                         <em>SA_dtBLob</em>&nbsp; = &gt;&nbsp; LONG BINARY<br>
                         <em>SA_dtCLob&nbsp; </em>=&gt;&nbsp; LONG VARCHAR, LONG NVARCHAR
@@ -329,7 +328,7 @@ connection. If it is specified in <a href="../OnLineDoc/Command.html">SACommand<
                     <p>Specific options for <strong>SQL Anywhere</strong>:</p>
                     <strong></strong>
                     <p>
-                        <table style="width: 1435px; height: 219px;" border="1" cellpadding="5">
+                        <table style="width: 100%;" border="1" cellpadding="5">
                             <tbody>
                                 <tr bgcolor="#000094">
                                     <td width="17%">
@@ -438,7 +437,7 @@ specific documentation.&nbsp;
                     <p>For more details see <a href="../OnLineDoc/Connection_NativeAPI.html">SAConnection::NativeAPI</a>.</p>
                     <p>&nbsp;</p>
                     <h3><a name="ConnectionHandles">Getting
-native SQLite connection related handles</a> </h3>
+native <a name="CommandHandles0">SQL Anywhere</a> connection related handles</a> </h3>
                     <p>
                         You have to use native API handles when you want to call
 specific <strong>SQL Anywhere</strong> API functions which are not
@@ -532,10 +531,7 @@ you have to include to work with specific <strong>SQL Anywhere</strong>
                                             </p>
                                             <p>
                                                 saCommandHandles *pResult = cmd.NativeHandles();<br>
-                                                asaCommandHandles *p_asaCH =<br>
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-(asaCommandHandles
-*)pResult;
+                                                asaCommandHandles *p_asaCH = (asaCommandHandles*)pResult;
                                             </p>
                                             <p><font face="Times New Roman"><strong><font color="maroon" face="">Available handles:</font></strong></font> </p>
                                             <ul>
@@ -560,7 +556,7 @@ exception of type <a href="../OnLineDoc/Exception.html">SAException</a>.
      
 
                         <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
-                        method gets an error position in SQL statement. In <strong>SQLite</strong>
+                        method gets an error position in SQL statement. In <strong>SQL Anywhere</strong>
                         server <a href="../OnLineDoc/Exception_ErrPos.html">SAException::ErrPos</a>
                         method returns -1 because <strong>SQL Anywhere</strong> does not support
 this function.
@@ -578,8 +574,7 @@ files - Compile time</a> </h3>
                         subdirectory of SQLAPI++ distributions:<br>
                         <strong>#include &lt;SQLAPI.h&gt; </strong>- main header, should
 be used whenever SQLAPI++ is used.<br>
-                        <strong>#include &lt;asaAPI.h&gt; </strong>- <strong>SQL Anywhere</strong>
-                        , should be included if direct libsqlite calls are required.
+                        <strong>#include &lt;asaAPI.h&gt; </strong>- <strong>SQL Anywhere</strong> , should be included if direct DBCAPI calls are required.
                     </p>
                     <p>
                         For more details see <a href="../OnLineDoc/index.html#Instructions%20for%20Compiling%20and%20Linking%20Applications%20with%20SQLAPI++">Online

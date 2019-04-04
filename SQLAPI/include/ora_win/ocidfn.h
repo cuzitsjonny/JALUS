@@ -1,11 +1,13 @@
-/* Copyright (c) 1991, 2005, Oracle. All rights reserved.  */
-/* Copyright (c) 1991, 2005, Oracle. All rights reserved.  */
+/* Copyright (c) 1991, 2012, Oracle and/or its affiliates. 
+All rights reserved. */
 /*
    NAME
      ocidfn.h - OCI Definations
    NOTES
      Shipped to users.
    MODIFIED   (MM/DD/YY)
+    kkverma    12/19/12 - define host area type
+    sagrawal   12/03/10 - Boolean Binds
     mbastawa   09/16/05 - dbhygiene
     dmukhin    06/29/05 - ANSI prototypes; miscellaneous cleanup 
     srseshad   11/25/02 - change binary float/double codes
@@ -153,6 +155,10 @@ typedef struct cda_def Cda_Def;
    is the same shape as the CDA */
 typedef struct cda_def Lda_Def;
 
+/* define host area type */
+typedef ub8 Hda_AlignType;
+typedef Hda_AlignType Hda_Def[HDA_SIZE/sizeof(Hda_AlignType)];
+
 /* OCI Environment Modes for opinit call */
 #define OCI_EV_DEF 0                  /* default single-threaded environment */
 #define OCI_EV_TSF 1                              /* thread-safe environment */
@@ -230,7 +236,14 @@ typedef struct cda_def Lda_Def;
 #define SQLT_INTERVAL_DS               190         /* INTERVAL DAY TO SECOND */
 #define SQLT_TIMESTAMP_LTZ             232        /* TIMESTAMP WITH LOCAL TZ */
 
+
+
 #define SQLT_PNTY   241              /* pl/sql representation of named types */
+
+/* some pl/sql specific types */
+#define SQLT_REC    250                     /* pl/sql 'record' (or %rowtype) */
+#define SQLT_TAB    251                            /* pl/sql 'indexed table' */
+#define SQLT_BOL    252                                  /* pl/sql 'boolean' */
 
 /* cxcheng: this has been added for backward compatibility -
    it needs to be here because ocidfn.h can get included ahead of sqldef.h */

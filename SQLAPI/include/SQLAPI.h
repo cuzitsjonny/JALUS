@@ -61,7 +61,6 @@ typedef unsigned long long int sa_uint64_t;
 
 #ifdef SA_USE_STL
 #include <string>
-#include <hash_map>
 #endif
 
 class ISAClient;
@@ -74,6 +73,7 @@ class SAConnection;
 class SACommand;
 struct sa_Commands;
 class saOptions;
+class saParams;
 class SAParam;
 class SAField;
 
@@ -120,6 +120,8 @@ typedef
 	SA_SQLite_Client,
 	//! SQL Anywere
 	SA_SQLAnywhere_Client,
+	//! CubeSQL
+	SA_CubeSQL_Client,
 	_SA_Client_Reserverd = (int)(((unsigned int)(-1))/2)
 } SAClient_t;
 
@@ -661,7 +663,6 @@ public:
 
 private:
 	double m_interval;
-    unsigned int m_nFraction;	// 0..999999999
 };
 
 //! Provides support for manipulating date/time values
@@ -712,6 +713,8 @@ public:
 	operator double() const;
 	operator SAString() const;
 
+	bool Parse(const SAChar *szDateStr);
+
 	int GetYear() const;		// year, f.ex., 1999, 2000
 	int GetMonth() const;		// 1..12
 	int GetDay() const;			// 1..31
@@ -758,29 +761,6 @@ public:
 	SAPos(const SAString& sByName);
 };
 
-class SQLAPI_API saOptions
-{
-#ifdef SA_USE_STL
-    std::hash_map<std::string, SAParam*> *m_pOptions;
-#else
-	int		m_nOptionCount;
-	SAParam	**m_ppOptions;
-#endif
-
-private:
-	// disable copy constructor
-	saOptions(const saOptions &);
-	// disable assignment operator
-	saOptions &operator = (const saOptions &);
-
-public:
-	saOptions();
-	virtual ~saOptions();
-
-	SAString &operator[](const SAString &sOptionName);
-	SAString operator[](const SAString &sOptionName) const;
-};
-
 //! Represents an unique session with a data source
 class SQLAPI_API SAConnection
 {
@@ -790,6 +770,7 @@ class SQLAPI_API SAConnection
 	friend class ISAConnection;
 	friend class Iora7Connection;
 	friend class Iora8Connection;
+	friend class IpgConnection;
     friend class ora8ExternalConnection;
 
 private:
@@ -806,7 +787,7 @@ private:
 	SAIsolationLevel_t m_eIsolationLevel;
 	SAAutoCommit_t m_eAutoCommit;
 
-	saOptions m_Options;
+	saOptions *m_pOptions;
 
 	int	nReserved;
 
@@ -847,9 +828,13 @@ public:
 
 	SAString &setOption(const SAString &sOptionName);
 	SAString Option(const SAString &sOptionName) const;
+	int TotalOptions() const;
+	SAString Option(int nIndex) const;
 
 	saAPI *NativeAPI() const SQLAPI_THROW(SAException);
 	saConnectionHandles *NativeHandles() SQLAPI_THROW(SAException);
+
+	SACommand* GetNextCommand(sa_Commands **pCmds);
 };
 
 // SAConnection options (common for at least several DBMS-es)
@@ -873,6 +858,8 @@ class SQLAPI_API SACommand
 	friend class Iora7Connection;
 	friend class Iora7Cursor;
 
+	friend class saParams;
+
 private:
 	// disable copy constructor
 	SACommand(const SACommand &);
@@ -891,17 +878,14 @@ private:
 	bool			m_bParamsKnown;
 	int				m_nPlaceHolderCount;
 	saPlaceHolder	**m_ppPlaceHolders;
-	int				m_nParamCount;
-	SAParam			**m_ppParams;
-	int				m_nMaxParamID;
-	SAParam			**m_ppParamsID;
+	saParams		*m_pParams;
 	int				m_nCurParamID;
 	SAString		m_sCurParamName;
 
 	int				m_nFieldCount;
 	SAField			**m_ppFields;
 
-	saOptions		m_Options;
+	saOptions		*m_pOptions;
 
 	int	nReserved;
 
@@ -1032,6 +1016,8 @@ public:
 
 	SAString &setOption(const SAString &sOptionName);
 	SAString Option(const SAString &sOptionName) const;
+	int TotalOptions() const;
+	SAString Option(int nIndex) const;
 
 	saCommandHandles *NativeHandles() SQLAPI_THROW(SAException);
 	void setBatchExceptionPreHandler(PreHandleException_t fnHandler, void* pAddlData);
@@ -1063,6 +1049,7 @@ class SQLAPI_API SAValueRead
 	friend class Isl3Cursor;
 	friend class IssNCliCursor;
 	friend class IasaCursor;
+	friend class IcubeSqlCursor;
 
 protected:
 	SALongOrLobReaderModes_t m_eReaderMode;
@@ -1210,6 +1197,7 @@ class SQLAPI_API SAValue : public SAValueRead
 	friend class Isl3Cursor;
 	friend class IssNCliCursor;
 	friend class IasaCursor;
+	friend class IcubeSqlCursor;
 
 private:
 	bool m_bInternalUseDefault;
@@ -1228,6 +1216,12 @@ protected:
 		SAPieceType_t &ePieceType,
 		size_t nCallerMaxSize,
 		void *&pBuf);
+
+private:
+	// disable copy constructor
+	SAValue(const SAValue &);
+	// disable assignment operator
+	SAValue &operator = (const SAValue &);
 
 public:
 	SAValue(SADataType_t eDataType);
@@ -1287,6 +1281,7 @@ class SQLAPI_API SAParam : public SAValue
 	friend class SACommand;
 	friend class saPlaceHolder;
 	friend class saOptions;
+	friend class saParams;
 
 	SACommand *m_pCommand;
 
@@ -1298,7 +1293,7 @@ class SQLAPI_API SAParam : public SAValue
 	int m_nParamScale;
 	SAParamDirType_t m_eDirType;
 
-	saOptions m_Options;
+	saOptions *m_pOptions;
 
 private:
 	// disable copy constructor
@@ -1340,6 +1335,8 @@ public:
 
 	SAString &setOption(const SAString &sOptionName);
 	SAString Option(const SAString &sOptionName) const;
+	int TotalOptions() const;
+	SAString Option(int nIndex) const;
 };
 
 class SQLAPI_API saPlaceHolder
@@ -1445,7 +1442,7 @@ class SQLAPI_API SAField : public SAValueRead
 	int					m_nFieldScale;
 	bool				m_bFieldRequired;
 
-	saOptions m_Options;
+	saOptions			*m_pOptions;
 
 private:
 	// disable copy constructor
@@ -1487,6 +1484,8 @@ public:
 
 	SAString &setOption(const SAString &sOptionName);
 	SAString Option(const SAString &sOptionName) const;
+	int TotalOptions() const;
+	SAString Option(int nIndex) const;
 };
 
 class SQLAPI_API SAException
@@ -1508,6 +1507,13 @@ public:
 		SAException* pNested,
 		SAErrorClass_t eError,
 		int nNativeError,
+		const SAString& sCommandText,
+		int nErrPos,
+		const SAString &sMsg);
+	SAException(
+		SAException* pNested,
+		SAErrorClass_t eError,
+		int nNativeError,
 		int nErrPos,
 		const SAChar *lpszFormat, ...);
 
@@ -1519,6 +1525,18 @@ public:
 	SAException(
 		SAErrorClass_t eError,
 		int nNativeError,
+		const SAString& sCommandText,
+		int nErrPos,
+		const SAString &sMsg);
+	SAException(
+		SAErrorClass_t eError,
+		int nNativeError,
+		int nErrPos,
+		const SAChar *lpszFormat, ...);
+	SAException(
+		SAErrorClass_t eError,
+		int nNativeError,
+		const SAString& sCommandText,
 		int nErrPos,
 		const SAChar *lpszFormat, ...);
 
@@ -1535,6 +1553,7 @@ public:
 	int ErrPos() const;
 	SAString ErrMessage() const;
 	SAString ErrText() const;
+	SAString CommandText() const;
 	const SAException* NestedException() const;
 
 #ifdef SQLAPI_EXCEPTION_HAS_CUSTOM_MEMBERS
@@ -1549,6 +1568,7 @@ protected:
 	int				m_nNativeError;
 	int				m_nErrPos;
 	SAString		m_sMsg;
+	SAString		m_sCommandText;
 	SAException*	m_pNested;
 
 	int	nReserved;
@@ -1598,8 +1618,9 @@ public:
 };
 
 #define SQLAPI_VER_MAJOR	4
-#define SQLAPI_VER_MINOR	1
-#define SQLAPI_VER_BUILD	9
+#define SQLAPI_VER_MINOR	2
+#define SQLAPI_VER_BUILD	5
+#define SQLAPI_VER_PATCH	2
 
 #endif // !defined(__SQLAPI_H__)
 

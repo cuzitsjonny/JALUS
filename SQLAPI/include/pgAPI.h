@@ -5,14 +5,12 @@
 #if !defined(__PGAPI_H__)
 #define __PGAPI_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 // API header(s)
 #include <libpq-fe.h>
 #include <libpq-fs.h>
-
-extern void AddPostgreSQLSupport(const SAConnection *pCon);
-extern void ReleasePostgreSQLSupport();
 
 typedef PGconn* (*PQconnectStart_t)(const char *conninfo);
 typedef PostgresPollingStatusType (*PQconnectPoll_t)(PGconn *conn);
@@ -111,14 +109,14 @@ typedef void (*PQprintTuples_t)(const PGresult *res,
 typedef int (*lo_open_t)(PGconn *conn, Oid lobjId, int mode);
 typedef int (*lo_close_t)(PGconn *conn, int fd);
 typedef int (*lo_read_t)(PGconn *conn, int fd, char *buf, size_t len);
-typedef int (*lo_write_t)(PGconn *conn, int fd, char *buf, size_t len);
+typedef int (*lo_write_t)(PGconn *conn, int fd, const char *buf, size_t len);
 typedef int (*lo_lseek_t)(PGconn *conn, int fd, int offset, int whence);
 typedef Oid (*lo_creat_t)(PGconn *conn, int mode);
 typedef int (*lo_tell_t)(PGconn *conn, int fd);
 typedef int (*lo_unlink_t)(PGconn *conn, Oid lobjId);
 typedef Oid (*lo_import_t)(PGconn *conn, const char *filename);
 typedef int (*lo_export_t)(PGconn *conn, Oid lobjId, const char *filename);
-typedef int (*PQmblen_t)(const unsigned char *s, int encoding);
+typedef int (*PQmblen_t)(const char *s, int encoding);
 typedef int (*PQenv2encoding_t)(void);
 
 // new
@@ -137,7 +135,7 @@ typedef unsigned char* (*PQunescapeBytea_t)(const unsigned char *strtext,
 
 /* These forms are deprecated! */
 typedef size_t (*PQescapeString_t)(char *to, const char *from, size_t length);
-typedef char* (*PQescapeBytea_t)(const unsigned char *from, size_t from_length,
+typedef unsigned char* (*PQescapeBytea_t)(const unsigned char *from, size_t from_length,
 			  size_t *to_length);
 
 typedef void (*PQfreemem_t)(void *ptr);
@@ -147,8 +145,8 @@ typedef int	(*PQputCopyEnd_t)(PGconn *conn, const char *errormsg);
 typedef int (*PQgetCopyData_t)(PGconn *conn, char **buffer, int async);
 
 typedef PGPing (*PQping_t)(const char *conninfo);
-typedef PGPing (*PQpingParams_t)(const char **keywords,
-			 const char **values, int expand_dbname);
+typedef PGPing (*PQpingParams_t)(const char *const * keywords,
+			 const char *const * values, int expand_dbname);
 
 typedef const char* (*pg_encoding_to_char_t)(int encoding);
 
@@ -157,6 +155,8 @@ class SQLAPI_API pgAPI : public saAPI
 {
 public:
 	pgAPI();
+
+public:
 
 	PQconnectStart_t PQconnectStart;
 	PQconnectPoll_t PQconnectPoll;
@@ -267,6 +267,30 @@ public:
 	PQpingParams_t PQpingParams;
 
 	pg_encoding_to_char_t pg_encoding_to_char;
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+	long m_nDLLVersionLoaded;
+
+	void ResetAPI();
+	void LoadAPI();
+	void LoadStaticAPI();
+	void InitEnv(const SAConnection * pCon);
+	void UnInitEnv();
+
+public:
+	void Check(const SAString& sCommandText, PGresult *res);
+	void Check(PGresult *res);
+	void* string2byte(const char* szInputText, size_t &nOutBufLen);
 };
 
 class SQLAPI_API pgConnectionHandles : public saConnectionHandles
@@ -284,7 +308,5 @@ public:
 
 	PGresult *res; // PostgreSQL result struct
 };
-
-extern pgAPI g_pgAPI;
 
 #endif // !defined(__PGAPI_H__)

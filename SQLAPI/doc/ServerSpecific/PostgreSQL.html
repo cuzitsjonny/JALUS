@@ -205,7 +205,7 @@ PostgreSQL</strong> server in the following way:</p>
       <strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_ReadCommitted</strong>
 = 'READ COMMITTED' <br>
       <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_RepeatableRead</strong>
-= 'READ COMMITTED'<br>
+= 'REPEATABLE READ'<br>
       <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SA_Serializable</strong> =
 'SERIALIZABLE'</p>
       <p>For more details see<a href="../OnLineDoc/Connection_setIsolationLevel.html">
@@ -330,7 +330,8 @@ before the first connection is made.<strong></strong> </p>
 Names separated by ';' on Windows or ':' on other OS.<br>
             <em>Default value</em>: Windows - "libpq.dll;pq.dll", Linux
 -&nbsp; "libpq.so:libpq.so.5:libpq.so.4:libpq.so.3".<br>
-            <br>
+            </p>
+                <p> <em>Special value</em>: &#39;STATIC&#39;, forces using the linked PostgreSQL client API functions when the Library compiled with <strong>SA_STATIC_PQSQL</strong> build option.<br>
             </p>
             </td>
           </tr>
@@ -396,6 +397,20 @@ server side cursor within "select .." statement.<br>
             <em><br>
 Valid values</em>: "True" and "1".&nbsp; <em>Default value</em>:
 "False".<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"><strong>SetCursorName</strong></p>
+            <strong> </strong>
+            <p align="center">Command
+related.<br>
+            </p>
+            </td>
+            <td style="vertical-align: top;">Allows to define the cursor name SQLAPI++ uses for the
+server side cursor within "select .." statement.<br>  <br />          
+            <em>Valid values</em>:&nbsp; See PostgreSQL documentation.<br>
+            <em>Default value: </em>none.
             </td>
           </tr>
           <tr>

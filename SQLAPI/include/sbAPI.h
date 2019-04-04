@@ -5,18 +5,11 @@
 #if !defined(__SB7API_H__)
 #define __SB7API_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 // API header(s)
 #include <sqlbase.h>
-
-extern long g_nSBDLLVersionLoaded;
-
-extern void AddSB6Support(const SAConnection * pCon);
-extern void ReleaseSB6Support();
-extern bool CanBeLoadedSB7(const SAConnection * pCon);
-extern void AddSB7Support(const SAConnection * pCon);
-extern void ReleaseSB7Support();
 
 typedef byte2 (SBSTDCALL *sqlarf_t)(SQLTCUR	   cur	   , SQLTFNP	 fnp	 ,
 			   SQLTFNL	   fnl	   , SQLTCHO	 cho	 );
@@ -316,11 +309,12 @@ typedef byte2 (SBSTDCALL *sqlopc_t)(SQLTCUR PTR curp    , SQLTCON	 hCon	 ,
 			   SQLTMOD	   fType   );
 
 // API declarations
-class SQLAPI_API sb6API : public saAPI
+class SQLAPI_API sbAPI : public saAPI
 {
 public:
-	sb6API();
+	sbAPI();
 
+public:
 	sqlarf_t	sqlarf;
 	sqlbbr_t	sqlbbr;
 	sqlbdb_t	sqlbdb;
@@ -470,17 +464,30 @@ public:
 	sqlxnp_t	sqlxnp;
 	sqlxpd_t	sqlxpd;
 	sqlxsb_t	sqlxsb;
-};
 
-// version 7 specific
-class SQLAPI_API sb7API : public sb6API
-{
-public:
-	sb7API();
-
+	// version 7 specific
 	sqlcch_t	sqlcch;
 	sqldch_t	sqldch;
 	sqlopc_t	sqlopc;
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+	long m_nSBDLLVersionLoaded;
+
+	virtual void ResetAPI();
+	virtual void LoadAPI();
+
+public:
+	bool CanBeLoadedSB7();
 };
 
 class SQLAPI_API sb6ConnectionHandles : public saConnectionHandles
@@ -506,8 +513,5 @@ public:
 
 	SQLTCUR m_cur;
 };
-
-extern sb7API g_sb7API;
-extern sb6API &g_sb6API;
 
 #endif // !defined(__SB7API_H__)

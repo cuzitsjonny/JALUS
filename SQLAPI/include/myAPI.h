@@ -5,14 +5,12 @@
 #if !defined(__MYAPI_H__)
 #define __MYAPI_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 // API header(s)
 #include <mysql.h>
 #include <errmsg.h>
-
-extern void AddMySQLSupport(const SAConnection * pCon);
-extern void ReleaseMySQLSupport();
 
 /* Functions to get information from the MYSQL and MYSQL_RES structures */
 /* Should definitely be used if one uses shared libraries */
@@ -36,13 +34,11 @@ typedef unsigned long (STDCALL *mysql_thread_id_t)(MYSQL *mysql);
 typedef const char * (STDCALL *mysql_character_set_name_t)(MYSQL *mysql);
 
 typedef MYSQL *		(STDCALL *mysql_init_t)(MYSQL *mysql);
-//#ifdef HAVE_OPENSSL
-typedef int		(STDCALL *mysql_ssl_set_t)(MYSQL *mysql, const char *key,
+
+typedef my_bool (STDCALL *mysql_ssl_set_t)(MYSQL *mysql, const char *key,
 				      const char *cert, const char *ca,
 				      const char *capath, const char *cipher);
-typedef char *		(STDCALL *mysql_ssl_cipher_t)(MYSQL *mysql);
-typedef int		(STDCALL *mysql_ssl_clear_t)(MYSQL *mysql);
-//#endif /* HAVE_OPENSSL */
+
 typedef MYSQL *		(STDCALL *mysql_connect_t)(MYSQL *mysql, const char *host,
 				      const char *user, const char *passwd);
 typedef my_bool		(STDCALL *mysql_change_user_t)(MYSQL *mysql, const char *user, 
@@ -182,6 +178,7 @@ class SQLAPI_API myAPI : public saAPI
 public:
 	myAPI();
 
+public:
 	mysql_num_rows_t mysql_num_rows;
 	mysql_num_fields_t mysql_num_fields;
 	mysql_eof_t mysql_eof;
@@ -199,8 +196,6 @@ public:
 	mysql_character_set_name_t mysql_character_set_name;
 	mysql_init_t mysql_init;
 	mysql_ssl_set_t mysql_ssl_set;
-	mysql_ssl_cipher_t mysql_ssl_cipher;
-	mysql_ssl_clear_t mysql_ssl_clear;
 	mysql_connect_t mysql_connect;
 	mysql_change_user_t mysql_change_user;
 	mysql_real_connect1_t mysql_real_connect1;
@@ -279,6 +274,31 @@ public:
 	mysql_stmt_field_count_t mysql_stmt_field_count;
 
 	mysql_get_character_set_info_t mysql_get_character_set_info;
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+	long m_nDLLVersionLoaded;
+
+	void ResetAPI();
+	void LoadAPI();
+	void LoadStaticAPI();
+	void InitEnv(const SAConnection * pCon);
+	void UnInitEnv();
+
+public:
+	void Check(MYSQL *mysql);
+	void Check(const SAString& sCommandText, MYSQL *mysql);
+	void Check(MYSQL_STMT *stmt);
+	void Check(const SAString& sCommandText, MYSQL_STMT *stmt);
 };
 
 class SQLAPI_API myConnectionHandles : public saConnectionHandles
@@ -297,7 +317,5 @@ public:
 	MYSQL_RES *result; // MySQL result struct
 	MYSQL_STMT *stmt; // MySQL statement struct
 };
-
-extern myAPI g_myAPI;
 
 #endif // !defined(__MYAPI_H__)

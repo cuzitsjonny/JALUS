@@ -291,7 +291,9 @@ use specified DB2 CLI library.<br>
 list.
 Names separated by ';' on Windows or ':' on other OS.<br>
             <em>Default value</em>: Windows - "db2cli.dll", Linux
--&nbsp; "libdb2.so".</td>
+-&nbsp; "libdb2.so".<br />
+                <br />
+                                        <em>Special value</em>: &#39;STATIC&#39;, forces using the linked DB2 client API functions when the Library compiled with <strong>SA_STATIC_DB2</strong> build option.</td>
           </tr>
           <tr>
             <td><strong>
@@ -344,6 +346,26 @@ SQL_CONCUR_LOCK.<br>
             <br>
             <em>Valid values</em>: "True", "1". <em>Default value</em>:
 "false".<br>
+            </td>
+          </tr>
+                      <tr>
+            <td style="vertical-align: top;">
+            <p align="center"><strong>SetCursorName</strong></p>
+            Command related. Should be specified
+before describing parameters or command execution.</td>
+            <td style="vertical-align: top;">Allows to define the cursor name SQLAPI++ uses for the
+server side cursor.<br>  <br />          
+            <em>Valid values</em>:&nbsp; See SQLSetCursorName documentation.<br>
+            <em>Default value: </em>none.
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"><strong>ExecDirect</strong></p>
+            Command related. Should be specified
+before describing parameters or command execution.</td>
+            <td style="vertical-align: top;">Forces SQLAPI++ to use SQLExecDirect instead of SQLExecute API function.<br>  <br />          
+            <em>Valid values</em>: "True", "1". <em>Default value</em>: "false".<br>
             </td>
           </tr>
           <tr>
@@ -573,8 +595,6 @@ with SQLAPI++</a>&nbsp;</p>
       <p>If you haven't found the answer to you questions or have some
 problems on using the Library, please, send e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
       </td>
-    </tr>
-    <tr>
     </tr>
   </tbody>
 </table>
