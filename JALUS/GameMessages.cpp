@@ -562,7 +562,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
 						//Logger::info("SubItems: " + std::to_string(subs[i]));
 					}*/
-
+					InventoryItems::setIsEquipped(true, itemid);
 					player->inventoryIndex->items.push_back(items.at(k));
 				}
 				//player->inventoryIndex->items.push_back(player->inventoryIndex->items.at(k));
