@@ -263,6 +263,7 @@
     <ClInclude Include="RenderIndex.h" />
     <ClInclude Include="ReplicaComponent.h" />
     <ClInclude Include="ReplicaObject.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scheduler.h" />
     <ClInclude Include="ScriptedActivityIndex.h" />
     <ClInclude Include="ScriptIndex.h" />
@@ -287,6 +288,12 @@
     <ProjectReference Include="..\RakNet\RakNet.vcxproj">
       <Project>{767ceb9f-4c3d-46fc-a225-e0f3800dc29c}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="JALUS.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="JALUS_Gray.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

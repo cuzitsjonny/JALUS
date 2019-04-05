@@ -172,81 +172,85 @@ void ServerLoop::start()
 		{
 			unsigned char rakNetPacketID;
 			data->Read(rakNetPacketID);
-
-			switch (rakNetPacketID)
-			{
-
-			case ID_NEW_INCOMING_CONNECTION:
-			{
-				Logger::info("Client connected! (Address: " + string(clientAddress.ToString()) + ")");
-				break;
-			}
-
-			case ID_CONNECTION_LOST:
-			case ID_DISCONNECTION_NOTIFICATION:
-			{
-				if (Server::isCharactersInstance() || Server::isWorldInstance())
+			try {
+				switch (rakNetPacketID)
 				{
-					if (Server::isWorldInstance())
+
+				case ID_NEW_INCOMING_CONNECTION:
+				{
+					Logger::info("Client connected! (Address: " + string(clientAddress.ToString()) + ")");
+					break;
+				}
+
+				case ID_CONNECTION_LOST:
+				case ID_DISCONNECTION_NOTIFICATION:
+				{
+					if (Server::isCharactersInstance() || Server::isWorldInstance())
 					{
-						ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(clientAddress);
-
-						if (replica != nullptr)
+						if (Server::isWorldInstance())
 						{
-							Session* session = Sessions::getSession(clientAddress);
-							if (!Sessions::getSession(clientAddress)->gotRedirected)
-							{
-								ControllablePhysicsIndex* index = replica->controllablePhysicsIndex;
+							ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(clientAddress);
 
-								Location loc = Location();
-								loc.zoneID = ServerRoles::toZoneID(Server::getServerRole());
-								loc.mapClone = 0;
-								loc.position.x = index->pos_x;
-								loc.position.y = index->pos_y;
-								loc.position.z = index->pos_z;
-								loc.rotation.x = index->rot_x;
-								loc.rotation.y = index->rot_y;
-								loc.rotation.z = index->rot_z;
-								loc.rotation.w = index->rot_w;
-								Locations::saveLocation(loc, replica->objectID);
-								ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
-								ValueStorage::updateValueInDatabase(session->charID, "health", player->statsIndex->cur_health);
-								ValueStorage::updateValueInDatabase(session->charID, "armor", player->statsIndex->cur_armor);
-								ValueStorage::updateValueInDatabase(session->charID, "imagination", player->statsIndex->cur_imagination);
+							if (replica != nullptr)
+							{
+								Session* session = Sessions::getSession(clientAddress);
+								if (!Sessions::getSession(clientAddress)->gotRedirected)
+								{
+									ControllablePhysicsIndex* index = replica->controllablePhysicsIndex;
+
+									Location loc = Location();
+									loc.zoneID = ServerRoles::toZoneID(Server::getServerRole());
+									loc.mapClone = 0;
+									loc.position.x = index->pos_x;
+									loc.position.y = index->pos_y;
+									loc.position.z = index->pos_z;
+									loc.rotation.x = index->rot_x;
+									loc.rotation.y = index->rot_y;
+									loc.rotation.z = index->rot_z;
+									loc.rotation.w = index->rot_w;
+									Locations::saveLocation(loc, replica->objectID);
+									ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+									ValueStorage::updateValueInDatabase(session->charID, "health", player->statsIndex->cur_health);
+									ValueStorage::updateValueInDatabase(session->charID, "armor", player->statsIndex->cur_armor);
+									ValueStorage::updateValueInDatabase(session->charID, "imagination", player->statsIndex->cur_imagination);
+								}
 							}
+
+							ObjectsManager::removePlayer(clientAddress);
 						}
 
-						ObjectsManager::removePlayer(clientAddress);
+						Sessions::removeSession(clientAddress);
 					}
-					
-					Sessions::removeSession(clientAddress);
+					Logger::info("Client disconnected! (Address: " + string(clientAddress.ToString()) + ")");
+					break;
 				}
-				Logger::info("Client disconnected! (Address: " + string(clientAddress.ToString()) + ")");
-				break;
-			}
 
-			case ID_USER_PACKET_ENUM:
-			{
-				if ((data->GetNumberOfUnreadBits() / 8) >= 7)
+				case ID_USER_PACKET_ENUM:
 				{
-					unsigned short remoteConnectionType;
-					unsigned long packetID;
-					
-					data->Read(remoteConnectionType);
-					data->Read(packetID);
-					data->IgnoreBytes(1);
+					if ((data->GetNumberOfUnreadBits() / 8) >= 7)
+					{
+						unsigned short remoteConnectionType;
+						unsigned long packetID;
 
-					ServerLoop::routePacket(remoteConnectionType, packetID, data, clientAddress);
+						data->Read(remoteConnectionType);
+						data->Read(packetID);
+						data->IgnoreBytes(1);
+
+						ServerLoop::routePacket(remoteConnectionType, packetID, data, clientAddress);
+					}
+					break;
 				}
-				break;
-			}
 
-			default:
-			{
-				Logger::info("Server received a packet with unknown MessageID! (MessageID: " + to_string((int)rakNetPacketID) + ") (Address: " + string(clientAddress.ToString()) + ")");
-				break;
-			}
+				default:
+				{
+					Logger::info("Server received a packet with unknown MessageID! (MessageID: " + to_string((int)rakNetPacketID) + ") (Address: " + string(clientAddress.ToString()) + ")");
+					break;
+				}
 
+				}
+			}
+			catch (...) {
+				Logger::error("Switch case error. Please report the following to Ellie: (Data: " + to_string(data) + ")");
 			}
 		}
 

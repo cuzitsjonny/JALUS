@@ -303,8 +303,30 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					for (int k = 0; k < items.size(); k++)
 					{
 					//player->inventoryIndex->items.push_back(items.at(k));
+						long lot = Objects::getLOT(items[k].objectID);
+						/*long lot = Objects::getLOT(items[k].objectID);
 
-						long lot = Objects::getLOT(items.at(k).objectID);
+						vector<long> subs = CDClient::getSubItems(items[k].lot);
+						//Logger::info("SubItems Size: " + std::to_string(subs.size()));
+						for (int i = 0; i < subs.size(); i++)
+						{
+							long skillid = CDClient::getSkillID(subs[i], 0);
+							long itemType = CDClient::getItemType(subs[i]);
+							long hotbarslot = 4;
+							if (itemType == ItemType::ITEM_TYPE_HAIR || ItemType::ITEM_TYPE_HAT)
+								hotbarslot = 3;
+							if (itemType == ItemType::ITEM_TYPE_NECK)
+								hotbarslot = 2;
+							if (itemType == ItemType::ITEM_TYPE_RIGHT_HAND)
+								hotbarslot = 0;
+							if (itemType == ItemType::ITEM_TYPE_LEFT_HAND)
+								hotbarslot = 1;
+							if (skillid != -1)
+								GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
+							//Logger::info("SubItems: " + std::to_string(subs[i]));
+						}*/
+
+						player->inventoryIndex->items.push_back(items.at(k));
 					//long lot = items.at(k).lot;
 					// add skills
 						long itemType = CDClient::getItemType(lot);
@@ -326,12 +348,12 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 						long skillid = CDClient::getSkillID(lot, 0);
 						if (lot == 13276 ||
-						lot == 13275 ||
-						lot == 13277 ||
-						lot == 13278)
-						skillid = 148;
+							lot == 13275 ||
+							lot == 13277 ||
+							lot == 13278)
+							skillid = 148;
 						if (skillid != -1)
-						GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
+							GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
 					}
 
 					if (player->statsIndex->cur_health == 0)
@@ -476,14 +498,74 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			//ReplicaObject* replica = ObjectsManager::getObjectByID(itemid);
 			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
 
-			InventoryItems::setIsEquipped(true, itemid);
+			// UNEQUIP EQUIPPED ITEM
+			/*long lot = Objects::getLOT(itemid);
+			long itemType = CDClient::getItemType(lot);
+			for (int k = 0; k < player->inventoryIndex->items.size(); k++)
+			{
+				//Logger::info("itemType: " + std::to_string(player->inventoryIndex->items[k].itemType));
+				if (player->inventoryIndex->items[k].itemType == itemType) {
+					InventoryItems::setIsEquipped(false, player->inventoryIndex->items[k].objectID);
+					player->inventoryIndex->items[k].isEquipped = false;
+					player->inventoryIndex->items.erase(player->inventoryIndex->items.begin() + (k));
+					//player->inventoryIndex->items[k].
+					//vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
+					//player->inventoryIndex->writeToBitStream(items, false);	
 
-			vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
+					long lot = Objects::getLOT(player->inventoryIndex->items[k].objectID);
+
+					vector<long> subs = CDClient::getSubItems(player->inventoryIndex->items[k].lot);
+					//Logger::info("SubItems Size: " + std::to_string(subs.size()));
+					for (int i = 0; i < subs.size(); i++)
+					{
+						long skillid = CDClient::getSkillID(subs[i], 0);
+						GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
+						//Logger::info("SubItems: " + std::to_string(subs[i]));
+					}
+
+					long skillid = CDClient::getSkillID(player->inventoryIndex->items[k].lot, 0);
+					//Logger::info("SkillID to unequip: " + std::to_string(skillid));
+					if (skillid != -1)
+						//Logger::info("SkillID to unequip: " + std::to_string(skillid));
+						//Logger::info("LOT to unequip: " + std::to_string(player->inventoryIndex->items[k].lot));
+						GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
+					//break;
+				}
+				//long skillid = CDClient::getSkillID(player->inventoryIndex->items[k].lot, 0);
+				//Logger::info("SkillID to unequip: " + std::to_string(skillid));
+				//if (skillid != -1)
+				//	GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
+			}
+			ObjectsManager::serializeObject(player);
+			InventoryItems::setIsEquipped(true, itemid);*/
+
+			vector<InventoryItem> items = InventoryItems::getInventoryItems(session->charID);
 			//Logger::info("Items equipped: " + std::to_string(items.size()));
 			for (int k = 0; k < items.size(); k++)
 			{
-				//player->inventoryIndex->items[k].isEquipped = true;
-				player->inventoryIndex->items.push_back(items.at(k));
+				if (items[k].objectID == itemid) {
+					/*vector<long> subs = CDClient::getSubItems(items[k].lot);
+					//Logger::info("SubItems Size: " + std::to_string(subs.size()));
+					for (int i = 0; i < subs.size(); i++)
+					{
+						long skillid = CDClient::getSkillID(subs[i], 0);
+						long itemType = CDClient::getItemType(subs[i]);
+						long hotbarslot = 4;
+						if (itemType == ItemType::ITEM_TYPE_HAIR || ItemType::ITEM_TYPE_HAT)
+							hotbarslot = 3;
+						if (itemType == ItemType::ITEM_TYPE_NECK)
+							hotbarslot = 2;
+						if (itemType == ItemType::ITEM_TYPE_RIGHT_HAND)
+							hotbarslot = 0;
+						if (itemType == ItemType::ITEM_TYPE_LEFT_HAND)
+							hotbarslot = 1;
+						GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
+						//Logger::info("SubItems: " + std::to_string(subs[i]));
+					}*/
+
+					player->inventoryIndex->items.push_back(items.at(k));
+				}
+				//player->inventoryIndex->items.push_back(player->inventoryIndex->items.at(k));
 			}
 			long lot = Objects::getLOT(itemid);
 			// add skills
@@ -510,13 +592,36 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				lot == 13277 ||
 				lot == 13278)
 				skillid = 148;
-			//else if (lot == 14834) skillid = ;
 			if (skillid != -1)
 				GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
+			//else if (lot == 14834) skillid = ;
+			/*for (int k = 0; k < player->inventoryIndex->items.size(); k++)
+			{
+			long itemType = CDClient::getItemType(player->inventoryIndex->items[k].lot);
+
+			long hotbarslot = 4;
+			if (itemType == ItemType::ITEM_TYPE_HAIR || ItemType::ITEM_TYPE_HAT)
+			hotbarslot = 3;
+			if (itemType == ItemType::ITEM_TYPE_NECK)
+			hotbarslot = 2;
+			if (itemType == ItemType::ITEM_TYPE_RIGHT_HAND)
+			hotbarslot = 0;
+			if (itemType == ItemType::ITEM_TYPE_LEFT_HAND)
+			hotbarslot = 1;
+
+			long skillid = CDClient::getSkillID(player->inventoryIndex->items[k].lot, 0);
+			if (lot == 13276 ||
+			lot == 13275 ||
+			lot == 13277 ||
+			lot == 13278)
+			skillid = 148;
+			if (skillid != -1)
+			GameMessages::addSkill(session->charID, skillid, hotbarslot, clientAddress);
+			}*/
 
 			ObjectsManager::serializeObject(player);
-
-			Logger::info("Equipped item " + std::to_string(itemid) + " for player " + std::to_string(session->charID));
+			//Logger::info("Items equipped: " + std::to_string(player->inventoryIndex->items.size()));
+			//Logger::info("Equipped item " + std::to_string(itemid) + " for player " + std::to_string(session->charID));
 			break;
 		}
 		
@@ -533,6 +638,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			data->Read(itemToUnequip);
 			data->Read(replacementObjectID);
 
+			//Logger::info("ItemtoUnequip: " + std::to_string(itemToUnequip));
+			//Logger::info("ReplacementItem: " + std::to_string(replacementObjectID));
 			/*Logger::info("evenIfDead: " + std::to_string(evenIfDead));
 			Logger::info("ignoreCooldown: " + std::to_string(ignoreCooldown));
 			Logger::info("outSuccess: " + std::to_string(outSuccess));
@@ -551,20 +658,33 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			{
 				if (player->inventoryIndex->items[k].objectID == itemToUnequip) {
 					InventoryItems::setIsEquipped(false, itemToUnequip);
-					//player->inventoryIndex->items.at(k).
 					player->inventoryIndex->items[k].isEquipped = false;
-					//player->inventoryIndex->items[k].push_back(k);
-					//player->inventoryIndex->items.pop_back();
 					player->inventoryIndex->items.erase(player->inventoryIndex->items.begin() + (k));
+
+					//vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
+					//player->inventoryIndex->writeToBitStream(items, false);
+
+					/*vector<long> subs = CDClient::getSubItems(player->inventoryIndex->items[k].lot);
+					//Logger::info("SubItems Size: " + std::to_string(subs.size()));
+					for (int i = 0; i < subs.size(); i++)
+					{
+						long skillid = CDClient::getSkillID(subs[i], 0);
+						GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
+						//Logger::info("SubItems: " + std::to_string(subs[i]));
+					}
+					*/
 					long skillid = CDClient::getSkillID(lot, 0);
+					if (lot == 13276 ||
+						lot == 13275 ||
+						lot == 13277 ||
+						lot == 13278)
+						skillid = 148;
 					if (skillid != -1)
 						GameMessages::removeSkill(session->charID, skillid, false, clientAddress);
-
-					//ObjectsManager::serializeObject(player);
 				}
-				//player->inventoryIndex->items.push_back(items.at(k));
 			}
 			ObjectsManager::serializeObject(player);
+			//Logger::info("Items equipped: " + std::to_string(player->inventoryIndex->items.size()));
 			/*for (int k = 0; k < player->inventoryIndex->items.size(); k++)
 			{
 				//player->inventoryIndex->items.push_back(items.at(k));
@@ -763,7 +883,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				}
 
 
-				/*ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
+				ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
 				if (replica != charObj)
 				{
 					//Logger::info("Starting respawn");
@@ -802,7 +922,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					ObjectsManager::despawnObject(replica);
 					Scheduler::runAsyncTaskLater(6000, Helpers::respawnObject, newReplica, clientAddress);
 
-				}*/
+				}
 
 			}
 

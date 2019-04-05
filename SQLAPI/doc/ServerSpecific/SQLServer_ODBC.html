@@ -414,7 +414,19 @@ list one by one for loading SQL Server Natvie API.<br>
             <em>Valid values</em> : shared library names separated by
 ';'.<br>
             <em></em><em>Default value</em>:
-                Windows - "msodbcsql11.dll;sqlncli11.dll;sqlncli10.dll;sqlncli.dll;sqlsrv32.dll", Linux -&nbsp; &quot;/opt/microsoft/msodbcsql/11.0.2270.0/lib64/libmsodbcsql-11.0.so.2270.0:libmsodbcsql.so&quot;.</td>
+                Windows - "msodbcsql17.dll;msodbcsql13.dll;msodbcsql11.dll;sqlncli11.dll;sqlncli10.dll;sqlncli.dll;sqlsrv32.dll", Linux -&nbsp; &quot;libmsodbcsql.so&quot;.</td>
+          </tr>
+            <tr>
+            <td style="vertical-align: top;">
+            <div style="text-align: center;"><strong> SQL_COPT_SS_PRESERVE_CURSORS </strong></div>
+            <p align="center"> Connection related. <font face="" size="3">Should be specified before the first connection is made.</font>
+            </p>
+            </td>
+            <td style="vertical-align: top;">Whem "SQL_PC_ON" value defined the option allows to use the result set after the commit or rollback command called for the current transaction.<br>
+            <br>
+            <em>Valid values</em> : "SQL_PC_ON".
+            <br>
+            <em></em><em>Default value</em>: undefined.</td>
           </tr>
           <tr>
             <td><strong>
@@ -448,6 +460,26 @@ scrollable dynamic server side cursor.<br>
             <br>
             <em>Valid values</em>: "True", "1". <em>Default value</em>:
 "false".</td>
+          </tr>
+                      <tr>
+            <td style="vertical-align: top;">
+            <p align="center"><strong>SetCursorName</strong></p>
+            Command related. Should be specified
+before describing parameters or command execution.</td>
+            <td style="vertical-align: top;">Allows to define the cursor name SQLAPI++ uses for the
+server side cursor.<br>  <br />          
+            <em>Valid values</em>:&nbsp; See SQLSetCursorName documentation.<br>
+            <em>Default value: </em>none.
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">
+            <p align="center"><strong>ExecDirect</strong></p>
+            Command related. Should be specified
+before describing parameters or command execution.</td>
+            <td style="vertical-align: top;">Forces SQLAPI++ to use SQLExecDirect instead of SQLExecute API function.<br>  <br />          
+            <em>Valid values</em>: "True", "1". <em>Default value</em>: "false".<br>
+            </td>
           </tr>
  <tr>
 <td style="vertical-align: top;"><strong>

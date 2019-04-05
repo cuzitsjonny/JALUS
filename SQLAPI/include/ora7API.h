@@ -5,7 +5,8 @@
 #if !defined(__ORA7API_H__)
 #define __ORA7API_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 // API header(s)
 #include <ociapr.h>

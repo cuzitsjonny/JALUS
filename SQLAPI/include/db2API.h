@@ -4,14 +4,11 @@
 #if !defined(__DB2API_H__)
 #define __DB2API_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
+
 #include <sqlcli.h>
 #include <sqlcli1.h>
-
-extern long g_nDB2DLLVersionLoaded;
-
-extern void AddDB2Support(const SAConnection * pCon);
-extern void ReleaseDB2Support();
 
 typedef SQLRETURN (SQL_API_FN  *SQLAllocConnect_t)(SQLHENV           henv,
                                         SQLHDBC     FAR   *phdbc);
@@ -485,6 +482,7 @@ class SQLAPI_API db2API : public saAPI
 public:
 	db2API();
 
+public:
 	SQLAllocConnect_t	SQLAllocConnect;
 	SQLAllocEnv_t	SQLAllocEnv;
 	SQLAllocHandle_t	SQLAllocHandle;
@@ -569,6 +567,38 @@ public:
 	SQLTablePrivileges_t	SQLTablePrivileges;
 	SQLTables_t	SQLTables;
 	SQLTransact_t	SQLTransact;
+
+	SQLHENV	m_hevn; 
+	
+	void Check(
+		SQLRETURN return_code,
+		SQLSMALLINT HandleType,
+		SQLHANDLE Handle);
+	
+	void Check(
+		const SAString &sCommandText,
+		SQLRETURN return_code,
+		SQLSMALLINT HandleType,
+		SQLHANDLE Handle);
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+	long m_nDLLVersionLoaded;
+
+	void ResetAPI();
+	void LoadAPI();
+	void LoadStaticAPI();
+	void InitEnv(const SAConnection * pCon);
+	void UnInitEnv();
 };
 
 class SQLAPI_API db2ConnectionHandles : public saConnectionHandles
@@ -576,7 +606,6 @@ class SQLAPI_API db2ConnectionHandles : public saConnectionHandles
 public:
 	db2ConnectionHandles();
 
-	SQLHENV	m_hevn;
 	SQLHDBC	m_hdbc;
 };
 
@@ -587,7 +616,5 @@ public:
 
 	SQLHSTMT	m_hstmt;
 };
-
-extern db2API g_db2API;
 
 #endif // !defined(__DB2API_H__)

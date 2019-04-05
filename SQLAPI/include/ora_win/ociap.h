@@ -1,4 +1,5 @@
-/* Copyright (c) 1996, 2008, Oracle. All rights reserved.  */
+/* Copyright (c) 1996, 2015, Oracle and/or its affiliates. 
+All rights reserved.*/
  
 /* 
    NAME 
@@ -115,6 +116,9 @@
     OCIParamGet
     OCIParamGet
     OCIPasswordChange
+    OCIRequestBegin
+    OCIRequestEnd
+    OCIRequestDisableReplay
     OCIReset
     OCIResultSetToStmt
     OCIServerAttach
@@ -217,6 +221,9 @@
     OCIAttrSet
     OCIUserCallbackRegister
     OCIUserCallbackGet
+    OCIShardingKeyColumnAdd
+    OCIShardingKeyReset
+    OCIShardInstancesGet
     OCISharedLibInit
     OCIFileExists
     OCIFileGetLength
@@ -526,7 +533,9 @@
     OCIInitEventHandle
     OCIStmtBindByPos
     OCIStmtBindByName
-
+    OCIShardingKeyColumnAdd
+    OCIShardingKeyReset
+    OCIShardInstancesGet
    PRIVATE FUNCTION(S)
 
    EXAMPLES
@@ -534,6 +543,18 @@
    NOTES
 
    MODIFIED   (MM/DD/YY)
+   kkverma     02/19/15 - proj 56337: OCI Sharding
+   nikeda      07/19/14 - support OCIRequest calls for OCI-based drivers
+   ssubrama    11/02/11 - bug 13505135 OCIAQEnq2 and OCIAQDeq2 private
+   ssubrama    10/31/11 - fix lint issues with OCIAQDeq2
+   ssubrama    09/12/11 - streaming support for OCIAQEnq2 and OCIAQDeq2
+   amadan      09/12/11 - add OCIAQEnq2 OCIAQDeq2
+   rtati       09/12/11 - proj 34391: add OCISubscriptionFailure
+   rpang       06/02/11 - add OCITranslatedErrorGet
+   shiyer      04/09/11 - #36904: add OCIStmtGetNextResult
+   slari       03/24/11 - OCIRoundTripCallback
+   rpingte     11/29/10 - remove OCIStmtBindByPos/OCIStmtBindByName
+   jstewart    11/15/10 - 32K VARCHAR support
    slynn       03/18/08 - OCILobSet/SetContenttype->OCILobGet/SetContentType
    amullick    02/11/08 - add OCILobGet/SetContenttype APIs
    schoi       02/27/07 - OCILobGet/SetOptions API change
@@ -5675,6 +5696,85 @@ Related Functions
 OCISessionBegin()
 
 
+OCIRequestBegin()
+Name
+OCI Begin a database request
+Purpose
+This call starts a database request, a unit of work often used to service a
+web request that may consist of one or more transactions.  When using 
+OCI Session Pool, a call to OCISessionGet() implicitly starts a database 
+request.
+
+Syntax
+sword OCIRequestBegin ( OCISvcCtx     *svchp,
+                        OCIError      *errhp,
+                        ub4            mode);
+Comments
+
+Parameters
+svchp (IN/OUT) - a handle to a service context. The service context handle 
+                 must be initialized and have a session handle associcated
+                 with it.
+errhp (IN/OUT) - an error handle which can be passed to OCIErrorGet() for 
+                 diagnostic information in the event of an error.
+mode  (IN)     - pass as OCI_DEFAULT.
+
+Related Functions
+OCIRequestEnd() 
+OCIRequestDisableReplay
+
+  
+OCIRequestEnd()
+Name
+OCI End a database request
+Purpose
+This call terminates a database request.  When using OCI Session Pool, a 
+call to OCISessionRelease() implicitly ends a database request. 
+Syntax
+sword OCIRequestEnd ( OCISvcCtx     *svchp,
+                      OCIError      *errhp,
+                      ub4            mode);
+Comments
+
+Parameters
+svchp (IN/OUT) - a handle to a service context. The service context handle 
+                 must be initialized and have a session handle associated
+                 with it.
+errhp (IN/OUT) - an error handle which can be passed to OCIErrorGet() for 
+                 diagnostic information in the event of an error.
+mode  (IN)     - pass as OCI_DEFAULT.
+
+Related Functions
+OCIRequestBegin() 
+OCIRequestDisableReplay
+
+
+OCIRequestDisableReplay()
+Name
+OCI Disable AC Replay for a session
+database 
+Purpose
+This call disables AC/Replay for a seession for the duration of the current
+database request.
+Syntax
+sword OCIRequestDisableReplay ( OCISvcCtx     *svchp,
+                                OCIError      *errhp,
+                                ub4            mode);
+Comments
+
+Parameters
+svchp (IN/OUT) - a handle to a service context. The service context handle 
+                 must be initialized and have a session handle associated
+                 with it.
+errhp (IN/OUT) - an error handle which can be passed to OCIErrorGet() for 
+                 diagnostic information in the event of an error.
+mode  (IN)     - pass as OCI_DEFAULT.
+
+Related Functions
+OCIRequestBegin() 
+OCIRequestEnd()
+
+
 ----------------------------------OCIReset------------------------------------
 
 
@@ -6058,6 +6158,39 @@ when a transaction is detached for migration. This mode is the default
 mode when connected to a V7 server. 
 Related Functions
 OCIStmtPrepare()
+
+sword OCIStmtGetNextResult (OCIStmt *stmthp,
+                            OCIError *errhp,
+                            void **result,
+                            ub4  *rtype,
+                            ub4 mode)
+PARAMETERS
+  stmthp   - (IN) executed statement handle
+  errhp    - (IN) error handle
+  result   - (OUT) the next implicit
+                   Result from the executed PL/SQL statement
+  rtype       - (OUT) the type of the implicit result
+  mode     - (IN) OCI_DEFAULT for now
+
+DESCRIPTION
+  Returns the implicit results from a executed PL/SQL statement
+  handle. Each call to OCIStmtGetNextResult () retrieves a single
+  implicit Result in the order in which they were returned from
+  the PL/SQL procedure/block. If no more Results are available, 
+  then OCI_NO_DATA is returned. If rtype is OCI_RESULT_TYPE_SELECT, then
+  the returned result can be cast as an OCI statement handle.
+  The OCI statement handles for implicit result-sets 
+  are allocated by OCI. Applications can do normal OCI define
+  and fetch calls to fetch rows from the implicit result-sets. The
+  returned OCI statement handle cannot be freed explicitly. All implicit
+  result-sets are automatically closed and freed when the top-level 
+  statement handle is freed or released.
+RETURN
+  OCI_ERROR
+  OCI_SUCCESS
+  OCI_NO_DATA  when all implicit ResultSets have been retrieved from
+               the top-level Statement handle
+
 
 
 
@@ -7071,6 +7204,11 @@ typedef sword (*OCICallbackStmtCache)(void *ctx, OCIStmt *stmt, ub4 mode);
 typedef void (*OCIEventCallback)(void  *evtctx, OCIEvent *eventhp);
 
 
+/*------------------------- Round Trip Callback Structure --------------------*/
+typedef sword (*OCIRoundTripCallback)(void  *rtctx, OCISvcCtx *svch,
+                                      OCISession *userh);
+
+
 /*****************************************************************************
                          ACTUAL PROTOTYPE DECLARATIONS
 ******************************************************************************/
@@ -7153,6 +7291,13 @@ sword   OCIPasswordChange   (OCISvcCtx *svchp, OCIError *errhp,
                              const OraText *npasswd, ub4 npasswd_len, 
                              ub4 mode);
 
+sword   OCIRequestBegin   (OCISvcCtx *svchp, OCIError *errhp, ub4 mode); 
+
+sword   OCIRequestEnd   (OCISvcCtx *svchp, OCIError *errhp, ub4 mode);
+
+sword   OCIRequestDisableReplay   (OCISvcCtx *svchp, OCIError *errhp, 
+                                   ub4 mode);
+
 sword   OCIStmtPrepare   (OCIStmt *stmtp, OCIError *errhp, const OraText *stmt,
                           ub4 stmt_len, ub4 language, ub4 mode);
 
@@ -7168,10 +7313,21 @@ sword   OCIBindByPos  (OCIStmt *stmtp, OCIBind **bindp, OCIError *errhp,
                        ub2 dty, void  *indp, ub2 *alenp, ub2 *rcodep,
                        ub4 maxarr_len, ub4 *curelep, ub4 mode);
 
+sword   OCIBindByPos2 (OCIStmt *stmtp, OCIBind **bindp, OCIError *errhp,
+                       ub4 position, void  *valuep, sb8 value_sz,
+                       ub2 dty, void  *indp, ub4 *alenp, ub2 *rcodep,
+                       ub4 maxarr_len, ub4 *curelep, ub4 mode);
+
 sword   OCIBindByName   (OCIStmt *stmtp, OCIBind **bindp, OCIError *errhp,
                          const OraText *placeholder, sb4 placeh_len, 
                          void  *valuep, sb4 value_sz, ub2 dty, 
                          void  *indp, ub2 *alenp, ub2 *rcodep, 
+                         ub4 maxarr_len, ub4 *curelep, ub4 mode);
+
+sword   OCIBindByName2  (OCIStmt *stmtp, OCIBind **bindp, OCIError *errhp,
+                         const OraText *placeholder, sb4 placeh_len, 
+                         void  *valuep, sb8 value_sz, ub2 dty, 
+                         void  *indp, ub4 *alenp, ub2 *rcodep, 
                          ub4 maxarr_len, ub4 *curelep, ub4 mode);
 
 sword   OCIBindObject  (OCIBind *bindp, OCIError *errhp, const OCIType *type, 
@@ -7199,9 +7355,19 @@ sword   OCIStmtExecute  (OCISvcCtx *svchp, OCIStmt *stmtp, OCIError *errhp,
                          ub4 iters, ub4 rowoff, const OCISnapshot *snap_in, 
                          OCISnapshot *snap_out, ub4 mode);
 
+/*------------------------Implicit Result Interface-------------------------*/
+sword OCIStmtGetNextResult(OCIStmt *stmthp, OCIError *errhp,
+                           void **result, ub4 *rtype,
+                           ub4 mode);
+/*------------------------End Implicit Result-------------------------------*/
+
 sword   OCIDefineByPos  (OCIStmt *stmtp, OCIDefine **defnp, OCIError *errhp,
                          ub4 position, void  *valuep, sb4 value_sz, ub2 dty,
                          void  *indp, ub2 *rlenp, ub2 *rcodep, ub4 mode);
+
+sword   OCIDefineByPos2 (OCIStmt *stmtp, OCIDefine **defnp, OCIError *errhp,
+                         ub4 position, void  *valuep, sb8 value_sz, ub2 dty,
+                         void  *indp, ub4 *rlenp, ub2 *rcodep, ub4 mode);
 
 sword   OCIDefineObject  (OCIDefine *defnp, OCIError *errhp, 
                           const OCIType *type, void  **pgvpp, 
@@ -10863,6 +11029,9 @@ typedef ub4 (*OCISubscriptionNotify)(void  *ctx, OCISubscription *subscrhp,
                                      void  *pay, ub4 payl, 
                                      void  *desc, ub4 mode);
 
+typedef ub4 (*OCISubscriptionFailure)(void  *ctx, OCISubscription *subscrhp,
+                                      void  *desc, OCIError *errhp);
+
 sword OCISubscriptionRegister(OCISvcCtx *svchp, OCISubscription **subscrhpp, 
                               ub2 count, OCIError *errhp, ub4 mode);
 
@@ -11080,13 +11249,13 @@ sword OCIDBShutdown(OCISvcCtx     *svchp,
 
 /*------------------ End Database Startup/Shutdown prototypes ---------------*/
 
-/*----------------------- OCIClientVersion ------------------------------*/
+/*----------------------- OCIClientVersion ----------------------------------*/
 void OCIClientVersion(sword *major_version,
                       sword *minor_version,
                       sword *update_num,
                       sword *patch_num,
                       sword *port_update_num);
-/*----------------------- End OCIClientVersion --------------------------*/
+/*----------------------- End OCIClientVersion -----------------------------*/
 
 /*----------------------- HA Event prototypes ------------------------------*/
 
@@ -11097,26 +11266,39 @@ sword OCIInitEventHandle(OCIError *errhp,
 
 /*----------------------- End HA Event prototypes --------------------------*/
 
+/*------------------- SQL Translation prototypes ---------------------------*/
+
+sword OCITranslatedErrorGet(OCISvcCtx *svchp,
+                            void      *hndlp, 
+                            ub4        recordno,
+                            OraText   *sqlstate,
+                            ub4        sqlstatesiz,
+                            sb4       *errcodep, 
+                            ub4        type);
+
+/*----------------- End SQL Translation prototypes -------------------------*/
+
+/*---------------------------- Sharding Prototypes -------------------------*/
+
+sword OCIShardingKeyColumnAdd(OCIShardingKey *shardingKey, OCIError *errhp,
+                              void* col, ub4 colLen, ub2 colType, ub4 mode);
+
+sword OCIShardingKeyReset(OCIShardingKey *shardingKey, OCIError *errhp,
+                          ub4 mode);
+
+sword OCIShardInstancesGet(void             **shTopoCtx,
+                           OCIError          *errhp,
+                           const OraText     *connstr,
+                           ub4                connstrl,
+                           OCIShardingKey    *shardingKey,
+                           OCIShardingKey    *superShardingKey,
+                           OCIShardInst    ***shardInsts,
+                           ub4               *numShardInsts,
+                           ub4                mode);
+
+/*------------------------ End Sharding Prototypes -------------------------*/
 /*---------------------------------------------------------------------------
                           PRIVATE FUNCTIONS
-  ---------------------------------------------------------------------------*/
+----------------------------------------------------------------------------*/
 
-            /* the following functions are depracated and should not be used */
-#ifdef NEVER
-sword   OCIStmtBindByPos  (OCIStmt *stmtp, OCIBind *bindp, OCIError *errhp,
-                  ub4 position, void  *valuep, sb4 value_sz,
-                  ub2 dty, void  *indp, ub2 *alenp, ub2 *rcodep,
-                  ub4 maxarr_len, ub4 *curelep, ub4 mode);
-
-
-sword   OCIStmtBindByName  (OCIStmt *stmtp, OCIBind *bindp, OCIError *errhp,
-                  const OraText *placeholder, sb4 placeh_len, void  *valuep, 
-                  sb4 value_sz, ub2 dty, void  *indp, ub2 *alenp, 
-                  ub2 *rcodep, ub4 maxarr_len, ub4 *curelep, ub4 mode);
-
-sword   ocidefn  (OCIStmt *stmtp, OCIDefine *defnp, OCIError *errhp,
-                  ub4 position, void  *valuep, sb4 value_sz, ub2 dty,
-                  void  *indp, ub2 *rlenp, ub2 *rcodep, ub4 mode);
-#endif /* NEVER */
-
-#endif                                                       /* OCIAP_ORACLE */
+#endif                                                      /* OCIAP_ORACLE */

@@ -1,4 +1,5 @@
-/* Copyright (c) 1994, 2003, Oracle Corporation.  All rights reserved.  */
+/* Copyright (c) 1994, 2014, Oracle and/or its affiliates. 
+All rights reserved.*/
 
 /*
   NAME
@@ -35,6 +36,8 @@
     relevant.
 
   MODIFIED
+    dpotapov   04/24/14 - Fix oci ind string raw
+    dpotapov   03/06/14 - xtss merge
     mnanal     06/09/03 - backout of fix 2836388
     mnanal     05/14/03 - bug-2836388
     srseshad   11/27/02 - Change OCI_TYPECODE_BFLOAT/BDOUBLE codes
@@ -185,6 +188,12 @@
 #ifndef ORO_ORACLE
 #define ORO_ORACLE
 
+#ifdef K3_ORACLE
+#ifndef KOL3_ORACLE
+#  include <kol3.h>
+#endif
+#endif /* K3_ORACLE */
+
 /*---------------------------------------------------------------------------*/
 /*                         SHORT NAMES SUPPORT SECTION                       */
 /*---------------------------------------------------------------------------*/
@@ -288,7 +297,10 @@ typedef struct OCIRef OCIRef;
 
 /*--------------------------- OBJECT INDICATOR ------------------------------*/
 
+#ifndef KUTYXTT3_ORACLE
 typedef sb2 OCIInd;
+#define ORO_OCIIND_DEFINED
+#endif
 /*
  * OCIInd -- a variable of this type contains (null) indicator information
  */

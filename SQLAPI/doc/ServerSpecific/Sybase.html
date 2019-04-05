@@ -378,7 +378,9 @@ before the first connection is made.</div>
 Names separated by ';' on Windows or ':' on other OS.<br>
 
             <em>Default value</em>: Windows - "libsybct.dll;libct.dll", Linux
--&nbsp; "libsybct.so:libct.so".<br>
+-&nbsp; "libsybct.so:libct.so".<br />
+                <br />
+                                        <em>Special value</em>: &#39;STATIC&#39;, forces using the linked Sybase client API functions when the Library compiled with <strong>SA_STATIC_SYBASE</strong> build option.<br>
 
             </td>
           </tr>
@@ -464,6 +466,21 @@ before actual connection is made.</p>
             <td>
             <p>Describes whether or not a connection can perform bulk
 copy operations into a database. For information on Bulk Copy, see the
+Sybase Common Libraries Reference Manual. <br>
+            </p>
+            <p><em>Valid values</em>: "CS_TRUE", "CS_FALSE".<br>
+                      <em>Default value</em>: see Sybase documentation.
+                  </p>
+              </td>
+          </tr>
+          <tr>
+            <td>
+            <p align="center"> <strong>CS_SEC_ENCRYPTION<br />CS_SEC_EXTENDED_ENCRYPTION<br />CS_SEC_NON_ENCRYPTION_RETRY</strong></p>
+            <p align="center"> Connection related. Should be specified
+before actual connection is made.</p>
+            </td>
+            <td>
+            <p>Describe the connection password encryption details. For information on connection password encryption, see the
 Sybase Common Libraries Reference Manual. <br>
             </p>
             <p><em>Valid values</em>: "CS_TRUE", "CS_FALSE".<br>
@@ -821,8 +838,6 @@ with SQLAPI++</a>&nbsp;</p>
       <p>If you haven't found the answer to you questions or have some
 problems on using the Library, please, send e-mail to <a href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
       </td>
-    </tr>
-    <tr>
     </tr>
   </tbody>
 </table>

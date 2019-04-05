@@ -141,7 +141,15 @@ Could you please help me?</a>
                         12. <a href="FAQ.html#QandA12">Could I have multiple SACommand in one SAConnection? I tested under MySQL database, keep SACommands being opened,
                              and always get error "Commands out of sync; you can't run this command now".</a>
                     </p>
-
+<p>
+    13. <a href="FAQ.html#QandA13">I
+am getting the error "HY000 [Microsoft][SQL Server Native Client
+11.0]Connection is busy with results for another command".</a>
+</p>
+                    <p>
+    14. <a href="FAQ.html#QandA14">Could you please tell me what is the difference between isAlive and isConnected?
+How to use them properly?</a>
+</p>
                     <hr>
                     <h3 align="left"><a name="QandA1"></a>1. When linking a programm
 that uses SQLAPI++ I got an error: unresolved external symbol
@@ -350,30 +358,67 @@ SACommand cmd(&con, "select ...");
 cmd.setOption("UseStatement") = "TRUE";
 cmd.Execute();
 ... 
+                    </pre>
+                    <h3 align="left"><a name="QandA13"/>13. I
+am getting the error "HY000 [Microsoft][SQL Server Native Client
+11.0]Connection is busy with results for another command".
+
+I have 1 SAConnection object and 2 SACommand objects.  One of the SACommand
+objects is simply stepping through the records in a table.  The second object
+is attempting to INSERT a new record into the same table, before we have
+processed all of the records in the first command.  Is this not allowed or am
+I doing something wrong?
+                    </h3>
+                    <p>
+                        This is known SQL Server issue. SQL Server doesn't allow to have the several result sets at the same connection by default (the same problem is actual also for Sybase ASE, MySQL, ...). The possible solutions for SQL Server:
+                        <ul>
+                            <li>using MARS_Connection option. This is global option for the connection. You can turn it on like:</li>
+                        <pre>
+SAConnection con;
+con.Connect(_TSA("bedlam-m\\sql2014en@test;MARS_Connection=yes"), _TSA(""), _TSA(""), SA_SQLServer_Client);
+                            </pre>
+<li>using the server side cursor for executing SACommand:</li>
+                        <pre>
+SACommand cmd(&con, _TSA("select ..."));
+cmd.setOption(_TSA("SQL_ATTR_CURSOR_TYPE")) = _TSA("SQL_CURSOR_DYNAMIC"); 
+                         </pre>
+                            </ul>
+</p>
+                    <h3 align="left"><a name="QandA14"/>14. Could you please tell me what is the difference between isAlive and isConnected?
+How to use them properly?
+                    </h3>
+                    <p>
+                        See below the simplified usage scenario:
+                        <pre>
+while(....)
+{
+  try
+  {
+    if(!con.isConnected())
+     con.Connect(...);
+    // main job below
+    ...
+  }
+  catch(SAException& x)
+  {
+    if(con.isConnected())
+    {
+      if(!con.isAlive())
+      {
+        try {
+         con.Disconnect();
+        } catch(SAException&) {
+         con.Destroy();
+        }
+      }
+    }
+  }
+}
                         </pre>
+                      </p>
                 </td>
             </tr>
         </tbody>
     </table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>

@@ -811,7 +811,7 @@ vector<long> CDClient::getItemDrops(long lot, long LootTableIndex)
 
 		while (cmd.FetchNext())
 		{
-			long items = cmd.Field("itemid").asLong();
+			//long items = cmd.Field("itemid").asLong();
 			
 			r.push_back(cmd.Field("itemid").asLong());
 
@@ -873,10 +873,10 @@ vector<double> CDClient::getDropProbs(long lot, long row)
 
 		while (cmd.FetchNext())
 		{
-			double percent = cmd.Field("percent").asDouble();
-			long minToDrop = cmd.Field("minToDrop").asLong();
-			long maxToDrop = cmd.Field("maxToDrop").asLong();
-			long lootTableIndex = cmd.Field("LootTableIndex").asLong();
+			//double percent = cmd.Field("percent").asDouble();
+			//long minToDrop = cmd.Field("minToDrop").asLong();
+			//long maxToDrop = cmd.Field("maxToDrop").asLong();
+			//long lootTableIndex = cmd.Field("LootTableIndex").asLong();
 
 			r.push_back(cmd.Field("percent").asDouble());
 			r.push_back(cmd.Field("minToDrop").asLong());
@@ -929,8 +929,8 @@ vector<long> CDClient::getCoinDrops(long lot)
 
 		while (cmd.FetchNext())
 		{
-			long minvalue = cmd.Field("minvalue").asLong();
-			long maxvalue = cmd.Field("maxvalue").asLong();
+			//long minvalue = cmd.Field("minvalue").asLong();
+			//long maxvalue = cmd.Field("maxvalue").asLong();
 			
 			r.push_back(cmd.Field("minvalue").asLong());
 			r.push_back(cmd.Field("maxvalue").asLong());
@@ -1135,6 +1135,89 @@ long CDClient::getSkillID(long lot, long castOnType)
 	return r;
 }
 
+vector<long> CDClient::getSkillIDs(long lot, long castOnType)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<long> r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT skillID FROM ObjectSkills WHERE objectTemplate = '" << lot << "' AND castOnType = '" << castOnType << "';";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			//vector<long> test;
+			//long skillID = cmd.Field("skillID").asLong();
+
+			r.push_back(cmd.Field("skillID").asLong());
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+vector<long> CDClient::getBonus(long skillID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<long> r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT imBonusUI, lifeBonusUI, armorBonusUI FROM SkillBehavior WHERE skillID = '" << skillID << "';";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			//long skillID = cmd.Field("skillID").asLong();
+
+			r.push_back(cmd.Field("imBonusUI").asLong());
+			r.push_back(cmd.Field("lifeBonusUI").asLong());
+			r.push_back(cmd.Field("armorBonusUI").asLong());
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
 long CDClient::getTemplateID(long skillID)
 {
 	SAConnection con;
@@ -1267,6 +1350,52 @@ bool CDClient::getIsEquippable(long lot)
 			}
 
 			//r = cmd.Field("equipLocation").asBool();
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+vector<long> CDClient::getSubItems(long lot)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	vector<long> r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT subItems FROM ItemComponent WHERE id = ";
+		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '11');";
+		//ss << "SELECT subItems FROM ItemComponent WHERE id = '" << lot << "';";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			string subItemStr = string(cmd.Field("subItems").asString());
+			vector<string> p = split(subItemStr, ',');
+			//Logger::info("SubItemStr: " + subItemStr);
+			for (int i = 0; i < p.size(); i++)
+			{
+				//Logger::info("SubItemsIndv: " + p[i]);
+				r.push_back(stol(p.at(i)));
+			}
 
 		}
 

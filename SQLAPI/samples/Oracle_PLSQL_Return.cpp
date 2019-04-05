@@ -14,6 +14,7 @@ void Oracle_PLSQL_Return()
 
 		cmd.DestroyParams();
 		cmd.CreateParam("omessage", SA_dtString, -1, 20, -1, -1, SA_ParamInputOutput);
+		cmd.Cre
 
 		cmd.Execute();
 

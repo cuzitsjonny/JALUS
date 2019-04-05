@@ -94,7 +94,10 @@ public:
 	static long getIsPowerup(long lot);
 	static long getStackSize(long lot);
 	static long getSkillID(long lot, long castOnType);
+	static vector<long> getSkillIDs(long lot, long castOnType);
+	static vector<long> getBonus(long skillID);
 	static long getTemplateID(long skillID);
 	static string getTemplateIDName(long skillID);
 	static bool getIsEquippable(long lot);
+	static vector<long> getSubItems(long lot);
 };

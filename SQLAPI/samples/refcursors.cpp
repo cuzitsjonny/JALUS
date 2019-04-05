@@ -22,7 +22,7 @@ CREATE or replace PACKAGE BODY TestRefCursorPkg AS
 	BEGIN
 	    RefCursor := NULL;
 		OPEN localCursor FOR SELECT * FROM dual;
-		--RefCursor := localCursor;
+		RefCursor := localCursor;
 	END TestRefCursorProc;
 END TestRefCursorPkg;
 /

@@ -18,15 +18,15 @@ int main(int argc, char** argv)
 		cmd.setCommandText(_TSA("select f2 from t1 where f1=1"));
 		cmd.Execute();
 		while (cmd.FetchNext()) {
-			sa_printf((const SAChar*)cmd[1].asString());
-			sa_printf(_TSA("\n"));
+			sa_tprintf((const SAChar*)cmd[1].asString());
+			sa_tprintf(_TSA("\n"));
 		}
 	}
 	catch (SAException &x)
 	{
-		sa_printf(_TSA("ERR: "));
-		sa_printf((const SAChar*)x.ErrText());
-		sa_printf(_TSA("\n"));
+		sa_tprintf(_TSA("ERR: "));
+		sa_tprintf((const SAChar*)x.ErrText());
+		sa_tprintf(_TSA("\n"));
 	}
 
 	return 0;

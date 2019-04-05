@@ -5,16 +5,12 @@
 #if !defined(__ODBCAPI_H__)
 #define __ODBCAPI_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 // API header(s)
 #include <sql.h>
 #include <sqlext.h>
-
-extern long g_nODBCDLLVersionLoaded;
-
-extern void AddODBCSupport(const SAConnection *pCon);
-extern void ReleaseODBCSupport();
 
 typedef SQLRETURN  (SQL_API *SQLAllocConnect_t)(SQLHENV EnvironmentHandle,
            SQLHDBC *ConnectionHandle);
@@ -372,6 +368,7 @@ class SQLAPI_API odbcAPI : public saAPI
 public:
 	odbcAPI();
 
+public:
 	SQLAllocConnect_t		SQLAllocConnect;	// 1.0
 	SQLAllocEnv_t			SQLAllocEnv;		// 1.0
 	SQLAllocHandle_t		SQLAllocHandle;		// 3.0
@@ -448,6 +445,36 @@ public:
 	SQLTablePrivileges_t	SQLTablePrivileges;	// 1.0
 	SQLTables_t				SQLTables;			// 1.0
 	SQLTransact_t			SQLTransact;		// 1.0
+
+	SQLHENV	m_henv;
+
+	void Check(
+		SQLRETURN return_code,
+		SQLSMALLINT HandleType,
+		SQLHANDLE Handle);
+	void Check(
+		const SAString &sCommandText,
+		SQLRETURN return_code,
+		SQLSMALLINT HandleType,
+		SQLHANDLE Handle);
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+	long m_nDLLVersionLoaded;
+
+	void ResetAPI();
+	void LoadAPI();
+	void InitEnv(const SAConnection * pCon);
+	void UnInitEnv();
 };
 
 class SQLAPI_API odbcConnectionHandles : public saConnectionHandles
@@ -455,7 +482,6 @@ class SQLAPI_API odbcConnectionHandles : public saConnectionHandles
 public:
 	odbcConnectionHandles();
 
-	SQLHENV	m_hevn;
 	SQLHDBC	m_hdbc;
 };
 
@@ -464,9 +490,23 @@ class SQLAPI_API odbcCommandHandles : public saCommandHandles
 public:
 	odbcCommandHandles();
 
-	SQLHSTMT	m_hstmt;
+	SQLHSTMT m_hstmt;
 };
 
-extern odbcAPI g_odbcAPI;
+class SQLAPI_API odbcExternalConnection
+{
+	bool m_bAttached;
+	SAConnection *m_pCon;
+
+public:
+	SQLHDBC	m_hdbc;
+
+public:
+	odbcExternalConnection(SAConnection *pCon, SQLHENV henv, SQLHDBC hdbc);
+	~odbcExternalConnection();
+
+	void Attach();
+	void Detach();
+};
 
 #endif // !defined(__ODBCAPI_H__)

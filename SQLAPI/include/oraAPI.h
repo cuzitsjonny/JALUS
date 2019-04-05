@@ -5,15 +5,11 @@
 #if !defined(__ORA8API_H__)
 #define __ORA8API_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 // API header(s)
 #include <oci.h>
-
-extern long g_nORA8DLLVersionLoaded;
-
-extern void AddORA8Support(const SAConnection * pCon);
-extern void ReleaseORA8Support();
 
 // 8.0.x calls
 typedef sword   (*OCIInitialize_t)(ub4 mode, dvoid *ctxp, 
@@ -396,6 +392,20 @@ typedef sword (*OCIConnectionPoolDestroy_t)(OCICPool *poolhp,
 typedef sword (*OCILobGetLength2_t)(OCISvcCtx *svchp, OCIError *errhp,
     OCILobLocator *locp, oraub8 *lenp);
 
+
+/*----------------- Support for Implicit Results  ---------------------------*/
+typedef sword(*OCIStmtPrepare2_t) (OCISvcCtx *svchp, OCIStmt **stmthp, OCIError *errhp,
+	const OraText *stmttext, ub4 stmt_len, const OraText *key, ub4 keylen,
+	ub4 language, ub4 mode);
+
+typedef sword(*OCIStmtRelease_t) (OCIStmt *stmthp, OCIError *errhp,
+	const OraText *key, ub4 keylen, ub4 mode);
+
+typedef sword(*OCIStmtGetNextResult_t) (OCIStmt *stmthp, OCIError *errhp,
+	void **result, ub4 *rtype, ub4 mode);
+
+
+
 class ora8API;
 
 class SQLAPI_API ora8ConnectionPool
@@ -439,6 +449,7 @@ class SQLAPI_API ora8API : public saAPI
 public:
 	ora8API();
 
+public:
 	// 8.0.x calls
 	OCIInitialize_t	OCIInitialize;
 	OCIHandleAlloc_t	OCIHandleAlloc;
@@ -495,7 +506,7 @@ public:
 	OCILobFileSetName_t	OCILobFileSetName;
 	OCILobFlushBuffer_t	OCILobFlushBuffer;
 	OCILobGetLength_t	OCILobGetLength;
-    OCILobGetLength2_t OCILobGetLength2;
+	OCILobGetLength2_t OCILobGetLength2;
 	OCILobIsEqual_t	OCILobIsEqual;
 	OCILobLoadFromFile_t	OCILobLoadFromFile;
 	OCILobLocatorIsInit_t	OCILobLocatorIsInit;
@@ -534,18 +545,54 @@ public:
 	OCIDateTimeConstruct_t OCIDateTimeConstruct;
 	OCIDateTimeGetDate_t OCIDateTimeGetDate;
 	OCIDateTimeGetTime_t OCIDateTimeGetTime;
-    OCIDateTimeGetTimeZoneOffset_t OCIDateTimeGetTimeZoneOffset;
+	OCIDateTimeGetTimeZoneOffset_t OCIDateTimeGetTimeZoneOffset;
 
 	OCINlsNumericInfoGet_t OCINlsNumericInfoGet;
 
 	OCIStmtFetch2_t	OCIStmtFetch2;
 
-    // Conection pooling
-    OCIConnectionPoolCreate_t OCIConnectionPoolCreate;
-    OCIConnectionPoolDestroy_t OCIConnectionPoolDestroy;
-    
-    ora8ConnectionPools connecionPools;
-    OCIEnv *envhp;
+	// Support for Implicit Results 
+	OCIStmtGetNextResult_t OCIStmtGetNextResult;
+
+	// Conection pooling
+	OCIConnectionPoolCreate_t OCIConnectionPoolCreate;
+	OCIConnectionPoolDestroy_t OCIConnectionPoolDestroy;
+
+	OCIEnv		*m_pOCIEnv;
+
+	ora8ConnectionPools connecionPools;
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+	long m_nORA8DLLVersionLoaded;
+#ifdef SA_UNICODE
+	bool m_bUseUCS2;
+#endif
+
+	void ResetAPI();
+	void LoadAPI();
+	void LoadStaticAPI();
+
+	void InitEnv(const SAConnection *pConnection);
+	void UnInitEnv();
+
+public:
+#ifdef SA_UNICODE
+	bool UseUCS2();
+	void setUseUCS2(bool useUCS2);
+#endif
+	ub2 GetCharsetId(const SAString& sCharset);
+	void Check(sword status, dvoid *hndlp, ub4 type, OCIStmt *pOCIStmt = NULL);
+	void Check(const SAString &sCommandText, sword status, dvoid *hndlp, ub4 type, OCIStmt *pOCIStmt = NULL);
 };
 
 class SQLAPI_API ora8ConnectionHandles : public saConnectionHandles
@@ -567,6 +614,9 @@ public:
 
 	OCIStmt			*m_pOCIStmt;
 	OCIError		*m_pOCIError;	// cursor owned error handle
+
+	OCIStmt			*m_pOCIStmtImplRes;
+	OCIStmt			*& getStmtForFetch();
 };
 
 class SQLAPI_API ora8ExternalConnection
@@ -575,19 +625,18 @@ class SQLAPI_API ora8ExternalConnection
     SAConnection *m_pCon;
 
 public:
-    OCIEnv *m_pOCIEnv;
-    OCISvcCtx *m_pOCISvcCtx;
+	OCIEnv *m_pOCIEnv;
+	OCISvcCtx *m_pOCISvcCtx;
 
 public:
     ora8ExternalConnection(
         SAConnection *pCon,
-        OCIEnv *pOCIEnv,
+		OCIEnv *pOCIEnv,
         OCISvcCtx *pOCISvcCtx);
-    void Attach();
-    void Detach();
     ~ora8ExternalConnection();
-};
 
-extern ora8API g_ora8API;
+	void Attach();
+	void Detach();
+};
 
 #endif // !defined(__ORA8API_H__)

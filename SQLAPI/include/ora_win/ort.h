@@ -1,6 +1,7 @@
 /* @(#)ort.h    1.44 95/07/07 */
 
-/* Copyright (c) 1994, 2005, Oracle. All rights reserved.  */
+/* Copyright (c) 1994, 2011, Oracle and/or its affiliates. 
+All rights reserved. */
 
 /* 
   NAME
@@ -87,11 +88,14 @@
       OCITypeArrayByName - Get an array of types by their names.
       OCITypeByRef       - ** OBSOLETE ** Get a type by its CREF.
       OCITypeArrayByRef  - Get an array of types by their CREFs.
+      OCITypeByFullName  - Get a type using a full name string.
+      OCITypeArrayByFullName - Get an array of types using a full name string.
 
     TYPE ACCESSORS
 
       OCITypeName     - ** OBSOLETE ** OCI Get a type's name.
       OCITypeSchema   - ** OBSOLETE ** OCI Get a type's schema name.
+      OCITypePackage  - OCI Get a type's package name.
       OCITypeTypeCode - ** OBSOLETE ** OCI Get a type's type code.
       OCITypeVersion  - ** OBSOLETE ** OCI Get a Type's user-readable Version.
       OCITypeAttrs    - ** OBSOLETE ** OCI Get a Type's Number of Attributes.
@@ -948,13 +952,117 @@ sword OCITypeArrayByName(    OCIEnv *env, OCIError *err, const OCISvcCtx *svc,
                   pinned type descriptor.
   DESCRIPTION:
        Get pointers to the existing types associated with the schema/type name
-       array. This is similar to OCITypeByName() except that all the TDO's are
-       retreived via a single network roundtrip.
+       array. This is similar to OCITypeByName() except that all the TDO's 
+       are retreived via a single network roundtrip.
   RETURNS:
         OCI_SUCCESS if the function completes successfully.
         OCI_INVALID_HANDLE if 'env' or 'err' is null. 
         OCI_ERROR if
            1) any of the required parameters is null.
+           2) one or more adt types associated with a schema/type name entry
+              does not exist.
+*/
+
+sword OCITypeByFullName( OCIEnv *env, OCIError *err, const OCISvcCtx *svc, 
+                         const oratext *full_type_name, 
+                         ub4 full_type_name_length,
+                         const oratext *version_name, ub4 version_name_length,
+                         OCIDuration pin_duration, OCITypeGetOpt get_option,
+                         OCIType **tdo );
+/*
+  NAME: OCITypeByFullName - OCI Get the most current version of an existing TYPe
+                            by full name.
+  PARAMETERS:
+       env (IN/OUT) - OCI environment handle initialized in object mode
+       err (IN/OUT) - error handle. If there is an error, it is
+                recorded in 'err' and this function returns OCI_ERROR.
+                The error recorded in 'err' can be retrieved by calling
+                OCIErrorGet().
+       svc (IN) - OCI service handle
+       full_type_name (IN, optional) - full name of type.   
+       full_type_name_length (IN) - length of the full_type_name parameter.
+       version_name (IN, optional) - user readable version of the type.
+                  Pass (oratext *)0 for the most current version.
+       version_name_length (IN) - length of version_name in bytes. Should be 0
+                  if the most current version is to be retrieved.
+       pin_duration (IN) - pin duration (e.g. until the end of current
+                  transaction).  See 'oro.h' for a description of
+                  each option.
+       get_option (IN) - options for loading the types. It can be one of two
+                   values:
+                  OCI_TYPEGET_HEADER for only the header to be loaded, or
+                  OCI_TYPEGET_ALL for the TDO and all ADO and MDOs to be
+                    loaded.
+       tdo (OUT) - pointer to the pinned type in the object cache
+  DESCRIPTION:
+       Get a pointer to a version of the existing type associated
+       with a full type name.
+  RETURNS:
+        OCI_SUCCESS if the function completes successfully.
+        OCI_INVALID_HANDLE if 'env' or 'err' is null. 
+        OCI_ERROR if
+           1) if any of the parameters are detected to be incorrect.
+           2) the adt type associated with schema/type name does not exist.
+  NOTE:
+       Schema and type names are CASE-SENSITIVE. If they have been created
+       via SQL, you need to use uppercase names.
+*/
+
+sword OCITypeArrayByFullName( OCIEnv *env, OCIError *err, const OCISvcCtx *svc,
+                              ub4 array_len,
+                              const oratext *full_type_name[], 
+                              ub4 full_type_name_length[],
+                              const oratext *version_name[], 
+                              ub4 version_name_length[],
+                              OCIDuration pin_duration,
+                              OCITypeGetOpt get_option, OCIType **tdo    );
+
+/*
+  NAME: OCITypeArrayByFullName - OCI Get array of TYPes by name.
+  PARAMETERS:
+       env (IN/OUT) - OCI environment handle initialized in object mode
+       err (IN/OUT) - error handle. If there is an error, it is
+                recorded in 'err' and this function returns OCI_ERROR.
+                The error recorded in 'err' can be retrieved by calling
+                OCIErrorGet().
+       svc (IN) - OCI service handle
+       array_len (IN) - number of full_type_name/version_name entries to
+                  be retrieved.
+       full_type_name (IN) - array of the full names of the types to retrieve. 
+                  This MUST have array_len number of elements.
+       full_type_name_length (IN) - array of the lengths of full type names in
+                  the full_type_name array in bytes.
+       version_name (IN) - array of the version names of the types to retrieve
+                  corresponding. This can be 0 to indicate retrieval of the
+                  most current versions, or it MUST have array_len number of
+                  elements.
+                  If 0 is supplied, the most current version is assumed,
+                  otherwise it MUST have array_len number of elements.
+                  0 can be supplied for one or more of the entries to indicate
+                  that the current version is desired for those entries.
+       version_name_length (IN) - array of the lengths of version names in the
+                  version_name array in bytes.
+       pin_duration (IN) - pin duration (e.g. until the end of current
+                  transaction) for the types retreieve.  See 'oro.h' for a
+                  description of each option.
+       get_option (IN) - options for loading the types. It can be one of two
+                   values:
+                  OCI_TYPEGET_HEADER for only the header to be loaded, or
+                  OCI_TYPEGET_ALL for the TDO and all ADO and MDOs to be
+                    loaded.
+       tdo (OUT) - output array for the pointers to each pinned type in the
+                  object cache. It must have space for array_len pointers.
+                  Use OCIObjectGetObjectRef() to obtain the CREF to each
+                  pinned type descriptor.
+  DESCRIPTION:
+       Get pointers to the existing types associated with the schema/type name
+       array. This is similar to OCITypeByFullName() except that all the TDO's 
+       are retreived via a single network roundtrip.
+  RETURNS:
+        OCI_SUCCESS if the function completes successfully.
+        OCI_INVALID_HANDLE if 'env' or 'err' is null. 
+        OCI_ERROR if
+           1) if any of the parameters are detected to be incorrect.
            2) one or more adt types associated with a schema/type name entry
               does not exist.
 */
@@ -1101,6 +1209,35 @@ oratext* OCITypeSchema(    OCIEnv *env, OCIError *err, const OCIType *tdo,
         Get the schema name of the type.
    RETURNS:
         the schema name of the type
+   NOTES:
+        The type descriptor, 'tdo', must be unpinned when the accessed 
+        information is no longer needed.
+ */
+
+oratext* OCITypePackage(    OCIEnv *env, OCIError *err, const OCIType *tdo, 
+                            ub4 *n_length    );
+/*
+   NAME: OCITypePackage -  ORT Get a Type's Package name.
+   PARAMETERS:
+        env (IN/OUT) - OCI environment handle initialized in object mode
+        err (IN/OUT) - error handle. If there is an error, it is
+                recorded in 'err' and this function returns OCI_ERROR.
+                The error recorded in 'err' can be retrieved by calling
+                OCIErrorGet().
+        tdo (IN) - pointer to to the type descriptor in the object cache
+        n_length (OUT) - length (in bytes) of the returned type name.  The
+               caller must allocate space for the ub4 before calling this
+               routine.
+   REQUIRES:
+        1) All type accessors require that the type be pinned before calling
+           any accessor.
+        2) All input parameters must not be NULL and must be valid.
+        3) 'n_length' must point to an allocated ub4.
+        4) The type is a PL/SQL package type
+   DESCRIPTION:
+        Get the package name of the type.
+   RETURNS:
+        the package name of the type
    NOTES:
         The type descriptor, 'tdo', must be unpinned when the accessed 
         information is no longer needed.

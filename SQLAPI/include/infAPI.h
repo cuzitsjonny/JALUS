@@ -5,15 +5,11 @@
 #if !defined(__INFAPI_H__)
 #define __INFAPI_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 // API header(s)
 #include <infxcli.h>
-
-extern long g_nInfDLLVersionLoaded;
-
-extern void AddInfSupport(const SAConnection * pCon);
-extern void ReleaseInfSupport();
 
 typedef SQLRETURN  (SQL_API *SQLAllocConnect_t)(SQLHENV EnvironmentHandle,
            SQLHDBC *ConnectionHandle);
@@ -332,6 +328,7 @@ class SQLAPI_API infAPI : public saAPI
 public:
 	infAPI();
 
+public:
 	SQLAllocConnect_t		SQLAllocConnect;	// 1.0
 	SQLAllocEnv_t			SQLAllocEnv;		// 1.0
 	SQLAllocHandle_t		SQLAllocHandle;		// 3.0
@@ -408,6 +405,38 @@ public:
 	SQLTablePrivileges_t	SQLTablePrivileges;	// 1.0
 	SQLTables_t				SQLTables;			// 1.0
 	SQLTransact_t			SQLTransact;		// 1.0
+
+	SQLHENV	m_hevn;
+
+	void Check(
+		SQLRETURN return_code,
+		SQLSMALLINT HandleType,
+		SQLHANDLE Handle);
+
+	void Check(
+		const SAString &sCommandText,
+		SQLRETURN return_code,
+		SQLSMALLINT HandleType,
+		SQLHANDLE Handle);
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+	long m_nDLLVersionLoaded;
+
+	void ResetAPI();
+	void LoadAPI();
+	void LoadStaticAPI();
+	void InitEnv(const SAConnection * pCon);
+	void UnInitEnv();
 };
 
 class SQLAPI_API infConnectionHandles : public saConnectionHandles
@@ -415,7 +444,6 @@ class SQLAPI_API infConnectionHandles : public saConnectionHandles
 public:
 	infConnectionHandles();
 
-	SQLHENV	m_hevn;
 	SQLHDBC	m_hdbc;
 };
 
@@ -426,7 +454,5 @@ public:
 
 	SQLHSTMT	m_hstmt;
 };
-
-extern infAPI g_infAPI;
 
 #endif // !defined(__INFAPI_H__)

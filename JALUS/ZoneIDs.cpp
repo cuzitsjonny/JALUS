@@ -280,8 +280,8 @@ string ZoneIDs::toPrintString(ZoneID zoneID)
 		return "Moon Base";
 
 	case ZONE_ID_PORTABELLO:
-		//return "Portabello";
-		return "Frostburgh";
+		return "Portabello";
+		//return "Frostburgh";
 
 	case ZONE_ID_LEGO_CLUB:
 		return "LEGO Club";
@@ -476,15 +476,16 @@ vector<unsigned char> ZoneIDs::getChecksum(ZoneID zoneID)
 	case ZONE_ID_PORTABELLO:
 		//13600646
 		//2766fbab
+		/* FROSTBURGH
 		r.push_back(0x46);
 		r.push_back(0x06);
 		r.push_back(0x60);
-		r.push_back(0x13);
+		r.push_back(0x13);*/
 		
-		/*r.push_back(0xdd);
+		r.push_back(0xdd);
 		r.push_back(0x07);
 		r.push_back(0x15);
-		r.push_back(0x18);*/
+		r.push_back(0x18);
 
 		break;
 

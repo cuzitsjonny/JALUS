@@ -6,7 +6,7 @@
 
 void connect(SAConnection &con)
 {
-	sa_printf(_TSA("\nConnect to DB..."));
+	sa_tprintf(_TSA("\nConnect to DB..."));
 
 	try
 	{
@@ -14,19 +14,19 @@ void connect(SAConnection &con)
 	}
 	catch(SAException &x)
 	{
-		sa_printf(_TSA("ERR:\n"));
-		sa_printf((const SAChar*)x.ErrText());
-		sa_printf(_TSA("\n"));
+		sa_tprintf(_TSA("ERR:\n"));
+		sa_tprintf((const SAChar*)x.ErrText());
+		sa_tprintf(_TSA("\n"));
 
 		exit(1);
 	}
 
-	sa_printf(_TSA("Done\n"));
+	sa_tprintf(_TSA("Done\n"));
 }
 
 void createTable(SAConnection& con)
 {
-	sa_printf(_TSA("\nCreate table..."));
+	sa_tprintf(_TSA("\nCreate table..."));
 
 	try
 	{
@@ -35,14 +35,14 @@ void createTable(SAConnection& con)
 	}
 	catch(SAException &x)
 	{
-		sa_printf(_TSA("ERR:\n"));
-		sa_printf((const SAChar*)x.ErrText());
-		sa_printf(_TSA("\n"));
+		sa_tprintf(_TSA("ERR:\n"));
+		sa_tprintf((const SAChar*)x.ErrText());
+		sa_tprintf(_TSA("\n"));
 
 		exit(2);
 	}
 
-	sa_printf(_TSA("Done\n"));
+	sa_tprintf(_TSA("Done\n"));
 }
 
 int main(int argc, char* argv[])
@@ -53,18 +53,18 @@ int main(int argc, char* argv[])
 
 	try
 	{
-		sa_printf(_TSA("\nCheck table exists..."));
+		sa_tprintf(_TSA("\nCheck table exists..."));
 
 		SACommand cmd(&con, _TSA("select * from t1"));
 		cmd.Execute();
 
-		sa_printf(_TSA("Done\n"));
+		sa_tprintf(_TSA("Done\n"));
 	}
 	catch(SAException &x)
 	{
-		sa_printf(_TSA("ERR:\n"));
-		sa_printf((const SAChar*)x.ErrText());
-		sa_printf(_TSA("\n"));
+		sa_tprintf(_TSA("ERR:\n"));
+		sa_tprintf((const SAChar*)x.ErrText());
+		sa_tprintf(_TSA("\n"));
 
 		if( con.isAlive() )
 			createTable(con);			
@@ -85,16 +85,16 @@ int main(int argc, char* argv[])
 		{
 			while( cmd.FetchNext() )
 			{
-				sa_printf((const SAChar*)cmd[1].asString());
-				sa_printf(_TSA("\n"));
+				sa_tprintf((const SAChar*)cmd[1].asString());
+				sa_tprintf(_TSA("\n"));
 			}
 		}
 	}
 	catch(SAException &x)
 	{
-		sa_printf(_TSA("\nERR: "));
-		sa_printf((const SAChar*)x.ErrText());
-		sa_printf(_TSA("\n"));
+		sa_tprintf(_TSA("\nERR: "));
+		sa_tprintf((const SAChar*)x.ErrText());
+		sa_tprintf(_TSA("\n"));
 	}
 	return 0;
 }

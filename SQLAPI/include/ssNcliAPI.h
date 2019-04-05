@@ -5,7 +5,8 @@
 #if !defined(__SSNCLIAPI_H__)
 #define __SSNCLIAPI_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 // MSVC++ 6.0 doesn't have this
 #ifdef SQLAPI_WINDOWS
@@ -78,9 +79,6 @@ typedef UINT64          SQLSETPOSIROW;
 #else
 #include <msodbcsql.h>
 #endif
-
-extern void AddNCliSupport(const SAConnection *pCon);
-extern void ReleaseNCliSupport();
 
 typedef SQLRETURN  (SQL_API *SQLAllocHandle_t)(SQLSMALLINT HandleType,
            SQLHANDLE InputHandle, SQLHANDLE *OutputHandle);
@@ -470,6 +468,7 @@ class SQLAPI_API ssNCliAPI : public saAPI
 public:
 	ssNCliAPI();
 
+public:
 	SQLAllocHandle_t		SQLAllocHandle;		// 3.0
 	SQLBindCol_t			SQLBindCol;			// 1.0
 	SQLBindParameter_t		SQLBindParameter;	// 2.0
@@ -537,6 +536,39 @@ public:
 #ifdef SQLAPI_WINDOWS
 	OpenSqlFilestream_t		OpenSqlFilestream;
 #endif
+
+	SQLHENV	m_hevn;
+
+	bool osDriver;
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+	long m_nDLLVersionLoaded;
+
+	void ResetAPI();
+	void LoadAPI();
+	void InitEnv(const SAConnection * pCon);
+	void UnInitEnv();
+
+public:
+	void Check(
+		SQLRETURN return_code,
+		SQLSMALLINT HandleType,
+		SQLHANDLE Handle);
+	void Check(
+		const SAString &sCommandText,
+		SQLRETURN return_code,
+		SQLSMALLINT HandleType,
+		SQLHANDLE Handle);
 };
 
 class SQLAPI_API ssNCliConnectionHandles : public saConnectionHandles
@@ -544,7 +576,6 @@ class SQLAPI_API ssNCliConnectionHandles : public saConnectionHandles
 public:
 	ssNCliConnectionHandles();
 
-	SQLHENV	m_hevn;
 	SQLHDBC	m_hdbc;
 };
 
@@ -555,7 +586,5 @@ public:
 
 	SQLHSTMT	m_hstmt;
 };
-
-extern ssNCliAPI g_ssNCliAPI;
 
 #endif // !defined(__SSNCLIAPI_H__)

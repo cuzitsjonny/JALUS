@@ -29,6 +29,7 @@ public:
 	long count = -1;
 	bool isBound = false;
 	bool isEquipped = false;
+	bool isProxy = false;
 };
 
 class InventoryItems

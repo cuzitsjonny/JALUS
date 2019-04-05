@@ -83,15 +83,16 @@ int main(int argc, char **argv)
 		//con.Connect( "BEDLAM-M\\EN2014@test", "sa", "java", SA_SQLServer_Client);
 		//con.Connect( "LocalServer", "sa", "java", SA_ODBC_Client);
         //con.Connect("TestAccess", "", "", SA_ODBC_Client);
-		con.Connect( "test", "postgres", "java", SA_PostgreSQL_Client);
-        con.setAutoCommit(SA_AutoCommitOff);
+		//con.Connect( "test", "postgres", "java", SA_PostgreSQL_Client);
+		//con.setAutoCommit(SA_AutoCommitOff);
         //con.Connect("test", "root", "", SA_MySQL_Client);
-	
+		con.Connect(_TSA("localhost@test2"), _TSA("admin"), _TSA("admin"), SA_CubeSQL_Client);
+
         test_scroll(con);
     }
 	catch( SAException& x )
 	{
-		printf("ERROR: %s\n", (const char*) x.ErrText());
+		printf("ERROR: %s\n", x.ErrText().GetMultiByteChars());
 		exit(1);
 	}
 

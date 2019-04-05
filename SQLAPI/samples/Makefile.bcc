@@ -6,9 +6,9 @@ OBJS = sqltest.obj
 !ENDIF
 
 CPPDEFS = -DWIN32 -D_WINDOWS
-CPPFLAGS = -w -f- -R- -a-
+CPPFLAGS = -w -R- -a8
 INCLUDES = $(INCLUDES) -I../include -I$(BCCDIR)\Include
-LDFLAGS = -x -V4.0 -Gn 
+LDFLAGS = -x -V4.0 -Gn -Gi
 SA_LIBC=
 
 !IF "$(CFG)" != "release" && "$(CFG)" != "debug"

@@ -5,7 +5,8 @@
 #if !defined(__SYBAPI_H__)
 #define __SYBAPI_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 // API header(s)
 #include <ctpublic.h>
@@ -26,10 +27,7 @@ public:
 
 	saSybMsgHandler_t fMsgHandler;
 	void * pMsgAddInfo;
-} ;
-
-extern void AddSybSupport(const SAConnection *pCon);
-extern void ReleaseSybSupport();
+};
 
 typedef CS_RETCODE (CS_PUBLIC *ct_debug_t)(
 	CS_CONTEXT *context,
@@ -515,6 +513,7 @@ class SQLAPI_API sybAPI : public saAPI
 public:
 	sybAPI();
 
+public:
 	ct_debug_t	ct_debug;
 	ct_bind_t	ct_bind;
 	ct_br_column_t	ct_br_column;
@@ -590,10 +589,43 @@ public:
 
 	ct_scroll_fetch_t ct_scroll_fetch;
 
-	static void SetMessageCallback(saSybMsgHandler_t fHandler, void *pAddInfo, SAConnection *pCon = NULL);
-	static int& DefaultLongMaxLength();
-
+public:
+	CS_CONTEXT *m_context;
+	CS_LOCALE* m_locale;
 	SASybErrInfo errorInfo;
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void* m_hDLL_CT;
+	void* m_hDLL_CS;
+	void* m_hDLL_TCL;
+	void* m_hDLL_COMN;
+	void* m_hDLL_INTL;
+	SAMutex m_loaderMutex;
+	long m_nDLLVersionLoaded;
+	int m_nLongDataMax;
+
+	void ResetAPI();
+	void LoadAPI();
+	void LoadStaticAPI();
+	void InitEnv(const SAConnection * pCon);
+	void UnInitEnv();
+	CS_INT GetClientLibraryVersion(const SAConnection * pCon);
+
+public:
+	void SetMessageCallback(saSybMsgHandler_t fHandler, void *pAddInfo, SAConnection *pCon = NULL);
+	int& DefaultLongMaxLength();
+
+	CS_RETCODE Check(CS_RETCODE rcd) const;
+	CS_RETCODE Convert(CS_DATAFMT *srcfmt, CS_BYTE *srcdata, CS_DATAFMT *destfmt, CS_BYTE *destdata, CS_INT *outlen);
+	SAString ConvertToString(CS_INT srctype, CS_BYTE *src, CS_INT srclen);
 };
 
 class SQLAPI_API sybConnectionHandles : public saConnectionHandles
@@ -601,9 +633,7 @@ class SQLAPI_API sybConnectionHandles : public saConnectionHandles
 public:
 	sybConnectionHandles();
 
-	CS_CONTEXT *m_context;
 	CS_CONNECTION *m_connection;
-	CS_LOCALE* m_locale;
 };
 
 class SQLAPI_API sybCommandHandles : public saCommandHandles
@@ -638,13 +668,10 @@ public:
 		SAConnection *pCon,
 		CS_CONTEXT *context,
 		CS_CONNECTION *connection);
+	~sybExternalConnection();
+
 	void Attach();
 	void Detach();
-	~sybExternalConnection();
 };
-
-
-
-extern sybAPI g_sybAPI;
 
 #endif // !defined(__SYBAPI_H__)

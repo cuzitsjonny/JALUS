@@ -1,7 +1,7 @@
 /* DISABLE check_long_lines */
 
-/* Copyright (c) 1996, 2007, Oracle. All rights reserved.  */
-/* Copyright (c) 1996, 2007, Oracle. All rights reserved.  */
+/* Copyright (c) 1996, 2016, Oracle and/or its affiliates. 
+All rights reserved.*/
 
 /*
  * 
@@ -76,12 +76,16 @@
  *    nztiae_IsHashEnabled     - Checks to see if Hashing is Enabled
  *                               in the current Cipher Spec.
  *    nztwGetCertInfo          - Get peer certificate info
+ *    nzICE_Install_Cert_ext   - Installs a Cert into a wallet with Trustflag
+ *                               value set for the certificate.
  *
  * NOTE: the '+' indicates that these functions are UNSUPPORTED at this time.
  * 
  * NOTES
  *    
  * MODIFIED
+ *    abjuneja   09/11/13 - Bug 14245960 - Wallet encryption algo upgrade
+ *    nidgarg    05/07/13 - TF Support: Add functions for Trustflags
  *    shiahuan   11/28/07 - 
  *    skalyana   08/15/07 - 
  *    pkale      09/28/06 - Bug 5565668: Removed __STDC__
@@ -191,7 +195,18 @@
 #define NZT_MCS_WRL        ((text *)"mcs:")
 #define NZT_ORACLE_WRL      ((text *)"oracle:")
 #define NZT_REGISTRY_WRL   ((text *)"reg:")
-          
+#define NZT_MEMORY_WRL       ((text *)"memory:")
+
+#define  NZ_TF_SERVER_AUTH  256 /* Trusted server CA certificate */
+#define  NZ_TF_CLIENT_AUTH 512  /* Trusted Client CA certificate */
+#define  NZ_TF_VALID_PEER 1024  /* Peer's User Certificate */
+#define  NZ_TF_USER_CERT 2048   /* User certificate, only for NZ use */
+#define  NZ_TF_NULL 4096        /* NULL trustflag to certificate */
+#define  NZ_TF_TRUSTED 8192     /* Trusted certificate */
+#define  NZ_TF_NONE 16384       /* Used by internal functions when Wallet doesn't support TF */
+
+typedef int nzTrustFlag;
+           
 enum nzttwrl 
 {
    NZTTWRL_DEFAULT = 1,    /* Default, use SNZD_DEFAULT_FILE_DIRECTORY */
@@ -201,7 +216,8 @@ enum nzttwrl
    NZTTWRL_MCS,            /* WRL for Microsoft */
    NZTTWRL_ORACLE,      /* Get the wallet from OSS db */
    NZTTWRL_NULL,           /* New SSO defaulting mechanism */
-   NZTTWRL_REGISTRY        /* Find the wallet in Windows Registry */
+   NZTTWRL_REGISTRY,       /* Find the wallet in Windows Registry */
+   NZTTWRL_MEMORY          /* Read the wallet from Memory/Buffer */
 };
 typedef enum nzttwrl nzttwrl;
 
@@ -220,12 +236,15 @@ typedef enum nzttwrl nzttwrl;
 typedef struct nzttIdentity nzttIdentity;
 typedef struct nzttIdentityPrivate nzttIdentityPrivate;
 typedef struct nzttPersona nzttPersona;
+typedef struct nzttPersonaList nzttPersonaList;
 typedef struct nzttPersonaPrivate nzttPersonaPrivate;
 typedef struct nzttWallet nzttWallet;
 typedef struct nzttWalletPrivate nzttWalletPrivate;
 typedef struct nzttWalletObj nzttWalletObj; /* For wallet object */
 typedef struct nzssEntry nzssEntry; /* For secretstore */
 typedef struct nzpkcs11_Info nzpkcs11_Info;
+typedef struct nzpkcs12_Info nzpkcs12_Info;
+typedef struct nzttTrustInfo nzttTrustInfo;
 
 /*
  * Crypto Engine State
@@ -303,13 +322,15 @@ typedef enum nzttVersion nzttVersion;
  */
 enum nzttCipherType 
 {
+   NZTTCIPHERTYPE_INVALID = 0,
    NZTTCIPHERTYPE_RSA = 1,          /* RSA public key */
    NZTTCIPHERTYPE_DES,              /* DES */
    NZTTCIPHERTYPE_RC4,              /* RC4 */
    NZTTCIPHERTYPE_MD5DES,           /* DES encrypted MD5 with salt (PBE) */
    NZTTCIPHERTYPE_MD5RC2,           /* RC2 encrypted MD5 with salt (PBE) */
    NZTTCIPHERTYPE_MD5,              /* MD5 */
-   NZTTCIPHERTYPE_SHA               /* SHA */
+   NZTTCIPHERTYPE_SHA,               /* SHA */
+   NZTTCIPHERTYPE_ECC               /* ECC */
 };
 typedef enum nzttCipherType nzttCipherType;
 
@@ -460,6 +481,21 @@ struct nzttWallet
 #endif
 };
 
+struct nzttTrustInfo
+{
+   ub4 serverAuthTFcount_nzttTrustInfo;    /* Number of certificates with
+                                                 * SERVER_AUTH trust flag
+                                                 */
+
+   ub4 clientAuthTFcount_nzttTrustInfo;    /* Number of certificates with
+                                                 * CLIENT_AUTH trust flag
+                                                 */
+
+   ub4 peerAuthTFcount_nzttTrustInfo;      /* Number of certificates with
+                                                 * PEER_AUTH trust flag
+                                                 */
+};
+
 /*
  * The wallet contains, one or more personas.  A persona always
  * contains its private key and its identity.  It may also contain
@@ -484,6 +520,11 @@ struct nzttPersona
    nzssEntry *mystore_nzttPersona;            /* List of secrets */
    nzpkcs11_Info *mypkcs11Info_nzttPersona;   /* PKCS11 token info */
    struct nzttPersona *next_nzttPersona;      /* Next persona */
+   boolean bTrustFlagEnabled_nzttPersona;     /* Persona supports Cert with trustflags */
+   nzttTrustInfo trustinfo;                   /* Number of certs with C,T,P trustflag
+                                               * in Persona 
+                                               */
+   nzpkcs12_Info *p12Info_nzttPersona;        /* PKCS12 Info */
 #ifdef NZDEPRECATED_MULTIPLECERTS
   /* As Persona has multiple certs for different
      usages, Persona Usage does not mean anything. Similarly
@@ -494,6 +535,13 @@ struct nzttPersona
    nzttState state_nzttPersona;               /* persona state-requested/ready */
    ub4 ntps_nzttPersona;                   /* Num of trusted identities */
 #endif
+};
+
+/* Persona List */
+struct nzttPersonaList
+{
+struct nzttPersonaList *next_nzttPersonaList;
+nzttPersona * mynzttPersona;
 };
 
 /*
@@ -1760,6 +1808,8 @@ nzerror nztFreeIdentList( nzctx *, nzttIdentity ** );
  */
 nzerror nztCheckValidity( nzctx *, ub4 , ub4 );
 
+nzerror nztCheckValidity_ext( nzctx *, ub8 , ub8 );
+
 /*--------------------- nztwCreateWallet ---------------------*/
 
 /*
@@ -2361,6 +2411,11 @@ nzerror nztGetValidDate( nzctx *ctx,
                             ub4  *startdate, 
                             ub4  *enddate  );
 
+nzerror nztGetValidDate_ext( nzctx *ctx,
+                            nzttIdentity *identity,
+                            ub8  *startdate,
+                            ub8  *enddate  );
+
 nzerror nztGetVersion( nzctx *ctx,
                           nzttIdentity *identity,
                           nzstrc *pVerStr  );
@@ -2382,6 +2437,45 @@ nzerror nztSearchNZDefault( nzctx *ctx,
 
 nzerror nztSetLightWeight(nzctx *ctx,
                           boolean flag);
+
+/* ****************** nzICE_Install_Cert_ext ****************** */
+/* Installs a Cert into a wallet if it meets certain conditions.
+ * It calls the function below, nztnAC_Add_Certificate().
+ * Finally, it returns a ptr to where the actual object has been added into the
+ * wallet. This is used in support of OWM
+ * This is an extention of nztnIC_Install_Cert to support Trust flag.
+
+ nzctx *oss_context,     (IN)
+ nzttWallet *pWallet,    (IN)
+ nzttPersona *pPersona,  (IN)
+ ub1* pCertbuf,          (IN)
+ ub4 certbuflen,         (IN)
+ boolean certtype,       (IN)
+ nzstrc *pIdtypestr,     (IN)
+ nzTrustFlag trustflag   (IN)
+ */
+nzerror nzICE_Install_Cert_ext( nzctx *oss_context,
+                                    nzttWallet *pWallet,
+                                    nzttPersona *pPersona,
+                                    ub1* pCertbuf,
+                                    ub4 certbuflen,
+                                    boolean certtype,
+                                    nzstrc *pIdtypestr,
+                                    nzTrustFlag trustflag,
+                                    nzttIdentity **ppCertOrTP );
+
+/******************** nzMF_Modify_TrustFlags **************************/
+/* This function would be used to modify trust flags assigned
+ * to a certificate. The already assigned trust flag would get replaced
+ * by new trust flag value
+*/
+
+nzerror nzMF_Modify_TrustFlags(nzctx *oss_context,
+                                  nzttWallet *pWallet,
+                                  nzttPersona *pPersona,
+                                  nzttIdentity *pCert,
+                                  int trustflag);
+
 
 #endif /* NZT_ORACLE */
 

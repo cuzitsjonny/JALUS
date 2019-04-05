@@ -66,7 +66,240 @@ It uses native APIs, provides low-level access to database-specific features.">
       </td>
 <!--Content--> <td align="left" valign="top">
       <h1 align="center"> SQLAPI++ Library</h1>
-      <h1 align="center"> Full History</h1>
+    <h1 align="center"> Full History</h1>
+        <table style="width: 100%;" border="0" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+            <tr bgcolor="blue">
+                <td><font color="#ffffff"><strong>29&nbsp;March 2019</strong></font></td>
+            </tr>
+            <tr>
+                <td>
+                    <p>Version 4.2.5.2 of SQLAPI++ library released.</p>
+                    <p>New features:</p>
+                    <ul>
+                        <li>SQL Anywhere: Fixes crash when unimplemented scrollable fetching used (thanks Christian Schmitz).</li>
+                        <li>Oracle: Fixed external connection handles attaching (thanks Frank Hilliger).</li>
+                        <li>General: sa_strncpy/sa_wcsncpy related fixes (thanks Manuel Baerten).</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+            <table style="width: 100%;" border="0" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+        <tr bgcolor="blue">
+            <td><font color="#ffffff"><strong>27&nbsp;February 2019</strong></font></td>
+        </tr>
+        <tr>
+            <td>
+                <p>Version 4.2.5 of SQLAPI++ library released.</p>
+                <p>New features:</p>
+                <ul>
+<li>General: Fixed parameter by name searching (thanks Frank Hilliger).</li>
+<li>SQL Anywhere: Fixed API initialization on Linux/Unix (thanks Christian Schmitz).</li>
+<li>General: Use safe CRT/LIBC functions when available.</li>
+<li>SQLite: Fixed default date/time type search option value (thanks Christian Schmitz).</li>
+<li>General: Added SAException::CommandText() method.</li>
+<li>General: Fixed STATIC DBMS API loading (thanks Manfred Kubica).</li>
+<li>SQLServer (OLEDB): Fixed bug with multiple connections.</li>
+<li>ODBC: API code reorganized.</li>
+<li>PostgreSQL: Added support for stored procedures.</li>
+<li>General: Throw SAException instead or assertion when required DBMS API function cannot be loaded.</li>
+<li>PostgreSQL: Do not destroy the result set returned by function so it's possible to process for example 'return table...' results (thanks Mike Moening).</li>
+<li>PostgreSQL: Improved function/procedure parameters detection for the current/default schema (thanks Mike Moening).</li>
+<li>ODBC: Increased the field/parameter length that should be converted to SA_dtString (helps with some buggy drivers, thanks Christian Schmitz).</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+        <table style="width: 100%;" border="0" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+        <tr bgcolor="blue">
+            <td><font color="#ffffff"><strong>28&nbsp;December 2018</strong></font></td>
+        </tr>
+        <tr>
+            <td>
+                <p>Version 4.2.4 of SQLAPI++ library released.</p>
+                <p>New features:</p>
+                <ul>
+<li>SQLServer (OLEDB): API code reorganized.</li>
+<li>SQLServer (ODBC): API code reorganized.</li>
+<li>SQLBase: API code reorganized.</li>
+<li>Interbase: API code reorganized.</li>
+<li>SQL Anywhere: API code reorganized.</li>
+<li>DB2: API code reorganized (special "STATIC" value for "DB2CLI.LIBS" option).</li>
+<li>Informix: API code reorganized (special "STATIC" value for "INFCLI.LIBS" option).</li>
+<li>Oracle: OCI8 code reorganized (special "STATIC" value for "OCI8.LIBS" option).</li>
+<li>Oracle: Added support for Implicit Results (thanks Georgiy Pakhutin).</li>
+<li>Oracle: Do not read timezone data for for the date/type types without it because this is too slow (thanks Sven REUTTER).</li>
+<li>Sybase: API code reorganized (special "STATIC" value for "SYBCT.LIBS" option).</li>
+<li>CubeSQL: API code reorganized (special "STATIC" value for "CUBESQL.LIBS" option).</li>
+<li>PostgreSQL: API code reorganized (special "STATIC" value for "LIBPQ.LIBS" option).</li>
+<li>SQLite: Added code to detect if the field in the result set is required (thanks Karoly Harmath).</li>
+<li>SQLite: API code reorganized (special "STATIC" value for "SQLITE.LIBS" option).</li>
+<li>MySQL: API code reorganized (special "STATIC" value for "MYSQL.LIBS" option).</li>
+<li>General: Sources split.</li>
+<li>SQLServer (ODBC): Fixed multi-result command procesing (Brendan Wilson).</li>
+<li>ODBC: Fixed input string buffer processing (thanks Alexander Goldnik).</li>
+<li>SQLServer (ODBC): Fixed bug with stored procedures have the output parameters and result sets with LOB fields (thanks Mike Moening).</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+        <table style="width: 100%;" border="0" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+        <tr bgcolor="blue">
+            <td><font color="#ffffff"><strong>20&nbsp;September 2018</strong></font></td>
+        </tr>
+        <tr>
+            <td>
+                <p>Version 4.2.3 of SQLAPI++ library released.</p>
+                <p>New features:</p>
+                <ul>
+<li>General: Added SAConnection::GetNextCommand method (enumerates SACommand-s).</li>
+<li>General: SA_USE_STL build option uses a map for input parameter names (improved performance for parameter by name searching).</li>
+<li>CubeSQL: Fixed setAutoCommit method (thanks Christian Schmitz).</li>
+<li>ODBC: Fixed input buffer length for SA_dtString (thanks Christian Schmitz).</li>
+<li>Sybase: Fixed connection problem related to OCS error messages 5701 and 5704 (thanks CK Yang).</li>
+<li>General: Optimized parameters parsing/creation algorithm for numeric binding parameter names.</li>
+<li>PostgreSQL: RefCursor implementation (thanks Danielle Gutfinger).</li>
+<li>CubeSQL: Added cubeSqlAPI::SetTraceFunction method (thanks Christian Schmitz).</li>
+<li>CubeSQL: Use GetUTF8Chars instead of GetMultiByteChars for Unicode SQLAPI (thanks Christian Schmitz).</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+            <table style="width: 100%;" border="0" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+        <tr bgcolor="blue">
+            <td><font color="#ffffff"><strong>5&nbsp;April 2018</strong></font></td>
+        </tr>
+        <tr>
+            <td>
+                <p>Version 4.2.2 of SQLAPI++ library released.</p>
+                <p>New features:</p>
+                <ul>
+<li>SQLServer: Support for Microsoft ODBC Driver 17 for SQL Server on Windows.</li>
+<li>ODBC: Fixed binding terminated null character (thanks Jarek Karciarz).</li>
+<li>SQL Anywhere: Support for API version 1 (thanks Christian Schmitz).</li>
+<li>InterBase: Fixed bug for modern InterBase versions without older XSQLVAR_V1 and SQLDA_VERSION1 support.</li>
+<li>InterBase: Fixed bug with boolean type differences for InterBase and Firebird.</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+        <table style="width: 100%;" border="0" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+        <tr bgcolor="blue">
+            <td><font color="#ffffff"><strong>19&nbsp;December 2017</strong></font></td>
+        </tr>
+        <tr>
+            <td>
+                <p>Version 4.2.1 of SQLAPI++ library released.</p>
+                <p>New features:</p>
+                <ul>
+<li>CubeSQL: Added experimental support of <a href="http://www.sqlabs.com">CubeSQL</a>.</li>
+<li>PostgreSQL: Microseconds instead of milliseconds used for the datetime values (thansk Sun-ho Lee).</li>
+<li>Oracle: Now UNICODE SQLAPI processes "OCI_ATTR_CHARSET_FORM" option so "SQLCS_IMPLICIT" value can be used instead of default "SQLCS_NCHAR".</li>
+<li>ODBC: Added "ODBCDisableLongLengthQuery" option to avoid crashes in incorrect ODBC drivers (thanks Christian Schmitz).</li>
+<li>ODBC: Added odbcExternalConnection class.</li>
+<li>SQLServer(ODBC): Auto-detect original connection string format.</li>
+<li>SQLite: Fixed bug with multi-command statement syntax parsing (thanks Christian Schmitz).</li>
+<li>MySQL: Use character set option before the connection established (username/password can contains not only ASCII characters, thank Bojan Hrnkas).</li>
+<li>SQL Anywhere: Use the connection mutex with the cursor to prevent 42W22 error.</li>
+<li>SQL Anywhere: Fixed setup auto-commit mode (thanks Peter Koukoulis).</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+               <table style="width: 100%;" border="0" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+        <tr bgcolor="blue">
+            <td><font color="#ffffff"><strong>30&nbsp;August 2017</strong></font></td>
+        </tr>
+        <tr>
+            <td>
+                <p>Version 4.1.12 of SQLAPI++ library released.</p>
+                <p>New features:</p>
+                <ul>
+<li>PostgreSQL: Corrected numeric field precision/scale(set -1) length(set 0) values when they are not defined by the server (thanks Peter Koukoulis).</li>
+<li>General: Added Intel Compiler build scripts (thanks Luca Teodori).</li>
+<li>SQL Anywhere: Use thread-safe library on Linux/Unix (thanks Peter Koukoulis).</li>
+<li>Informix: Fixed data length/indicator size (thanks Florian Apolloner).</li>
+<li>Informix: Fixed memory leak with SQLAttributeCol using according to IBM IT21378 (thanks Florian Apolloner).</li>
+<li>SQLServer(OLEDB): Added ssOleDbAPI::ProcessSQLServerErrorInfo() property that allows to exclude SQL Server erro iformation processing.</li>
+<li>MySQL: Added for loading by default also MariaDB client library (thanks Daniel Hideghethy).</li>
+<li>SQLite: Initail support for multi-command queries.</li>
+<li>SQLite: Added 'sqlite3_memory_used' and 'sqlite3_memory_highwater' native API functions (thanks Christian Schmitz).</li>
+<li>SQL Anywhere: SAConnection::setAutoCommit() command fixed (thanks Peter Koukoulis).</li>
+<li>SQLServer(ODBC): Added "SQL_COPT_SS_PRESERVE_CURSORS" connection option.</li>
+<li>General: Fixed character parameter type binding for all ODBC API (thanks Morten Sølvberg).</li>
+<li>SQLServer(ODBC): Fixed bug with multi-result statemets and LONG/LOB field dadata fetching (thanks Frederick Couste)</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+            <table style="width: 100%;" border="0" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+        <tr bgcolor="blue">
+            <td><font color="#ffffff"><strong>14&nbsp;April 2017</strong></font></td>
+        </tr>
+        <tr>
+            <td>
+                <p>Version 4.1.11 of SQLAPI++ library released.</p>
+                <p>New features:</p>
+                <ul>
+<li>General: Fixed bug with ODBC/CLI API and multiresult statement field binding (thanks Raymond Allen).</li>
+<li>General: Added build fiels for IBM xlC compiler, fixed DBMS lib names for AIX (thanks Ralph Dagdag).</li>
+<li>SQLServer(ODBC): Fixed problem with incorrect driver version number reported by sqlsrv32.dll (thanks Matt Fisher).</li>
+<li>Informix: Added support for "PreFetchRows" option.</li>
+<li>ODBC, DB2, Informix, SQLServer(ODBC): added "ExecDirect" SACommand option (use SQLExecDirect instead of SQLExecute).</li>
+<li>ODBC: fixed SQL_ATTR_ROWS_FETCHED_PTR attribute setup bug (thanks Ivano Cassis).</li>
+<li>PostgreSQL: Added "SetCursorName" command option.</li>
+<li>SQLServer (ODBC): Added support for Microsoft ODBC Driver 13 for SQL Server.</li>
+<li>ODBC: Fixed long text data length detection for Unicode variant (thanks Bjoern Eggstein).</li>
+<li>SQL Anywhere: Fixed bug with procedure/function parameters parsing (thanks Trent Bowman).</li>
+<li>General: Fixed UTF-8 mode of SAMultibyte2UnicodeConverter (thanks Emma Qin)</li>
+<li>General: Fixed quoted parameter name parsing (like :"my param", thanks Vyacheslav E.)</li>
+<li>InterBase: Fixed UTF-8 character set name (thanks Maria Harmon).</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+<table style="width: 100%;" border="0" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+        <tr bgcolor="blue">
+            <td><font color="#ffffff"><strong>4&nbsp;October 2016</strong></font></td>
+        </tr>
+        <tr>
+            <td>
+                <p>Version 4.1.10 of SQLAPI++ library released.</p>
+                <p>New features:</p>
+                <ul>
+<li>General: Fixed SAInterval internals.</li>
+<li>MySQL: Fixed statement API SA_dtInteral binding (thanks Sophia Wang).</li>
+<li>SQL Anywhere: Fixed bug with prepared statement execution (thanks Brad Blankenburg).</li>
+<li>SQLite: Added sqlite3_load_extension and sqlite3_free API functions.</li>
+<li>Sybase: Added CS_SEC_ENCRYPTION, CS_SEC_EXTENDED_ENCRYPTION, CS_SEC_NON_ENCRYPTION_RETRY connection options.</li>
+<li>MySQL: Fixed bug with the first SACommand::FetchPrior() call (thanks Dave Sulentic).</li>
+<li>PostgreSQL: Ignore unknown date/time formats (thanks Maria Harmon).</li>
+<li>MySQL: For multi-thread version try to load also MYSQL client lirary name without "_r" suffix (thanks Michael Noe).</li>
+<li>General: Added SA_STATIC_PGSQL build option.</li>
+<li>MySQL: Added MYSQL_SHARED_MEMORY_BASE_NAME connection option.</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
 <table style="width: 100%;" border="0" cellpadding="1" cellspacing="1" width="100%">
 <tbody>
 <tr bgcolor="blue">
@@ -2753,7 +2986,7 @@ commands from one connection are in the same transaction </li>
         </tbody>
       </table>
       <hr>
-      <p align="center"><font size="2">Last modified: 4 May 2016<br>
+      <p align="center"><font size="2">Last modified: 29 March 2019<br>
       <a href="mailto:webmaster@sqlapi.com">webmaster@sqlapi.com</a></font></p>
       </td>
     </tr>

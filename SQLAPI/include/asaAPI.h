@@ -6,11 +6,10 @@
 #define __ASAAPI_H__
 
 #include <SQLAPI.h>
+#include <samisc.h>
+
 #include <sqlca.h>
 #include <sacapi.h>
-
-extern void AddSQLAnywhereSupport(const SAConnection * pCon);
-extern void ReleaseSQLAnywhereSupport();
 
 typedef sacapi_bool (*sqlany_init_t)( const char * app_name, sacapi_u32 api_version, sacapi_u32 * max_version );
 typedef void (*sqlany_fini_t)();
@@ -60,6 +59,7 @@ class SQLAPI_API asaAPI : public saAPI
 public:
 	asaAPI();
 
+public:
 	sqlany_init_t sqlany_init;
 	sqlany_fini_t sqlany_fini;
 	sqlany_new_connection_t sqlany_new_connection;
@@ -94,13 +94,30 @@ public:
 	sqlany_error_t sqlany_error;
 	sqlany_sqlstate_t sqlany_sqlstate;
 	sqlany_clear_error_t sqlany_clear_error;
-// newer API
+	// newer API
 	sqlany_init_ex_t sqlany_init_ex;
 	sqlany_fini_ex_t sqlany_fini_ex;
 	sqlany_new_connection_ex_t sqlany_new_connection_ex;
 	sqlany_make_connection_ex_t sqlany_make_connection_ex;
 	sqlany_client_version_ex_t sqlany_client_version_ex;
 	sqlany_cancel_t sqlany_cancel;
+
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+
+	void ResetAPI();
+	void LoadAPI();
+	void InitEnv(const SAConnection * pCon);
+	void UnInitEnv();
 };
 
 class SQLAPI_API asaConnectionHandles : public saConnectionHandles
@@ -116,7 +133,5 @@ public:
 	asaCommandHandles();
 	a_sqlany_stmt *pStmt;
 };
-
-extern asaAPI g_asaAPI;
 
 #endif //__ASAAPI_H__

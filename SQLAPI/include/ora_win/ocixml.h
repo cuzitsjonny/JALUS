@@ -1,4 +1,4 @@
-/* Copyright (c) 2003, 2009, Oracle and/or its affiliates.
+/* Copyright (c) 2003, 2012, Oracle and/or its affiliates. 
 All rights reserved. */
  
 /* 
@@ -38,6 +38,7 @@ All rights reserved. */
    NOTES
 
    MODIFIED   (MM/DD/YY)
+   yinlu       07/26/12 - remove xml0.h, a private header
    spetride    03/02/09 - add isdoc to OCIXMLTypeCreateFromSrc*
    bsthanik    01/17/07 - 5753599: wrappers for service mutex acq/rel
    bkhaladk    05/10/06 - add setpicklepref 
@@ -53,8 +54,8 @@ All rights reserved. */
 # include <oci.h>
 #endif
 
-#ifndef XML0_ORACLE
-# include <xml0.h>
+#ifndef XML_ORACLE
+#include <xml.h>
 #endif
 
 #ifndef OCIXML_ORACLE
