@@ -173,7 +173,7 @@ class is <strong>User-defined error</strong> the <strong>ErrNativeCode</strong>
 method returns an error code specified by user (see <a
  href="Exception_throwUserException.html">throwUserException</a>
 method). If error class is <strong>Library error</strong> the <strong>ErrNativeCode</strong>
-method returns -1. </p>
+method returns -1 or any special code defined in <strong>SALibraryErrorType_t </strong>enum. </p>
       <p> To get the error class call <a href="Exception_ErrClass.html">ErrClass</a>
 method. </p>
       <h3>Server specific notes</h3>
@@ -188,8 +188,6 @@ about DBMS API error code.</p>
 some problems on using the Library, please, send e-mail to <a
  href="mailto:howto@sqlapi.com">howto@sqlapi.com</a>. </p>
       </td>
-    </tr>
-    <tr>
     </tr>
   </tbody>
 </table>

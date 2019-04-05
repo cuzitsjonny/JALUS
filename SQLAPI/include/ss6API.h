@@ -5,7 +5,8 @@
 #if !defined(__SS6API_H__)
 #define __SS6API_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 // API header(s)
 #define DBNTWIN32

@@ -24,21 +24,21 @@ int main(int argc, char* argv[])
 		p.setParamType(SA_dtLong);
 		cmd.Execute();
 		long nID = p.asLong();
-		sa_printf(_TSA("NEW ID %d\n"), nID);
+		sa_tprintf(_TSA("NEW ID %d\n"), nID);
 		cmd.setCommandText(_TSA("select id,description from t1"));
 		cmd.Execute();
 		while (cmd.FetchNext())
 		{
-			sa_printf(_TSA("%d "), cmd[1].asLong());
-			sa_printf((const SAChar*)cmd[2].asString());
-			sa_printf(_TSA("\n"));
+			sa_tprintf(_TSA("%d "), cmd[1].asLong());
+			sa_tprintf((const SAChar*)cmd[2].asString());
+			sa_tprintf(_TSA("\n"));
 		}
 	}
 	catch (SAException &x)
 	{
-		sa_printf(_TSA("ERR: "));
-		sa_printf((const SAChar*)x.ErrText());
-		sa_printf(_TSA("\n"));
+		sa_tprintf(_TSA("ERR: "));
+		sa_tprintf((const SAChar*)x.ErrText());
+		sa_tprintf(_TSA("\n"));
 	}
 
 	return 0;

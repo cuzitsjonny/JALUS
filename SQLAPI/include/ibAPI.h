@@ -1,13 +1,12 @@
 /*!
  * interface for the IibClient class.
- * 
- * Copyright (c) 2005 by <your name/ organization here>
  */
 
 #if !defined(__IBAPI_H__)
 #define __IBAPI_H__
 
-#include "SQLAPI.h"
+#include <SQLAPI.h>
+#include <samisc.h>
 
 #ifdef __SUNPRO_CC
 #include <inttypes.h>
@@ -21,11 +20,6 @@
 #else
 #define ISC_NULL_HANDLE	NULL
 #endif
-
-extern long g_nIB_DLLVersionLoaded;
-
-extern void AddIBSupport(const SAConnection *pCon);
-extern void ReleaseIBSupport();
 
 typedef ISC_STATUS  (ISC_EXPORT *isc_attach_database_t) (ISC_STATUS ISC_FAR *, 
 					    short, 
@@ -853,6 +847,7 @@ class SQLAPI_API ibAPI : public saAPI
 public:
 	ibAPI();
 
+public:
 	isc_add_user_t				isc_add_user;
 	isc_array_gen_sdl_t			isc_array_gen_sdl;
 	isc_array_get_slice_t		isc_array_get_slice;
@@ -967,6 +962,21 @@ public:
 	isc_version_t	isc_version;
 	fb_interpret_t	fb_interpret;
 
+public:
+	virtual void InitializeClient(const SAConnection *pConnection);
+	virtual void UnInitializeClient(bool unloadAPI);
+
+	virtual long GetClientVersion() const;
+
+	virtual ISAConnection *NewConnection(SAConnection *pConnection);
+
+protected:
+	void  *m_hLibrary;
+	SAMutex m_loaderMutex;
+	long m_nIB_DLLVersionLoaded;
+
+	void ResetAPI();
+	void LoadAPI();
 };
 
 class SQLAPI_API ibConnectionHandles : public saConnectionHandles
@@ -985,7 +995,5 @@ public:
 
 	isc_stmt_handle	m_stmt_handle;
 };
-
-extern ibAPI g_ibAPI;
 
 #endif // !defined(__IBAPI_H__)

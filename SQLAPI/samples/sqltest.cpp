@@ -25,20 +25,22 @@ int main(int/* argc*/, char** /* argv[]*/)
 	SAConnection con;
 
 	// print menu
-	sa_printf(_TSA("1.\tOracle\n"));
-	sa_printf(_TSA("2.\tSQL Server\n"));
-	sa_printf(_TSA("3.\tDB2\n"));
-	sa_printf(_TSA("4.\tInformix\n"));
-	sa_printf(_TSA("5.\tSybase\n"));
-	sa_printf(_TSA("6.\tInterBase\n"));
-	sa_printf(_TSA("7.\tSQLBase\n"));
-	sa_printf(_TSA("8.\tMySQL\n"));
-	sa_printf(_TSA("9.\tPostrgeSQL\n"));
-	sa_printf(_TSA("0.\tODBC\n"));
-	sa_printf(_TSA("a.\tSQLite\n"));
+	sa_tprintf(_TSA("1.\tOracle\n"));
+	sa_tprintf(_TSA("2.\tSQL Server\n"));
+	sa_tprintf(_TSA("3.\tDB2\n"));
+	sa_tprintf(_TSA("4.\tInformix\n"));
+	sa_tprintf(_TSA("5.\tSybase\n"));
+	sa_tprintf(_TSA("6.\tInterBase\n"));
+	sa_tprintf(_TSA("7.\tSQLBase\n"));
+	sa_tprintf(_TSA("8.\tMySQL\n"));
+	sa_tprintf(_TSA("9.\tPostrgeSQL\n"));
+	sa_tprintf(_TSA("0.\tODBC\n"));
+	sa_tprintf(_TSA("a.\tSQLite\n"));
+	sa_tprintf(_TSA("b.\tSQLAnywhere\n"));
+	sa_tprintf(_TSA("c.\tCubeSQL\n"));
 
 
-	SAChar ch = (SAChar)sa_getchar();
+	SAChar ch = (SAChar)sa_gettchar();
 	try
 	{
 		switch(ch)
@@ -79,6 +81,9 @@ int main(int/* argc*/, char** /* argv[]*/)
 		case _TSA('b'):
 			con.setClient(SA_SQLAnywhere_Client);
 			break;
+		case _TSA('c'):
+			con.setClient(SA_CubeSQL_Client);
+			break;
 		default:
 			return 0;
 		}
@@ -89,26 +94,26 @@ int main(int/* argc*/, char** /* argv[]*/)
 			short minor = (short)(nVersionClient & 0xFFFF);
 			short major = (short)(nVersionClient >> 16);
 		
-			sa_printf(_TSA("Client version: %hd.%hd\n"), major, minor);
+			sa_tprintf(_TSA("Client version: %hd.%hd\n"), major, minor);
 		}
 		else
 		{
-			sa_printf(_TSA("Client version: unknown before connection\n"));
+			sa_tprintf(_TSA("Client version: unknown before connection\n"));
 		}
 
-		sa_printf(_TSA("Database name (connection string):\t"));
+		sa_tprintf(_TSA("Database name (connection string):\t"));
 		SAString sDatabase;
-		sa_scanf(_TSA("%") SA_FMT_STR, sDatabase.GetBuffer(1024));
+		sa_tscanf(_TSA("%") SA_FMT_STR, sDatabase.GetBuffer(1024));
 		sDatabase.ReleaseBuffer();
-		sa_printf(_TSA("User name:\t"));
+		sa_tprintf(_TSA("User name:\t"));
 		SAString sUsername;
-		sa_scanf(_TSA("%") SA_FMT_STR, sUsername.GetBuffer(1024));
+		sa_tscanf(_TSA("%") SA_FMT_STR, sUsername.GetBuffer(1024));
 		sUsername.ReleaseBuffer();
 		if( 0 == sUsername.CompareNoCase(_TSA("-")) )
 			sUsername.Empty();
-		sa_printf(_TSA("Password:\t"));
+		sa_tprintf(_TSA("Password:\t"));
 		SAString sPassword;
-		sa_scanf(_TSA("%") SA_FMT_STR, sPassword.GetBuffer(1024));
+		sa_tscanf(_TSA("%") SA_FMT_STR, sPassword.GetBuffer(1024));
 		sPassword.ReleaseBuffer();
 		if( 0 == sPassword.CompareNoCase(_TSA("-")) )
 			sPassword.Empty();
@@ -118,8 +123,8 @@ int main(int/* argc*/, char** /* argv[]*/)
 		long nVersionServer = con.ServerVersion();
 		short minor = (short)(nVersionServer & 0xFFFF);
 		short major = (short)(nVersionServer >> 16);
-		sa_printf(_TSA("Server: %") SA_FMT_STR _TSA("\n"), (const SAChar*)con.ServerVersionString());
-		sa_printf(_TSA("Server version: %hd.%hd\n"), major, minor);
+		sa_tprintf(_TSA("Server: %") SA_FMT_STR _TSA("\n"), (const SAChar*)con.ServerVersionString());
+		sa_tprintf(_TSA("Server version: %hd.%hd\n"), major, minor);
 		
 		if(!nVersionClient)
 		{
@@ -129,11 +134,11 @@ int main(int/* argc*/, char** /* argv[]*/)
 				short minor = (short)(nVersionClient & 0xFFFF);
 				short major = (short)(nVersionClient >> 16);
 		
-				sa_printf(_TSA("Client version: %hd.%hd\n"), major, minor);
+				sa_tprintf(_TSA("Client version: %hd.%hd\n"), major, minor);
 			}
 			else
 			{
-				sa_printf(_TSA("Client version: unknown after connection\n"));
+				sa_tprintf(_TSA("Client version: unknown after connection\n"));
 			}
 		}
 	}
@@ -152,7 +157,7 @@ int main(int/* argc*/, char** /* argv[]*/)
 		{
 		}
 		// print error message
-		sa_printf(_TSA("Error text: %") SA_FMT_STR _TSA("\n"), (const SAChar*)x.ErrText());
+		sa_tprintf(_TSA("Error text: %") SA_FMT_STR _TSA("\n"), (const SAChar*)x.ErrText());
 	}
 
 	return 0;

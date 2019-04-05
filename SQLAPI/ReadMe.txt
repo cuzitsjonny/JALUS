@@ -1,5 +1,5 @@
 ﻿****************************************************************
-               Welcome to SQLAPI++ Library 4.1.9
+               Welcome to SQLAPI++ Library 4.2.5.2
 ****************************************************************
 
 1. INTRODUCTION
@@ -59,6 +59,121 @@ src\sqlapi_ss		- batch file to compile SQLAPI++ Solaris Studio C++ compiler (rel
 We recommend to recompile the SQLAPI++ binaries on platform it should be used.
 
 3. LATEST CHANGES
+
+Version 4.2.5.2
+-- SQL Anywhere: Fixes crash when unimplemented scrollable fetching used (thanks Christian Schmitz).
+-- Oracle: Fixed external connection handles attaching (thanks Frank Hilliger).
+-- General: sa_strncpy/sa_wcsncpy related fixes (thanks Manuel Baerten).
+
+Version 4.2.5
+-- General: Fixed parameter by name searching (thanks Frank Hilliger).
+-- SQL Anywhere: Fixed API initialization on Linux/Unix (thanks Christian Schmitz).
+-- General: Use safe CRT/LIBC functions when available.
+-- SQLite: Fixed default date/time type search option value (thanks Christian Schmitz).
+-- General: Added SAException::CommandText() method.
+-- General: Fixed STATIC DBMS API loading (thanks Manfred Kubica).
+-- SQLServer (OLEDB): Fixed bug with multiple connections.
+-- ODBC: API code reorganized.
+-- PostgreSQL: Added support for stored procedures.
+-- General: Throw SAException instead or assertion when required DBMS API function cannot be loaded.
+-- PostgreSQL: Do not destroy the result set returned by function so it's possible to process for example 'return table...' results (thanks Mike Moening).
+-- PostgreSQL: Improved function/procedure parameters detection for the current/default schema (thanks Mike Moening).
+-- ODBC: Increased the field/parameter length that should be converted to SA_dtString (helps with some buggy drivers, thanks Christian Schmitz).
+-- General: Fixed using native API on Linux/Unix (thanks Peter Klotz).
+
+Version 4.2.4
+-- SQLServer (OLEDB): API code reorganized.
+-- SQLServer (ODBC): API code reorganized.
+-- SQLBase: API code reorganized.
+-- Interbase: API code reorganized.
+-- SQL Anywhere: API code reorganized.
+-- DB2: API code reorganized (special "STATIC" value for "DB2CLI.LIBS" option).
+-- Informix: API code reorganized (special "STATIC" value for "INFCLI.LIBS" option).
+-- Oracle: OCI8 code reorganized (special "STATIC" value for "OCI8.LIBS" option).
+-- Oracle: Added support for Implicit Results (thanks Georgiy Pakhutin).
+-- Oracle: Do not read timezone data for for the date/type types without it because this is too slow (thanks Sven REUTTER).
+-- Sybase: API code reorganized (special "STATIC" value for "SYBCT.LIBS" option).
+-- CubeSQL: API code reorganized (special "STATIC" value for "CUBESQL.LIBS" option).
+-- PostgreSQL: API code reorganized (special "STATIC" value for "LIBPQ.LIBS" option).
+-- SQLite: Added code to detect if the field in the result set is required (thanks Karoly Harmath).
+-- SQLite: API code reorganized (special "STATIC" value for "SQLITE.LIBS" option).
+-- MySQL: API code reorganized (special "STATIC" value for "MYSQL.LIBS" option).
+-- General: Sources split.
+-- SQLServer (ODBC): Fixed multi-result command procesing (Brendan Wilson).
+-- ODBC: Fixed input string buffer processing (thanks Alexander Goldnik).
+-- SQLServer (ODBC): Fixed bug with stored procedures have the output parameters and result sets with LOB fields (thanks Mike Moening).
+
+Version 4.2.3
+-- General: Added SAConnection::GetNextCommand method (enumerates SACommand-s).
+-- General: SA_USE_STL build option uses a map for input parameter names (improved performance for parameter by name searching).
+-- CubeSQL: Fixed setAutoCommit method (thanks Christian Schmitz).
+-- ODBC: Fixed input buffer length for SA_dtString (thanks Christian Schmitz).
+-- Sybase: Fixed connection problem related to OCS error messages 5701 and 5704 (thanks CK Yang).
+-- General: Optimized parameters parsing/creation algorithm for numeric binding parameter names.
+-- PostgreSQL: RefCursor implementation (thanks Danielle Gutfinger).
+-- CubeSQL: Added cubeSqlAPI::SetTraceFunction method (thanks Christian Schmitz).
+-- CubeSQL: Use GetUTF8Chars instead of GetMultiByteChars for Unicode SQLAPI (thanks Christian Schmitz).
+
+Version 4.2.2
+-- SQLServer: Support for Microsoft ODBC Driver 17 for SQL Server on Windows.
+-- ODBC: Fixed binding terminated null character (thanks Jarek Karciarz).
+-- SQL Anywhere: Support for API version 1 (thanks Christian Schmitz).
+-- InterBase: Fixed bug for modern InterBase versions without older XSQLVAR_V1 and SQLDA_VERSION1 support.
+-- InterBase: Fixed bug with boolean type differences for InterBase and Firebird.
+
+Version 4.2.1
+-- CubeSQL: Added experimental support of CubeSQL (http://www.sqlabs.com/).
+-- PostgreSQL: Microseconds instead of milliseconds used for the datetime values (thansk Sun-ho Lee).
+-- Oracle: Now UNICODE SQLAPI processes "OCI_ATTR_CHARSET_FORM" option so "SQLCS_IMPLICIT" value can be used instead of default "SQLCS_NCHAR". 
+-- ODBC: Added "ODBCDisableLongLengthQuery" option to avoid crashes in incorrect ODBC drivers (thanks Christian Schmitz).
+-- ODBC: Added odbcExternalConnection class.
+-- SQLServer(ODBC): Auto-detect original connection string format.
+-- SQLite: Fixed bug with multi-command statement syntax parsing (thanks Christian Schmitz).
+-- MySQL: Use character set option before the connection established (username/password can contains not only ASCII characters, thank Bojan Hrnkas).
+-- SQL Anywhere: Use the connection mutex with the cursor to prevent 42W22 error.
+-- SQL Anywhere: Fixed setup auto-commit mode (thanks Peter Koukoulis).
+
+Version 4.1.12
+-- PostgreSQL: Corrected numeric field precision/scale(set -1) length(set 0) values when they are not defined by the server (thanks Peter Koukoulis).
+-- General: Added Intel Compiler build scripts (thanks Luca Teodori).
+-- SQL Anywhere: Use thread-safe library on Linux/Unix (thanks Peter Koukoulis).
+-- Informix: Fixed data length/indicator size (thanks Florian Apolloner)
+-- Informix: Fixed memory leak with SQLAttributeCol using according to IBM IT21378 (thanks Florian Apolloner).
+-- SQLServer(OLEDB): Added ssOleDbAPI::ProcessSQLServerErrorInfo() property that allows to exclude SQL Server erro iformation processing.
+-- MySQL: Added for loading by default also MariaDB client library (thanks Daniel Hideghethy).
+-- SQLite: Initail support for multi-command queries.
+-- SQLite: Added 'sqlite3_memory_used' and 'sqlite3_memory_highwater' native API functions (thanks Christian Schmitz).
+-- SQL Anywhere: SAConnection::setAutoCommit() command fixed (thanks Peter Koukoulis).
+-- SQLServer(ODBC): Added "SQL_COPT_SS_PRESERVE_CURSORS" connection option.
+-- General: Fixed character parameter type binding for all ODBC API (thanks Morten Sølvberg).
+-- SQLServer(ODBC): Fixed bug with multi-result statemets and LONG/LOB field dadata fetching (thanks Frederick Couste).
+
+Version 4.1.11
+-- General: Fixed bug with ODBC/CLI API and multiresult statement field binding (thanks Raymond Allen).
+-- General: Added build fiels for IBM xlC compiler, fixed DBMS lib names for AIX (thanks Ralph Dagdag).
+-- SQLServer(ODBC): Fixed problem with incorrect driver version number reported by sqlsrv32.dll (thanks Matt Fisher).
+-- Informix: Added support for "PreFetchRows" option.
+-- ODBC, DB2, Informix, SQLServer(ODBC): added "ExecDirect" SACommand option (use SQLExecDirect instead of SQLExecute).
+-- ODBC: fixed SQL_ATTR_ROWS_FETCHED_PTR attribute setup bug (thanks Ivano Cassis).
+-- PostgreSQL: Added "SetCursorName" command option.
+-- SQLServer (ODBC): Added support for Microsoft ODBC Driver 13 for SQL Server.
+-- ODBC: Fixed long text data length detection for Unicode variant (thanks Bjoern Eggstein).
+-- SQL Anywhere: Fixed bug with procedure/function parameters parsing (thanks Trent Bowman).
+-- General: Fixed UTF-8 mode of SAMultibyte2UnicodeConverter (thanks Emma Qin)
+-- General: Fixed quoted parameter name parsing (like :"my param", thanks Vyacheslav E.)
+-- InterBase: Fixed UTF-8 character set name (thanks Maria Harmon).
+
+Version 4.1.10
+-- General: Fixed SAInterval internals.
+-- MySQL: Fixed statement API SA_dtInteral binding (thanks Sophia Wang).
+-- SQL Anywhere: Fixed bug with prepared statement execution (thanks Brad Blankenburg).
+-- SQLite: Added sqlite3_load_extension and sqlite3_free API functions.
+-- Sybase: Added CS_SEC_ENCRYPTION, CS_SEC_EXTENDED_ENCRYPTION, CS_SEC_NON_ENCRYPTION_RETRY connection options.
+-- MySQL: Fixed bug with the first SACommand::FetchPrior() call (thanks Dave Sulentic).
+-- PostgreSQL: Ignore unknown date/time formats (thanks Maria Harmon).
+-- MySQL: For multi-thread version try to load also MYSQL client lirary name without "_r" suffix (thanks Michael Noe).
+-- General: Added SA_STATIC_PGSQL build option.
+-- MySQL: Added MYSQL_SHARED_MEMORY_BASE_NAME connection option.
 
 Version 4.1.9
 -- Oracle: Fixed bug with CLOB reading and using multi-byte client encoding (thanks Peter Klotz).

@@ -3,10 +3,10 @@ rem set path=D:\MinGW\4.9.2-tdm64\bin;%PATH%
 rem set path=d:\mingw\4.6.3\bin;%PATH%
 rem set path=d:\mingw\4.5.1\bin;%PATH%
 rem set path=d:\mingw\4.4.1\bin;%PATH%
-rem set path=d:\mingw\3.4.2\bin;%PATH%
+set path=d:\mingw\3.4.2\bin;%PATH%
 rem set PATH=c:\Dev-Cpp\bin;%PATH%
 rem set PATH=C:\Program Files\CodeBlocks\MinGW\bin;%PATH%
-set PATH=c:\mingw\bin;%PATH%
+rem set PATH=c:\mingw\bin;%PATH%
 
 rem ***********************************
 rem Special build configuration defines
@@ -19,7 +19,7 @@ rem SA_64BIT		build 64-bit version
 rem SA_32BIT		build 32-bit version
 rem ***********************************
 
-set SA_OPTIONS="OBJS=test.obj"
+set SA_OPTIONS=SA_UNICODE=1 OBJS=bugtest.obj
 
 echo ------------------------
 echo --- Building release ---

@@ -1,9 +1,9 @@
 /*
- Copyright (c) 1982, 2008, Oracle and/or its affiliates.All rights reserved. 
+ Copyright (c) 1982, 2012, Oracle and/or its affiliates. All rights reserved. 
 */
 
 /*
- * $Header: oracore3/public/oratypes.h /nt/21 2009/01/01 19:48:06 sabchoud Exp $
+ * $Header: oracore3/public/oratypes.h /nt/22 2012/03/30 05:32:52 vtalluru Exp $
  */
  
 
