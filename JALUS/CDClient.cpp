@@ -1331,7 +1331,9 @@ bool CDClient::getIsEquippable(long lot)
 		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
 
 		stringstream ss;
-		ss << "SELECT equipLocation FROM ItemComponent WHERE id = '" << lot << "';";
+		//ss << "SELECT equipLocation FROM ItemComponent WHERE id = '" << lot << "';";
+		ss << "SELECT equipLocation  FROM ItemComponent WHERE id = ";
+		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '11');";
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
 		cmd.Execute();

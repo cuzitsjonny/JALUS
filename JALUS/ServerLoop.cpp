@@ -158,21 +158,21 @@ void ServerLoop::start()
 	ServerLoop::run = true;
 	while (ServerLoop::run)
 	{
-		RakSleep(30);
-		Scheduler::tick();
+		try {
+			RakSleep(30);
+			Scheduler::tick();
 
-		packet = Server::getPeerInterface()->Receive();
-		if (packet == NULL)
-			continue;
+			packet = Server::getPeerInterface()->Receive();
+			if (packet == NULL)
+				continue;
 
-		data = new BitStream(packet->data, packet->length, false);
-		clientAddress = packet->systemAddress;
+			data = new BitStream(packet->data, packet->length, false);
+			clientAddress = packet->systemAddress;
 
-		if ((data->GetNumberOfUnreadBits() / 8) >= 1)
-		{
-			unsigned char rakNetPacketID;
-			data->Read(rakNetPacketID);
-			try {
+			if ((data->GetNumberOfUnreadBits() / 8) >= 1)
+			{
+				unsigned char rakNetPacketID;
+				data->Read(rakNetPacketID);
 				switch (rakNetPacketID)
 				{
 
@@ -246,16 +246,15 @@ void ServerLoop::start()
 					Logger::info("Server received a packet with unknown MessageID! (MessageID: " + to_string((int)rakNetPacketID) + ") (Address: " + string(clientAddress.ToString()) + ")");
 					break;
 				}
-
 				}
 			}
-			catch (...) {
-				Logger::error("Switch case error. Please report the following to Ellie: (Data: " + to_string(data) + ")");
-			}
-		}
 
-		Server::getPeerInterface()->DeallocatePacket(packet);
-		delete data;
+			Server::getPeerInterface()->DeallocatePacket(packet);
+			delete data;
+		}
+		catch (exception& e) {
+			Logger::error("Switch case error. Please report the following to Ellie: (Data: " + to_string(e.what()) + ")");
+		}
 	}
 }
 

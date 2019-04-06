@@ -16,6 +16,6 @@ public:
 	static void syncStatValues();
 	static long doMaxedStatMath(long currentStat, long additionalStat, long maxStat);
 	static double randomInRange(double min, double max);
-	static void respawnObject(ReplicaObject* replica, SystemAddress clientAddress);
+	static void respawnObject(ReplicaObject* replica);
 	static void broadcastJonnysDumbEffects();
 };

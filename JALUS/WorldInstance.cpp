@@ -124,7 +124,8 @@ void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddr
 
 			TransitionInfos::insertTransitionInfo(clientAddress, session->accountID, session->charID, session->transitionKey);
 			CharactersInstance::sendCharacterList(clientAddress);
-			General::redirectToServer(clientAddress, nextInstanceAddress, nextInstancePort, false);
+			Scheduler::runAsyncTaskLater(1000, General::redirectToServer, clientAddress, nextInstanceAddress, nextInstancePort, false);
+			//General::redirectToServer(clientAddress, nextInstanceAddress, nextInstancePort, false);
 		}
 		break;
 	}

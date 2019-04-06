@@ -225,12 +225,16 @@ double Helpers::randomInRange(double min, double max)
 	//return min + static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / (max - min)));
 }
 
-void Helpers::respawnObject(ReplicaObject* replica, SystemAddress clientAddress)
+void Helpers::respawnObject(ReplicaObject* replica)
 {
 	//Logger::info("Attempted respawn");
 	ObjectsManager::spawnObject(replica);
 	Server::getReplicaManager()->ReferencePointer(replica);
-	GameMessages::playFXEffect(replica->objectID, 729, L"create", 1.0F, "regenerationflash", 1.0F, -1, clientAddress);
+	for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+	{
+		SystemAddress clientAddress = Server::getReplicaManager()->GetParticipantAtIndex(i);
+		GameMessages::playFXEffect(replica->objectID, 729, L"create", 1.0F, "regenerationflash", 1.0F, -1, clientAddress);
+	}
 	//GameMessages::stopFXEffect(replica->objectID, "regenerationflash", false, clientAddress);
 }
 

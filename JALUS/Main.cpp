@@ -46,7 +46,12 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				Logger::info("Server started! (Port: " + to_string(Config::getPort()) + ") (ServerRole: " + ServerRoles::toString(serverRole) + ")");
 
-				ServerLoop::start();
+				try {
+					ServerLoop::start();
+				}
+				catch (exception& e) {
+					Logger::error("Switch case error. Please report the following to Ellie: (Data: " + to_string(e.what()) + ")");
+				}
 
 				Server::shutdown();
 			}
