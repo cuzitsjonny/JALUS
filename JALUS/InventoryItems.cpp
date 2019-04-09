@@ -4,6 +4,7 @@
 #include "Objects.h"
 #include "Server.h"
 
+vector<InventoryItem> InventoryItems::phantomStorage;
 string InventoryItems::name;
 
 void InventoryItems::init(string name, string structure)
@@ -118,6 +119,35 @@ InventoryType InventoryItems::getInventoryType(ItemType itemType)
 	}
 }
 
+//long long InventoryItems::createPhantomItem(long long charID, long lot, bool isEquipped, bool isProxy)
+long long InventoryItems::createPhantomItem(long long charID, long lot, bool isEquipped)
+{
+	long long id = Objects::createObject(lot);
+	InventoryItem phantom;
+	phantom.objectID = id;
+	phantom.ownerID = charID;
+	phantom.lot = lot;
+	phantom.itemType = ItemType::INVALID_ITEM_TYPE;
+	phantom.invType = InventoryType::INVALID_INVENTORY_TYPE;
+	phantom.slot = 1;
+	phantom.count = 1;
+	phantom.isBound = false;
+	phantom.isEquipped = isEquipped;
+	//phantom.isProxy = isProxy;
+
+	phantomStorage.push_back(phantom);
+
+	return id;
+}
+
+vector<InventoryItem> InventoryItems::getPhantomItems(long long ownerID)
+{
+	for (int i = 0; i < phantomStorage.size(); i++)
+		if (phantomStorage[i].ownerID == ownerID)
+			return phantomStorage;
+
+}
+
 long long InventoryItems::createInventoryItem(long long ownerID, long lot, long count, bool isBound, bool isEquipped)
 {
 	long long id = Objects::createObject(lot);
@@ -126,6 +156,7 @@ long long InventoryItems::createInventoryItem(long long ownerID, long lot, long 
 
 	return id;
 }
+
 
 void InventoryItems::createInventoryItem(long long objectID, long long ownerID, long lot, long count, bool isBound, bool isEquipped)
 {

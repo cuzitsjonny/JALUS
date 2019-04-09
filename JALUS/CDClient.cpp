@@ -1369,6 +1369,50 @@ bool CDClient::getIsEquippable(long lot)
 
 	return r;
 }
+bool CDClient::hasSubItems(long lot)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	bool r = false;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		//ss << "SELECT equipLocation FROM ItemComponent WHERE id = '" << lot << "';";
+		ss << "SELECT subItems FROM ItemComponent WHERE id = ";
+		ss << "(SELECT component_id FROM ComponentsRegistry WHERE id = '" << lot << "' AND component_type = '11');";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			string items = cmd.Field("subItems").asString();
+			if (items == "")
+				r = false;
+			else
+				r = true;
+
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
 vector<long> CDClient::getSubItems(long lot)
 {
 	SAConnection con;
@@ -1396,10 +1440,199 @@ vector<long> CDClient::getSubItems(long lot)
 			for (int i = 0; i < p.size(); i++)
 			{
 				//Logger::info("SubItemsIndv: " + p[i]);
-				r.push_back(stol(p.at(i)));
+				try {
+					r.push_back(stol(p.at(i)));
+				}
+				catch (exception& e) {
+					// Literally nothing here
+				}					
 			}
 
 		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+bool CDClient::isAnimationValid(string animationID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	bool r = false;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT animationGroupID FROM Animations WHERE animation_type = '" << animationID << "';";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+		{
+			string isValid = cmd.Field("animationGroupID").asString();
+			if (isValid == "")
+				r = false;
+			else
+				r = true;
+
+		}
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+string CDClient::getAnimationOfEmote(int emoteID)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	string r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT animationName FROM Emotes WHERE id = '" << emoteID << "';";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+			r = cmd.Field("animationName").asString();
+
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+
+string CDClient::getBrickColorName(int brickColor)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	string r;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT description FROM BrickColors WHERE id = '" << brickColor << "';";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+			r = cmd.Field("description").asString();
+
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+bool CDClient::getBrickColorCharacterValid(int brickColor)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	bool r = false;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT validCharacters FROM BrickColors WHERE id = '" << brickColor << "';";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+			r = cmd.Field("validCharacters").asBool();
+
+		con.Commit();
+		con.Disconnect();
+	}
+	catch (SAException &x)
+	{
+		try
+		{
+			con.Rollback();
+		}
+		catch (SAException &) {}
+	}
+
+	return r;
+}
+
+long CDClient::getTemplateFromName(string name)
+{
+	SAConnection con;
+	SACommand cmd;
+
+	long r = -1;
+
+	try
+	{
+		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
+
+		stringstream ss;
+		ss << "SELECT id FROM Objects WHERE name = '" << name << "';";
+		cmd.setConnection(&con);
+		cmd.setCommandText(ss.str().c_str());
+		cmd.Execute();
+
+		while (cmd.FetchNext())
+			r = cmd.Field("id").asLong();
+
 
 		con.Commit();
 		con.Disconnect();

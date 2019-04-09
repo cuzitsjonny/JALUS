@@ -46,18 +46,31 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_PICKUP_ITEM = 139,
 	GAME_MESSAGE_ID_PICKUP_CURRENCY = 137,
 	GAME_MESSAGE_ID_PLAYER_LOADED = 505,
+	GAME_MESSAGE_ENABLE_REBUILD = 213,
+	GAME_MESSAGE_REBUILD_CANCEL = 209,
+	// equipment
 	GAME_MESSAGE_MOVE_ITEM_IN_INVENTORY = 224,
 	GAME_MESSAGE_REMOVE_ITEM_FROM_INVENTORY = 230,
 	GAME_MESSAGE_EQUIP_INVENTORY = 231,
 	GAME_MESSAGE_UNEQUIP_INVENTORY = 233,
-	GAME_MESSAGE_ENABLE_REBUILD = 213,
-	GAME_MESSAGE_REBUILD_CANCEL = 209,
+	GAME_MESSAGE_USE_NON_EQUIPMENT_ITEM = 603,
 	// player
 	GAME_MESSAGE_ID_SET_PLAYER_NAME = 72,
+	// animations
+	GAME_MESSAGE_ID_SMASH = 537,
+	GAME_MESSAGE_ID_UNSMASH = 538,
+	GAME_MESSAGE_ID_PLAY_EMOTE = 41,
+	GAME_MESSAGE_ID_PLAY_ANIMATION = 43,
+	//buffs
+	GAME_MESSAGE_ID_ADD_BUFF = 1647,
+	GAME_MESSAGE_ID_REMOVE_BUFF = 1648,
 	//skills
 	GAME_MESSAGE_ID_ADD_SKILL = 127,
 	GAME_MESSAGE_ID_REMOVE_SKILL = 128,
 	GAME_MESSAGE_ID_SELECT_SKILL = 124,
+	// misc
+	GAME_MESSAGE_ID_SET_JETPACK_MODE = 561,
+	GAME_MESSAGE_ID_SET_GRAVITY_SCALE = 541,
 	// statistics
 	GAME_MESSAGE_ID_MODIFY_PLAYER_ZONE_STATISTIC = 1046,
 	//racing
@@ -135,4 +148,9 @@ public:
 	static void clientDropLoot(long long objectID, int iCurrency, long lot, long long owner, long long sourceObj, Position spawnPosition, Position finalPosition, SystemAddress receiver);
 	static void addSkill(long long objectID, long skillid, long slot, SystemAddress receiver);
 	static void removeSkill(long long objectID, long skillid, bool fromSkillSet, SystemAddress receiver);
+	//static void playAnimation(long long objectID, wstring animationID, bool expectAnimToExist, bool playImmediate, bool triggerOnCompleteMsg, float priority, float scale, SystemAddress receiver);
+	static void playAnimation(long long objectID, wstring animationID, bool playImmediate, SystemAddress receiver);
+
+	static void smash(long long objectID, float force, float ghostOpacity, long long killerID, SystemAddress receiver);
+	static void unsmash(long long objectID, long long builderID, float duration, SystemAddress receiver);
 };

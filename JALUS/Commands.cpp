@@ -72,6 +72,148 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			}
 		}
 	}*/
+	/*else if (iequals(cmd, "addbuff") || iequals(cmd, "buff"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() >= 1) {
+				/*bool addedByTeammate;
+				bool applyOnTeammates;
+				bool cancelOnDamageAbsorbRanOut;
+				bool cancelOnDamaged;
+				bool cancelOnDeath = true;
+				bool cancelOnLogOut;
+				bool cancelOnMove;
+				bool cancelOnRemoveBuff = true;
+				bool cancelOnUI;
+				bool cancelOnUnEquip;
+				bool cancelOnZone;
+				bool ignoreImmunities;
+				bool isImmunity;
+				bool useRefCount;
+				long long casterID;
+				long long i64AddedBy;
+				unsigned long uiBuffID;
+				unsigned long uiDuractionMS;*/
+				/*bool addedByTeammate = false;
+				bool applyOnTeammates = false;
+				bool cancelOnDamageAbsorbRanOut = false;
+				bool cancelOnDamaged = false;
+				bool cancelOnDeath = true;
+				bool cancelOnLogOut = true;
+				bool cancelOnMove = false;
+				bool cancelOnRemoveBuff = true;
+				bool cancelOnUI = false;
+				bool cancelOnUnEquip = false;
+				bool cancelOnZone = true;
+				bool ignoreImmunities = false;
+				bool isImmunity = false;
+				bool useRefCount = false;
+				long long casterID;
+				long long i64AddedBy;
+				unsigned long uiBuffID;
+				unsigned long uiDuractionMS;
+				BitStream* packet = PacketUtils::createGMBase(sender.getSenderID(), GAME_MESSAGE_ID_ADD_BUFF);
+				packet->Write(addedByTeammate);
+				packet->Write(applyOnTeammates);
+				packet->Write(cancelOnDamageAbsorbRanOut);
+				packet->Write(cancelOnDamaged);
+				packet->Write(cancelOnDeath);
+				packet->Write(cancelOnLogOut);
+				packet->Write(cancelOnMove);
+				packet->Write(cancelOnRemoveBuff);
+				packet->Write(cancelOnUI);
+				packet->Write(cancelOnUnEquip);
+				packet->Write(cancelOnZone);
+				packet->Write(ignoreImmunities);
+				packet->Write(isImmunity);
+				packet->Write(useRefCount);
+				packet->Write(sender.getSenderID());
+				packet->Write(sender.getSenderID());
+
+				packet->Write(args.at(0));
+				if (args.size() >= 2)
+					packet->Write(args.at(1));
+
+				Server::sendPacket(packet, sender.getClientAddress());
+
+
+			}
+			else
+				sender.sendMessage("/" + cmd + " <u32:buffID> <u32:durationMS>");
+
+		}
+	}
+	else if (iequals(cmd, "removebuff") || iequals(cmd, "debuff"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1) {
+				bool fromRemoveBehavior = false;
+				bool fromUnEquip = false;
+				bool removeImmunity = true;
+				unsigned long buffID;
+				BitStream* packet = PacketUtils::createGMBase(sender.getSenderID(), GAME_MESSAGE_ID_REMOVE_BUFF);
+				packet->Write(fromRemoveBehavior);
+				packet->Write(fromUnEquip);
+				packet->Write(removeImmunity);
+				packet->Write(args.at(0));
+				Server::sendPacket(packet, sender.getClientAddress());
+			}
+			else
+				sender.sendMessage("/" + cmd + " <u32:buffID>");
+		}
+	}*/
+	else if (iequals(cmd, "play") || iequals(cmd, "animation") || iequals(cmd, "playAnimation") || iequals(cmd, "anim") || iequals(cmd, "playanim"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() >= 1) {
+				if (CDClient::isAnimationValid(args.at(0)))
+					Helpers::broadcastAnimation(sender.getSenderID(), args.at(0));
+				else
+					sender.sendMessage(args.at(0) + " is not a valid animation!");
+			}
+		}
+	}
+	else if (iequals(cmd, "online") || iequals(cmd, "players") || iequals(cmd, "list"))
+	{ // This is a messy mess. Nevertheless, I want it, so hah.
+		int count = Server::getReplicaManager()->GetParticipantCount();
+		string list = "There are currently ";
+		list.append(to_string(count));
+		list.append(" player(s) online: ");
+		for (int k = 0; k < count; k++)
+		{
+			if (count == 1) {
+				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
+				list.append(to_string(ObjectsManager::getObjectBySystemAddress(participant)->name) + ".");
+			}
+			else if (count == 2) {
+				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
+				list.append(to_string(ObjectsManager::getObjectBySystemAddress(participant)->name));
+				if (k == (count - 2))
+					list.append(" and ");
+				else if (k == (count - 1))
+					list.append(".");
+			}
+			else {
+				if (k == (count-1))
+					list.append("and ");
+				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
+				list.append(to_string(ObjectsManager::getObjectBySystemAddress(participant)->name));
+				if (k < (count-1))
+					list.append(", ");
+				else
+					list.append(".");
+			}
+		}
+
+		sender.sendMessage(list);
+		/*if (sender.getSenderID() != -1)
+			sender.sendMessage(list);
+		else
+			Logger::info(list);*/
+	}
 	else if (iequals(cmd, "invsize"))
 	{
 		if (sender.getSenderID() != -1)
@@ -83,6 +225,28 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 				Characters::setMaxInventory(newMaxInventory, sender.getSenderID());
 				GameMessages::setInventorySize(sender.getSenderID(), InventoryType::INVENTORY_TYPE_DEFAULT, newMaxInventory, sender.getClientAddress());
 			}
+		}
+	}
+	else if (iequals(cmd, "equipment"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+			sender.sendMessage(to_string(player->inventoryIndex->items.size()) + " items.");
+		}
+	}
+	else if (iequals(cmd, "unequipall"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+			sender.sendMessage(to_string(player->inventoryIndex->items.size()) + " items.");
+			for (int k = player->inventoryIndex->items.size(); k--;)
+			{
+				Helpers::unequip(sender.getSenderID(), player->inventoryIndex->items[k].objectID, sender.getClientAddress());
+			}
+			sender.sendMessage(to_string(player->inventoryIndex->items.size()) + " items.");
+			ObjectsManager::serializeObject(player);
 		}
 	}
 	else if (iequals(cmd, "setattr"))
@@ -131,7 +295,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 	}
 
-	else if (iequals(cmd, "setlevel"))
+	/*else if (iequals(cmd, "setlevel"))
 	{
 
 		if (args.size() == 1)
@@ -145,70 +309,46 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			ObjectsManager::serializeObject(replica);
 		}
 
-	}
+	}*/
 
-	else if (iequals(cmd, "setname"))
+	/*else if (iequals(cmd, "setname"))
 	{
-
 		if (args.size() == 1)
 		{
 			ReplicaObject* replica = ObjectsManager::getObjectByID(sender.getSenderID());
 			Characters::setName(args.at(0), sender.getSenderID());
+
+			Session* session = Sessions::getSession(sender.getClientAddress());
+			BitStream* packet = PacketUtils::createGMBase(session->charID, GAME_MESSAGE_ID_SET_PLAYER_NAME);
+			
+			wstring name = to_wstring(args.at(0));
+			packet->Write(name);
+
+			Server::sendPacket(packet, sender.getClientAddress());
+
 			ObjectsManager::serializeObject(replica);
 		}
 
-	}
+	}*/
 
-	else if (iequals(cmd, "addSkillFromLOT"))
+	else if (iequals(cmd, "addSkillFromLOT") || iequals(cmd, "addSkill"))
 	{
 		if (args.size() == 1)
 		{
-			long itemType = CDClient::getItemType(stol(args.at(0)));
-
-			long hotbarslot = 4;
-			if (itemType == ItemType::ITEM_TYPE_HAIR || ItemType::ITEM_TYPE_HAT)
-				hotbarslot = 3;
-			if (itemType == ItemType::ITEM_TYPE_NECK)
-				hotbarslot = 2;
-			if (itemType == ItemType::ITEM_TYPE_RIGHT_HAND)
-				hotbarslot = 0;
-			if (itemType == ItemType::ITEM_TYPE_LEFT_HAND)
-				hotbarslot = 1;
-
-			// SlitherStriker = 13276
-			// Nightlasher = 13275
-			// Energy Spork = 13277
-			// Zapzapper = 13278
-
-			long skillid = CDClient::getSkillID(stol(args.at(0)), 0);
-			if (stol(args.at(0)) == 13276 ||
-				stol(args.at(0)) == 13275 ||
-				stol(args.at(0)) == 13277 ||
-				stol(args.at(0)) == 13278)
-				skillid = 148;
-			if (skillid != -1)
-				GameMessages::addSkill(sender.getSenderID(), skillid, hotbarslot, sender.getClientAddress());
-
+			Helpers::addSkill(sender.getSenderID(), stol(args.at(0)), sender.getClientAddress());
+			
 		}
 	}
 
-	else if (iequals(cmd, "removeSkillFromLOT"))
+	else if (iequals(cmd, "removeSkillFromLOT") || iequals(cmd, "removeSkill"))
 	{
 		if (args.size() == 1)
 		{
-			long skillid = CDClient::getSkillID(stol(args.at(0)), 0);
-			if (stol(args.at(0)) == 13276 ||
-				stol(args.at(0)) == 13275 ||
-				stol(args.at(0)) == 13277 ||
-				stol(args.at(0)) == 13278)
-				skillid = 148;
-			if (skillid != -1)
-				GameMessages::removeSkill(sender.getSenderID(), skillid, false, sender.getClientAddress());
-
+			Helpers::removeSkill(sender.getSenderID(), stol(args.at(0)), sender.getClientAddress());
 		}
 	}
 
-	else if (iequals(cmd, "sendchat") || iequals(cmd, "chat") || iequals(cmd, "say"))
+	else if (iequals(cmd, "sendchat") || iequals(cmd, "chat"))
 	{
 		if (args.size() >= 1)
 		{
@@ -221,15 +361,22 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			Helpers::sendGlobalChat(to_wstring(globalChatMsg));
 		}
 
-		else if (sender.getSenderID() != -1)
-		{
-			sender.sendMessage("You need to say something!"); 
-		}
 		else
-		{
-			Logger::info("You need to say something!");
-		}
+			sender.sendMessage("You need to say something!"); 
 	}
+
+	/*else if (iequals(cmd, "playfx"))
+	{
+		if (sender.getSenderID() != -1)
+		{
+			if (args.size() == 1)
+			{
+				GameMessages::playFXEffect(sender.getSenderID(), 167, L"jetpack", 1.0F, "binocular_alert", 1.0F, -1, sender.getClientAddress());
+
+				
+			}
+		}
+	}*/
 
 	else if (iequals(cmd, "setcoins"))
 	{
@@ -237,16 +384,16 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 		{
 			if (args.size() == 1)
 			{
-				Session* session = Sessions::getSession(sender.getClientAddress());
-				ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+				//Session* session = Sessions::getSession(sender.getClientAddress());
+				ReplicaObject* replica = ObjectsManager::getObjectByID(sender.getSenderID());
 				long long newCurrency = stoll(args.at(0));
-				Characters::setCurrency(newCurrency, session->charID);
+				Characters::setCurrency(newCurrency, sender.getSenderID());
 				Position position;
 				position.x = replica->controllablePhysicsIndex->pos_x;
 				position.y = replica->controllablePhysicsIndex->pos_y;
 				position.z = replica->controllablePhysicsIndex->pos_z;
 
-				GameMessages::setCurrency(session->charID, newCurrency, position, session->clientAddress);
+				GameMessages::setCurrency(sender.getSenderID(), newCurrency, position, sender.getClientAddress());
 			}
 			else
 			{
@@ -257,7 +404,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 	else if (iequals(cmd, "drop")) // drop [lot]
 	{
-		Session* session = Sessions::getSession(sender.getClientAddress());
+		//Session* session = Sessions::getSession(sender.getClientAddress());
 		
 		//GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
 		if (sender.getSenderID() != -1)
@@ -266,13 +413,13 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			{
 				Position finalPosition;
 				Position spawnPosition;
-				ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
+				ReplicaObject* charObj = ObjectsManager::getObjectByID(sender.getSenderID());
 				finalPosition.x = charObj->controllablePhysicsIndex->pos_x;
 				finalPosition.y = charObj->controllablePhysicsIndex->pos_y;
 				finalPosition.z = charObj->controllablePhysicsIndex->pos_z;
 
 
-				GameMessages::clientDropLoot(session->charID, 0, stol(args.at(0)), session->charID, session->charID, spawnPosition, finalPosition, session->clientAddress);
+				GameMessages::clientDropLoot(sender.getSenderID(), 0, stol(args.at(0)), sender.getSenderID(), sender.getSenderID(), spawnPosition, finalPosition, sender.getClientAddress());
 			}
 			else
 			{
@@ -292,13 +439,13 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			if (args.size() == 1)
 			{
 				Position position;
-				ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
+				ReplicaObject* charObj = ObjectsManager::getObjectByID(sender.getSenderID());
 				position.x = charObj->controllablePhysicsIndex->pos_x;
 				position.y = charObj->controllablePhysicsIndex->pos_y;
 				position.z = charObj->controllablePhysicsIndex->pos_z;
 
 
-				GameMessages::clientDropLoot(session->charID, stoi(args.at(0)), 0, session->charID, session->charID, position, position, session->clientAddress);
+				GameMessages::clientDropLoot(sender.getSenderID(), stoi(args.at(0)), 0, sender.getSenderID(), sender.getSenderID(), position, position, sender.getClientAddress());
 			}
 			else
 			{
@@ -312,11 +459,11 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 		if (sender.getSenderID() != -1)
 		{
 			bool enabled = true;
-			//excessive, I know
 			bool bBypassChecks = true; //default: false
 			bool bDoHover = false;
 			bool bUse = true;
-			int effectID = -1; //I wanna know the ID
+			//int effectID = 158; //default: -1
+			int effectID = -1; //default: -1
 			float fAirspeed = 10;
 			float fMaxAirspeed = 15;
 			float fVertVel = 1;
@@ -328,11 +475,11 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 				{
 					bUse = false;
 				}
-				else
+				/*else
 				{
 					fAirspeed = stof(args.at(0));
 					fMaxAirspeed = fAirspeed + 5;
-				}
+				}*/
 			}
 			else
 			{
@@ -349,7 +496,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			{
 				Session* session = Sessions::getSession(sender.getClientAddress());
 
-				BitStream* enableJetpack = PacketUtils::createGMBase(session->charID, 561);
+				BitStream* enableJetpack = PacketUtils::createGMBase(sender.getSenderID(), GAME_MESSAGE_ID_SET_JETPACK_MODE);
 				enableJetpack->Write((bool)bBypassChecks);
 				enableJetpack->Write((bool)bDoHover);
 				enableJetpack->Write((bool)bUse);
@@ -358,7 +505,15 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 				enableJetpack->Write((float)fMaxAirspeed); // fMaxAirspeed
 				enableJetpack->Write((float)fVertVel); // fVertVel
 				enableJetpack->Write((int)iWarningEffectID); // iWarningEffectID
+
 				Server::sendPacket(enableJetpack, sender.getClientAddress());
+				//Server::broadcastPacket(enableJetpack, sender.getClientAddress());
+				/*for (int k = 0; k < Server::getReplicaManager()->GetParticipantCount(); k++)
+				{
+					SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
+					Server::sendPacket(enableJetpack, participant);
+					//Server::broadcastPacket(enableJetpack, sender.getClientAddress());
+				}*/
 			}
 			else
 			{
@@ -378,7 +533,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			if (args.size() == 1)
 			{
 				Session* session = Sessions::getSession(sender.getClientAddress());
-				BitStream* updateGravity = PacketUtils::createGMBase(session->charID, 541);
+				BitStream* updateGravity = PacketUtils::createGMBase(sender.getSenderID(), GAME_MESSAGE_ID_SET_GRAVITY_SCALE);
 				sender.sendMessage("Gravity set to: " + args.at(0));
 
 				//15-47
@@ -393,14 +548,11 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 				//updateGravity->Write(0f);
 
 				//sender.sendMessage("Gravity set to: " + grav);
+
 				Server::sendPacket(updateGravity, sender.getClientAddress());
+				//Server::broadcastPacket(updateGravity, sender.getClientAddress());
 
 			}
-
-			
-
-
-
 
 		}
 
@@ -418,12 +570,13 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 				if (args.size() == 2)
 					amount = stol(args.at(1));
 
-				if (amount = 1)
+				if (amount == 1)
 				{
 					long lot = stol(strLOT);
 
 					Helpers::createSyncedItemStack(sender.getSenderID(), lot, amount, true, true, sender.getClientAddress());
 				}
+				//else 
 			}
 		}
 	}
@@ -504,7 +657,8 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 					sender.sendMessage("The second argument has to be a valid unsigned short int!");
 			}
 			else
-				sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <address> <port>");
+				sender.sendMessage("Pong!");
+				//sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <address> <port>");
 		}
 	}
 

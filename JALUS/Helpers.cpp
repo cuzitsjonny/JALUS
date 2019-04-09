@@ -13,7 +13,6 @@
 #include "ObjectsManager.h"
 #include "Objects.h"
 #include "Logger.h"
-#include "Chat.h"
 #include "Characters.h"
 #include "Common.h"
 #include "ValueStorage.h"
@@ -92,6 +91,130 @@ void Helpers::createSyncedItemStack(long long ownerID, long lot, long count, boo
 	
 }
 
+void Helpers::createProxyItemStack(long long ownerID, long lot, long count, bool isBound, bool isEquipped, SystemAddress clientAddress, bool showFlyingLoot)
+{
+	long long id = InventoryItems::createInventoryItem(ownerID, lot, count, isBound, isEquipped);
+	InventoryItem item = InventoryItems::getInventoryItem(id);
+	item.invType = InventoryType::_INVENTORY_TYPE_TEMP_ITEMS;
+
+	GameMessages::addItemToInventory(item.ownerID, item.isBound, item.lot, item.invType, item.count, count, item.objectID, item.slot, clientAddress, showFlyingLoot);
+	InventoryItems::setInventoryType(InventoryType::_INVENTORY_TYPE_TEMP_ITEMS, item.objectID);
+	Helpers::equip(item.ownerID, item.objectID, clientAddress, false);
+}
+
+void Helpers::equip(long long charID, long long objectID, SystemAddress clientAddress, bool saved)
+{
+	ReplicaObject* player = ObjectsManager::getObjectByID(charID);
+	vector<InventoryItem> items = InventoryItems::getInventoryItems(charID);
+	for (int k = items.size(); k--;) {
+		if (items[k].objectID == objectID) {
+			if (saved)
+				InventoryItems::setIsEquipped(true, objectID);
+			player->inventoryIndex->items.push_back(items[k]);
+			Helpers::addSkill(charID, items[k].lot, clientAddress);
+			ObjectsManager::serializeObject(player);
+			break;
+		}
+	}
+}
+
+void Helpers::unequip(long long charID, long long objectID, SystemAddress clientAddress)
+{
+	ReplicaObject* player = ObjectsManager::getObjectByID(charID);
+	for (int k = player->inventoryIndex->items.size(); k--;)
+	{
+		if (player->inventoryIndex->items[k].objectID == objectID) {
+			InventoryItems::setIsEquipped(false, player->inventoryIndex->items[k].objectID);
+			player->inventoryIndex->items[k].isEquipped = false;
+			player->inventoryIndex->items.erase(player->inventoryIndex->items.begin() + (k));
+			Helpers::removeSkill(charID, player->inventoryIndex->items[k].lot, clientAddress);
+			ObjectsManager::serializeObject(player);
+			break;
+		}
+	}
+}
+
+void Helpers::setupProxy(long long charID, long long objectID, SystemAddress clientAddress)
+{
+	ReplicaObject* player = ObjectsManager::getObjectByID(charID);
+	long lot = Objects::getLOT(objectID);
+	//Logger::info(to_string(lot));
+	if (CDClient::hasSubItems(Objects::getLOT(objectID)))
+	{
+		vector<long> subs = CDClient::getSubItems(Objects::getLOT(objectID));
+		for (int i = 0; i < subs.size(); i++)
+		//for (int i = subs.size(); i--;)
+			Helpers::createProxyItemStack(charID, subs[i], 0, false, false, clientAddress, false);
+	}
+}
+
+
+void Helpers::resetProxy(long long charID, long long objectID, SystemAddress clientAddress)
+{
+	//Logger::info(to_string(CDClient::hasSubItems(Objects::getLOT(objectID))));
+	ReplicaObject* player = ObjectsManager::getObjectByID(charID);
+	if (CDClient::hasSubItems(Objects::getLOT(objectID)))
+	{
+		//player->inventoryIndex->items = InventoryItems::getEquippedInventoryItems(charID);
+		vector<long> subs = CDClient::getSubItems(Objects::getLOT(objectID));
+		for (int i = subs.size(); i--;)
+		{
+			for (int k = player->inventoryIndex->items.size(); k--;)
+			{
+				if (player->inventoryIndex->items[k].objectID != objectID)
+				{
+					if (player->inventoryIndex->items[k].lot == subs[i])
+					{
+						if (player->inventoryIndex->items[k].count == 0)
+						{
+							Helpers::unequip(charID, player->inventoryIndex->items[k].objectID, clientAddress);
+							//InventoryItems::deleteInventoryItem(player->inventoryIndex->items[k].objectID);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void Helpers::addSkill(long long charID, long lot, SystemAddress clientAddress) {
+	long skillid = CDClient::getSkillID(lot, 0);
+	if (lot == 13276 ||
+		lot == 13275 ||
+		lot == 13277 ||
+		lot == 13278)
+		skillid = 148;
+	if (skillid != -1) {
+		long itemType = CDClient::getItemType(lot);
+		long hotbarslot = 4;
+		if (itemType == ItemType::ITEM_TYPE_HAIR || ItemType::ITEM_TYPE_HAT)
+			hotbarslot = 3;
+		if (itemType == ItemType::ITEM_TYPE_NECK)
+			hotbarslot = 2;
+		if (itemType == ItemType::ITEM_TYPE_RIGHT_HAND)
+			hotbarslot = 0;
+		if (itemType == ItemType::ITEM_TYPE_LEFT_HAND)
+			hotbarslot = 1;
+		if (itemType != ItemType::INVALID_ITEM_TYPE) {
+			//Logger::info("Adding skill for LOT " + to_string(lot));
+			GameMessages::addSkill(charID, skillid, hotbarslot, clientAddress);
+		}
+	}
+}
+
+void Helpers::removeSkill(long long charID, long lot, SystemAddress clientAddress) {
+	long skillid = CDClient::getSkillID(lot, 0);
+	if (lot == 13276 ||
+		lot == 13275 ||
+		lot == 13277 ||
+		lot == 13278)
+		skillid = 148;
+	if (skillid != -1) {
+		//Logger::info("Removing skill for LOT " + to_string(lot));
+		GameMessages::removeSkill(charID, skillid, false, clientAddress);
+	}
+}
+
 void Helpers::broadcastEffect(long long objectID, long effectID, wstring effectType, float scale, string name, float priority, long long secondary, SystemAddress receiver, bool serialize)
 {
 	//GameMessages::playFXEffect(objectID, effectID, effectType, scale, name, priority, secondary, receiver);
@@ -105,6 +228,18 @@ void Helpers::broadcastEffect(long long objectID, long effectID, wstring effectT
 		{
 			GameMessages::playFXEffect(replica->objectID, effectID, effectType, scale, name, priority, secondary, ObjectsManager::getObjectBySystemAddress(participant)->clientAddress, serialize);
 		}
+	}
+}
+
+void Helpers::broadcastAnimation(long long objectID, string animation)
+{
+	for (int k = 0; k < Server::getReplicaManager()->GetParticipantCount(); k++)
+	{
+		SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
+		ReplicaObject* replica = ObjectsManager::getObjectByID(objectID);
+
+		if (replica != nullptr)
+			GameMessages::playAnimation(objectID, to_wstring(animation), true, ObjectsManager::getObjectBySystemAddress(participant)->clientAddress);
 	}
 }
 
@@ -175,6 +310,7 @@ void Helpers::deathCheck(long long charid, wstring deathType, SystemAddress clie
 		player->statsIndex->cur_armor = 0;
 		player->statsIndex->cur_imagination = 0;
 		Helpers::dropCoinsOnDeath(clientAddress);
+
 		for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 		{
 			SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
@@ -229,7 +365,7 @@ void Helpers::respawnObject(ReplicaObject* replica)
 {
 	//Logger::info("Attempted respawn");
 	ObjectsManager::spawnObject(replica);
-	Server::getReplicaManager()->ReferencePointer(replica);
+	//Server::getReplicaManager()->ReferencePointer(replica);
 	for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 	{
 		SystemAddress clientAddress = Server::getReplicaManager()->GetParticipantAtIndex(i);

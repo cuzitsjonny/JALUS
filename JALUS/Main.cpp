@@ -34,6 +34,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			if (zoneID != ZoneID::INVALID_ZONE_ID) {
 				serverRole = ServerRoles::fromZoneID(zoneID);
 				SetConsoleTitle(string(ZoneIDs::toPrintString(ServerRoles::toZoneID(serverRole))).c_str());
+				srand(time(0));
 			}
 		}
 
@@ -50,7 +51,9 @@ int _tmain(int argc, _TCHAR* argv[])
 					ServerLoop::start();
 				}
 				catch (exception& e) {
-					Logger::error("Switch case error. Please report the following to Ellie: (Data: " + to_string(e.what()) + ")");
+					string error(e.what());
+					Logger::error("Switch case error. Please report the following to Ellie: (Data: '" + error + "')");
+					//std::cout << e.what();
 				}
 
 				Server::shutdown();

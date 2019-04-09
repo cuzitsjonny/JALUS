@@ -253,7 +253,8 @@ void ServerLoop::start()
 			delete data;
 		}
 		catch (exception& e) {
-			Logger::error("Switch case error. Please report the following to Ellie: (Data: " + to_string(e.what()) + ")");
+			string error(e.what());
+			Logger::error("Switch case error. Please report the following to Ellie: (Data: '" + error + "')");
 		}
 	}
 }

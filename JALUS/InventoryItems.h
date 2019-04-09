@@ -29,20 +29,27 @@ public:
 	long count = -1;
 	bool isBound = false;
 	bool isEquipped = false;
-	bool isProxy = false;
+	//bool isProxy = false;
 };
 
 class InventoryItems
 {
+private:
+	static vector<InventoryItem> phantomStorage;
 public:
 	static string name;
 
 	static void init(string name, string structure);
 
 	static InventoryType getInventoryType(ItemType itemType);
+	//static long long createPhantomItem(long long charID, long lot, bool isEquipped, bool isProxy);
+	static long long createPhantomItem(long long charID, long lot, bool isEquipped);
+	static vector<InventoryItem> getPhantomItems(long long objectID);
+	//static vector<InventoryItem> phantomStorage;
 
 	static long long createInventoryItem(long long ownerID, long lot, long count, bool isBound, bool isEquipped);
 	static void createInventoryItem(long long objectID, long long ownerID, long lot, long count, bool isBound, bool isEquipped);
+
 	static void deleteInventoryItem(long long objectID);
 	static void deleteInventoryItems(long long ownerID);
 

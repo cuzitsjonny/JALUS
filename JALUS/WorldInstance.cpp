@@ -124,8 +124,8 @@ void WorldInstance::processWorldPacket(BitStream* data, SystemAddress clientAddr
 
 			TransitionInfos::insertTransitionInfo(clientAddress, session->accountID, session->charID, session->transitionKey);
 			CharactersInstance::sendCharacterList(clientAddress);
-			Scheduler::runAsyncTaskLater(1000, General::redirectToServer, clientAddress, nextInstanceAddress, nextInstancePort, false);
-			//General::redirectToServer(clientAddress, nextInstanceAddress, nextInstancePort, false);
+			//Scheduler::runAsyncTaskLater(1000, General::redirectToServer, clientAddress, nextInstanceAddress, nextInstancePort, false);
+			General::redirectToServer(clientAddress, nextInstanceAddress, nextInstancePort, false);
 		}
 		break;
 	}
@@ -256,10 +256,10 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 		{
 			xml << "<cur>";
 
-			//for (int i = 0; i < misCur.size(); i++)
-			for (int i = misCur.size(); i-- > 0; )
+			for (int i = 0; i < misCur.size(); i++)
+			//for (int i = misCur.size(); i-- > 0; )
 			{
-				Logger::info(to_string(i));
+				//Logger::info(to_string(i));
 				MissionInfo info = misCur.at(i);
 
 				xml << "<m id=\"" << info.missionID << "\">";
@@ -360,8 +360,16 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 				current = InventoryType::INVENTORY_TYPE_MODELS;
 				break;
 
+			case _INVENTORY_TYPE_TEMP_ITEMS:
+				current = InventoryType::_INVENTORY_TYPE_TEMP_ITEMS;
+				break;
+
 			case INVENTORY_TYPE_MODELS:
 				current = InventoryType::INVENTORY_TYPE_BEHAVIORS;
+				break;
+
+			case INVENTORY_TYPE_TEMP_MODELS:
+				current = InventoryType::INVENTORY_TYPE_TEMP_MODELS;
 				break;
 
 			case INVENTORY_TYPE_BEHAVIORS:
@@ -370,6 +378,10 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 
 			case _INVENTORY_TYPE_PROPERTIES:
 				current = InventoryType::INVENTORY_TYPE_COMMENDATIONS;
+				break;
+
+			case _INVENTORY_TYPE_VENDOR_SELL_SPACE:
+				current = InventoryType::_INVENTORY_TYPE_VENDOR_SELL_SPACE;
 				break;
 
 			case INVENTORY_TYPE_COMMENDATIONS:
@@ -508,33 +520,37 @@ void WorldInstance::broadcastPositionUpdate(BitStream* data, SystemAddress clien
 		case ZONE_ID_VENTURE_EXPLORER:
 		{
 			if (index->pos_y < 562)
-			{
 				Helpers::deathCheck(session->charID, L"electro-shock-death", clientAddress);
-			}
 			break;
+		}
+
+		/*case ZONE_ID_AVANT_GARDENS:
+		{
+			/*if (index->pos_x > 312 && index->pos_z > 166)
+				if (index->pos_y < 355) // LAUNCH AREA
+					Helpers::deathCheck(session->charID, L"shark-death", clientAddress);*/
+			//if (index->pos_x > -736 && index->pos_z < 634)
+				//if (index->pos_x > -736 && index->pos_z < 634)
+			/*if (index->pos_x > -736 && index->pos_z > 128)
+				if (index->pos_x < -280 && index->pos_z < 634)
+					if (index->pos_y < 220) // SPIDER CAVE
+						Helpers::deathCheck(session->charID, L"", clientAddress);
+		}*/
+
+		case ZONE_ID_NIMBUS_STATION:
+		{
+			if (index->pos_x < 120 && index->pos_y < 280 && index->pos_z > -412)
+				Helpers::deathCheck(session->charID, L"shark-death", clientAddress);
+			else if (index->pos_y < 242)
+				Helpers::deathCheck(session->charID, L"shark-death", clientAddress);
 		}
 		
-		case ZONE_ID_PORTABELLO:
+		case ZONE_ID_PET_COVE:
 		{
-			//if (index->pos_y < 300 || (index->pos_z < 165 && index->pos_z > 300))
-			//if (index->pos_z > 165)
-			if (index->pos_z < -165 || index->pos_y < 300)
-			{
-				//Logger::info("Criteria was met to reset characters position.");
-				Position spawnPos = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()))->spawnPointPos;
-				Rotation spawnRot = LUZCache::getByZoneID(ServerRoles::toZoneID(Server::getServerRole()))->spawnPointRot;
-				for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-				{
-					SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
-
-					GameMessages::teleport(session->charID, false, false, true, true, spawnPos, participant, spawnRot);
-					//GameMessages::resurrect(session->charID, false, participant);
-				} 
-				//Helpers::deathCheck(session->charID, L"electro-shock-death", clientAddress);
-			}
-			break;
+			if (index->pos_y < 134)
+				Helpers::deathCheck(session->charID, L"big-shark-death", clientAddress);
 		}
-
+		
 		default:
 			break;
 

@@ -1,4 +1,5 @@
 #include "CharacterStyles.h"
+#include "CDClient.h"
 #include "Config.h"
 #include "Logger.h"
 #include "Server.h"
@@ -40,234 +41,34 @@ void CharacterStyles::init(string name, string structure)
 	}
 }
 
-long CharacterStyles::getLOTFromStyle(long shirtColor, long shirtStyle)
+long CharacterStyles::getLOTFromStyle(long shirtColor, long shirtStyle) // CDCLIENT
 {
 	long lot = -1;
 
-	if (shirtStyle > 34)
-	{
-		switch (shirtColor)
-		{
-
-		case 0:
-			lot = 5730;
-			break;
-
-		case 1:
-			lot = 5736;
-			break;
-
-		case 3:
-			lot = 5808;
-			break;
-
-		case 5:
-			lot = 5754;
-			break;
-
-		case 6:
-			lot = 5760;
-			break;
-
-		case 7:
-			lot = 5766;
-			break;
-
-		case 8:
-			lot = 5772;
-			break;
-
-		case 9:
-			lot = 5778;
-			break;
-
-		case 10:
-			lot = 5784;
-			break;
-
-		case 11:
-			lot = 5802;
-			break;
-
-		case 13:
-			lot = 5796;
-			break;
-
-		case 14:
-			lot = 5802;
-			break;
-
-		case 15:
-			lot = 5808;
-			break;
-
-		case 16:
-			lot = 5814;
-			break;
-
-		case 84:
-			lot = 5820;
-			break;
-
-		case 96:
-			lot = 5826;
-			break;
-
-		}
-
-		lot += (shirtStyle - 35);
-	}
-	else
-	{
-		switch (shirtColor)
-		{
-
-		case 0:
-			lot = 4049;
-			break;
-
-		case 1:
-			lot = 4083;
-			break;
-
-		case 3:
-			lot = 4151;
-			break;
-
-		case 5:
-			lot = 4185;
-			break;
-
-		case 6:
-			lot = 4219;
-			break;
-
-		case 7:
-			lot = 4263;
-			break;
-
-		case 8:
-			lot = 4287;
-			break;
-
-		case 9:
-			lot = 4321;
-			break;
-
-		case 10:
-			lot = 4355;
-			break;
-
-		case 11:
-			lot = 4389;
-			break;
-
-		case 13:
-			lot = 4423;
-			break;
-
-		case 14:
-			lot = 4457;
-			break;
-
-		case 15:
-			lot = 4491;
-			break;
-
-		case 16:
-			lot = 4525;
-			break;
-
-		case 84:
-			lot = 4559;
-			break;
-
-		case 96:
-			lot = 4593;
-			break;
-
-		}
-
-		lot += (shirtStyle - 1);
+	if (CDClient::getBrickColorCharacterValid(shirtColor)) {
+		string shirtName = CDClient::getBrickColorName(shirtColor);
+		//Logger::info("Getting " + toTitle(shirtName) + " Shirt " + to_string(shirtStyle));
+		lot = CDClient::getTemplateFromName(toTitle(shirtName) + " Shirt " + to_string(shirtStyle));
+		//Logger::info("LOT: " + lot);
 	}
 
 	return lot;
+
 }
 
-long CharacterStyles::getLOTFromStyle(long pantsColor)
+long CharacterStyles::getLOTFromStyle(long pantsColor) // CDCLIENT
 {
 	long lot = -1;
 
-	switch (pantsColor)
-	{
-
-	case 0:
-		lot = 2508;
-		break;
-
-	case 1:
-		lot = 2519;
-		break;
-
-	case 3:
-		lot = 2515;
-		break;
-
-	case 5:
-		lot = 2509;
-		break;
-
-	case 6:
-		lot = 2524;
-		break;
-
-	case 7:
-		lot = 2521;
-		break;
-
-	case 8:
-		lot = 2522;
-		break;
-
-	case 9:
-		lot = 2526;
-		break;
-
-	case 10:
-		lot = 2523;
-		break;
-
-	case 11:
-		lot = 2513;
-		break;
-
-	case 13:
-		lot = 2527;
-		break;
-
-	case 14:
-		lot = 2517;
-		break;
-
-	case 15:
-		lot = 2516;
-		break;
-
-	case 16:
-		lot = 2511;
-		break;
-
-	case 84:
-		lot = 2520;
-		break;
-
-	case 96:
-		lot = 2514;
-		break;
-
+	if (CDClient::getBrickColorCharacterValid(pantsColor)) {
+		string pantsName = CDClient::getBrickColorName(pantsColor);
+		//Logger::info("Getting " + toTitle(pantsName) + " Pants");
+		lot = CDClient::getTemplateFromName(toTitle(pantsName) + " Pants");
+		//Logger::info("LOT: " + lot);
 	}
 
 	return lot;
+
 }
 
 void CharacterStyles::saveCharacterStyle(CharacterStyle style, long long charID)

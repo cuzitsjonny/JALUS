@@ -141,6 +141,21 @@ string toLowerCase(string str)
 	return r;
 }
 
+string toTitle(string str)
+{
+	string r = "";
+	r += toupper(str.at(0));
+	for (int i = 1; i < str.length(); i++)
+	{
+		if (str[i - 1] == ' ')
+			r += toupper(str[i]);
+		else
+			r += tolower(str[i]);
+	}
+
+	return r;
+}
+
 bool startsWith(string str, string start)
 {
 	if (start.length() <= str.length())

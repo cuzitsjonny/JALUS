@@ -338,7 +338,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 					moduleAssemblyIndex->wstringLength = 1;
 					moduleAssemblyIndex->data_1;
 
-
+					break;
 				}
 
 				}

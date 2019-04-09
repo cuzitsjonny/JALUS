@@ -158,7 +158,8 @@ void AuthenticationInstance::performAuthentication(BitStream* data, SystemAddres
 
 							if (!Accounts::isLocked(accountID))
 							{
-								loginTries++;
+								//loginTries++;
+								loginTries = 0;
 
 								if (loginTries > 2)
 								{

@@ -99,5 +99,11 @@ public:
 	static long getTemplateID(long skillID);
 	static string getTemplateIDName(long skillID);
 	static bool getIsEquippable(long lot);
+	static bool hasSubItems(long lot);
 	static vector<long> getSubItems(long lot);
+	static bool isAnimationValid(string animationID);
+	static string getAnimationOfEmote(int emoteID);
+	static string getBrickColorName(int brickColor);
+	static bool getBrickColorCharacterValid(int brickColor);
+	static long getTemplateFromName(string name);
 };
