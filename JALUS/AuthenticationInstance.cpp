@@ -79,6 +79,15 @@ void AuthenticationInstance::performAuthentication(BitStream* data, SystemAddres
 {
 	if ((data->GetNumberOfUnreadBits() / 8) >= 148)
 	{
+
+		/*LoginReturnCode lrc = LoginReturnCode::LRC_CUSTOM;
+		string customMessage = "";
+		//long long accountID = -1;
+
+		customMessage = "A security issue has been discovered.\n\n";
+		customMessage += "Due to this, the server will be offline\n";
+		customMessage += "until the issue is resolved.\n";*/
+
 		LoginReturnCode lrc = LoginReturnCode::LRC_SUCCESS;
 		string customMessage = "";
 		long long accountID = -1;

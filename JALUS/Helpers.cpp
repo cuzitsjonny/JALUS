@@ -361,6 +361,34 @@ double Helpers::randomInRange(double min, double max)
 	//return min + static_cast <double> (rand()) / (static_cast <double> (RAND_MAX / (max - min)));
 }
 
+string Helpers::getTitle(long long charID, string name){
+	long value = ValueStorage::getValueFromDatabase(charID, "title");
+	if (value == -1) {
+		// DO NOTHING
+	}
+	else if (value == 9) {
+		name += " - Admin";
+	}
+	else if (value == 8) {
+		name += " - Developer";
+	}
+	else if (value == 7) {
+		name += " - Creator";
+	}
+	else if (value == 5) {
+		name += " - Moderator";
+	}
+	else if (value == 3) {
+		name += " - Derp";
+	}
+	else {
+		name += " - Player";
+	}
+
+	return name;
+
+}
+
 void Helpers::respawnObject(ReplicaObject* replica)
 {
 	//Logger::info("Attempted respawn");
@@ -379,25 +407,29 @@ void Helpers::broadcastJonnysDumbEffects()
 	for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 	{
 		SystemAddress clientAddress = Server::getReplicaManager()->GetParticipantAtIndex(i);
-
-		for (int k = 0; k < Server::getReplicaManager()->GetParticipantCount(); k++)
-		{
-			SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
-			ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(participant);
-
-			if (replica != nullptr)
+		Session* player = Sessions::getSession(clientAddress);
+		if (ValueStorage::getValueInMemory(player->charID, "wisp") == 1) {
+			for (int k = 0; k < Server::getReplicaManager()->GetParticipantCount(); k++)
 			{
-				GameMessages::stopFXEffect(replica->objectID, "wisp_hands", false, participant);
-				GameMessages::stopFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, "wisp_hands", false, clientAddress);
+				SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(k);
+				ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(participant);
 
-				GameMessages::playFXEffect(replica->objectID, 1573, L"on-anim", 1.0F, "wisp_hands", 1.0F, -1, participant);
-				GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, 1573, L"on-anim", 1.0F, "wisp_hands", 1.0F, -1, clientAddress);
+				if (ValueStorage::getValueInMemory(replica->objectID, "wisp") == 1) {
+					if (replica != nullptr)
+					{
+						GameMessages::stopFXEffect(replica->objectID, "wisp_hands", false, participant);
+						GameMessages::stopFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, "wisp_hands", false, clientAddress);
 
-				GameMessages::stopFXEffect(replica->objectID, "wisp_hands_left", false, participant);
-				GameMessages::stopFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, "wisp_hands_left", false, clientAddress);
+						GameMessages::playFXEffect(replica->objectID, 1573, L"on-anim", 1.0F, "wisp_hands", 1.0F, -1, participant);
+						GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, 1573, L"on-anim", 1.0F, "wisp_hands", 1.0F, -1, clientAddress);
 
-				GameMessages::playFXEffect(replica->objectID, 1579, L"on-anim", 1.0F, "wisp_hands_left", 1.0F, -1, participant);
-				GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, 1579, L"on-anim", 1.0F, "wisp_hands_left", 1.0F, -1, clientAddress);
+						GameMessages::stopFXEffect(replica->objectID, "wisp_hands_left", false, participant);
+						GameMessages::stopFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, "wisp_hands_left", false, clientAddress);
+
+						GameMessages::playFXEffect(replica->objectID, 1579, L"on-anim", 1.0F, "wisp_hands_left", 1.0F, -1, participant);
+						GameMessages::playFXEffect(ObjectsManager::getObjectBySystemAddress(participant)->objectID, 1579, L"on-anim", 1.0F, "wisp_hands_left", 1.0F, -1, clientAddress);
+					}
+				}
 			}
 		}
 	}

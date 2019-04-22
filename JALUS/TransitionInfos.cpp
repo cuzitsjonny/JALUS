@@ -104,10 +104,11 @@ void TransitionInfos::insertTransitionInfo(SystemAddress clientAddress, long lon
 		ss << " " << TransitionInfos::name << " ";
 		ss << "(client_address, account_id, char_id, transition_key)";
 		ss << " VALUES ";
-		ss << "('" << clientAddress.ToString(false) << "', '" << accountID << "', '" << charID << "', '" << transitionKey << "');";
+		ss << "('" << clientAddress.ToString(false) << "', '" << accountID << "', '" << charID << "', :1);";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = transitionKey.c_str();
 		cmd.Execute();
 
 		con.Commit();

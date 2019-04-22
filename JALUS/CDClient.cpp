@@ -1435,6 +1435,7 @@ vector<long> CDClient::getSubItems(long lot)
 		while (cmd.FetchNext())
 		{
 			string subItemStr = string(cmd.Field("subItems").asString());
+			subItemStr.erase(remove(subItemStr.begin(), subItemStr.end(), ' '), subItemStr.end());
 			vector<string> p = split(subItemStr, ',');
 			//Logger::info("SubItemStr: " + subItemStr);
 			for (int i = 0; i < p.size(); i++)
@@ -1476,9 +1477,10 @@ bool CDClient::isAnimationValid(string animationID)
 		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
 
 		stringstream ss;
-		ss << "SELECT animationGroupID FROM Animations WHERE animation_type = '" << animationID << "';";
+		ss << "SELECT animationGroupID FROM Animations WHERE animation_type = :1;";
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = animationID.c_str();
 		cmd.Execute();
 
 		while (cmd.FetchNext())
@@ -1617,6 +1619,7 @@ long CDClient::getTemplateFromName(string name)
 {
 	SAConnection con;
 	SACommand cmd;
+	//SAString
 
 	long r = -1;
 
@@ -1625,9 +1628,10 @@ long CDClient::getTemplateFromName(string name)
 		con.Connect(Config::getCDClientPath().c_str(), "", "", SA_SQLite_Client);
 
 		stringstream ss;
-		ss << "SELECT id FROM Objects WHERE name = '" << name << "';";
+		ss << "SELECT id FROM Objects WHERE name = :1;";
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = name.c_str();
 		cmd.Execute();
 
 		while (cmd.FetchNext())

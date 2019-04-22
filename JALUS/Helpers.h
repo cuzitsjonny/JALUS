@@ -31,6 +31,9 @@ public:
 	static void syncStatValues();
 	static long doMaxedStatMath(long currentStat, long additionalStat, long maxStat);
 	static double randomInRange(double min, double max);
+
+	static string getTitle(long long charID, string name);
+
 	static void respawnObject(ReplicaObject* replica);
 	static void broadcastJonnysDumbEffects();
 };

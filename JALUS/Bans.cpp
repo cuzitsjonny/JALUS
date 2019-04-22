@@ -60,10 +60,12 @@ void Bans::ban(string gotBanned, long long banned, bool isIPBan, string reason, 
 		ss << " " << Bans::name << " ";
 		ss << "(got_banned, banned, is_ip_ban, reason, banned_timestamp, how_long)";
 		ss << " VALUES ";
-		ss << "('" << gotBanned << "', '" << banned << "', '" << isIPBan << "', '" << reason << "', '" << ms.count() << "', '" << howLong << "');";
+		ss << "(:1, '" << banned << "', '" << isIPBan << "', :2, '" << ms.count() << "', '" << howLong << "');";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = gotBanned.c_str();
+		cmd.Param(2).setAsString() = reason.c_str();
 		cmd.Execute();
 
 		con.Commit();
@@ -94,10 +96,11 @@ void Bans::unban(string gotBanned, bool isIPBan)
 		stringstream ss;
 		ss << "DELETE FROM";
 		ss << " " << Bans::name << " ";
-		ss << "WHERE got_banned = '" << gotBanned << "' AND is_ip_ban = '" << isIPBan << "';";
+		ss << "WHERE got_banned = :1 AND is_ip_ban = '" << isIPBan << "';";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = gotBanned.c_str();
 		cmd.Execute();
 
 		con.Commit();
@@ -131,10 +134,11 @@ bool Bans::isBanned(string key, bool isIPBan)
 		stringstream ss;
 		ss << "SELECT banned_timestamp, how_long FROM";
 		ss << " " << Bans::name << " ";
-		ss << "WHERE got_banned = '" << key << "';";
+		ss << "WHERE got_banned = :1;";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = key.c_str();
 		cmd.Execute();
 
 		if (cmd.FetchFirst())
@@ -188,10 +192,11 @@ BanInfo Bans::getInfo(string gotBanned, bool isIPBan)
 		stringstream ss;
 		ss << "SELECT banned, reason, banned_timestamp, how_long FROM";
 		ss << " " << Bans::name << " ";
-		ss << "WHERE got_banned = '" << gotBanned << "' AND is_ip_ban = '" << isIPBan << "';";
+		ss << "WHERE got_banned = :1 AND is_ip_ban = '" << isIPBan << "';";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = gotBanned.c_str();
 		cmd.Execute();
 
 		if (cmd.FetchFirst())

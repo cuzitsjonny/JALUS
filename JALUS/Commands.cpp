@@ -31,47 +31,128 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 	if (iequals(cmd, "stop") || iequals(cmd, "off") || iequals(cmd, "quit")) // /stop
 	{
-		ServerLoop::stop();
-		/*
-		if (account_gm_level >= 5) {
+		//ServerLoop::stop();
+		
+		if (account_gm_level >= 6) {
 			ServerLoop::stop();
-		}*/
+		}
+		else {
+			sender.sendMessage("No permission.");
+		}
 	}
 	else if (iequals(cmd, "test"))
 	{
-		if (args.size() == 1)
-		{
-			Scheduler::cancelTask(stoul(args.at(0)));
+		if (account_gm_level >= 9) {
+			if (args.size() == 1)
+			{
+				Scheduler::cancelTask(stoul(args.at(0)));
+			}
+		}
+		else {
+			sender.sendMessage("No permission.");
 		}
 	}
 
-	/*else if (iequals(cmd, "admin"))
+	else if (iequals(cmd, "wisp"))
 	{
-		if (sender.getSenderID() == -1)
+		if (sender.getSenderID() != -1)
 		{
-			if (args.size == 2) {
-				string username = args.at(0);
-				long value = stol(args.at(1));
-				string valueStr = args.at(1);
-				long long id = Accounts::getAccountID(username);
-				if (value == 1 || value == 0) {
-					if (id > 0)
-					{
-						ValueStorage::createValueInDatabase(id, "accountAdmin", value);
-						sender.sendMessage("Set " + username + "'s admin level to " + valueStr + ".");
+			bool value = ValueStorage::getValueFromDatabase(sender.getSenderID(), "wisp");
+			ValueStorage::updateValueInDatabase(sender.getSenderID(), "wisp", !value);
+			ValueStorage::updateValueInMemory(sender.getSenderID(), "wisp", !value);
+			sender.sendMessage("Wisp lee effect now set to " + toUpperCase(to_string(!value)) + ". Give it a few seconds to update.");
+		}
+	}
+
+	/*else if (iequals(cmd, "title")) // SET USER TITLE FOR IN GAME
+	{
+		if (account_gm_level >= 9) {
+			if (sender.getSenderID() != -1)
+			{
+				ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+				if (args.size() >= 2) {
+					long title = -1;
+					long long character = Characters::getCharacterID(args.at(0));
+					//string username = Accounts::getUsername(account);	
+					
+					try {	title = stol(args.at(1));	} catch (exception& e) {}
+
+					if (character != -1) {
+						ValueStorage::updateValueInDatabase(character, "title", title);
+						player->name = to_wstring(Helpers::getTitle(character, Characters::getName(character)));
+						sender.sendMessage("Set " + args.at(0) + "'s title");
 					}
-					else
-					{
-						sender.sendMessage("Could not find user " + username + ".");
+					else {
+						sender.sendMessage("Could not set title for player " + args.at(0));
 					}
 				}
-				else
-				{
-					sender.sendMessage(valueStr + " is not a valid level.");
+				else if (args.size() == 1) {
+					long title = -1;
+					try { title = stol(args.at(1)); } catch (exception& e) {}
+					ValueStorage::updateValueInDatabase(sender.getSenderID(), "title", title);
+					player->name = to_wstring(Helpers::getTitle(sender.getSenderID(), Characters::getName(sender.getSenderID())));
+					sender.sendMessage("Updated title");
 				}
+				else {
+					player->name = to_wstring(Helpers::getTitle(sender.getSenderID(), Characters::getName(sender.getSenderID())));
+					sender.sendMessage("Reupdated title");					
+				}
+				ObjectsManager::serializeObject(player);
 			}
 		}
+		else
+			sender.sendMessage("No permission.");
 	}*/
+
+	else if (iequals(cmd, "setadmin"))
+	{
+		if (account_gm_level >= 9) {
+			if (sender.getSenderID() != -1)
+			{
+				if (args.size() >= 2) {
+					long level = -1;
+					long long account = Characters::getAccountID(Characters::getCharacterID(args.at(0)));
+					string username = Accounts::getUsername(account);
+					try {
+						level = stol(args.at(1));
+						//sender.sendMessage("Set GM level: (Data: '" + args.at(2) + "')");
+					}
+					catch (exception& e) {}
+
+					if (account != -1 && level != -1) {
+						if (Characters::getAccountID(sender.getSenderID()) != account) {
+							Accounts::setGMLevel(level, account);
+							sender.sendMessage("Set " + args.at(0) + "'s GM Level to " + to_string(level));
+						}
+						else
+							sender.sendMessage("Could not set own account level. You are GM Level " + to_string(Accounts::getGMLevel(Characters::getAccountID(sender.getSenderID()))));
+					}
+					else {
+						if (username != "")
+							sender.sendMessage("Could not set level for player account " + username);
+						else
+							sender.sendMessage("Could not set account level for player " + args.at(0));
+					}
+				}
+				else if (args.size() == 1)
+					sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <player> <gmlevel>");
+				else
+					sender.sendMessage("You are GM Level " + to_string(Accounts::getGMLevel(Characters::getAccountID(sender.getSenderID()))));
+			}
+		} 
+		else
+			sender.sendMessage("No permission.");
+		/*else {
+			if (sender.getSenderID() != -1)
+			{
+				if (args.size() >= 1) {
+					Accounts::setGMLevel(stol(args.at(0)), Characters::getAccountID(sender.getSenderID()));
+					sender.sendMessage("Set " + Characters::getName(sender.getSenderID()) + "'s GM Level to " + args.at(0));
+				}
+			}
+		}*/
+	}
+
 	/*else if (iequals(cmd, "addbuff") || iequals(cmd, "buff"))
 	{
 		if (sender.getSenderID() != -1)
@@ -164,13 +245,68 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 				sender.sendMessage("/" + cmd + " <u32:buffID>");
 		}
 	}*/
-	else if (iequals(cmd, "play") || iequals(cmd, "animation") || iequals(cmd, "playAnimation") || iequals(cmd, "anim") || iequals(cmd, "playanim"))
+	/*else if (iequals(cmd, "buildstatetrue"))
+	{
+		Session* session = Sessions::getSession(sender.getClientAddress());
+		BitStream* packet = PacketUtils::createGMBase(session->charID, GAME_MESSAGE_ID_SET_BUILD_MODE);
+		ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+		Position position;
+		position.x = replica->controllablePhysicsIndex->pos_x;
+		position.y = replica->controllablePhysicsIndex->pos_y;
+		position.z = replica->controllablePhysicsIndex->pos_z;
+		packet->Write(true);
+		packet->Write(-1);
+		packet->Write(false);
+		packet->Write(1);
+		packet->Write(session->charID);
+		packet->Write(position);
+
+		Server::sendPacket(packet, sender.getClientAddress());
+	}
+	else if (iequals(cmd, "buildstatefalse"))
+	{
+		Session* session = Sessions::getSession(sender.getClientAddress());
+		BitStream* packet = PacketUtils::createGMBase(session->charID, GAME_MESSAGE_ID_SET_BUILD_MODE);
+		ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
+		Position position;
+		position.x = replica->controllablePhysicsIndex->pos_x;
+		position.y = replica->controllablePhysicsIndex->pos_y;
+		position.z = replica->controllablePhysicsIndex->pos_z;
+		packet->Write(false);
+		packet->Write(-1);
+		packet->Write(false);
+		packet->Write(1);
+		packet->Write(session->charID);
+		packet->Write(position);
+
+		Server::sendPacket(packet, sender.getClientAddress());
+	}*/
+	/*else if (iequals(cmd, "gmlevel"))
+	{
+		if (account_gm_level >= 9) {
+			if (sender.getSenderID() != -1)
+			{
+				if (args.size() >= 1) {
+					ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+					player->gmLevel = stol(args.at(0));
+					sender.sendMessage(to_string(player->gmLevel) + " is your current GM level");
+					ObjectsManager::serializeObject(player);
+				}
+			}
+		}
+		else
+			sender.sendMessage("No permission.");
+	}*/
+	else if (iequals(cmd, "e") || iequals(cmd, "emote") || iequals(cmd, "play") || iequals(cmd, "animation") || iequals(cmd, "playAnimation") || iequals(cmd, "anim") || iequals(cmd, "playanim"))
 	{
 		if (sender.getSenderID() != -1)
 		{
 			if (args.size() >= 1) {
 				if (CDClient::isAnimationValid(args.at(0)))
-					Helpers::broadcastAnimation(sender.getSenderID(), args.at(0));
+					if (args.at(0).find("horse") == std::string::npos)
+						Helpers::broadcastAnimation(sender.getSenderID(), args.at(0));
+					else
+						sender.sendMessage(args.at(0) + " is not a valid animation!");
 				else
 					sender.sendMessage(args.at(0) + " is not a valid animation!");
 			}
@@ -214,6 +350,27 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 		else
 			Logger::info(list);*/
 	}
+	/*else if (iequals(cmd, "serialize") || iequals(cmd, "reload") || iequals(cmd, "refresh") || iequals(cmd, "re") || iequals(cmd, "se"))
+	{ // SERIALIZE PLAYER
+		if (sender.getSenderID() != -1)
+		{
+			if (account_gm_level >= 5) {
+				ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+				if (args.size() >= 1) {
+					if (isdigit((args.at(0)).c_str)) {
+						for (int k = stoi(args.at(0)); k--;)
+							ObjectsManager::serializeObject(player);
+					}
+
+				}
+				else
+					ObjectsManager::serializeObject(player);
+			}
+			else {
+				sender.sendMessage("No permission.");
+			}
+		}
+	}*/
 	else if (iequals(cmd, "invsize"))
 	{
 		if (sender.getSenderID() != -1)
@@ -404,53 +561,60 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 	else if (iequals(cmd, "drop")) // drop [lot]
 	{
-		//Session* session = Sessions::getSession(sender.getClientAddress());
-		
-		//GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
-		if (sender.getSenderID() != -1)
-		{
-			if (args.size() == 1)
+		//Session* session = Sessions::getSession(sender.getClientAddress());		
+		if (account_gm_level >= 5) {
+			if (sender.getSenderID() != -1)
 			{
-				Position finalPosition;
-				Position spawnPosition;
-				ReplicaObject* charObj = ObjectsManager::getObjectByID(sender.getSenderID());
-				finalPosition.x = charObj->controllablePhysicsIndex->pos_x;
-				finalPosition.y = charObj->controllablePhysicsIndex->pos_y;
-				finalPosition.z = charObj->controllablePhysicsIndex->pos_z;
+				if (args.size() == 1)
+				{
+					Position finalPosition;
+					Position spawnPosition;
+					ReplicaObject* charObj = ObjectsManager::getObjectByID(sender.getSenderID());
+					finalPosition.x = charObj->controllablePhysicsIndex->pos_x;
+					finalPosition.y = charObj->controllablePhysicsIndex->pos_y;
+					finalPosition.z = charObj->controllablePhysicsIndex->pos_z;
 
 
-				GameMessages::clientDropLoot(sender.getSenderID(), 0, stol(args.at(0)), sender.getSenderID(), sender.getSenderID(), spawnPosition, finalPosition, sender.getClientAddress());
-			}
-			else
-			{
-				sender.sendMessage("You need to specify a LOT!");
+					GameMessages::clientDropLoot(sender.getSenderID(), 0, stol(args.at(0)), sender.getSenderID(), sender.getSenderID(), spawnPosition, finalPosition, sender.getClientAddress());
+				}
+				else
+				{
+					sender.sendMessage("You need to specify a LOT!");
+				}
 			}
 		}
+		else {
+			sender.sendMessage("No permission.");
+		}
+
 
 	}
 
 	else if (iequals(cmd, "dropcoin"))
 	{
-		Session* session = Sessions::getSession(sender.getClientAddress());
-
 		//GameMessages::clientDropLoot(session->charID, 0, items.at(randNum), session->charID, itemId, spawnPosition, finalPosition, participant);
-		if (sender.getSenderID() != -1)
-		{
-			if (args.size() == 1)
+		if (account_gm_level >= 5) {
+			if (sender.getSenderID() != -1)
 			{
-				Position position;
-				ReplicaObject* charObj = ObjectsManager::getObjectByID(sender.getSenderID());
-				position.x = charObj->controllablePhysicsIndex->pos_x;
-				position.y = charObj->controllablePhysicsIndex->pos_y;
-				position.z = charObj->controllablePhysicsIndex->pos_z;
+				if (args.size() == 1)
+				{
+					Position position;
+					ReplicaObject* charObj = ObjectsManager::getObjectByID(sender.getSenderID());
+					position.x = charObj->controllablePhysicsIndex->pos_x;
+					position.y = charObj->controllablePhysicsIndex->pos_y;
+					position.z = charObj->controllablePhysicsIndex->pos_z;
 
 
-				GameMessages::clientDropLoot(sender.getSenderID(), stoi(args.at(0)), 0, sender.getSenderID(), sender.getSenderID(), position, position, sender.getClientAddress());
+					GameMessages::clientDropLoot(sender.getSenderID(), stoi(args.at(0)), 0, sender.getSenderID(), sender.getSenderID(), position, position, sender.getClientAddress());
+				}
+				else
+				{
+					sender.sendMessage("You need to specify an amount!");
+				}
 			}
-			else
-			{
-				sender.sendMessage("You need to specify an amount!");
-			}
+		}
+		else {
+			sender.sendMessage("No permission.");
 		}
 	}
 
@@ -664,181 +828,213 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 
 	else if (iequals(cmd, "createAccount")) // /createAccount <string:username> <string:password>
 	{
-		if (args.size() >= 2)
-		{
-			string username = args.at(0);
-			string password = args.at(1);
-
-			long long accountID = Accounts::getAccountID(username);
-			if (accountID == -1)
+		if (account_gm_level >= 9) {
+			if (args.size() >= 2)
 			{
-				Accounts::createAccount(username, sha512(password));
-				sender.sendMessage("Successfully created account! (Username: " + username + ")");
-				if (args.size() == 3) {
+				string username = args.at(0);
+				string password = args.at(1);
 
+				long long accountID = Accounts::getAccountID(username);
+				if (accountID == -1)
+				{
+					Accounts::createAccount(username, sha512(password));
+					sender.sendMessage("Successfully created account! (Username: " + username + ")");
+					if (args.size() == 3) {
+						try {
+							Accounts::setGMLevel(stol(args.at(2)), accountID);
+							//sender.sendMessage("Set GM level: (Data: '" + args.at(2) + "')");
+						}
+						catch (exception& e) {
+							string error(e.what());
+							sender.sendMessage("Failed to set GM level: (Data: '" + error + "')");
+						}
+					}
 				}
+				else
+					sender.sendMessage("The username '" + username + "' is already in use!");
 			}
 			else
-				sender.sendMessage("The username '" + username + "' is already in use!");
+				sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <username> <password> <gmlevel>");
 		}
-		else
-			sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <username> <password> <gmlevel>");
+		else {
+			sender.sendMessage("No permission.");
+		}
 	}
 
 	else if (iequals(cmd, "deleteAccount")) // /deleteAccount <string:username>
 	{
-		if (args.size() == 1)
-		{
-			string username = args.at(0);
-
-			long long accountID = Accounts::getAccountID(username);
-			if (accountID != -1)
+		if (account_gm_level >= 9) {
+			if (args.size() == 1)
 			{
-				Accounts::deleteAccount(accountID);
-				sender.sendMessage("Successfully deleted account! (Username: " + username + ")");
+				string username = args.at(0);
+
+				long long accountID = Accounts::getAccountID(username);
+				if (accountID != -1)
+				{
+					Accounts::deleteAccount(accountID);
+					sender.sendMessage("Successfully deleted account! (Username: " + username + ")");
+				}
+				else
+					sender.sendMessage("There is no account with the username '" + username + "'!");
 			}
 			else
-				sender.sendMessage("There is no account with the username '" + username + "'!");
+				sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <username>");
 		}
-		else
-			sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <username>");
+		else {
+			sender.sendMessage("No permission.");
+		}
 	}
 
 	else if (iequals(cmd, "banAccount")) // /banAccount <string:username> <string:time> <string:reason>
 	{
-		if (args.size() == 3)
-		{
-			string username = args.at(0);
-			string time = args.at(1);
-			string reason = args.at(2);
-
-			long long accountID = Accounts::getAccountID(username);
-			if (accountID != -1)
+		if (account_gm_level >= 9) {
+			if (args.size() == 3)
 			{
-				long long howLong = TimeUtils::parse(time);
-				if (howLong != -2)
+				string username = args.at(0);
+				string time = args.at(1);
+				string reason = args.at(2);
+
+				long long accountID = Accounts::getAccountID(username);
+				if (accountID != -1)
 				{
-					Bans::ban(to_string(accountID), Characters::getAccountID(sender.getSenderID()), false, reason, howLong);
-					sender.sendMessage(username + " got banned successfully! (Duration: " + Bans::toTimeString(howLong) + ") (Reason: " + reason + ")");
-
-					if (Server::isWorldInstance())
+					long long howLong = TimeUtils::parse(time);
+					if (howLong != -2)
 					{
-						for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-						{
-							SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+						Bans::ban(to_string(accountID), Characters::getAccountID(sender.getSenderID()), false, reason, howLong);
+						sender.sendMessage(username + " got banned successfully! (Duration: " + Bans::toTimeString(howLong) + ") (Reason: " + reason + ")");
 
-							if (ObjectsManager::getObjectBySystemAddress(participant)->characterIndex->account_id == accountID)
+						if (Server::isWorldInstance())
+						{
+							for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 							{
-								BitStream* response = PacketUtils::createPacketBase(RCT_GENERAL, GENERAL_PACKET_DISCONNECT_NOTIFY);
-								response->Write(DisconnectID::DISCONNECT_KICK);
-								response->Write((unsigned long)0);
-								Server::sendPacket(response, participant);
+								SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+								if (ObjectsManager::getObjectBySystemAddress(participant)->characterIndex->account_id == accountID)
+								{
+									BitStream* response = PacketUtils::createPacketBase(RCT_GENERAL, GENERAL_PACKET_DISCONNECT_NOTIFY);
+									response->Write(DisconnectID::DISCONNECT_KICK);
+									response->Write((unsigned long)0);
+									Server::sendPacket(response, participant);
+								}
 							}
 						}
 					}
+					else
+						sender.sendMessage("This command requires a valid time specification! Example: '/banAccount ExampleUsername 120sec \"Example Reason\"'");
 				}
 				else
-					sender.sendMessage("This command requires a valid time specification! Example: '/banAccount ExampleUsername 120sec \"Example Reason\"'");
+					sender.sendMessage("There is no account with the username '" + username + "'!");
 			}
 			else
-				sender.sendMessage("There is no account with the username '" + username + "'!");
+				sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <username> <time> <reason>");
 		}
-		else
-			sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <username> <time> <reason>");
+		else {
+			sender.sendMessage("No permission.");
+		}
 	}
 
 	else if (iequals(cmd, "banIP")) // /banAccount <string:ip> <string:time> <string:reason>
 	{
-		if (args.size() == 3)
-		{
-			string ip = args.at(0);
-			string time = args.at(1);
-			string reason = args.at(2);
-
-			if (isValidIPAddress(ip.c_str()))
+		if (account_gm_level >= 9) {
+			if (args.size() == 3)
 			{
-				long long howLong = TimeUtils::parse(time);
-				if (howLong != -2)
+				string ip = args.at(0);
+				string time = args.at(1);
+				string reason = args.at(2);
+
+				if (isValidIPAddress(ip.c_str()))
 				{
-					Bans::ban(ip, Characters::getAccountID(sender.getSenderID()), true, reason, howLong);
-					sender.sendMessage(ip + " got banned successfully! (Duration: " + Bans::toTimeString(howLong) + ") (Reason: " + reason + ")");
-
-					if (Server::isWorldInstance())
+					long long howLong = TimeUtils::parse(time);
+					if (howLong != -2)
 					{
-						for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
-						{
-							SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+						Bans::ban(ip, Characters::getAccountID(sender.getSenderID()), true, reason, howLong);
+						sender.sendMessage(ip + " got banned successfully! (Duration: " + Bans::toTimeString(howLong) + ") (Reason: " + reason + ")");
 
-							if (string(participant.ToString(false)) == ip)
+						if (Server::isWorldInstance())
+						{
+							for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
 							{
-								BitStream* response = PacketUtils::createPacketBase(RCT_GENERAL, GENERAL_PACKET_DISCONNECT_NOTIFY);
-								response->Write(DisconnectID::DISCONNECT_KICK);
-								response->Write((unsigned long)0);
-								Server::sendPacket(response, participant);
+								SystemAddress participant = Server::getReplicaManager()->GetParticipantAtIndex(i);
+
+								if (string(participant.ToString(false)) == ip)
+								{
+									BitStream* response = PacketUtils::createPacketBase(RCT_GENERAL, GENERAL_PACKET_DISCONNECT_NOTIFY);
+									response->Write(DisconnectID::DISCONNECT_KICK);
+									response->Write((unsigned long)0);
+									Server::sendPacket(response, participant);
+								}
 							}
 						}
 					}
+					else
+						sender.sendMessage("This command requires a valid time specification! Example: '/banIP 127.0.0.1 120sec \"Example Reason\"'");
 				}
 				else
-					sender.sendMessage("This command requires a valid time specification! Example: '/banIP 127.0.0.1 120sec \"Example Reason\"'");
+					sender.sendMessage("'" + ip + "' is not a valid IP address!");
 			}
 			else
-				sender.sendMessage("'" + ip + "' is not a valid IP address!");
+				sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <ip> <time> <reason>");
 		}
-		else
-			sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <ip> <time> <reason>");
+		else {
+			sender.sendMessage("No permission.");
+		}		
 	}
 
 	else if (iequals(cmd, "spawn")) // /spawn <long:LOT> [string:name]
 	{
-		if (sender.getSenderID() != -1)
-		{
-			if (args.size() == 1 || args.size() == 2)
+		if (account_gm_level >= 5) {
+			if (sender.getSenderID() != -1)
 			{
-				string strLOT = args.at(0);
-				string name = "";
-
-				if (args.size() == 2)
-					name = args.at(1);
-
-				if (Validate::isValidS32(strLOT))
+				if (args.size() == 1 || args.size() == 2)
 				{
-					long lot = stol(strLOT);
+					string strLOT = args.at(0);
+					string name = "";
 
-					ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+					if (args.size() == 2)
+						name = args.at(1);
 
-					Position pos = Position();
-					pos.x = player->controllablePhysicsIndex->pos_x;
-					pos.y = player->controllablePhysicsIndex->pos_y;
-					pos.z = player->controllablePhysicsIndex->pos_z;
-
-					Rotation rot = Rotation();
-					rot.x = player->controllablePhysicsIndex->rot_x;
-					rot.y = player->controllablePhysicsIndex->rot_y;
-					rot.z = player->controllablePhysicsIndex->rot_z;
-					rot.w = player->controllablePhysicsIndex->rot_w;
-
-					long long id = Objects::generateObjectID();
-					ReplicaObject* other = new ReplicaObject(id, lot, to_wstring(name), 0, pos, rot);
-					ObjectsManager::spawnObject(other);
-
-					if (name == "")
+					if (Validate::isValidS32(strLOT))
 					{
-						sender.sendMessage("You successfully spawned a new object!\n{\n   LOT: " + to_string(lot) + ",\n   ObjectID: " + to_string(id) + "\n}");
+						long lot = stol(strLOT);
+
+						ReplicaObject* player = ObjectsManager::getObjectByID(sender.getSenderID());
+
+						Position pos = Position();
+						pos.x = player->controllablePhysicsIndex->pos_x;
+						pos.y = player->controllablePhysicsIndex->pos_y;
+						pos.z = player->controllablePhysicsIndex->pos_z;
+
+						Rotation rot = Rotation();
+						rot.x = player->controllablePhysicsIndex->rot_x;
+						rot.y = player->controllablePhysicsIndex->rot_y;
+						rot.z = player->controllablePhysicsIndex->rot_z;
+						rot.w = player->controllablePhysicsIndex->rot_w;
+
+						long long id = Objects::generateObjectID();
+						ReplicaObject* other = new ReplicaObject(id, lot, to_wstring(name), 0, pos, rot);
+						ObjectsManager::spawnObject(other);
+
+						if (name == "")
+						{
+							sender.sendMessage("You successfully spawned a new object!\n{\n   LOT: " + to_string(lot) + ",\n   ObjectID: " + to_string(id) + "\n}");
+						}
+						else
+						{
+							sender.sendMessage("You successfully spawned a new object!\n{\n   LOT: " + to_string(lot) + ",\n   ObjectID: " + to_string(id) + ",\n   Name: " + name + "\n}");
+						}
 					}
 					else
-					{
-						sender.sendMessage("You successfully spawned a new object!\n{\n   LOT: " + to_string(lot) + ",\n   ObjectID: " + to_string(id) + ",\n   Name: " + name + "\n}");
-					}
+						sender.sendMessage("The first argument has to be a valid long int!");
 				}
 				else
-					sender.sendMessage("The first argument has to be a valid long int!");
-			} 
+					sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <LOT> [name]");
+			}
 			else
-				sender.sendMessage("Invalid parameters! Syntax: /" + cmd + " <LOT> [name]");
+				sender.sendMessage("You can't use this command here!");
 		}
-		else
-			sender.sendMessage("You can't use this command here!");
+		else {
+			sender.sendMessage("No permission.");
+		}		
 	}
 
 	else if (iequals(cmd, "despawn")) // /despawn <long long:ObjectID>
@@ -884,7 +1080,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("You can't use this command here!");
 	}
 
-	else if (iequals(cmd, "pos")) // Displays the player's position.
+	/*else if (iequals(cmd, "pos")) // Displays the player's position.
 	{
 		if (sender.getSenderID() != -1)
 		{
@@ -898,7 +1094,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("Position: " + std::to_string(playPos_x) + ", " + std::to_string(playPos_y) + ", " + std::to_string(playPos_z));
 
 		}
-	}
+	}*/
 	else if (iequals(cmd, "nearme") || iequals(cmd, "aroundme")) // /nearme <float:radius>
 	{
 		if (sender.getSenderID() != -1)
@@ -1225,7 +1421,7 @@ void Commands::performCommand(CommandSender sender, string cmd, vector<string> a
 			sender.sendMessage("You can't use this command here!");
 	}
 
-	else if (iequals(cmd, "loc")) { /* This is handled on the client side. */ }
+	else if (iequals(cmd, "loc") || iequals(cmd, "say")) { /* These are handled on the client side. */ }
 
 	else
 		sender.sendMessage("The input '" + cmd + "' is not a valid command!");

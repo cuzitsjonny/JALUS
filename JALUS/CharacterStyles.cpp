@@ -47,9 +47,7 @@ long CharacterStyles::getLOTFromStyle(long shirtColor, long shirtStyle) // CDCLI
 
 	if (CDClient::getBrickColorCharacterValid(shirtColor)) {
 		string shirtName = CDClient::getBrickColorName(shirtColor);
-		//Logger::info("Getting " + toTitle(shirtName) + " Shirt " + to_string(shirtStyle));
 		lot = CDClient::getTemplateFromName(toTitle(shirtName) + " Shirt " + to_string(shirtStyle));
-		//Logger::info("LOT: " + lot);
 	}
 
 	return lot;
@@ -62,9 +60,7 @@ long CharacterStyles::getLOTFromStyle(long pantsColor) // CDCLIENT
 
 	if (CDClient::getBrickColorCharacterValid(pantsColor)) {
 		string pantsName = CDClient::getBrickColorName(pantsColor);
-		//Logger::info("Getting " + toTitle(pantsName) + " Pants");
 		lot = CDClient::getTemplateFromName(toTitle(pantsName) + " Pants");
-		//Logger::info("LOT: " + lot);
 	}
 
 	return lot;

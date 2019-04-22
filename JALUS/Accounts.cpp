@@ -128,10 +128,11 @@ long long Accounts::getAccountID(string username)
 		stringstream ss;
 		ss << "SELECT id FROM";
 		ss << " " << Accounts::name << " ";
-		ss << "WHERE username = '" << username << "';";
+		ss << "WHERE username = :1;";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = username.c_str();
 		cmd.Execute();
 
 		if (cmd.FetchFirst())
@@ -381,11 +382,12 @@ void Accounts::setPasswordHash(string passwordHash, long long accountID)
 		stringstream ss;
 		ss << "UPDATE";
 		ss << " " << Accounts::name << " ";
-		ss << "SET password_hash = '" << passwordHash << "' ";
+		ss << "SET password_hash = :1 ";
 		ss << "WHERE id = '" << accountID << "';";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = passwordHash.c_str();
 		cmd.Execute();
 
 		con.Commit();
@@ -550,35 +552,41 @@ long Accounts::getGMLevel(long long accountID)
 
 	long r = -1;
 
-	try
-	{
-		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
-			Config::getMySQLUsername().c_str(),
-			Config::getMySQLPassword().c_str(),
-			SA_MySQL_Client);
-
-		stringstream ss;
-		ss << "SELECT gm_level FROM";
-		ss << " " << Accounts::name << " ";
-		ss << "WHERE id = '" << accountID << "';";
-
-		cmd.setConnection(&con);
-		cmd.setCommandText(ss.str().c_str());
-		cmd.Execute();
-
-		if (cmd.FetchFirst())
-			r = cmd.Field("gm_level").asLong();
-
-		con.Commit();
-		con.Disconnect();
-	}
-	catch (SAException &x)
-	{
+	if (accountID != -1) {
 		try
 		{
-			con.Rollback();
+			con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
+				Config::getMySQLUsername().c_str(),
+				Config::getMySQLPassword().c_str(),
+				SA_MySQL_Client);
+
+			stringstream ss;
+			ss << "SELECT gm_level FROM";
+			ss << " " << Accounts::name << " ";
+			ss << "WHERE id = '" << accountID << "';";
+
+			cmd.setConnection(&con);
+			cmd.setCommandText(ss.str().c_str());
+			cmd.Execute();
+
+			if (cmd.FetchFirst())
+				r = cmd.Field("gm_level").asLong();
+
+
+			con.Commit();
+			con.Disconnect();
 		}
-		catch (SAException &) {}
+		catch (SAException &x)
+		{
+			try
+			{
+				con.Rollback();
+			}
+			catch (SAException &) {}
+		}
+	}
+	else {
+		r = 9;
 	}
 
 	return r;

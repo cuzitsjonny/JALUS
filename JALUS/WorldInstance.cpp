@@ -421,6 +421,8 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 
 		Location loc = Locations::getLocation(session->charID);
 		wstring name = to_wstring(Characters::getName(session->charID));
+		//wstring name = to_wstring(Helpers::getTitle(session->charID, Characters::getName(session->charID)));
+
 		long gmLevel = Characters::getGMLevel(session->charID);
 
 		ReplicaObject* replica = new ReplicaObject(session->charID, 1, name, gmLevel, loc.position, loc.rotation);
@@ -435,6 +437,8 @@ void WorldInstance::sendServerState(SystemAddress clientAddress)
 		replica->statsIndex->cur_imagination = ValueStorage::getValueFromDatabase(session->charID, "imagination");
 
 		replica->statsIndex->cur_armor = ValueStorage::getValueFromDatabase(session->charID, "armor");
+
+		ValueStorage::createValueInMemory(session->charID, "wisp", ValueStorage::getValueFromDatabase(session->charID, "wisp"));
 
 		/*if (replica->statsIndex->cur_health == 0)
 		{ 
@@ -543,12 +547,14 @@ void WorldInstance::broadcastPositionUpdate(BitStream* data, SystemAddress clien
 				Helpers::deathCheck(session->charID, L"shark-death", clientAddress);
 			else if (index->pos_y < 242)
 				Helpers::deathCheck(session->charID, L"shark-death", clientAddress);
+			break;
 		}
 		
 		case ZONE_ID_PET_COVE:
 		{
 			if (index->pos_y < 134)
 				Helpers::deathCheck(session->charID, L"big-shark-death", clientAddress);
+			break;
 		}
 		
 		default:

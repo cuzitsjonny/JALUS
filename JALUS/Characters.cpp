@@ -183,10 +183,11 @@ long long Characters::getCharacterID(string name)
 		stringstream ss;
 		ss << "SELECT id FROM";
 		ss << " " << Characters::name << " ";
-		ss << "WHERE name = '" << name << "';";
+		ss << "WHERE name = :1;";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = name.c_str();
 		cmd.Execute();
 
 		if (cmd.FetchFirst())
@@ -224,10 +225,11 @@ bool Characters::isCustomNameAlreadyPending(string name)
 		stringstream ss;
 		ss << "SELECT id FROM";
 		ss << " " << Characters::name << " ";
-		ss << "WHERE unapproved_name = '" << name << "';";
+		ss << "WHERE unapproved_name = :1;";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = name.c_str();
 		cmd.Execute();
 
 		r = cmd.FetchFirst();
@@ -797,11 +799,12 @@ void Characters::setName(string name, long long charID)
 		stringstream ss;
 		ss << "UPDATE";
 		ss << " " << Characters::name << " ";
-		ss << "SET name = '" << name << "' ";
+		ss << "SET name = :1 ";
 		ss << "WHERE id = '" << charID << "';";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = name.c_str();
 		cmd.Execute();
 
 		con.Commit();
@@ -832,11 +835,12 @@ void Characters::setUnapprovedName(string unapprovedName, long long charID)
 		stringstream ss;
 		ss << "UPDATE";
 		ss << " " << Characters::name << " ";
-		ss << "SET unapproved_name = '" << unapprovedName << "' ";
+		ss << "SET unapproved_name = :1 ";
 		ss << "WHERE id = '" << charID << "';";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = unapprovedName.c_str();
 		cmd.Execute();
 
 		con.Commit();

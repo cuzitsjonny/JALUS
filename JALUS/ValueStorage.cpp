@@ -54,8 +54,6 @@ void ValueStorage::createValueInDatabase(long long charID, string type, long val
 	SAConnection con;
 	SACommand cmd;
 
-	long r = -1;
-
 	try
 	{
 		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
@@ -68,10 +66,11 @@ void ValueStorage::createValueInDatabase(long long charID, string type, long val
 		ss << " " << ValueStorage::name << " ";
 		ss << "(id, type, value)";
 		ss << " VALUES ";
-		ss << "('" << charID << "', '" << type << "', '" << value << "');";
+		ss << "('" << charID << "', :1, '" << value << "');";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = type.c_str();
 		cmd.Execute();
 
 		con.Commit();
@@ -92,8 +91,6 @@ void ValueStorage::updateValueInDatabase(long long charID, string type, long val
 	SAConnection con;
 	SACommand cmd;
 
-	long r = -1;
-
 	try
 	{
 		con.Connect((Config::getMySQLHost() + "@" + Config::getMySQLDatabase()).c_str(),
@@ -105,10 +102,11 @@ void ValueStorage::updateValueInDatabase(long long charID, string type, long val
 		ss << "UPDATE";
 		ss << " " << ValueStorage::name << " ";
 		ss << "SET value = '" << value << "' ";
-		ss << "WHERE id = '" << charID << "' AND type = '" << type << "';";
+		ss << "WHERE id = '" << charID << "' AND type = :1;";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = type.c_str();
 		cmd.Execute();
 
 		con.Commit();
@@ -119,6 +117,7 @@ void ValueStorage::updateValueInDatabase(long long charID, string type, long val
 		try
 		{
 			con.Rollback();
+			ValueStorage::createValueInDatabase(charID, type, value);
 		}
 		catch (SAException &) {}
 	}
@@ -128,8 +127,6 @@ void ValueStorage::removeValueFromDatabase(long long charID, string type)
 {
 	SAConnection con;
 	SACommand cmd;
-
-	long r = -1;
 
 	try
 	{
@@ -141,10 +138,11 @@ void ValueStorage::removeValueFromDatabase(long long charID, string type)
 		stringstream ss;
 		ss << "DELETE FROM";
 		ss << " " << ValueStorage::name << " ";
-		ss << "WHERE id = '" << charID << "' AND type = '" << type << "';";
+		ss << "WHERE id = '" << charID << "' AND type = :1;";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = type.c_str();
 		cmd.Execute();
 
 		con.Commit();
@@ -177,10 +175,11 @@ long ValueStorage::getValueFromDatabase(long long charID, string type)
 		stringstream ss;
 		ss << "SELECT value FROM";
 		ss << " " << ValueStorage::name << " ";
-		ss << "WHERE id = '" << charID << "' AND type = '" << type << "';";
+		ss << "WHERE id = '" << charID << "' AND type = :1;";
 
 		cmd.setConnection(&con);
 		cmd.setCommandText(ss.str().c_str());
+		cmd.Param(1).setAsString() = type.c_str();
 		cmd.Execute();
 
 		if (cmd.FetchFirst())
@@ -232,6 +231,9 @@ void ValueStorage::updateValueInMemory(long long charid, string type, long value
 				found = true;
 			}
 		}
+	}
+	if (found == false) {
+		ValueStorage::createValueInMemory(charid, type, value);
 	}
 }
 

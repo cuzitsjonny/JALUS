@@ -26,4 +26,5 @@ public:
 	static void updateValueInMemory(long long charid, string type, long value);
 	static void removeValueFromMemory(long long charid, string type);
 	static long getValueInMemory(long long charid, string type);
+
 };

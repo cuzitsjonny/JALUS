@@ -39,7 +39,7 @@ public:
 	long post_imagination_cost = 0;
 	double time_before_smash = 0.0;
 };
-	
+
 enum ItemType
 {
 	ITEM_TYPE_BRICK = 1,

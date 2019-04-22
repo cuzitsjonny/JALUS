@@ -94,6 +94,13 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			break;
 		}
 
+		case GAME_MESSAGE_REPORT_BUG:
+		{
+			Logger::info("GAME_MESSAGE_REPORT_BUG");
+			// Currently unable to retrieve data.
+			// I'm having some trouble with it.
+			break;
+		}
 
 		case GAME_MESSAGE_ID_START_BUILDING_WITH_ITEM:
 		{
@@ -118,7 +125,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			data->Read(targetLot);
 			data->Read(targetPos);
 			data->Read(targetType);
-
 
 			BitStream* packet = PacketUtils::createGMBase(session->charID, GAME_MESSAGE_ID_SET_BUILD_MODE);
 			ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
@@ -161,29 +167,17 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_PICKUP_ITEM:
 		{
-
-			//BitStream* pickupItem = PacketUtils::createGMBase(session->charID, 139);
-
 			long long lootObj;
 			long long playerID;
 
 			data->Read(lootObj);
 			data->Read(playerID);
 
-			//Logger::info("lootObj " + std::to_string(lootObj));
-			//Logger::info("playerID " + std::to_string(playerID));
-
-
-			//long getObjLOT = Objects::getLOT(lootObj);
 			long getObjLOT = ItemDrops::getDroppedItem(lootObj);
-			//Objects::deleteObject(lootObj);
-			//ItemDrops::removeDroppedItem(lootObj);
 			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
 			long isPowerup = CDClient::getIsPowerup(getObjLOT);
 			if (isPowerup == 1)
 			{
-				//Logger::info("Todo: make this add to stats"); //health line below
-				//if (getObjLOT == 177 || getObjLOT == 11915 || getObjLOT == 11916 || getObjLOT == 11917 || getObjLOT == 11920)
 				long maxHealth = player->statsIndex->max_health;
 				long curHealth = player->statsIndex->cur_health;
 
@@ -193,7 +187,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				long maxImagination = player->statsIndex->max_imagination;
 				long curImagination = player->statsIndex->cur_imagination;
 
-				//Logger::info("POWERUP LOT " + to_string(getObjLOT));
 				if (getObjLOT == 177) // 1 #			HEALTH
 				{
 					player->statsIndex->cur_health = Helpers::doMaxedStatMath(curHealth, 1, maxHealth);
@@ -257,8 +250,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			}
 			else 
 			{
-				//Logger::info("LOT: " + std::to_string(getObjLOT));
-				//Logger::info("Creating synced item stack");
 				Helpers::createSyncedItemStack(playerID, getObjLOT, 1, false, false, true, session->clientAddress);
 
 				if (playerID == session->charID)
@@ -284,9 +275,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			break;
 		}
 
+		/*case GAME_MESSAGE_ID_PLAYER_READY:
+		{
+			Logger::info("GAME_MESSAGE_ID_PLAYER_READY");
+		}*/
 
 		case GAME_MESSAGE_ID_PLAYER_LOADED: 
 		{
+			//Logger::info("GAME_MESSAGE_ID_PLAYER_LOADED");
 			long long object;
 			data->Read(object);
 
@@ -315,8 +311,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					}
 				}
 			}
-						
-			//Logger::info("Player has finished loading into the world.");
+
 			break;
 
 		}
@@ -568,11 +563,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 				Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_USE_EMOTE, session->charID, emoteID, clientAddress);
 			}
 
-			/*BitStream* packet = PacketUtils::createGMBase(session->charID, GameMessageID::GAME_MESSAGE_ID_PLAY_EMOTE);
-			packet->Write(emoteID);
-			packet->Write(targetID);
-			Server::broadcastPacket(packet, clientAddress);*/
-				
 			break;
 		}
 		/*case GAME_MESSAGE_ID_SMASH:
@@ -582,13 +572,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 		}*/
 		case GAME_MESSAGE_ID_SYNC_SKILL:
 		{
-			//Get couins DestructibleComponent, CurrencyIndex, and then look at currency table
-			// Example:
-			/*SELECT minvalue, maxvalue FROM CurrencyTable WHERE CurrencyIndex = 
-			(SELECT CurrencyIndex FROM DestructibleComponent WHERE id = 
-			(SELECT component_id FROM ComponentsRegistry WHERE id = 4804 AND component_type = '7'));*/
-
-			//Logger::info("SyncSkill was called");
 			bool done;
 			int bitstreamSize;
 			RakNet::BitStream bitstream;
@@ -615,18 +598,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			bitstream.Read(waste2);
 			bitstream.Read(waste3);
 			bitstream.Read(itemId);
-
-
-			//Logger::info("BitstreamSize: " + std::to_string(bitstreamSize));
-
-			//Logger::info(std::to_string(waste1));
-			//Logger::info(std::to_string(waste2));
-			//Logger::info(std::to_string(waste3));
-			//Logger::info(std::to_string(itemId));
-
-			//Logger::info("ItemID: " + std::to_string(itemId));
-
-			
 
 			ReplicaObject* replica = ObjectsManager::getObjectByID(itemId);
 
@@ -655,15 +626,9 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 						vector<double> probabilities = CDClient::getDropProbs(replica->lot, k);
 						vector<long> items = CDClient::getItemDrops(replica->lot, probabilities.at(3));
 
-						//Logger::info(to_string(probabilities.size()));
-						//Logger::info(to_string(items.size()));
-
 						double r3 = Helpers::randomInRange(0, 1);
-						//Logger::info(to_string(r3));
-						//Logger::info(to_string(probabilities.at(0)));
 
 						long randMinMax = Helpers::randomInRange(probabilities.at(1), probabilities.at(2));
-						//Logger::info(to_string(randMinMax));
 						if (r3 <= probabilities.at(0))
 						{
 							for (int k = 0; k < randMinMax; k++)
@@ -693,6 +658,14 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					
 				}
 				
+
+				/*for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+				{
+					SystemAddress clientAddress = Server::getReplicaManager()->GetParticipantAtIndex(i);
+					GameMessages::die(replica->objectID, L"SILENT", true, clientAddress, session->charID, session->charID);
+				}*/
+
+
 				//GameMessages::smash(replica->objectID, 1.0f, 1.0f, session->charID, clientAddress);
 
 				/*ReplicaObject* charObj = ObjectsManager::getObjectByID(session->charID);
@@ -822,17 +795,6 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					flagChange->Write((unsigned char)185);
 					flagChange->Write((unsigned long)0);
 					Server::sendPacket(flagChange, clientAddress);
-
-					//BitStream* enableJetpack = PacketUtils::createGMBase(ready, 561);
-					//enableJetpack->Write(true);
-					//enableJetpack->Write(false);
-					//enableJetpack->Write(true);
-					//enableJetpack->Write(false); // effectID
-					//enableJetpack->Write(false); // fAirspeed
-					//enableJetpack->Write(false); // fMaxAirspeed
-					//enableJetpack->Write(false); // fVertVel
-					//enableJetpack->Write(false); // iWarningEffectID
-					//Server::sendPacket(enableJetpack, clientAddress);
 
 					Server::sendPacket(PacketUtils::createGMBase(session->charID, GameMessageID::GAME_MESSAGE_ID_RESTORE_TO_POST_LOAD_STATS), clientAddress);
 
@@ -2011,13 +1973,6 @@ void GameMessages::playAnimation(long long objectID, wstring animationID, bool p
 	packet->Write((bool)true);
 	packet->Write(playImmediate);
 	packet->Write((bool)true);
-
-	/*packet->Write((wstring)animationID);
-	packet->Write((bool)true);
-	packet->Write(playImmediate);
-	packet->Write((bool)true);
-	/*packet->Write(priority);
-	packet->Write(scale);*/
 
 	Server::sendPacket(packet, receiver);
 }
