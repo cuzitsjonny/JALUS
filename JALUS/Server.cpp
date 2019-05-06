@@ -26,7 +26,7 @@ RakPeerInterface* Server::peerInterface;
 void Server::init(ServerRole serverRole)
 {
 	Server::serverRole = serverRole;
-
+        // Remember. Everything's a singleton. 
 	Config::init();
 	Logger::init();
 	PingTool::init();
