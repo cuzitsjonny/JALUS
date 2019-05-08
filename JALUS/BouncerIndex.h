@@ -4,8 +4,8 @@
 class BouncerIndex
 {
 public:
-	bool flag_0 = false; // TOGGLE MANUALLY!
-	bool flag_1 = false;
+	bool flag_0 = false;
+	bool data_0_1 = false;
 
 
 	void writeToBitStream(BitStream* bitStream, bool isConstruction);

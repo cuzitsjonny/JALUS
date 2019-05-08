@@ -145,7 +145,7 @@ void LVLCache::loadObjects()
 								// THIS SPAWNS THE OBJECTS INTO THE WORLD
 								
 								if (lot == 176 || lot == 6842 || lot == 8139)
-								{
+								{ // I think this if statement makes it so certain objects don't crash the server
 									Logger::info("Loading object with ID " + to_string(objectID) + "!");
 									ReplicaObject* replica = new ReplicaObject(objectID, lot, L"", 0, pos, rot);
 									replica->scale = scale;

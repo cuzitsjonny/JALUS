@@ -57,6 +57,8 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_USE_NON_EQUIPMENT_ITEM = 603,
 	// player
 	GAME_MESSAGE_ID_SET_PLAYER_NAME = 72,
+	GAME_MESSAGE_ID_SEND_ANNOUNCEMENT = 1184,
+	GAME_MESSAGE_ID_DISPLAY_MESSAGE_BOX = 529,
 	// animations
 	GAME_MESSAGE_ID_SMASH = 537,
 	GAME_MESSAGE_ID_UNSMASH = 538,
@@ -95,6 +97,7 @@ enum GameMessageID : unsigned short
 	GAME_MESSAGE_ID_RACING_CLIENT_READY = 1393,
 	//building
 	GAME_MESSAGE_ID_START_BUILDING_WITH_ITEM = 1057,
+	GAME_MESSAGE_ID_START_ARRANGING_WITH_ITEM = 1061,
 	GAME_MESSAGE_ID_SET_BUILD_MODE = 1068,
 	GAME_MESSAGE_ID_BUILD_MODE_SET = 1069
 
@@ -155,4 +158,8 @@ public:
 
 	static void smash(long long objectID, float force, float ghostOpacity, long long killerID, SystemAddress receiver);
 	static void unsmash(long long objectID, long long builderID, float duration, SystemAddress receiver);
+
+	static void setName(long long objectID, wstring name, SystemAddress receiver, bool broadcast = false);
+	static void announceMessage(long long objectID, string title, string message, SystemAddress receiver, bool broadcast = false);
+	static void displayMessageBox(long long objectID, wstring message, SystemAddress receiver, bool broadcast = false);
 };

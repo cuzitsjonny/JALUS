@@ -240,10 +240,31 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 					break;
 				}
 
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_MODULE_ASSEMBLY:
+				{
+					moduleAssemblyIndex = new ModuleAssemblyIndex();
+
+					bool flag_0;
+					bool flag_0_1;
+					long long data_0;
+					bool flag_0_2;
+					long wstringLength;
+					wstring data_1;
+
+					moduleAssemblyIndex->flag_0 = true;
+					moduleAssemblyIndex->flag_0_1 = true;
+					moduleAssemblyIndex->data_0;
+					moduleAssemblyIndex->flag_0_2 = true;
+					moduleAssemblyIndex->wstringLength = 1;
+					moduleAssemblyIndex->data_1;
+
+					break;
+				}
+
 				case ReplicaComponentID::REPLICA_COMPONENT_ID_SCRIPTED_ACTIVITY:
 				{
 					scriptedActivityIndex = new ScriptedActivityIndex();
-					
+
 
 					scriptedActivityIndex->flag = true;
 					scriptedActivityIndex->count = 0;
@@ -270,7 +291,7 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 					bouncerIndex = new BouncerIndex();
 
 					bouncerIndex->flag_0 = true;
-					bouncerIndex->flag_1 = true;				
+					bouncerIndex->data_0_1 = true;
 
 
 					break;
@@ -280,64 +301,33 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 				{
 					rebuildIndex = new RebuildIndex();
 
-					if (statsIndexParent < 0)
-					{
-						statsIndex = new StatsIndex();
-						statsIndexParent = ReplicaComponentID::REPLICA_COMPONENT_ID_REBUILD;
-
-						StatsIndexInfo info = CDClient::getStatsIndexInfo(e.componentID);
-						statsIndex->flag_1 = true;
-						statsIndex->faction_id = info.factionID;
-						statsIndex->cur_health = info.health;
-						statsIndex->max_health = info.health;
-						statsIndex->cur_armor = info.armor;
-						statsIndex->max_armor = info.armor;
-						statsIndex->cur_imagination = info.imagination;
-						statsIndex->max_imagination = info.imagination;
-						statsIndex->is_smashable = info.isSmashable;
-					}
-
-					rebuildIndex->flag_1 = true;
+					rebuildIndex->flag_0 = true;
 
 					rebuildIndex->rebuildState = 0;
 					rebuildIndex->success = false;
 					rebuildIndex->enabled = true;
 
-					rebuildIndex->rebuildTimePassed = 0.0;
+					rebuildIndex->rebuildTime = 0.0;
 					rebuildIndex->rebuildTimePaused = 0.0;
 
-					rebuildIndex->flag_0 = false;
+					rebuildIndex->flag_1 = false;
+					rebuildIndex->data_1_0 = 0;
 
-					rebuildIndex->pos_x = pos.x;
-					rebuildIndex->pos_y = pos.y;
-					rebuildIndex->pos_z = pos.z;
+					rebuildIndex->activator_pos_x = pos.x;
+					rebuildIndex->activator_pos_y = pos.y;
+					rebuildIndex->activator_pos_z = pos.z;
 
-					rebuildIndex->flag_0_1 = true;
+					rebuildIndex->data_1_1 = true;
 
 
-					
+
 
 					break;
 				}
 
-				case ReplicaComponentID::REPLICA_COMPONENT_ID_MODULE_ASSEMBLY:
+				case ReplicaComponentID::REPLICA_COMPONENT_ID_MOVING_PLATFORM:
 				{
-					moduleAssemblyIndex = new ModuleAssemblyIndex();
-
-					bool flag_0;
-					bool flag_0_1;
-					long long data_0;
-					bool flag_0_2;
-					long wstringLength;
-					wstring data_1;
-
-					moduleAssemblyIndex->flag_0 = true;
-					moduleAssemblyIndex->flag_0_1 = true;
-					moduleAssemblyIndex->data_0;
-					moduleAssemblyIndex->flag_0_2 = true;
-					moduleAssemblyIndex->wstringLength = 1;
-					moduleAssemblyIndex->data_1;
-
+					//movingPlatformIndex = new MovingPlatformIndex();
 					break;
 				}
 
@@ -348,41 +338,37 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 	else
 	{
 		string spawntemplate = LVLCache::getObjectProperty("spawntemplate", objectID).value;
-		string rebuild_activators = LVLCache::getObjectProperty("rebuild_activators", objectID).value;
+		string rebuild_activators = LVLCache::getObjectProperty("rebuild_activators", objectID).value; // REBUILDS
 
 		if (spawntemplate.length() > 0)
-		{
+		{ // ORIGINAL CODE
 			long long id = Objects::generateObjectID();
 			ReplicaObject* replica = new ReplicaObject(id, stol(spawntemplate), L"", 0, pos, rot, objectID);
 			replica->scale = scale;
 			Server::getReplicaManager()->ReferencePointer(replica);
-
-			//ReplicaObject* activatorReplica = nullptr;
-
+			// END ORIGINAL CODE
+			// REBUILDS POSSIBLY
 			if (rebuild_activators.length() > 0)
 			{
 				long long activatorID = Objects::generateObjectID();
 
-				Rotation activatorRot = Rotation();
+				Rotation actRot = Rotation();
 
-				activatorRot.x = 0.0;
-				activatorRot.y = 0.0;
-				activatorRot.z = 0.0;
-				activatorRot.w = 1.0;
+				actRot.x = 0.0;
+				actRot.y = 0.0;
+				actRot.z = 0.0;
+				actRot.w = 1.0;
 
+				Position actPos = Position();
+				actPos.x = replica->rebuildIndex->activator_pos_x;
+				actPos.y = replica->rebuildIndex->activator_pos_y;
+				actPos.z = replica->rebuildIndex->activator_pos_z;
 
-				//ReplicaObject* activatorReplica = new ReplicaObject(activatorID, 6604, L"", 0, pos, activatorRot, objectID);
-				ReplicaObject* activatorReplica = new ReplicaObject(activatorID, 6604, L"", 0, pos, activatorRot, -1);
+				ReplicaObject* activatorReplica = new ReplicaObject(activatorID, 6604, L"", 0, actPos, actRot, -1);
 
-				//activatorReplica->rebuildIndex->enabled = true;
-				//activatorReplica = new ReplicaObject(activatorID, 6604, L"", 0, pos, activatorRot, -1);
 				activatorReplica->scale = scale;
 
 				activatorReplica->parentID = id;
-
-
-				//activatorReplica->rebuildIndex->enabled = true;
-				//activatorReplica->rebuildIndex->
 
 				replica->childIDs.push_back(activatorID);
 
@@ -390,37 +376,14 @@ ReplicaObject::ReplicaObject(long long objectID, long lot, wstring name, long gm
 
 				Server::getReplicaManager()->ReferencePointer(activatorReplica);
 
-				//for testing
-				/*Logger::info(to_string(replica->objectID));
-				BitStream *stream = new BitStream();
-				stream->Write(static_cast<unsigned char>(0x24));
-				stream->Write(static_cast<bool>(true));
-				stream->Write(static_cast<unsigned long>(1));
-				activatorReplica->writeToBitStream(stream, true);
-				stringstream ns; ns << "packets\\[24]_" << activatorReplica->lot << "_" << activatorReplica->objectID << ".bin";
-				PacketUtils::saveBitstreamToDisk(stream, ns.str());*/
-
-
 			}
-			//Server::getReplicaManager()->ReferencePointer(replica);
-			/*Server::getReplicaManager()->ReferencePointer(replica);
-			if (activatorReplica != nullptr)
-			{
-				Server::getReplicaManager()->ReferencePointer(activatorReplica);
-			}*/
+
 
 		}
 
-		/*if (rebuild_activators.length() > 0)
-		{
-			long long id = Objects::generateObjectID();
-			ReplicaObject* replica = new ReplicaObject(id, stol(rebuild_activators), L"", 0, pos, rot, objectID);
-			replica->scale = scale;
 
-			Server::getReplicaManager()->ReferencePointer(replica);
-		}*/
+
 	}
-
 }
 
 ReplicaObject::~ReplicaObject()
@@ -482,9 +445,9 @@ ReplicaObject::~ReplicaObject()
 	{
 		delete bouncerIndex;
 	}
-	if (renderIndex != nullptr)
+	if (movingPlatformIndex != nullptr)
 	{
-		delete renderIndex;
+		delete movingPlatformIndex;
 	}
 	if (index107 != nullptr)
 	{
@@ -631,6 +594,8 @@ void ReplicaObject::writeToBitStream(BitStream* bitStream, bool isConstruction)
 		scriptedActivityIndex->writeToBitStream(bitStream, isConstruction);
 	if (rebuildIndex != nullptr)
 		rebuildIndex->writeToBitStream(bitStream, isConstruction);
+	if (movingPlatformIndex != nullptr)
+		movingPlatformIndex->writeToBitStream(bitStream, isConstruction);
 	if (bouncerIndex != nullptr)
 		bouncerIndex->writeToBitStream(bitStream, isConstruction);
 	if (renderIndex != nullptr)

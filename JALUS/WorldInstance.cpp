@@ -311,6 +311,7 @@ void WorldInstance::sendCharacterData(SystemAddress clientAddress)
 
 		xml << "</bag>";
 
+		//Helpers::proxyGarbageCollection(session->charID);
 		vector<InventoryItem> items = InventoryItems::getInventoryItems(session->charID);
 		xml << "<items>";
 
@@ -476,6 +477,7 @@ void WorldInstance::broadcastPositionUpdate(BitStream* data, SystemAddress clien
 
 		data->Read(index->is_on_ground);
 		data->Read(index->data_5_8);
+		//Logger::info("data_5_8: " + to_string(index->data_5_8) + ".");
 
 		data->Read(index->flag_velocity);
 		if (index->flag_velocity)
@@ -483,6 +485,7 @@ void WorldInstance::broadcastPositionUpdate(BitStream* data, SystemAddress clien
 			data->Read(index->vel_x);
 			data->Read(index->vel_y);
 			data->Read(index->vel_z);
+			//Logger::info("Velocity: " + to_string(index->vel_x) + " " + to_string(index->vel_y) + " " + to_string(index->vel_z) + ".");
 		}
 
 		data->Read(index->flag_angular_velocity);
@@ -491,6 +494,7 @@ void WorldInstance::broadcastPositionUpdate(BitStream* data, SystemAddress clien
 			data->Read(index->ang_vel_x);
 			data->Read(index->ang_vel_y);
 			data->Read(index->ang_vel_z);
+			//Logger::info("Angular Velocity: " + to_string(index->ang_vel_x) + " " + to_string(index->ang_vel_y) + " " + to_string(index->ang_vel_z) + ".");
 		}
 
 		data->Read(index->flag_5_11);

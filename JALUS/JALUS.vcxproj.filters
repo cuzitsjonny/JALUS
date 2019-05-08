@@ -203,6 +203,9 @@
     <ClCompile Include="ValueStorage.cpp">
       <Filter>Quelldateien\Datenbank</Filter>
     </ClCompile>
+    <ClCompile Include="MovingPlatformIndex.cpp">
+      <Filter>Quelldateien\Indexe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -399,6 +402,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingPlatformIndex.h">
+      <Filter>Headerdateien\Indexe</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

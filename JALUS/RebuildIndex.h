@@ -5,26 +5,21 @@
 class RebuildIndex
 {
 public:
-
-	//bool flagTemp;
-	//unsigned long un32Temp;
-
 	ScriptedActivityIndex* scriptedActivityIndex = new ScriptedActivityIndex();
 	
-
-	bool flag_1;
+	bool flag_0;
 	unsigned long rebuildState;
 	bool success;
 	bool enabled;
-	float rebuildTimePassed;
+	float rebuildTime;
 	float rebuildTimePaused;
 
-	bool flag_0;
-	unsigned long data_0_0;
-	float pos_x;
-	float pos_y;
-	float pos_z;
-	bool flag_0_1;
+	bool flag_1;
+	unsigned long data_1_0;
+	float activator_pos_x;
+	float activator_pos_y;
+	float activator_pos_z;
+	bool data_1_1;
 
 
 	

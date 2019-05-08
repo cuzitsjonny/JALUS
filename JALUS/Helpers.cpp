@@ -2,6 +2,7 @@
 #include "Missions.h"
 #include "CDClient.h"
 #include "InventoryItems.h"
+#include "TemporaryItems.h"
 #include "GameMessages.h"
 #include "PingTool.h"
 #include "Sessions.h"
@@ -18,6 +19,7 @@
 #include "ValueStorage.h"
 #include "Scheduler.h"
 #include "ReplicaObject.h"
+#include "Commands.h"
 
 void Helpers::addMissionWithTasks(long long missionID, long long charID)
 {
@@ -93,6 +95,7 @@ void Helpers::createSyncedItemStack(long long ownerID, long lot, long count, boo
 
 void Helpers::createProxyItemStack(long long ownerID, long lot, long count, bool isBound, bool isEquipped, SystemAddress clientAddress, bool showFlyingLoot)
 {
+	//long long id = InventoryItems::createInventoryItem(ownerID, lot, count, isBound, isEquipped, true);
 	long long id = InventoryItems::createInventoryItem(ownerID, lot, count, isBound, isEquipped);
 	InventoryItem item = InventoryItems::getInventoryItem(id);
 	item.invType = InventoryType::_INVENTORY_TYPE_TEMP_ITEMS;
@@ -102,10 +105,16 @@ void Helpers::createProxyItemStack(long long ownerID, long lot, long count, bool
 	Helpers::equip(item.ownerID, item.objectID, clientAddress, false);
 }
 
-void Helpers::equip(long long charID, long long objectID, SystemAddress clientAddress, bool saved)
+void Helpers::equip(long long charID, long long objectID, SystemAddress clientAddress, bool saved, bool proxy)
 {
 	ReplicaObject* player = ObjectsManager::getObjectByID(charID);
-	vector<InventoryItem> items = InventoryItems::getInventoryItems(charID);
+	vector<InventoryItem> items;
+	if (proxy) {
+		items = TemporaryItems::getItems(charID);
+	}
+	else {
+		items = InventoryItems::getInventoryItems(charID);
+	}
 	for (int k = items.size(); k--;) {
 		if (items[k].objectID == objectID) {
 			if (saved)
@@ -118,7 +127,7 @@ void Helpers::equip(long long charID, long long objectID, SystemAddress clientAd
 	}
 }
 
-void Helpers::unequip(long long charID, long long objectID, SystemAddress clientAddress)
+void Helpers::unequip(long long charID, long long objectID, SystemAddress clientAddress, bool proxy)
 {
 	ReplicaObject* player = ObjectsManager::getObjectByID(charID);
 	for (int k = player->inventoryIndex->items.size(); k--;)
@@ -138,12 +147,10 @@ void Helpers::setupProxy(long long charID, long long objectID, SystemAddress cli
 {
 	ReplicaObject* player = ObjectsManager::getObjectByID(charID);
 	long lot = Objects::getLOT(objectID);
-	//Logger::info(to_string(lot));
 	if (CDClient::hasSubItems(Objects::getLOT(objectID)))
 	{
 		vector<long> subs = CDClient::getSubItems(Objects::getLOT(objectID));
 		for (int i = 0; i < subs.size(); i++)
-		//for (int i = subs.size(); i--;)
 			Helpers::createProxyItemStack(charID, subs[i], 0, false, false, clientAddress, false);
 	}
 }
@@ -151,11 +158,9 @@ void Helpers::setupProxy(long long charID, long long objectID, SystemAddress cli
 
 void Helpers::resetProxy(long long charID, long long objectID, SystemAddress clientAddress)
 {
-	//Logger::info(to_string(CDClient::hasSubItems(Objects::getLOT(objectID))));
 	ReplicaObject* player = ObjectsManager::getObjectByID(charID);
 	if (CDClient::hasSubItems(Objects::getLOT(objectID)))
 	{
-		//player->inventoryIndex->items = InventoryItems::getEquippedInventoryItems(charID);
 		vector<long> subs = CDClient::getSubItems(Objects::getLOT(objectID));
 		for (int i = subs.size(); i--;)
 		{
@@ -168,7 +173,6 @@ void Helpers::resetProxy(long long charID, long long objectID, SystemAddress cli
 						if (player->inventoryIndex->items[k].count == 0)
 						{
 							Helpers::unequip(charID, player->inventoryIndex->items[k].objectID, clientAddress);
-							//InventoryItems::deleteInventoryItem(player->inventoryIndex->items[k].objectID);
 						}
 					}
 				}
@@ -176,6 +180,16 @@ void Helpers::resetProxy(long long charID, long long objectID, SystemAddress cli
 		}
 	}
 }
+
+/*void Helpers::proxyGarbageCollection(long long charID)
+{
+	vector<InventoryItem> items = InventoryItems::getInventoryItems(charID);
+	for (int k = items.size(); k--;) {
+		if (items[k].isProxy == true) {
+			InventoryItems::deleteInventoryItem(items[k].objectID);
+		}
+	}
+}*/
 
 void Helpers::addSkill(long long charID, long lot, SystemAddress clientAddress) {
 	long skillid = CDClient::getSkillID(lot, 0);
@@ -243,7 +257,7 @@ void Helpers::broadcastAnimation(long long objectID, string animation)
 	}
 }
 
-void Helpers::sendGlobalChat(wstring message)
+void Helpers::sendGlobalChat(wstring message, CommandSender sender)
 {
 	for (int k = 0; k < Server::getReplicaManager()->GetParticipantCount(); k++)
 	{
@@ -251,7 +265,16 @@ void Helpers::sendGlobalChat(wstring message)
 		//ReplicaObject* replica = ObjectsManager::getObjectBySystemAddress(receiver);
 		Chat::sendChatMessage(message, ObjectsManager::getObjectBySystemAddress(participant)->clientAddress);
 	}
-	Logger::info("Server sent chat message! (Message: '" + to_string(message) + "')");
+	try {
+		if (sender.getSenderID() == -1)
+			sender.sendMessage("Server sent chat message! (Message: '" + to_string(message) + "')");
+		else
+			Logger::info("Server sent chat message! (Message: '" + to_string(message) + "')");
+	}
+	catch (exception& e) {
+		Logger::info("Server sent chat message! (Message: '" + to_string(message) + "')");
+	}
+	//Logger::info("Server sent chat message! (Message: '" + to_string(message) + "')");
 }
 
 void Helpers::dropCoinsOnDeath(SystemAddress clientAddress)
@@ -363,8 +386,11 @@ double Helpers::randomInRange(double min, double max)
 
 string Helpers::getTitle(long long charID, string name){
 	long value = ValueStorage::getValueFromDatabase(charID, "title");
-	if (value == -1) {
+	if (value == 0) {
 		// DO NOTHING
+	}
+	else if (value == 98) {
+		name += " - Administrator-Developer";
 	}
 	else if (value == 9) {
 		name += " - Admin";
@@ -400,6 +426,31 @@ void Helpers::respawnObject(ReplicaObject* replica)
 		GameMessages::playFXEffect(replica->objectID, 729, L"create", 1.0F, "regenerationflash", 1.0F, -1, clientAddress);
 	}
 	//GameMessages::stopFXEffect(replica->objectID, "regenerationflash", false, clientAddress);
+}
+
+void Helpers::broadcastPacket(BitStream* bitStream, SystemAddress address)
+{
+	for (int i = 0; i < Server::getReplicaManager()->GetParticipantCount(); i++)
+	{
+		Server::sendPacket(bitStream, Server::getReplicaManager()->GetParticipantAtIndex(i));
+	}
+}
+
+void Helpers::write(BitStream* bitStream, string text) {
+	unsigned long s1 = text.size();
+	unsigned long size = (s1 << 1) + 1;
+	Logger::info(to_string(size));
+	bitStream->Write(size);
+	for (unsigned char k = 0; k < s1; k++) {
+		bitStream->Write((unsigned char)text.at(k));
+	}
+}
+
+void Helpers::write2(BitStream* bitStream, string text) {
+	bitStream->Write((unsigned long)text.size());
+	for (unsigned char k = 0; k < text.size(); k++) {
+		bitStream->Write((unsigned char)text.at(k));
+	}
 }
 
 void Helpers::broadcastJonnysDumbEffects()

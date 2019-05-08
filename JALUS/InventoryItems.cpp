@@ -119,45 +119,19 @@ InventoryType InventoryItems::getInventoryType(ItemType itemType)
 	}
 }
 
-//long long InventoryItems::createPhantomItem(long long charID, long lot, bool isEquipped, bool isProxy)
-long long InventoryItems::createPhantomItem(long long charID, long lot, bool isEquipped)
-{
-	long long id = Objects::createObject(lot);
-	InventoryItem phantom;
-	phantom.objectID = id;
-	phantom.ownerID = charID;
-	phantom.lot = lot;
-	phantom.itemType = ItemType::INVALID_ITEM_TYPE;
-	phantom.invType = InventoryType::INVALID_INVENTORY_TYPE;
-	phantom.slot = 1;
-	phantom.count = 1;
-	phantom.isBound = false;
-	phantom.isEquipped = isEquipped;
-	//phantom.isProxy = isProxy;
-
-	phantomStorage.push_back(phantom);
-
-	return id;
-}
-
-vector<InventoryItem> InventoryItems::getPhantomItems(long long ownerID)
-{
-	for (int i = 0; i < phantomStorage.size(); i++)
-		if (phantomStorage[i].ownerID == ownerID)
-			return phantomStorage;
-
-}
-
+//long long InventoryItems::createInventoryItem(long long ownerID, long lot, long count, bool isBound, bool isEquipped, bool isProxy)
 long long InventoryItems::createInventoryItem(long long ownerID, long lot, long count, bool isBound, bool isEquipped)
 {
 	long long id = Objects::createObject(lot);
 	
+	//InventoryItems::createInventoryItem(id, ownerID, lot, count, isBound, isEquipped, isProxy);
 	InventoryItems::createInventoryItem(id, ownerID, lot, count, isBound, isEquipped);
 
 	return id;
 }
 
 
+//void InventoryItems::createInventoryItem(long long objectID, long long ownerID, long lot, long count, bool isBound, bool isEquipped, bool isProxy)
 void InventoryItems::createInventoryItem(long long objectID, long long ownerID, long lot, long count, bool isBound, bool isEquipped)
 {
 	SAConnection con;
@@ -177,8 +151,10 @@ void InventoryItems::createInventoryItem(long long objectID, long long ownerID, 
 		stringstream ss;
 		ss << "INSERT INTO";
 		ss << " " << InventoryItems::name << " ";
+		//ss << "(id, owner_id, item_type, inventory_type, slot, count, is_bound, is_equipped, is_proxy)";
 		ss << "(id, owner_id, item_type, inventory_type, slot, count, is_bound, is_equipped)";
 		ss << " VALUES ";
+		//ss << "('" << objectID << "', '" << ownerID << "', '" << itemType << "', '" << invType << "', '" << slot << "', '" << count << "', '" << isBound << "', '" << isEquipped << "', '" << isProxy << "');";
 		ss << "('" << objectID << "', '" << ownerID << "', '" << itemType << "', '" << invType << "', '" << slot << "', '" << count << "', '" << isBound << "', '" << isEquipped << "');";
 
 		cmd.setConnection(&con);
@@ -522,6 +498,7 @@ vector<InventoryItem> InventoryItems::getInventoryItems(long long ownerID)
 			SA_MySQL_Client);
 
 		stringstream ss;
+		//ss << "SELECT id, item_type, inventory_type, slot, count, is_bound, is_equipped, is_proxy FROM";
 		ss << "SELECT id, item_type, inventory_type, slot, count, is_bound, is_equipped FROM";
 		ss << " " << InventoryItems::name << " ";
 		ss << "WHERE owner_id = '" << ownerID << "';";
@@ -542,6 +519,7 @@ vector<InventoryItem> InventoryItems::getInventoryItems(long long ownerID)
 			item.count = cmd.Field("count").asLong();
 			item.isBound = cmd.Field("is_bound").asBool();
 			item.isEquipped = cmd.Field("is_equipped").asBool();
+			//item.isProxy = cmd.Field("is_proxy").asBool();
 
 			r.push_back(item);
 		}

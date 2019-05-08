@@ -19,6 +19,7 @@
 #include "RebuildIndex.h"
 #include "ScriptedActivityIndex.h"
 #include "ModuleAssemblyIndex.h"
+#include "MovingPlatformIndex.h"
 
 class ReplicaObject : public Replica
 {
@@ -56,6 +57,7 @@ public:
 	ScriptedActivityIndex* scriptedActivityIndex = nullptr;
 	RebuildIndex* rebuildIndex = nullptr;
 	BouncerIndex* bouncerIndex = nullptr;
+	MovingPlatformIndex* movingPlatformIndex = nullptr;
 	RenderIndex* renderIndex = nullptr;
 	Index107* index107 = nullptr;
 	

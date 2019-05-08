@@ -96,7 +96,9 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_REPORT_BUG:
 		{
-			Logger::info("GAME_MESSAGE_REPORT_BUG");
+			wstring message = L"You currently cannot do that action.\n\n";
+			message += L"Do you understand?";
+			GameMessages::displayMessageBox(session->charID, message, clientAddress);
 			// Currently unable to retrieve data.
 			// I'm having some trouble with it.
 			break;
@@ -104,7 +106,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 		case GAME_MESSAGE_ID_START_BUILDING_WITH_ITEM:
 		{
-			bool firstTime = false;
+			bool firstTime = true;
 			bool success;
 			int sourceBag;
 			long long sourceID;
@@ -112,38 +114,193 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			int sourceType;
 			long long targetID;
 			long targetLot;
-			Position targetPos;
+			float pos_x = 0.0F;
+			float pos_y = 0.0F;
+			float pos_z = 0.0F;
+			//Position targetPos;
 			int targetType;
 
+			bool f;
 
-			data->Read(firstTime);
+			data->Read(f);
+			if (f)
+				data->Read(firstTime);
 			data->Read(success);
+			data->Read(sourceBag);
 			data->Read(sourceID);
 			data->Read(sourceLot);
 			data->Read(sourceType);
 			data->Read(targetID);
 			data->Read(targetLot);
-			data->Read(targetPos);
+			data->Read(f);
+			if (f)
+			{
+				data->Read(pos_x);
+				data->Read(pos_y);
+				data->Read(pos_z);
+			}
 			data->Read(targetType);
 
-			BitStream* packet = PacketUtils::createGMBase(session->charID, GAME_MESSAGE_ID_SET_BUILD_MODE);
-			ReplicaObject* replica = ObjectsManager::getObjectByID(session->charID);
-			Position position;
-			position.x = replica->controllablePhysicsIndex->pos_x;
-			position.y = replica->controllablePhysicsIndex->pos_y;
-			position.z = replica->controllablePhysicsIndex->pos_z;
-			packet->Write(true);
-			packet->Write(-1);
-			packet->Write(false);
-			packet->Write(1);
-			packet->Write(session->charID);
-			packet->Write(position);
+			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+			Position pos = Position();
+			pos.x = player->controllablePhysicsIndex->pos_x;
+			pos.y = player->controllablePhysicsIndex->pos_y;
+			pos.z = player->controllablePhysicsIndex->pos_z;
+
+			/*Logger::info("Position " + to_string(pos.x) + " " + to_string(pos.y) + " " + to_string(pos.z));
+			Logger::info("TargetID " + to_string(targetID));
+			Logger::info("TargetLot " + to_string(targetLot));
+			Logger::info("TargetPos " + to_string(targetPos.x) + " " + to_string(targetPos.y) + " " + to_string(targetPos.z));
+			Logger::info("TargetType " + to_string(targetType));*/
+			//Logger::info("TargetPos " + to_string(pos_x) + " " + to_string(pos_y) + " " + to_string(pos_z));
+
+			BitStream* packet = PacketUtils::createGMBase(session->charID, GAME_MESSAGE_ID_START_ARRANGING_WITH_ITEM);
+			packet->Write(firstTime);
+			packet->Write((long long)-1); // BUILD AREA : DEFAULT -1
+			packet->Write(pos);
+			packet->Write(sourceBag);
+			packet->Write(sourceID);
+			packet->Write(sourceLot);
+			packet->Write(sourceType);
+			packet->Write(targetID);
+			packet->Write(targetLot);
+
+			if (pos_x == 0.0F && pos_y == 0.0F && pos_z == 0.0F)
+				packet->Write((bool)false);
+			else {
+				packet->Write((bool)true);
+				packet->Write(pos_x);
+				packet->Write(pos_y);
+				packet->Write(pos_z);
+			}
+
+			packet->Write(targetType);
 
 			Server::sendPacket(packet, clientAddress);
+
+			/*data->Read(f);
+			if (f)
+			{
+				data->Read(lcp_x);
+				data->Read(lcp_y);
+				data->Read(lcp_z);
+			}
+			if (lcp_x == 0.0F && lcp_y == 0.0F && lcp_z == 0.0F)
+			{
+				packet->Write((bool)false);
+			}
+			else
+			{
+			packet->Write((bool)true);
+			packet->Write(lcp_x);
+			packet->Write(lcp_y);
+			packet->Write(lcp_z);
+			}*/
+
 
 			break;
 		}
 
+		case GAME_MESSAGE_ID_BUILD_MODE_SET:
+		{
+			bool start;
+			int distanceType = -1;
+			bool modePaused = false;
+			int modeValue = 1;
+			long long playerID;
+			//Position startPos;
+			float pos_x = 0.0F;
+			float pos_y = 0.0F;
+			float pos_z = 0.0F;
+
+			bool f;
+
+			data->Read(start);
+			//data->Read(f);
+			data->Read(distanceType);
+			data->Read(modePaused);
+			data->Read(modeValue);
+			/*if (f)
+				data->Read(distanceType);
+			data->Read(f);
+			if (f)
+				data->Read(modePaused);
+			data->Read(f);
+			if (f)
+				data->Read(modeValue);*/
+			data->Read(playerID);
+
+			data->Read(f);
+			if (f)
+			{
+				data->Read(pos_x);
+				data->Read(pos_y);
+				data->Read(pos_z);
+			}
+
+			//data->Read(startPos);
+			/*data->Read(startPos.x);
+			data->Read(startPos.y);
+			data->Read(startPos.z);*/
+
+			/*Logger::info("start " + to_string(start));
+			Logger::info("distanceType " + to_string(distanceType));
+			Logger::info("modePaused " + to_string(modePaused));
+			Logger::info("modeValue " + to_string(modeValue));
+			Logger::info("playerID " + to_string(playerID));
+			//Logger::info("StartPos " + to_string(startPos.x) + " " + to_string(startPos.y) + " " + to_string(startPos.z));
+			Logger::info("StartPos " + to_string(pos_x) + " " + to_string(pos_y) + " " + to_string(pos_z));*/
+			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
+			BitStream* packet = PacketUtils::createGMBase(session->charID, GAME_MESSAGE_ID_SET_BUILD_MODE);
+			packet->Write(start);
+			packet->Write(distanceType);
+			packet->Write(modePaused);
+			packet->Write(modeValue);
+			packet->Write(playerID);
+
+			//packet->Write((bool)true);
+			packet->Write(player->controllablePhysicsIndex->pos_x);
+			packet->Write(player->controllablePhysicsIndex->pos_y);
+			packet->Write(player->controllablePhysicsIndex->pos_z);
+
+			/*if (pos_x == 0.0F && pos_y == 0.0F && pos_z == 0.0F)
+				packet->Write((bool)false);
+			else {
+				packet->Write((bool)true);
+				packet->Write(pos_x);
+				packet->Write(pos_y);
+				packet->Write(pos_z);
+			}*/
+
+			/*packet->Write(startPos.x);
+			packet->Write(startPos.y);
+			packet->Write(startPos.z);*/
+
+			Server::sendPacket(packet, clientAddress);
+
+			/*if (distanceType == -1)
+			packet->Write((bool)false);
+			else {
+			packet->Write((bool)true);
+			packet->Write(distanceType);
+			}
+
+			if (modePaused == false)
+			packet->Write((bool)false);
+			else {
+			packet->Write((bool)true);
+			packet->Write(modePaused);
+			}
+
+			if (modeValue == 1)
+			packet->Write((bool)false);
+			else {
+			packet->Write((bool)true);
+			packet->Write(modeValue);
+			}*/
+
+			break;
+		}
 		
 
 		// item drops
@@ -172,6 +329,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 			data->Read(lootObj);
 			data->Read(playerID);
+
+			// Broadcast? Maybe?
 
 			long getObjLOT = ItemDrops::getDroppedItem(lootObj);
 			ReplicaObject* player = ObjectsManager::getObjectByID(session->charID);
@@ -290,6 +449,19 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 			if (session != nullptr)     
 			{
+				// BROADCAST AND RENDER NAMES
+				wstring name = to_wstring(Helpers::getTitle(session->charID, Characters::getName(session->charID)));
+				GameMessages::setName(session->charID, name, clientAddress, true);
+				for (int k = 0; k < Server::getReplicaManager()->GetParticipantCount(); k++)
+				{
+					SystemAddress sClientAddress = Server::getReplicaManager()->GetParticipantAtIndex(k);
+					if (sClientAddress != clientAddress) {
+						Session* player = Sessions::getSession(clientAddress);
+						wstring awn = to_wstring(Helpers::getTitle(player->charID, Characters::getName(player->charID)));
+
+						GameMessages::setName(player->charID, awn, clientAddress);
+					}
+				}
 				// add skills for equipped items
 				{
 					vector<InventoryItem> items = InventoryItems::getEquippedInventoryItems(session->charID);
@@ -363,7 +535,7 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			}*/
 
 			bool confirmed = false;
-			bool deleteItem = true;
+			/*bool deleteItem = true;
 			bool outSuccess = false;
 			int invType = InventoryType::INVENTORY_TYPE_DEFAULT;
 			int lootTypeSource = 0;
@@ -377,11 +549,11 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 			unsigned long stackRemaining = 0;
 			long long subkey = 0;
 			long long tradeID = 0;
-
-			bool f;
+			
+			bool f;*/
 			
 			data->Read(confirmed);
-			data->Read(deleteItem);
+			/*data->Read(deleteItem);
 			data->Read(outSuccess);
 
 			data->Read(f);
@@ -467,7 +639,11 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 					InventoryItems::setCount(stackRemaining, objid);
 				}
 			}*/
-
+			if (confirmed) {
+				wstring message = L"You currently cannot do that action.\n\n";
+				message += L"Do you understand?";
+				GameMessages::displayMessageBox(session->charID, message, clientAddress);
+			}
 
 			break;
 		}
@@ -559,6 +735,10 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 			string animation = CDClient::getAnimationOfEmote(emoteID);
 			if (CDClient::isAnimationValid(animation)) {
+				/*BitStream* packet = PacketUtils::createGMBase(session->charID, GAME_MESSAGE_ID_PLAY_EMOTE);
+				packet->Write(emoteID);
+				packet->Write(targetID);
+				Server::broadcastPacket(packet, clientAddress);*/
 				Helpers::broadcastAnimation(session->charID, animation);
 				Missions::callOnMissionTaskUpdate(MissionTaskType::MISSION_TASK_TYPE_USE_EMOTE, session->charID, emoteID, clientAddress);
 			}
@@ -1513,7 +1693,8 @@ void GameMessages::processGameMessage(BitStream* data, SystemAddress clientAddre
 
 			if (str[0] == L'/')
 			{
-				Logger::info("Character " + to_string(session->charID) + " used a command! (Command: '" + to_string(str) + "')");
+				//Logger::info("Character " + to_string(session->charID) + " used a command! (Command: '" + to_string(str) + "')");
+				Logger::info("Player '" + Characters::getName(session->charID) + "' used a command! (Command: '" + to_string(str) + "')");
 
 				vector<string> rawCMD = split(to_string(str).substr(1), ' ');
 
@@ -1998,3 +2179,72 @@ void GameMessages::unsmash(long long objectID, long long builderID, float durati
 
 	Server::sendPacket(packet, receiver);
 }
+
+void GameMessages::setName(long long objectID, wstring name, SystemAddress receiver, bool broadcast) {
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_SET_PLAYER_NAME);
+	packet->Write((unsigned long)name.length());
+	for (int i = 0; i < name.length(); i++)
+	{
+		packet->Write(name[i]);
+	}
+
+	if (broadcast)
+		Server::broadcastPacket(packet, receiver);
+	else
+		Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::announceMessage(long long objectID, string title, string message, SystemAddress receiver, bool broadcast) {
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_SEND_ANNOUNCEMENT);
+	// THE BIGGEST PAIN
+	packet->Write((unsigned char)9);
+	packet->Write((unsigned char)1);
+	Helpers::write(packet, "message");
+	packet->Write((unsigned char)6);
+	Helpers::write(packet, message);
+	Helpers::write(packet, "title");
+	packet->Write((unsigned char)6);
+	Helpers::write(packet, title);
+	Helpers::write(packet, "visible");
+	packet->Write((unsigned char)3);
+	packet->Write((unsigned char)1);
+	Helpers::write2(packet, "ToggleAnnounce");
+
+	if (broadcast)
+		Server::broadcastPacket(packet, receiver);
+	else
+		Server::sendPacket(packet, receiver);
+}
+
+void GameMessages::displayMessageBox(long long objectID, wstring message, SystemAddress receiver, bool broadcast) {
+	BitStream* packet = PacketUtils::createGMBase(objectID, GameMessageID::GAME_MESSAGE_ID_DISPLAY_MESSAGE_BOX);
+
+	packet->Write((bool)true);
+	packet->Write((long long)objectID);
+	wstring title = L"announcement";
+	packet->Write((unsigned long)title.length());
+	for (int i = 0; i < title.length(); i++)
+	{
+		packet->Write(title[i]);
+	}
+	packet->Write((int)1);
+
+	packet->Write((unsigned long)message.length());
+	for (int i = 0; i < message.length(); i++)
+	{
+		packet->Write(message[i]);
+	}
+
+	wstring test = L"userData";
+	packet->Write((unsigned long)test.length());
+	for (int i = 0; i < test.length(); i++)
+	{
+		packet->Write(test[i]);
+	}
+
+	if (broadcast)
+		Server::broadcastPacket(packet, receiver);
+	else
+		Server::sendPacket(packet, receiver);
+}
+

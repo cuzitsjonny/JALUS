@@ -117,7 +117,7 @@ void ValueStorage::updateValueInDatabase(long long charID, string type, long val
 		try
 		{
 			con.Rollback();
-			ValueStorage::createValueInDatabase(charID, type, value);
+			//ValueStorage::createValueInDatabase(charID, type, value);
 		}
 		catch (SAException &) {}
 	}
@@ -255,6 +255,7 @@ void ValueStorage::removeValueFromMemory(long long charid, string type)
 
 long ValueStorage::getValueInMemory(long long charid, string type)
 {
+	bool found = false;
 	for (int i = 0; i < valueStorage.size(); i++)
 	{
 		if (valueStorage.at(i).charid == charid)
@@ -262,7 +263,10 @@ long ValueStorage::getValueInMemory(long long charid, string type)
 			if (valueStorage.at(i).type == type)
 			{
 				return valueStorage.at(i).value;
+				found = true;
 			}
 		}
 	}
+	if (found == false)
+		return false;
 }

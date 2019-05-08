@@ -15,11 +15,5 @@ public:
 	long wstringLength;
 	wstring data_1;
 
-	
-
-
-
-
-
 	void writeToBitStream(BitStream* bitStream, bool isConstruction);
 };

@@ -184,6 +184,7 @@ long long CharactersInstance::performCharacterCreation(BitStream* data, SystemAd
 			ValueStorage::createValueInDatabase(id, "armor", (long)0);
 			ValueStorage::createValueInDatabase(id, "imagination", (long)0);
 			ValueStorage::createValueInDatabase(id, "wisp", (long)0);
+			ValueStorage::createValueInDatabase(id, "title", (long)0);
 
 			BitStream* response = PacketUtils::createPacketBase(RCT_WORLD_TO_CLIENT, WORLD_CLIENT_ADD_FRIEND_REQUEST);
 			response->Write((unsigned char)0);
@@ -214,6 +215,7 @@ long long CharactersInstance::performCharacterDeletion(BitStream* data, SystemAd
 			ValueStorage::removeValueFromDatabase(id, "armor");
 			ValueStorage::removeValueFromDatabase(id, "imagination");
 			ValueStorage::removeValueFromDatabase(id, "wisp");
+			ValueStorage::removeValueFromDatabase(id, "title");
 			if (id == Accounts::getFrontCharacter(session->accountID))
 				Accounts::setFrontCharacter(-1, session->accountID);
 
@@ -288,8 +290,12 @@ long long CharactersInstance::redirectToWorldInstance(BitStream* data, SystemAdd
 				Accounts::setFrontCharacter(id, session->accountID);
 
 				long value = ValueStorage::getValueFromDatabase(id, "wisp");
-				if (value = -1)
+				if (value == -1)
 					ValueStorage::createValueInDatabase(id, "wisp", (long)0);
+
+				long title = ValueStorage::getValueFromDatabase(id, "title");
+				if (title == -1)
+					ValueStorage::createValueInDatabase(id, "title", (long)0);
 
 				TransitionInfos::insertTransitionInfo(clientAddress, session->accountID, id, session->transitionKey);
 				General::redirectToServer(clientAddress, nextInstanceAddress, nextInstancePort, false);
