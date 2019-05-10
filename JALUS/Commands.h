@@ -39,10 +39,39 @@ public:
 class Ignore : public Command
 {
 public:
-	vector<string> getCommandNames() {
+	vector<string> getCommandNames() { // These are client side commands.
+		// We ignore them on the server side.
+		// This list includes command aliases.
+		// Thanks to Simon for getting me a list
+		// of all client client sided commands.
 		vector<string> names = vector<string>();
+		// General
+		names.push_back("quit");
+		names.push_back("exit");
+		names.push_back("logoutcharacter");
+		names.push_back("camp");
+		names.push_back("logoutaccount");
+		names.push_back("logout");
 		names.push_back("say");
+		names.push_back("s");
+		names.push_back("whisper");
+		names.push_back("w");
+		names.push_back("tell");
+		names.push_back("team");
+		names.push_back("t");
+		names.push_back("location");
+		names.push_back("locate");
 		names.push_back("loc");
+		names.push_back("faq");
+		names.push_back("faqs");
+		names.push_back("shop");
+		names.push_back("store");
+		names.push_back("minigames");
+		names.push_back("forums");
+		// Emotes
+		names.push_back("thumbsup");
+		names.push_back("thumb");
+		names.push_back("victory");
 		names.push_back("backflip");
 		names.push_back("clap");
 		names.push_back("cringe");
@@ -58,8 +87,42 @@ public:
 		names.push_back("why");
 		names.push_back("thanks");
 		names.push_back("yes");
-		names.push_back("thumbsup");
-		names.push_back("victory");
+		// Friends
+		names.push_back("addfriend");
+		names.push_back("removefriend");
+		names.push_back("addignore");
+		names.push_back("removeignore");
+		// Performance Options
+		names.push_back("recommendedperfoptions");
+		names.push_back("perfoptionslow");
+		names.push_back("perfoptionmid");
+		names.push_back("perfoptionhigh");
+		// Teams
+		names.push_back("invite");
+		names.push_back("tinvite");
+		names.push_back("teaminvite");
+		names.push_back("inviteteam");
+		names.push_back("leaveteam");
+		names.push_back("leave");
+		names.push_back("tleave");
+		names.push_back("teamleave");
+		names.push_back("setloot");
+		names.push_back("tloot");
+		names.push_back("tsetloot");
+		names.push_back("teamsetloot");
+		names.push_back("kickplayer");
+		names.push_back("tkick");
+		names.push_back("kick");
+		names.push_back("tkickplayer");
+		names.push_back("teamkickplayer");
+		names.push_back("leader");
+		names.push_back("setleader");
+		names.push_back("tleader");
+		names.push_back("tsetleader");
+		names.push_back("teamsetleader");
+		// Other
+		names.push_back("cancelqueue");
+
 		return names;
 	}
 };
@@ -71,7 +134,6 @@ public:
 		vector<string> names = vector<string>();
 		names.push_back("stop");
 		names.push_back("off");
-		names.push_back("quit");
 		return names;
 	}
 	void execute(CommandSender sender, string cmd, vector<string> args);
